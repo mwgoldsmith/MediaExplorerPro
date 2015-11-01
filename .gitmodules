@@ -1,135 +1,159 @@
+[submodule "externals/FFmpeg"]
+	path = externals/FFmpeg
+	url = https://github.com/mwgoldsmith/FFmpeg.git
+[submodule "externals/pthreads-win32"]
+	path = externals/pthreads-win32
+	url = https://github.com/mwgoldsmith/pthreads-win32.git
+[submodule "externals/curl"]
+	path = externals/curl
+	url = https://github.com/mwgoldsmith/curl.git
+[submodule "externals/libpng"]
+	path = externals/libpng
+	url = https://github.com/mwgoldsmith/libpng.git
+[submodule "externals/jpeg9a"]
+	path = externals/jpeg9a
+	url = https://github.com/mwgoldsmith/jpeg9a.git
+[submodule "externals/libphash"]
+	path = externals/libphash
+	url = https://github.com/mwgoldsmith/libphash.git
+[submodule "externals/libssh2"]
+	path = externals/libssh2
+	url = https://github.com/mwgoldsmith/libssh2.git
+[submodule "externals/glext"]
+	path = externals/glext
+	url = https://github.com/mwgoldsmith/glext.git
+[submodule "externals/mfx_dispatch"]
+	path = externals/mfx_dispatch
+	url = https://github.com/mwgoldsmith/mfx_dispatch.git
 [submodule "externals/bzip2"]
 	path = externals/bzip2
-	url = https://github.com/ShiftMediaProject/bzip2.git
+	url = https://github.com/mwgoldsmith/bzip2.git
 [submodule "externals/enca"]
 	path = externals/enca
-	url = https://github.com/ShiftMediaProject/enca.git
-[submodule "externals/expat"]
-	path = externals/expat
-	url = https://github.com/ShiftMediaProject/expat.git
+	url = https://github.com/mwgoldsmith/enca.git
 [submodule "externals/fdk-aac"]
 	path = externals/fdk-aac
-	url = https://github.com/ShiftMediaProject/fdk-aac.git
+	url = https://github.com/mwgoldsmith/fdk-aac.git
 [submodule "externals/fontconfig"]
 	path = externals/fontconfig
-	url = https://github.com/ShiftMediaProject/fontconfig.git
+	url = https://github.com/mwgoldsmith/fontconfig.git
 [submodule "externals/freetype2"]
 	path = externals/freetype2
-	url = https://github.com/ShiftMediaProject/freetype2.git
+	url = https://github.com/mwgoldsmith/freetype2.git
 [submodule "externals/fribidi"]
 	path = externals/fribidi
-	url = https://github.com/ShiftMediaProject/fribidi.git
+	url = https://github.com/mwgoldsmith/fribidi.git
 [submodule "externals/game-music-emu"]
 	path = externals/game-music-emu
-	url = https://github.com/ShiftMediaProject/game-music-emu.git
+	url = https://github.com/mwgoldsmith/game-music-emu.git
 [submodule "externals/gmp"]
 	path = externals/gmp
-	url = https://github.com/ShiftMediaProject/gmp.git
+	url = https://github.com/mwgoldsmith/gmp.git
 [submodule "externals/gnutls"]
 	path = externals/gnutls
-	url = https://github.com/ShiftMediaProject/gnutls.git
+	url = https://github.com/mwgoldsmith/gnutls.git
 [submodule "externals/harfbuzz"]
 	path = externals/harfbuzz
-	url = https://github.com/ShiftMediaProject/harfbuzz.git
+	url = https://github.com/mwgoldsmith/harfbuzz.git
 [submodule "externals/lame"]
 	path = externals/lame
-	url = https://github.com/ShiftMediaProject/lame.git
+	url = https://github.com/mwgoldsmith/lame.git
 [submodule "externals/libaacs"]
 	path = externals/libaacs
-	url = https://github.com/ShiftMediaProject/libaacs.git
+	url = https://github.com/mwgoldsmith/libaacs.git
 [submodule "externals/libass"]
 	path = externals/libass
-	url = https://github.com/ShiftMediaProject/libass.git
+	url = https://github.com/mwgoldsmith/libass.git
 [submodule "externals/libbdplus"]
 	path = externals/libbdplus
-	url = https://github.com/ShiftMediaProject/libbdplus.git
+	url = https://github.com/mwgoldsmith/libbdplus.git
 [submodule "externals/libbluray"]
 	path = externals/libbluray
-	url = https://github.com/ShiftMediaProject/libbluray.git
+	url = https://github.com/mwgoldsmith/libbluray.git
 [submodule "externals/libcdio"]
 	path = externals/libcdio
-	url = https://github.com/ShiftMediaProject/libcdio.git
+	url = https://github.com/mwgoldsmith/libcdio.git
 [submodule "externals/libcdio-paranoia"]
 	path = externals/libcdio-paranoia
-	url = https://github.com/ShiftMediaProject/libcdio-paranoia.git
+	url = https://github.com/mwgoldsmith/libcdio-paranoia.git
 [submodule "externals/libdvdcss"]
 	path = externals/libdvdcss
-	url = https://github.com/ShiftMediaProject/libdvdcss.git
+	url = https://github.com/mwgoldsmith/libdvdcss.git
 [submodule "externals/libdvdnav"]
 	path = externals/libdvdnav
-	url = https://github.com/ShiftMediaProject/libdvdnav.git
+	url = https://github.com/mwgoldsmith/libdvdnav.git
 [submodule "externals/libdvdread"]
 	path = externals/libdvdread
-	url = https://github.com/ShiftMediaProject/libdvdread.git
+	url = https://github.com/mwgoldsmith/libdvdread.git
 [submodule "externals/libgcrypt"]
 	path = externals/libgcrypt
-	url = https://github.com/ShiftMediaProject/libgcrypt.git
+	url = https://github.com/mwgoldsmith/libgcrypt.git
 [submodule "externals/libgpg-error"]
 	path = externals/libgpg-error
-	url = https://github.com/ShiftMediaProject/libgpg-error.git
+	url = https://github.com/mwgoldsmith/libgpg-error.git
 [submodule "externals/libiconv"]
 	path = externals/libiconv
-	url = https://github.com/ShiftMediaProject/libiconv.git
+	url = https://github.com/mwgoldsmith/libiconv.git
 [submodule "externals/libilbc"]
 	path = externals/libilbc
-	url = https://github.com/ShiftMediaProject/libilbc.git
+	url = https://github.com/mwgoldsmith/libilbc.git
 [submodule "externals/liblzma"]
 	path = externals/liblzma
-	url = https://github.com/ShiftMediaProject/liblzma.git
+	url = https://github.com/mwgoldsmith/liblzma.git
 [submodule "externals/libssh"]
 	path = externals/libssh
-	url = https://github.com/ShiftMediaProject/libssh.git
+	url = https://github.com/mwgoldsmith/libssh.git
 [submodule "externals/libvpx"]
 	path = externals/libvpx
-	url = https://github.com/ShiftMediaProject/libvpx.git
+	url = https://github.com/mwgoldsmith/libvpx.git
 [submodule "externals/libxml2"]
 	path = externals/libxml2
-	url = https://github.com/ShiftMediaProject/libxml2.git
+	url = https://github.com/mwgoldsmith/libxml2.git
 [submodule "externals/modplug"]
 	path = externals/modplug
-	url = https://github.com/ShiftMediaProject/modplug.git
+	url = https://github.com/mwgoldsmith/modplug.git
 [submodule "externals/nettle"]
 	path = externals/nettle
-	url = https://github.com/ShiftMediaProject/nettle.git
+	url = https://github.com/mwgoldsmith/nettle.git
 [submodule "externals/ogg"]
 	path = externals/ogg
-	url = https://github.com/ShiftMediaProject/ogg.git
+	url = https://github.com/mwgoldsmith/ogg.git
 [submodule "externals/openssl"]
 	path = externals/openssl
-	url = https://github.com/ShiftMediaProject/openssl.git
+	url = https://github.com/mwgoldsmith/openssl.git
 [submodule "externals/opus"]
 	path = externals/opus
-	url = https://github.com/ShiftMediaProject/opus.git
+	url = https://github.com/mwgoldsmith/opus.git
 [submodule "externals/PortAudio"]
 	path = externals/PortAudio
-	url = https://github.com/ShiftMediaProject/PortAudio.git
+	url = https://github.com/mwgoldsmith/PortAudio.git
 [submodule "externals/rtmpdump"]
 	path = externals/rtmpdump
-	url = https://github.com/ShiftMediaProject/rtmpdump.git
+	url = https://github.com/mwgoldsmith/rtmpdump.git
 [submodule "externals/soxr"]
 	path = externals/soxr
-	url = https://github.com/ShiftMediaProject/soxr.git
+	url = https://github.com/mwgoldsmith/soxr.git
 [submodule "externals/speex"]
 	path = externals/speex
-	url = https://github.com/ShiftMediaProject/speex.git
+	url = https://github.com/mwgoldsmith/speex.git
 [submodule "externals/theora"]
 	path = externals/theora
-	url = https://github.com/ShiftMediaProject/theora.git
+	url = https://github.com/mwgoldsmith/theora.git
 [submodule "externals/vorbis"]
 	path = externals/vorbis
-	url = https://github.com/ShiftMediaProject/vorbis.git
+	url = https://github.com/mwgoldsmith/vorbis.git
 [submodule "externals/x264"]
 	path = externals/x264
-	url = https://github.com/ShiftMediaProject/x264.git
+	url = https://github.com/mwgoldsmith/x264.git
 [submodule "externals/x265"]
 	path = externals/x265
-	url = https://github.com/ShiftMediaProject/x265.git
+	url = https://github.com/mwgoldsmith/x265.git
 [submodule "externals/xvid"]
 	path = externals/xvid
-	url = https://github.com/ShiftMediaProject/xvid.git
+	url = https://github.com/mwgoldsmith/xvid.git
 [submodule "externals/zlib"]
 	path = externals/zlib
-	url = https://github.com/ShiftMediaProject/zlib.git
+	url = https://github.com/mwgoldsmith/zlib.git
 [submodule "externals/SDL"]
 	path = externals/SDL
 	url = https://github.com/eddieringle/SDL.git
