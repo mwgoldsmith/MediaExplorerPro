@@ -10,6 +10,9 @@
 [submodule "externals/libpng"]
 	path = externals/libpng
 	url = https://github.com/mwgoldsmith/libpng.git
+[submodule "externals/PortAudio"]
+	path = externals/PortAudio
+	url = https://github.com/mwgoldsmith/PortAudio.git
 [submodule "externals/jpeg9a"]
 	path = externals/jpeg9a
 	url = https://github.com/mwgoldsmith/jpeg9a.git
@@ -28,17 +31,21 @@
 [submodule "externals/bzip2"]
 	path = externals/bzip2
 	url = https://github.com/mwgoldsmith/bzip2.git
+  branch = develop
 [submodule "externals/enca"]
 	path = externals/enca
 	url = https://github.com/mwgoldsmith/enca.git
+  branch = develop
 [submodule "externals/fdk-aac"]
 	path = externals/fdk-aac
 	url = https://github.com/mwgoldsmith/fdk-aac.git
 [submodule "externals/fontconfig"]
 	path = externals/fontconfig
+  branch = develop
 	url = https://github.com/mwgoldsmith/fontconfig.git
 [submodule "externals/freetype2"]
 	path = externals/freetype2
+  branch = develop
 	url = https://github.com/mwgoldsmith/freetype2.git
 [submodule "externals/fribidi"]
 	path = externals/fribidi
@@ -58,6 +65,7 @@
 [submodule "externals/lame"]
 	path = externals/lame
 	url = https://github.com/mwgoldsmith/lame.git
+  branch = develop
 [submodule "externals/libaacs"]
 	path = externals/libaacs
 	url = https://github.com/mwgoldsmith/libaacs.git
@@ -94,12 +102,14 @@
 [submodule "externals/libiconv"]
 	path = externals/libiconv
 	url = https://github.com/mwgoldsmith/libiconv.git
+  branch = develop
 [submodule "externals/libilbc"]
 	path = externals/libilbc
 	url = https://github.com/mwgoldsmith/libilbc.git
 [submodule "externals/liblzma"]
 	path = externals/liblzma
 	url = https://github.com/mwgoldsmith/liblzma.git
+  branch = develop
 [submodule "externals/libssh"]
 	path = externals/libssh
 	url = https://github.com/mwgoldsmith/libssh.git
@@ -112,6 +122,7 @@
 [submodule "externals/modplug"]
 	path = externals/modplug
 	url = https://github.com/mwgoldsmith/modplug.git
+  branch = develop
 [submodule "externals/nettle"]
 	path = externals/nettle
 	url = https://github.com/mwgoldsmith/nettle.git
@@ -124,15 +135,13 @@
 [submodule "externals/opus"]
 	path = externals/opus
 	url = https://github.com/mwgoldsmith/opus.git
-[submodule "externals/PortAudio"]
-	path = externals/PortAudio
-	url = https://github.com/mwgoldsmith/PortAudio.git
 [submodule "externals/rtmpdump"]
 	path = externals/rtmpdump
 	url = https://github.com/mwgoldsmith/rtmpdump.git
 [submodule "externals/soxr"]
 	path = externals/soxr
 	url = https://github.com/mwgoldsmith/soxr.git
+  branch = develop
 [submodule "externals/speex"]
 	path = externals/speex
 	url = https://github.com/mwgoldsmith/speex.git
@@ -154,6 +163,7 @@
 [submodule "externals/zlib"]
 	path = externals/zlib
 	url = https://github.com/mwgoldsmith/zlib.git
+  branch = develop
 [submodule "externals/SDL"]
 	path = externals/SDL
 	url = https://github.com/eddieringle/SDL.git
