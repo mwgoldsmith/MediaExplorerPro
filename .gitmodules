@@ -1,172 +1,172 @@
 [submodule "externals/FFmpeg"]
 	path = externals/FFmpeg
-	url = https://github.com/mwgoldsmith/FFmpeg.git
+	url = ssh://git@github-personal/mwgoldsmith/FFmpeg.git
 [submodule "externals/pthreads-win32"]
 	path = externals/pthreads-win32
-	url = https://github.com/mwgoldsmith/pthreads-win32.git
+	url = ssh://git@github-personal/mwgoldsmith/pthreads-win32.git
 [submodule "externals/curl"]
 	path = externals/curl
-	url = https://github.com/mwgoldsmith/curl.git
+	url = ssh://git@github-personal/mwgoldsmith/curl.git
 [submodule "externals/libpng"]
 	path = externals/libpng
-	url = https://github.com/mwgoldsmith/libpng.git
+	url = ssh://git@github-personal/mwgoldsmith/libpng.git
 [submodule "externals/PortAudio"]
 	path = externals/PortAudio
-	url = https://github.com/mwgoldsmith/PortAudio.git
+	url = ssh://git@github-personal/mwgoldsmith/PortAudio.git
 [submodule "externals/jpeg9a"]
 	path = externals/jpeg9a
-	url = https://github.com/mwgoldsmith/jpeg9a.git
+	url = ssh://git@github-personal/mwgoldsmith/jpeg9a.git
 [submodule "externals/libphash"]
 	path = externals/libphash
-	url = https://github.com/mwgoldsmith/libphash.git
+	url = ssh://git@github-personal/mwgoldsmith/libphash.git
 [submodule "externals/libssh2"]
 	path = externals/libssh2
-	url = https://github.com/mwgoldsmith/libssh2.git
+	url = ssh://git@github-personal/mwgoldsmith/libssh2.git
 [submodule "externals/glext"]
 	path = externals/glext
-	url = https://github.com/mwgoldsmith/glext.git
+	url = ssh://git@github-personal/mwgoldsmith/glext.git
 [submodule "externals/mfx_dispatch"]
 	path = externals/mfx_dispatch
-	url = https://github.com/mwgoldsmith/mfx_dispatch.git
+	url = ssh://git@github-personal/mwgoldsmith/mfx_dispatch.git
 [submodule "externals/bzip2"]
 	path = externals/bzip2
-	url = https://github.com/mwgoldsmith/bzip2.git
-  branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/bzip2.git
+	branch = develop
 [submodule "externals/enca"]
 	path = externals/enca
-	url = https://github.com/mwgoldsmith/enca.git
-  branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/enca.git
+	branch = develop
 [submodule "externals/fdk-aac"]
 	path = externals/fdk-aac
-	url = https://github.com/mwgoldsmith/fdk-aac.git
+	url = ssh://git@github-personal/mwgoldsmith/fdk-aac.git
 [submodule "externals/fontconfig"]
 	path = externals/fontconfig
-  branch = develop
-	url = https://github.com/mwgoldsmith/fontconfig.git
+	branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/fontconfig.git
 [submodule "externals/freetype2"]
 	path = externals/freetype2
-  branch = develop
-	url = https://github.com/mwgoldsmith/freetype2.git
+	branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/freetype2.git
 [submodule "externals/fribidi"]
 	path = externals/fribidi
-	url = https://github.com/mwgoldsmith/fribidi.git
+	url = ssh://git@github-personal/mwgoldsmith/fribidi.git
 [submodule "externals/game-music-emu"]
 	path = externals/game-music-emu
-	url = https://github.com/mwgoldsmith/game-music-emu.git
+	url = ssh://git@github-personal/mwgoldsmith/game-music-emu.git
 [submodule "externals/gmp"]
 	path = externals/gmp
-	url = https://github.com/mwgoldsmith/gmp.git
+	url = ssh://git@github-personal/mwgoldsmith/gmp.git
 [submodule "externals/gnutls"]
 	path = externals/gnutls
-	url = https://github.com/mwgoldsmith/gnutls.git
+	url = ssh://git@github-personal/mwgoldsmith/gnutls.git
 [submodule "externals/harfbuzz"]
 	path = externals/harfbuzz
-	url = https://github.com/mwgoldsmith/harfbuzz.git
+	url = ssh://git@github-personal/mwgoldsmith/harfbuzz.git
 [submodule "externals/lame"]
 	path = externals/lame
-	url = https://github.com/mwgoldsmith/lame.git
-  branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/lame.git
+	branch = develop
 [submodule "externals/libaacs"]
 	path = externals/libaacs
-	url = https://github.com/mwgoldsmith/libaacs.git
+	url = ssh://git@github-personal/mwgoldsmith/libaacs.git
 [submodule "externals/libass"]
 	path = externals/libass
-	url = https://github.com/mwgoldsmith/libass.git
+	url = ssh://git@github-personal/mwgoldsmith/libass.git
 [submodule "externals/libbdplus"]
 	path = externals/libbdplus
-	url = https://github.com/mwgoldsmith/libbdplus.git
+	url = ssh://git@github-personal/mwgoldsmith/libbdplus.git
 [submodule "externals/libbluray"]
 	path = externals/libbluray
-	url = https://github.com/mwgoldsmith/libbluray.git
+	url = ssh://git@github-personal/mwgoldsmith/libbluray.git
 [submodule "externals/libcdio"]
 	path = externals/libcdio
-	url = https://github.com/mwgoldsmith/libcdio.git
+	url = ssh://git@github-personal/mwgoldsmith/libcdio.git
 [submodule "externals/libcdio-paranoia"]
 	path = externals/libcdio-paranoia
-	url = https://github.com/mwgoldsmith/libcdio-paranoia.git
+	url = ssh://git@github-personal/mwgoldsmith/libcdio-paranoia.git
 [submodule "externals/libdvdcss"]
 	path = externals/libdvdcss
-	url = https://github.com/mwgoldsmith/libdvdcss.git
+	url = ssh://git@github-personal/mwgoldsmith/libdvdcss.git
 [submodule "externals/libdvdnav"]
 	path = externals/libdvdnav
-	url = https://github.com/mwgoldsmith/libdvdnav.git
+	url = ssh://git@github-personal/mwgoldsmith/libdvdnav.git
 [submodule "externals/libdvdread"]
 	path = externals/libdvdread
-	url = https://github.com/mwgoldsmith/libdvdread.git
+	url = ssh://git@github-personal/mwgoldsmith/libdvdread.git
 [submodule "externals/libgcrypt"]
 	path = externals/libgcrypt
-	url = https://github.com/mwgoldsmith/libgcrypt.git
+	url = ssh://git@github-personal/mwgoldsmith/libgcrypt.git
 [submodule "externals/libgpg-error"]
 	path = externals/libgpg-error
-	url = https://github.com/mwgoldsmith/libgpg-error.git
+	url = ssh://git@github-personal/mwgoldsmith/libgpg-error.git
 [submodule "externals/libiconv"]
 	path = externals/libiconv
-	url = https://github.com/mwgoldsmith/libiconv.git
+	url = ssh://git@github-personal/mwgoldsmith/libiconv.git
   branch = develop
 [submodule "externals/libilbc"]
 	path = externals/libilbc
-	url = https://github.com/mwgoldsmith/libilbc.git
+	url = ssh://git@github-personal/mwgoldsmith/libilbc.git
 [submodule "externals/liblzma"]
 	path = externals/liblzma
-	url = https://github.com/mwgoldsmith/liblzma.git
-  branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/liblzma.git
+	branch = develop
 [submodule "externals/libssh"]
 	path = externals/libssh
-	url = https://github.com/mwgoldsmith/libssh.git
+	url = ssh://git@github-personal/mwgoldsmith/libssh.git
 [submodule "externals/libvpx"]
 	path = externals/libvpx
-	url = https://github.com/mwgoldsmith/libvpx.git
+	url = ssh://git@github-personal/mwgoldsmith/libvpx.git
 [submodule "externals/libxml2"]
 	path = externals/libxml2
-	url = https://github.com/mwgoldsmith/libxml2.git
+	url = ssh://git@github-personal/mwgoldsmith/libxml2.git
 [submodule "externals/modplug"]
 	path = externals/modplug
-	url = https://github.com/mwgoldsmith/modplug.git
-  branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/modplug.git
+	branch = develop
 [submodule "externals/nettle"]
 	path = externals/nettle
-	url = https://github.com/mwgoldsmith/nettle.git
+	url = ssh://git@github-personal/mwgoldsmith/nettle.git
 [submodule "externals/ogg"]
 	path = externals/ogg
-	url = https://github.com/mwgoldsmith/ogg.git
+	url = ssh://git@github-personal/mwgoldsmith/ogg.git
 [submodule "externals/openssl"]
 	path = externals/openssl
-	url = https://github.com/mwgoldsmith/openssl.git
+	url = ssh://git@github-personal/mwgoldsmith/openssl.git
 [submodule "externals/opus"]
 	path = externals/opus
-	url = https://github.com/mwgoldsmith/opus.git
+	url = ssh://git@github-personal/mwgoldsmith/opus.git
 [submodule "externals/rtmpdump"]
 	path = externals/rtmpdump
-	url = https://github.com/mwgoldsmith/rtmpdump.git
+	url = ssh://git@github-personal/mwgoldsmith/rtmpdump.git
 [submodule "externals/soxr"]
 	path = externals/soxr
-	url = https://github.com/mwgoldsmith/soxr.git
-  branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/soxr.git
+	branch = develop
 [submodule "externals/speex"]
 	path = externals/speex
-	url = https://github.com/mwgoldsmith/speex.git
+	url = ssh://git@github-personal/mwgoldsmith/speex.git
 [submodule "externals/theora"]
 	path = externals/theora
-	url = https://github.com/mwgoldsmith/theora.git
+	url = ssh://git@github-personal/mwgoldsmith/theora.git
 [submodule "externals/vorbis"]
 	path = externals/vorbis
-	url = https://github.com/mwgoldsmith/vorbis.git
+	url = ssh://git@github-personal/mwgoldsmith/vorbis.git
 [submodule "externals/x264"]
 	path = externals/x264
-	url = https://github.com/mwgoldsmith/x264.git
+	url = ssh://git@github-personal/mwgoldsmith/x264.git
 [submodule "externals/x265"]
 	path = externals/x265
-	url = https://github.com/mwgoldsmith/x265.git
+	url = ssh://git@github-personal/mwgoldsmith/x265.git
 [submodule "externals/xvid"]
 	path = externals/xvid
-	url = https://github.com/mwgoldsmith/xvid.git
+	url = ssh://git@github-personal/mwgoldsmith/xvid.git
 [submodule "externals/zlib"]
 	path = externals/zlib
-	url = https://github.com/mwgoldsmith/zlib.git
-  branch = develop
+	url = ssh://git@github-personal/mwgoldsmith/zlib.git
+	branch = develop
 [submodule "externals/SDL"]
 	path = externals/SDL
-	url = https://github.com/eddieringle/SDL.git
+	url = ssh://git@github-personal/eddieringle/SDL.git
 [submodule "externals/MediaInfoLib"]
 	path = externals/MediaInfoLib
-	url = https://github.com/MediaArea/MediaInfoLib
+	url = ssh://git@github-personal/MediaArea/MediaInfoLib
