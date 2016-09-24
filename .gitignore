@@ -65,3 +65,6 @@ build/msvc*/
 
 .vs/
 *opendb
+build*/
+external*/*.tar.gz
+external*/*.tar.bz2
