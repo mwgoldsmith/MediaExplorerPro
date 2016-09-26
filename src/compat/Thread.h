@@ -24,10 +24,10 @@ namespace this_thread = std::this_thread;
 #include <functional>
 #include <memory>
 #include <system_error>
-#include <unistd.h>
 #ifdef _WIN32
 #  include <windows.h>
 #else
+#  include <unistd.h>
 #  include <pthread.h>
 #endif
 
@@ -64,10 +64,10 @@ public:
   bool operator> (const thread_id& r) const noexcept { return m_id >  r.m_id; }
   bool operator>=(const thread_id& r) const noexcept { return m_id >= r.m_id; }
 
+  native_thread_id_type m_id;
+
 private:
   thread_id(native_thread_id_type id) : m_id(id) {}
-
-  native_thread_id_type m_id;
 
   friend thread_id this_thread::get_id();
   friend Thread;
@@ -86,7 +86,13 @@ class Thread {
 
 #ifdef _WIN32
   template <typename T>
-  static __attribute__((__stdcall__)) DWORD threadRoutine(void* opaque) {
+  static 
+#ifdef _MSC_VER
+    DWORD __stdcall
+#else
+    __attribute__((__stdcall__)) DWORD 
+#endif
+    threadRoutine(void* opaque) {
     auto invoker = std::unique_ptr<Invoker<T>>(reinterpret_cast<Invoker<T>*>(opaque));
     (invoker->inst->*(invoker->func))();
     return 0;
@@ -201,7 +207,7 @@ template <>
 struct hash<mxp::compat::Thread::id> {
   size_t operator()(const mxp::compat::Thread::id& id) const noexcept {
     static_assert(sizeof(id.m_id) <= sizeof(size_t), "thread handle is too big");
-    return (size_t)id.m_id;
+    return static_cast<size_t>(id.m_id);
   }
 };
 }
