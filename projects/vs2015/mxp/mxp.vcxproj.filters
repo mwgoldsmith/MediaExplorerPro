@@ -282,8 +282,20 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\IMediaFile.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\unix\File.h">
+    <ClInclude Include="..\..\..\src\filesystem\common\File.h">
       <Filter>Source Files\filesystem\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IHistoryEntry.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IGenre.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Genre.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\History.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -386,8 +398,14 @@
     <ClCompile Include="..\..\..\src\MediaDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\unix\File.cpp">
+    <ClCompile Include="..\..\..\src\filesystem\common\File.cpp">
       <Filter>Source Files\filesystem\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\History.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Genre.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
