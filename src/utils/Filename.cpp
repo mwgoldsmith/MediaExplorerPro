@@ -137,13 +137,13 @@ std::string mxp::utils::file::toAbsolutePath(const std::string& path) {
     throw std::runtime_error("Failed to convert " + path + " to absolute path (" + std::to_string(GetLastError()) + ")");
   }
 
-  auto res = mxp::charset::FromWide(buff).get();
+  std::string res = mxp::charset::FromWide(buff).get();
 #else
   char abs[PATH_MAX];
   if (realpath(path.c_str(), abs) == nullptr)
     throw std::system_error(errno, std::generic_category(), "Failed to convert to absolute path");
 
-  auto res = abs;
+  std::string res = abs;
 #endif
 
   return std::string{ res };
