@@ -26,13 +26,13 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -71,12 +71,18 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\..\build\bin\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\build\obj\$(Configuration)\</IntDir>
+    <TargetName>libmediaexplorerd</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(ProjectDir)..\..\..\build\bin\</OutDir>
+    <IntDir>$(ProjectDir)..\..\..\build\obj\$(Configuration)\</IntDir>
+    <TargetName>libmediaexplorer</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -87,11 +93,14 @@
       </PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\include;$(ProjectDir)..\..\..\build\include\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\build\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -101,6 +110,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\include;$(ProjectDir)..\..\..\build\include\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -115,13 +125,16 @@
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\include;$(ProjectDir)..\..\..\build\include\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\build\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -133,6 +146,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\include;$(ProjectDir)..\..\..\build\include\sqlite3;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -142,12 +156,189 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\lib\mxp.h" />
-    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="..\..\..\include\discoverer\IDiscoverer.h" />
+    <ClInclude Include="..\..\..\include\factory\IFileSystem.h" />
+    <ClInclude Include="..\..\..\include\filesystem\IDevice.h" />
+    <ClInclude Include="..\..\..\include\filesystem\IDirectory.h" />
+    <ClInclude Include="..\..\..\include\filesystem\IFile.h" />
+    <ClInclude Include="..\..\..\include\Fixup.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IAudioTrack.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceLister.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceListerCb.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IFile.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\ILabel.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\ILogger.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMedia.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorer.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorerCb.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IPlaylist.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\ISettings.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IVideoTrack.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\LogLevel.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\MediaSearchAggregate.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\SearchAggregate.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\Types.h" />
+    <ClInclude Include="..\..\..\include\Types.h" />
+    <ClInclude Include="..\..\..\src\AudioTrack.h" />
+    <ClInclude Include="..\..\..\src\compat\ConditionVariable.h" />
+    <ClInclude Include="..\..\..\src\compat\Mutex.h" />
+    <ClInclude Include="..\..\..\src\compat\Thread.h" />
+    <ClInclude Include="..\..\..\src\database\DatabaseHelpers.h" />
+    <ClInclude Include="..\..\..\src\database\Row.h" />
+    <ClInclude Include="..\..\..\src\database\SqliteConnection.h" />
+    <ClInclude Include="..\..\..\src\database\SqliteErrors.h" />
+    <ClInclude Include="..\..\..\src\database\SqliteTools.h" />
+    <ClInclude Include="..\..\..\src\database\SqliteTraits.h" />
+    <ClInclude Include="..\..\..\src\database\SqliteTransaction.h" />
+    <ClInclude Include="..\..\..\src\database\Statement.h" />
+    <ClInclude Include="..\..\..\src\MediaDevice.h" />
+    <ClInclude Include="..\..\..\src\discoverer\DiscovererWorker.h" />
+    <ClInclude Include="..\..\..\src\discoverer\FsDiscoverer.h" />
+    <ClInclude Include="..\..\..\src\factory\DeviceListerFactory.h" />
+    <ClInclude Include="..\..\..\src\factory\FileSystemFactory.h" />
+    <ClInclude Include="..\..\..\src\MediaFile.h" />
+    <ClInclude Include="..\..\..\src\filesystem\common\CommonDevice.h" />
+    <ClInclude Include="..\..\..\src\filesystem\common\CommonDirectory.h" />
+    <ClInclude Include="..\..\..\src\filesystem\common\CommonFile.h" />
+    <ClInclude Include="..\..\..\src\filesystem\unix\Device.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\DeviceLister.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\Directory.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\File.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\win32\Device.h" />
+    <ClInclude Include="..\..\..\src\filesystem\win32\DeviceLister.h" />
+    <ClInclude Include="..\..\..\src\filesystem\win32\Directory.h" />
+    <ClInclude Include="..\..\..\src\MediaFolder.h" />
+    <ClInclude Include="..\..\..\src\Label.h" />
+    <ClInclude Include="..\..\..\src\logging\IostreamLogger.h" />
+    <ClInclude Include="..\..\..\src\logging\Logger.h" />
+    <ClInclude Include="..\..\..\src\Media.h" />
+    <ClInclude Include="..\..\..\src\MediaExplorer.h" />
+    <ClInclude Include="..\..\..\src\metadata_services\MetadataParser.h" />
+    <ClInclude Include="..\..\..\src\parser\Parser.h" />
+    <ClInclude Include="..\..\..\src\parser\ParserService.h" />
+    <ClInclude Include="..\..\..\src\parser\Task.h" />
+    <ClInclude Include="..\..\..\src\Playlist.h" />
+    <ClInclude Include="..\..\..\src\Settings.h" />
+    <ClInclude Include="..\..\..\src\utils\Cache.h" />
+    <ClInclude Include="..\..\..\src\utils\Charsets.h" />
+    <ClInclude Include="..\..\..\src\utils\Filename.h" />
+    <ClInclude Include="..\..\..\src\utils\ModificationsNotifier.h" />
+    <ClInclude Include="..\..\..\src\utils\ReadLocker.h" />
+    <ClInclude Include="..\..\..\src\utils\SWMRLock.h" />
+    <ClInclude Include="..\..\..\src\utils\WriteLocker.h" />
+    <ClInclude Include="..\..\..\src\VideoTrack.h" />
+    <ClInclude Include="config.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\lib\mxp.cpp" />
-    <ClCompile Include="mxp_cli.cpp" />
+    <ClCompile Include="..\..\..\src\AudioTrack.cpp" />
+    <ClCompile Include="..\..\..\src\database\SqliteConnection.cpp" />
+    <ClCompile Include="..\..\..\src\database\SqliteTools.cpp" />
+    <ClCompile Include="..\..\..\src\database\SqliteTransaction.cpp" />
+    <ClCompile Include="..\..\..\src\MediaDevice.cpp" />
+    <ClCompile Include="..\..\..\src\discoverer\DiscovererWorker.cpp" />
+    <ClCompile Include="..\..\..\src\discoverer\FsDiscoverer.cpp" />
+    <ClCompile Include="..\..\..\src\factory\DeviceListerFactory.cpp" />
+    <ClCompile Include="..\..\..\src\factory\FileSystemFactory.cpp" />
+    <ClCompile Include="..\..\..\src\MediaFile.cpp" />
+    <ClCompile Include="..\..\..\src\filesystem\common\CommonDevice.cpp" />
+    <ClCompile Include="..\..\..\src\filesystem\common\CommonDirectory.cpp" />
+    <ClCompile Include="..\..\..\src\filesystem\common\CommonFile.cpp" />
+    <ClCompile Include="..\..\..\src\filesystem\unix\Device.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\DeviceLister.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\Directory.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\File.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</DeploymentContent>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\File1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\win32\Device.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\Device1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\win32\DeviceLister.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\DeviceLister1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\win32\Directory.cpp">
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\Directory1.obj</ObjectFileName>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MediaFolder.cpp" />
+    <ClCompile Include="..\..\..\src\Label.cpp" />
+    <ClCompile Include="..\..\..\src\logging\IostreamLogger.cpp" />
+    <ClCompile Include="..\..\..\src\logging\Logger.cpp" />
+    <ClCompile Include="..\..\..\src\Media.cpp" />
+    <ClCompile Include="..\..\..\src\MediaExplorer.cpp" />
+    <ClCompile Include="..\..\..\src\metadata_services\MetadataParser.cpp" />
+    <ClCompile Include="..\..\..\src\parser\Parser.cpp" />
+    <ClCompile Include="..\..\..\src\parser\ParserService.cpp" />
+    <ClCompile Include="..\..\..\src\Playlist.cpp" />
+    <ClCompile Include="..\..\..\src\Settings.cpp" />
+    <ClCompile Include="..\..\..\src\utils\Filename.cpp" />
+    <ClCompile Include="..\..\..\src\utils\ModificationsNotifier.cpp" />
+    <ClCompile Include="..\..\..\src\VideoTrack.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\filesystem\darwin\DeviceLister.mm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

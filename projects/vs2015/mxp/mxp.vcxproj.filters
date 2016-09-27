@@ -5,35 +5,394 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
     <Filter Include="Resource Files">
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\lib">
-      <UniqueIdentifier>{028365a8-0f0f-459e-949d-1614444969dc}</UniqueIdentifier>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
-    <Filter Include="Header Files\lib">
-      <UniqueIdentifier>{1313301e-88cf-431d-8463-07bbb105203f}</UniqueIdentifier>
+    <Filter Include="Header Files\mediaexplorer">
+      <UniqueIdentifier>{f1e1b311-fab7-4b38-927b-01c3aadb917f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\filesystem">
+      <UniqueIdentifier>{651f5f85-87e0-4559-b6ac-afd26ff99203}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\factory">
+      <UniqueIdentifier>{b7435a04-c84a-41b5-be53-bd708a9b32c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\discoverer">
+      <UniqueIdentifier>{7903045c-6078-452e-92d4-9fa1b4c3059b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\compat">
+      <UniqueIdentifier>{41416de6-da74-4ae1-9fce-230af83159bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\database">
+      <UniqueIdentifier>{e4922959-8744-4ef7-84a7-dbd66ccb67c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\discoverer">
+      <UniqueIdentifier>{3af2b4f3-1e91-48b3-8ce2-a6a2a46c9b78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\factory">
+      <UniqueIdentifier>{4a725a4e-ba9c-4fd1-8c1a-ebb8a2574b53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filesystem">
+      <UniqueIdentifier>{9f8ed77e-c0dc-4208-839e-1a211a4b5346}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\logging">
+      <UniqueIdentifier>{2d7a959d-4ae5-4517-926d-204f54936583}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\metadata_services">
+      <UniqueIdentifier>{d4690c85-41a0-4a4a-ba5d-2919cad36dea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\parser">
+      <UniqueIdentifier>{70be8565-de89-48a2-a582-b7a5cdaf7fd8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\utils">
+      <UniqueIdentifier>{182e677c-1609-4f41-9cee-67e5ccb06da9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filesystem\common">
+      <UniqueIdentifier>{27e8e0ac-d7e9-496b-86a9-a6c575fb9ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filesystem\darwin">
+      <UniqueIdentifier>{83ee9312-4b7f-403b-a8d1-6760f787d1ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filesystem\unix">
+      <UniqueIdentifier>{ed0297e1-dfdc-4c8f-942a-9be7e86305ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\filesystem\win32">
+      <UniqueIdentifier>{7851adee-f1e4-4472-be23-3651f47070d2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="stdafx.h">
+    <ClInclude Include="..\..\..\include\Fixup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\lib\mxp.h">
-      <Filter>Header Files\lib</Filter>
+    <ClInclude Include="..\..\..\include\Types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorer.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorerCb.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IPlaylist.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\ISettings.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IVideoTrack.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\LogLevel.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\MediaSearchAggregate.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\SearchAggregate.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\Types.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IAudioTrack.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceLister.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceListerCb.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IFile.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\ILabel.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\ILogger.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMedia.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\filesystem\IDirectory.h">
+      <Filter>Header Files\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\filesystem\IFile.h">
+      <Filter>Header Files\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\filesystem\IDevice.h">
+      <Filter>Header Files\filesystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\factory\IFileSystem.h">
+      <Filter>Header Files\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\discoverer\IDiscoverer.h">
+      <Filter>Header Files\discoverer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Label.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Media.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MediaExplorer.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Playlist.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Settings.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\VideoTrack.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\AudioTrack.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utils\ReadLocker.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utils\SWMRLock.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utils\WriteLocker.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utils\Cache.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utils\Charsets.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utils\Filename.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\utils\ModificationsNotifier.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\parser\ParserService.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\parser\Task.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\parser\Parser.h">
+      <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\metadata_services\MetadataParser.h">
+      <Filter>Source Files\metadata_services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\logging\IostreamLogger.h">
+      <Filter>Source Files\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\logging\Logger.h">
+      <Filter>Source Files\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\compat\ConditionVariable.h">
+      <Filter>Source Files\compat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\compat\Mutex.h">
+      <Filter>Source Files\compat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\compat\Thread.h">
+      <Filter>Source Files\compat</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\SqliteErrors.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\SqliteTools.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\SqliteTraits.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\SqliteTransaction.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\Statement.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\DatabaseHelpers.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\Row.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\database\SqliteConnection.h">
+      <Filter>Source Files\database</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\discoverer\FsDiscoverer.h">
+      <Filter>Source Files\discoverer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\discoverer\DiscovererWorker.h">
+      <Filter>Source Files\discoverer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\factory\DeviceListerFactory.h">
+      <Filter>Source Files\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\factory\FileSystemFactory.h">
+      <Filter>Source Files\factory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\win32\Directory.h">
+      <Filter>Source Files\filesystem\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\win32\Device.h">
+      <Filter>Source Files\filesystem\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\win32\DeviceLister.h">
+      <Filter>Source Files\filesystem\win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\DeviceLister.h">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\Directory.h">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\File.h">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\Device.h">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\common\CommonFile.h">
+      <Filter>Source Files\filesystem\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\common\CommonDevice.h">
+      <Filter>Source Files\filesystem\common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\common\CommonDirectory.h">
+      <Filter>Source Files\filesystem\common</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MediaFile.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MediaFolder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\MediaDevice.h">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="mxp_cli.cpp">
+    <ClCompile Include="..\..\..\src\Label.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\lib\mxp.cpp">
-      <Filter>Source Files\lib</Filter>
+    <ClCompile Include="..\..\..\src\Media.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\MediaExplorer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Playlist.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Settings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\VideoTrack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\AudioTrack.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\utils\Filename.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\utils\ModificationsNotifier.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\parser\ParserService.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\parser\Parser.cpp">
+      <Filter>Source Files\parser</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\metadata_services\MetadataParser.cpp">
+      <Filter>Source Files\metadata_services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\logging\Logger.cpp">
+      <Filter>Source Files\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\logging\IostreamLogger.cpp">
+      <Filter>Source Files\logging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\database\SqliteTools.cpp">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\database\SqliteTransaction.cpp">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\database\SqliteConnection.cpp">
+      <Filter>Source Files\database</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\discoverer\FsDiscoverer.cpp">
+      <Filter>Source Files\discoverer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\discoverer\DiscovererWorker.cpp">
+      <Filter>Source Files\discoverer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\factory\FileSystemFactory.cpp">
+      <Filter>Source Files\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\factory\DeviceListerFactory.cpp">
+      <Filter>Source Files\factory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\win32\Directory.cpp">
+      <Filter>Source Files\filesystem\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\win32\Device.cpp">
+      <Filter>Source Files\filesystem\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\win32\DeviceLister.cpp">
+      <Filter>Source Files\filesystem\win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\DeviceLister.cpp">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\Directory.cpp">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\File.cpp">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\Device.cpp">
+      <Filter>Source Files\filesystem\unix</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\common\CommonFile.cpp">
+      <Filter>Source Files\filesystem\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\common\CommonDevice.cpp">
+      <Filter>Source Files\filesystem\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\common\CommonDirectory.cpp">
+      <Filter>Source Files\filesystem\common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MediaFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MediaFolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\MediaDevice.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\..\src\filesystem\darwin\DeviceLister.mm">
+      <Filter>Source Files\filesystem\darwin</Filter>
+    </None>
   </ItemGroup>
 </Project>
