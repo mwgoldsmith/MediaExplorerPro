@@ -61,7 +61,7 @@ class IMedia {
     //virtual ShowEpisodePtr showEpisode() const = 0;
     virtual int playCount() const = 0;
     virtual bool increasePlayCount() = 0;
-    virtual const std::vector<FilePtr>& files() const = 0;
+    virtual const std::vector<MediaFilePtr>& files() const = 0;
     ///
     /// \brief progress Returns the progress, in the [0;1] range
     ///
