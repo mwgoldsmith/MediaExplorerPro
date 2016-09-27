@@ -2,14 +2,14 @@
  * Media Explorer
  *****************************************************************************/
 
-#ifndef MXP_IFILE_H
-#define MXP_IFILE_H
+#ifndef MXP_IMEDIAFILE_H
+#define MXP_IMEDIAFILE_H
 
 #include <string>
 
 namespace mxp {
 
-class IFile {
+class IMediaFile {
 public:
   enum class Type {
     /// Unknown type, so far
@@ -30,7 +30,7 @@ public:
     Subtitles,
   };
 
-  virtual ~IFile() = default;
+  virtual ~IMediaFile() = default;
   virtual int64_t id() const = 0;
   virtual const std::string& mrl() const = 0;
   virtual Type type() const = 0;
@@ -39,4 +39,4 @@ public:
 
 } /* namespace mxp */
 
-#endif /* MXP_IFILE_H */
+#endif /* MXP_IMEDIAFILE_H */

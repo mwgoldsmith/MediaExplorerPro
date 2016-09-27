@@ -8,8 +8,6 @@
 #include "factory/IFileSystem.h"
 #include "utils/Cache.h"
 
-#include <sqlite3.h>
-
 namespace mxp {
 
 class MediaFile;

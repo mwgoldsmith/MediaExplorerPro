@@ -6,9 +6,8 @@
 # include "config.h"
 #endif
 
-#include "MediaFile.h"
-
 #include "Media.h"
+#include "MediaFile.h"
 #include "MediaFolder.h"
 
 using mxp::policy::FileTable;
@@ -60,7 +59,7 @@ const std::string& mxp::MediaFile::mrl() const {
   return m_fullPath;
 }
 
-mxp::IFile::Type mxp::MediaFile::type() const {
+mxp::IMediaFile::Type mxp::MediaFile::type() const {
   return m_type;
 }
 

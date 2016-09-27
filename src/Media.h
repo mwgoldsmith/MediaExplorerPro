@@ -5,8 +5,6 @@
 #ifndef MEDIA_H
 #define MEDIA_H
 
-#include <sqlite3.h>
-
 #include "mediaexplorer/IMedia.h"
 #include "factory/IFileSystem.h"
 #include "MediaFile.h"
@@ -65,7 +63,7 @@ public:
   virtual bool setRating(int rating) override;
   virtual bool isFavorite() const override;
   virtual bool setFavorite(bool favorite) override;
-  virtual const std::vector<FilePtr>& files() const override;
+  virtual const std::vector<MediaFilePtr>& files() const override;
   //virtual MoviePtr movie() const override;
   //void setMovie(MoviePtr movie);
   bool addVideoTrack(const std::string& codec, unsigned int width, unsigned int height, float fps, const std::string& language, const std::string& description);
@@ -79,7 +77,7 @@ public:
   void setThumbnail(const std::string& thumbnail);
   bool save();
 
-  std::shared_ptr<MediaFile> addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs , IFile::Type type);
+  std::shared_ptr<MediaFile> addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs , IMediaFile::Type type);
   void removeFile(MediaFile& file);
 
   static std::vector<MediaPtr> listAll(MediaExplorerPtr ml, Type type , SortingCriteria sort, bool desc);
@@ -113,7 +111,7 @@ private:
   //mutable Cache<AlbumTrackPtr> m_albumTrack;
   //mutable Cache<ShowEpisodePtr> m_showEpisode;
   //mutable Cache<MoviePtr> m_movie;
-  mutable Cache<std::vector<FilePtr>> m_files;
+  mutable Cache<std::vector<MediaFilePtr>> m_files;
   bool m_changed;
 
   friend policy::MediaTable;

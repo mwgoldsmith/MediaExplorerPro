@@ -5,7 +5,6 @@
 #ifndef LABEL_H
 #define LABEL_H
 
-#include <sqlite3.h>
 #include <string>
 
 #include "mediaexplorer/ILabel.h"

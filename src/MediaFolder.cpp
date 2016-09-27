@@ -7,27 +7,24 @@
 # include "config.h"
 #endif
 
+#include <unordered_map>
+
+#include "Media.h"
+#include "MediaDevice.h"
 #include "MediaFile.h"
 #include "MediaFolder.h"
-#include "MediaDevice.h"
-#include "Media.h"
-
 #include "database/SqliteTools.h"
 #include "filesystem/IDirectory.h"
 #include "filesystem/IDevice.h"
 #include "utils/Filename.h"
 
-#include <unordered_map>
+using mxp::policy::FolderTable;
 
-namespace mxp {
+const std::string FolderTable::Name = "Folder";
+const std::string FolderTable::PrimaryKeyColumn = "id_folder";
+int64_t mxp::MediaFolder::* const FolderTable::PrimaryKey = &mxp::MediaFolder::m_id;
 
-namespace policy {
-  const std::string FolderTable::Name = "Folder";
-  const std::string FolderTable::PrimaryKeyColumn = "id_folder";
-  int64_t MediaFolder::* const FolderTable::PrimaryKey = &MediaFolder::m_id;
-}
-
-MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)
+mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
     >> m_path
@@ -38,7 +35,7 @@ MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)
     >> m_isRemovable;
 }
 
-MediaFolder::MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent, int64_t deviceId, bool isRemovable)
+mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent, int64_t deviceId, bool isRemovable)
   : m_ml(ml)
   , m_id(0)
   , m_path(path)
@@ -49,7 +46,7 @@ MediaFolder::MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t p
   , m_isRemovable(isRemovable) {
 }
 
-bool MediaFolder::createTable(DBConnection connection) {
+bool mxp::MediaFolder::createTable(DBConnection connection) {
   auto req = "CREATE TABLE IF NOT EXISTS " + policy::FolderTable::Name +
       "("
       "id_folder INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -72,7 +69,7 @@ bool MediaFolder::createTable(DBConnection connection) {
       sqlite::Tools::executeRequest(connection, triggerReq);
 }
 
-std::shared_ptr<MediaFolder> MediaFolder::create(MediaExplorerPtr ml, const std::string& fullPath, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs) {
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::create(MediaExplorerPtr ml, const std::string& fullPath, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs) {
   std::string path;
   if (device.IsRemovable() == true)
     path = utils::file::removePath(fullPath, deviceFs.mountpoint());
@@ -89,7 +86,7 @@ std::shared_ptr<MediaFolder> MediaFolder::create(MediaExplorerPtr ml, const std:
   return self;
 }
 
-bool MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPath) {
+bool mxp::MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPath) {
   // Ensure we delete the existing folder if any & blacklist the folder in an "atomic" way
   auto t = ml->GetConnection()->NewTransaction();
 
@@ -117,15 +114,15 @@ bool MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPath) {
   return res;
 }
 
-std::shared_ptr<MediaFolder> MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath) {
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath) {
   return fromPath(ml, fullPath, false);
 }
 
-std::shared_ptr<MediaFolder> MediaFolder::blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath) {
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath) {
   return fromPath(ml, fullPath, true);
 }
 
-std::shared_ptr<MediaFolder> MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool blacklisted) {
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool blacklisted) {
   auto folderFs = ml->GetFileSystem()->CreateFsDirectory(fullPath);
   if (folderFs == nullptr)
     return nullptr;
@@ -153,11 +150,11 @@ std::shared_ptr<MediaFolder> MediaFolder::fromPath(MediaExplorerPtr ml, const st
   return folder;
 }
 
-int64_t MediaFolder::id() const {
+int64_t mxp::MediaFolder::id() const {
   return m_id;
 }
 
-const std::string& MediaFolder::path() const {
+const std::string& mxp::MediaFolder::path() const {
   if (m_isRemovable == false)
     return m_path;
 
@@ -172,29 +169,29 @@ const std::string& MediaFolder::path() const {
   return m_fullPath;
 }
 
-std::vector<std::shared_ptr<MediaFile>> MediaFolder::files() {
+std::vector<std::shared_ptr<mxp::MediaFile>> mxp::MediaFolder::files() {
   static const std::string req = "SELECT * FROM " + policy::FileTable::Name +
     " WHERE folder_id = ?";
-  return MediaFile::FetchAll<MediaFile>(m_ml, req, m_id);
+  return mxp::MediaFile::FetchAll<MediaFile>(m_ml, req, m_id);
 }
 
-std::vector<std::shared_ptr<MediaFolder>> MediaFolder::folders() {
+std::vector<std::shared_ptr<mxp::MediaFolder>> mxp::MediaFolder::folders() {
   return FetchAll(m_ml, m_id);
 }
 
-std::shared_ptr<MediaFolder> MediaFolder::parent() {
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::parent() {
   return Fetch(m_ml, m_parent);
 }
 
-int64_t MediaFolder::deviceId() const {
+int64_t mxp::MediaFolder::deviceId() const {
   return m_deviceId;
 }
 
-bool MediaFolder::isPresent() const {
+bool mxp::MediaFolder::isPresent() const {
   return m_isPresent;
 }
 
-std::vector<std::shared_ptr<MediaFolder>> MediaFolder::FetchAll(MediaExplorerPtr ml, int64_t parentFolderId) {
+std::vector<std::shared_ptr<mxp::MediaFolder>> mxp::MediaFolder::FetchAll(MediaExplorerPtr ml, int64_t parentFolderId) {
   if (parentFolderId == 0) {
     static const auto req = "SELECT * FROM " + policy::FolderTable::Name
         + " WHERE parent_id IS NULL AND is_blacklisted = 0 AND is_present = 1";
@@ -207,4 +204,3 @@ std::vector<std::shared_ptr<MediaFolder>> MediaFolder::FetchAll(MediaExplorerPtr
   }
 }
 
-}

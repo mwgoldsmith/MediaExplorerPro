@@ -12,7 +12,7 @@ namespace mxp {
 class IAudioTrack;
 class IDeviceLister;
 class IDeviceListerCb;
-class IFile;
+class IMediaFile;
 class ILabel;
 class ILogger;
 class IMedia;
@@ -25,7 +25,7 @@ namespace factory { class IFileSystem; }
 
 using AudioTrackPtr   = std::shared_ptr<IAudioTrack>;
 using DeviceListerPtr = std::shared_ptr<IDeviceLister>;
-using FilePtr         = std::shared_ptr<IFile>;
+using MediaFilePtr    = std::shared_ptr<IMediaFile>;
 using FileSystemPtr   = std::shared_ptr<factory::IFileSystem>;
 using LabelPtr        = std::shared_ptr<ILabel>;
 using MediaPtr        = std::shared_ptr<IMedia>;

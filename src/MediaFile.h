@@ -5,7 +5,7 @@
 #ifndef MEDIAFILE_H
 #define MEDIAFILE_H
 
-#include "mediaexplorer/IFile.h"
+#include "mediaexplorer/IMediaFile.h"
 #include "database/DatabaseHelpers.h"
 #include "database/SqliteConnection.h"
 #include "filesystem/IFile.h"
@@ -24,7 +24,7 @@ struct FileTable {
 };
 }
 
-class MediaFile : public IFile, public DatabaseHelpers<MediaFile, policy::FileTable> {
+class MediaFile : public IMediaFile, public DatabaseHelpers<MediaFile, policy::FileTable> {
 public:
   MediaFile(MediaExplorerPtr ml, sqlite::Row& row);
   MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);

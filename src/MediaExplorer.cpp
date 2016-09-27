@@ -8,8 +8,7 @@
 
 #include <algorithm>
 #include <functional>
-#if defined(WIN32)
-#include <direct.h>
+#if defined(_WIN32)
 #include "Fixup.h"
 #else
 #include <sys/stat.h>
@@ -31,8 +30,6 @@
 #include "factory/FileSystemFactory.h"
 #include "logging/Logger.h"
 #include "mediaexplorer/ILogger.h"
-#include "mediaexplorer/ISettings.h"
-#include "mediaexplorer/IDeviceLister.h"
 #include "metadata_services/MetadataParser.h"
 #include "parser/Parser.h"
 #include "utils/ModificationsNotifier.h"

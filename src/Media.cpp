@@ -7,28 +7,24 @@
 #endif
 
 #include <algorithm>
-#include <cassert>
-#include <cstdlib>
-#include <cstring>
 #include <ctime>
 
 //#include "Album.h"
 //#include "AlbumTrack.h"
 //#include "Artist.h"
 #include "AudioTrack.h"
+#include "Label.h"
 #include "Media.h"
 #include "MediaFile.h"
 #include "MediaFolder.h"
-#include "Label.h"
+#include "VideoTrack.h"
 #include "logging/Logger.h"
 //#include "Movie.h"
 //#include "ShowEpisode.h"
 #include "database/SqliteTools.h"
-#include "VideoTrack.h"
 #include "filesystem/IFile.h"
 #include "filesystem/IDirectory.h"
 #include "filesystem/IDevice.h"
-#include "utils/Filename.h"
 
 namespace mxp {
 
@@ -205,12 +201,12 @@ bool Media::setFavorite(bool favorite) {
   return true;
 }
 
-const std::vector<FilePtr>& Media::files() const {
+const std::vector<MediaFilePtr>& Media::files() const {
   auto lock = m_files.Lock();
   if (m_files.IsCached() == false) {
     static const auto req = "SELECT * FROM " + policy::FileTable::Name
         + " WHERE media_id = ?";
-    m_files = MediaFile::FetchAll<IFile>(m_ml, req, m_id);
+    m_files = MediaFile::FetchAll<IMediaFile>(m_ml, req, m_id);
   }
   return m_files;
 }
@@ -274,7 +270,7 @@ bool Media::save() {
   return true;
 }
 
-std::shared_ptr<MediaFile> Media::addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IFile::Type type) {
+std::shared_ptr<MediaFile> Media::addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IMediaFile::Type type) {
   auto file = MediaFile::create(m_ml, m_id, type, fileFs, parentFolder.id(), parentFolderFs.device()->IsRemovable());
   if (file == nullptr)
     return nullptr;
@@ -289,7 +285,7 @@ void Media::removeFile(MediaFile& file) {
   auto lock = m_files.Lock();
   if (m_files.IsCached() == false)
     return;
-  m_files.Get().erase(std::remove_if(begin(m_files.Get()), end(m_files.Get()), [&file](const FilePtr& f) {
+  m_files.Get().erase(std::remove_if(begin(m_files.Get()), end(m_files.Get()), [&file](const MediaFilePtr& f) {
     return f->id() == file.id();
   }));
 }
