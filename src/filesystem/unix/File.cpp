@@ -6,20 +6,15 @@
 # include "config.h"
 #endif
 
-#include "File.h"
-
-#include <sys/types.h>
 #include <sys/stat.h>
 #include <stdexcept>
+#include "File.h"
 
-namespace mxp {
-namespace fs {
-
-File::File(const std::string &filePath)
+mxp::fs::File::File(const std::string &filePath)
   : CommonFile(filePath) {
 }
 
-unsigned int File::lastModificationDate() const {
+time_t mxp::fs::File::lastModificationDate() const {
   if (m_lastModificationDate == 0) {
 #ifdef _WIN32
     struct _stat s;
@@ -31,11 +26,9 @@ unsigned int File::lastModificationDate() const {
     if (res != 0) {
       throw std::runtime_error("Failed to get " + m_fullPath + " file stats");
     }
+
     m_lastModificationDate = s.st_mtime;
   }
   
   return m_lastModificationDate;
-}
-
-}
 }

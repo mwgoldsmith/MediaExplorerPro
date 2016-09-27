@@ -16,10 +16,10 @@ class File : public CommonFile {
 public:
   explicit File(const std::string& filePath);
 
-  virtual unsigned int lastModificationDate() const override;
+  virtual time_t lastModificationDate() const override;
 
 private:
-  mutable unsigned int m_lastModificationDate;
+  mutable time_t m_lastModificationDate;
 };
 
 } /* namespace fs */
