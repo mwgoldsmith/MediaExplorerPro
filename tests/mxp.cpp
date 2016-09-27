@@ -4,8 +4,6 @@
 
 #include <stdio.h>
 #include "mxp.h"
-#include <unistd.h>
-
 int main (int argc, char *argv[]){
   printf("Creating new media explorer\n");
   mxp::IMediaExplorer* mxp = mxp_newInstance();
@@ -14,8 +12,8 @@ int main (int argc, char *argv[]){
   mxp->Initialize("mxp.db", nullptr);
 
   printf("Discovering\n");
-mxp->Discover("/home/michael/Videos");
- usleep(1000000*5);
+mxp->Discover("C:\\Users\\mgoldsmith\\Videos\\");
+// _sleep(1000000*5);
   printf("Shutting down\n");
   mxp->Shutdown();
 
