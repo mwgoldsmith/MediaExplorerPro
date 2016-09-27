@@ -116,7 +116,7 @@ private:
 } /* namespace mxp */
 
 #if defined(_MSC_VER)
-# define LOG_ORIGIN __FUNCDNAME__, ":"
+# define LOG_ORIGIN __FUNCTION__, ":"
 #else
 #if defined(DEBUG)
 # define LOG_ORIGIN __FILE__, ":", __LINE__, ' ', __func__
