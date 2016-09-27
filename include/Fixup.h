@@ -27,6 +27,16 @@
 #  define strcasecmp _stricmp
 #endif
 
+#if defined(_MSC_VER) && ! defined(MXP_STATIC)
+#  ifdef MXP_EXPORTS 
+#    define MXPAPI __declspec(dllexport)
+#  else
+#    define MXPAPI __declspec(dllimport)
+#  endif
+#else
+#  define MXPAPI
+#endif
+
 #ifdef _MSC_VER
 #  define THREAD_LOCAL __declspec(thread)
 #else
