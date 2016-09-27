@@ -77,7 +77,7 @@ void mxp::Parser::restore() {
 }
 
 void mxp::Parser::UpdateStats() {
-  auto percent = m_opToDo > 0 ? (m_opDone * 100 / m_opToDo) : 0;
+  unsigned int percent = m_opToDo > 0 ? static_cast<unsigned int>(m_opDone * 100 / m_opToDo) : 0;
   if (percent != m_percent) {
     m_percent = percent;
     if (m_callback != nullptr) {
@@ -95,7 +95,7 @@ void mxp::Parser::done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::
     status == parser::Task::Status::Fatal) {
     if (serviceIdx < m_services.size()) {
       // We won't process the next tasks, so we need to keep the number of "todo" operations coherent:
-      m_opToDo -= m_services.size() - serviceIdx;
+      m_opToDo -= m_services.size() - static_cast<size_t>(serviceIdx);;
       UpdateStats();
     }
     return;

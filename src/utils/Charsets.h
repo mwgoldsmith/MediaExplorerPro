@@ -30,24 +30,24 @@
 namespace mxp {
 namespace charset {
 
-static inline std::unique_ptr<char[]> FromWide( const wchar_t *wide ) {
-  size_t len = WideCharToMultiByte( CP_UTF8, 0, wide, -1, nullptr, 0, nullptr, nullptr );
+static inline std::unique_ptr<char[]> FromWide(const wchar_t *wide) {
+  size_t len = WideCharToMultiByte(CP_UTF8, 0, wide, -1, nullptr, 0, nullptr, nullptr);
   if (len == 0)
     return nullptr;
 
   char *out = new char[len];
-  WideCharToMultiByte( CP_UTF8, 0, wide, -1, out, len, nullptr, nullptr );
-  return std::unique_ptr<char[]>( out );
+  WideCharToMultiByte(CP_UTF8, 0, wide, -1, out, static_cast<int>(len), nullptr, nullptr);
+  return std::unique_ptr<char[]>(out);
 }
 
-static inline std::unique_ptr<wchar_t[]> ToWide( const char *utf8 ) {
-  int len = MultiByteToWideChar( CP_UTF8, 0, utf8, -1, nullptr, 0);
+static inline std::unique_ptr<wchar_t[]> ToWide(const char *utf8) {
+  size_t len = MultiByteToWideChar(CP_UTF8, 0, utf8, -1, nullptr, 0);
   if (len == 0)
     return nullptr;
 
   wchar_t *out = new wchar_t[len];
-  MultiByteToWideChar( CP_UTF8, 0, utf8, -1, out, len );
-  return std::unique_ptr<wchar_t[]>( out );
+  MultiByteToWideChar(CP_UTF8, 0, utf8, -1, out, static_cast<int>(len));
+  return std::unique_ptr<wchar_t[]>(out);
 }
 
 }

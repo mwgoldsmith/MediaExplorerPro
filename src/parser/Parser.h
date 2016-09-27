@@ -47,8 +47,8 @@ private:
   MediaExplorer* m_ml;
   IMediaExplorerCb* m_callback;
   std::shared_ptr<ModificationNotifier> m_notifier;
-  std::atomic_uint m_opToDo;
-  std::atomic_uint m_opDone;
+  std::atomic_size_t m_opToDo;
+  std::atomic_size_t m_opDone;
   std::atomic_uint m_percent;
 };
 
