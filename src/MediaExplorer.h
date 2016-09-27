@@ -51,8 +51,10 @@ public:
   virtual LabelPtr CreateLabel(const std::string& label) override;
   virtual bool DeleteLabel(LabelPtr label) override;
   
-  //virtual std::vector<GenrePtr> GenreLists(SortingCriteria sort, bool desc) const override;
-  //virtual GenrePtr Genre(int64_t id) const override;
+  virtual std::vector<GenrePtr> GenreList(SortingCriteria sort, bool desc) const override;
+  virtual GenrePtr Genre(int64_t id) const override;
+
+  bool AddToHistory(const std::string& mrl);
 
   virtual PlaylistPtr CreatePlaylist(const std::string& name) override;
   virtual bool DeletePlaylist(int64_t playlistId) override;
@@ -61,7 +63,7 @@ public:
 
   virtual MediaSearchAggregate SearchMedia(const std::string& title) const override;
   virtual std::vector<PlaylistPtr> SearchPlaylists(const std::string& name) const override;
-  //virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const override;
+  virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const override;
   virtual SearchAggregate Search(const std::string& pattern) const override;
 
   std::shared_ptr<mxp::Media> CreateMedia(const fs::IFile& fileFs, mxp::MediaFolder& parentFolder, fs::IDirectory& parentFolderFs);

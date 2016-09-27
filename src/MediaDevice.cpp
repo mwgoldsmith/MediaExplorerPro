@@ -8,13 +8,12 @@
 
 #include "MediaDevice.h"
 
-namespace mxp {
+using mxp::policy::MediaDeviceTable;
+const std::string MediaDeviceTable::Name = "MediaDevice";
+const std::string MediaDeviceTable::PrimaryKeyColumn = "id_device";
+int64_t mxp::MediaDevice::* const MediaDeviceTable::PrimaryKey = &mxp::MediaDevice::m_id;
 
-const std::string policy::DeviceTable::Name = "Device";
-const std::string policy::DeviceTable::PrimaryKeyColumn = "id_device";
-int64_t MediaDevice::* const policy::DeviceTable::PrimaryKey = &MediaDevice::m_id;
-
-MediaDevice::MediaDevice(MediaExplorerPtr ml, sqlite::Row& row)
+mxp::MediaDevice::MediaDevice(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
     >> m_uuid
@@ -24,7 +23,7 @@ MediaDevice::MediaDevice(MediaExplorerPtr ml, sqlite::Row& row)
   //only be here for sqlite triggering purposes
 }
 
-MediaDevice::MediaDevice(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable)
+mxp::MediaDevice::MediaDevice(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable)
   : m_ml(ml)
   , m_id(0)
   , m_uuid(uuid)
@@ -33,52 +32,52 @@ MediaDevice::MediaDevice(MediaExplorerPtr ml, const std::string& uuid, bool isRe
   , m_isPresent(true) {
 }
 
-int64_t MediaDevice::id() const {
+int64_t mxp::MediaDevice::id() const {
   return m_id;
 }
 
-const std::string&MediaDevice::uuid() const {
+const std::string& mxp::MediaDevice::uuid() const {
   return m_uuid;
 }
 
-bool MediaDevice::IsRemovable() const {
+bool mxp::MediaDevice::IsRemovable() const {
   return m_isRemovable;
 }
 
-bool MediaDevice::isPresent() const {
+bool mxp::MediaDevice::isPresent() const {
   return m_isPresent;
 }
 
-void MediaDevice::setPresent(bool value) {
-  static const std::string req = "UPDATE " + policy::DeviceTable::Name +
-      " SET is_present = ? WHERE id_device = ?";
-  if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, value, m_id) == false)
+void mxp::MediaDevice::setPresent(bool value) {
+  static const auto req = "UPDATE " + MediaDeviceTable::Name + " SET is_present = ? WHERE id_device = ?";
+  if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, value, m_id) == false) {
     return;
+  }
+
   m_isPresent = value;
 }
 
-std::shared_ptr<MediaDevice> MediaDevice::create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable) {
-  static const auto req = "INSERT INTO " + policy::DeviceTable::Name + "(uuid, is_removable, is_present) VALUES(?, ?, ?)";
+std::shared_ptr<mxp::MediaDevice> mxp::MediaDevice::create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable) {
+  static const auto req = "INSERT INTO " + MediaDeviceTable::Name + "(uuid, is_removable, is_present) VALUES(?, ?, ?)";
   auto self = std::make_shared<MediaDevice>(ml, uuid, isRemovable);
-  if (insert(ml, self, req, uuid, isRemovable, self->isPresent()) == false)
+  if(insert(ml, self, req, uuid, isRemovable, self->isPresent()) == false) {
     return nullptr;
+  }
+
   return self;
 }
 
-bool MediaDevice::createTable(DBConnection connection) {
-  static const auto req = "CREATE TABLE IF NOT EXISTS " + policy::DeviceTable::Name + "("
-      "id_device INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "uuid TEXT UNIQUE ON CONFLICT FAIL,"
-      "is_removable BOOLEAN,"
-      "is_present BOOLEAN"
-      ")";
-  return sqlite::Tools::executeRequest(connection, req);
+bool mxp::MediaDevice::CreateTable(DBConnection connection) {
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + MediaDeviceTable::Name + "("
+    "id_device INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "uuid TEXT UNIQUE ON CONFLICT FAIL,"
+    "is_removable BOOLEAN,"
+    "is_present BOOLEAN"
+    ")";
+  return sqlite::Tools::ExecuteRequest(connection, req);
 }
 
-std::shared_ptr<MediaDevice> MediaDevice::fromUuid(MediaExplorerPtr ml, const std::string& uuid) {
-  static const auto req = "SELECT * FROM " + policy::DeviceTable::Name +
-      " WHERE uuid = ?";
+std::shared_ptr<mxp::MediaDevice> mxp::MediaDevice::fromUuid(MediaExplorerPtr ml, const std::string& uuid) {
+  static const auto req = "SELECT * FROM " + MediaDeviceTable::Name + " WHERE uuid = ?";
   return Fetch(ml, req, uuid);
-}
-
 }

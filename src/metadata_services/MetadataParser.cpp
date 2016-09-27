@@ -46,7 +46,7 @@ mxp::parser::Task::Status mxp::MetadataParser::run(mxp::parser::Task& task) {
       return parser::Task::Status::Fatal;
   }
   auto duration = task.duration;
-  media->setDuration(duration);
+  media->SetDuration(duration);
   if (media->save() == false)
     return parser::Task::Status::Error;
   return parser::Task::Status::Success;
@@ -153,7 +153,7 @@ std::shared_ptr<Album> MetadataParser::findAlbum(parser::Task& task, Artist* alb
 
     // Assume album files will be in the same folder.
     auto newFileFolder = utils::file::directory(task.file->mrl());
-    auto trackFiles = tracks[0]->files();
+    auto trackFiles = tracks[0]->Files();
     bool excluded = false;
     for (auto& f : trackFiles) {
       auto candidateFolder = utils::file::directory(f->mrl());

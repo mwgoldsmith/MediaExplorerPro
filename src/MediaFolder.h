@@ -19,7 +19,7 @@ namespace fs {
 }
 
 namespace policy {
-struct FolderTable {
+struct MediaFolderTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
   static int64_t MediaFolder::*const PrimaryKey;
@@ -29,12 +29,12 @@ struct FolderTable {
 // This doesn't publicly expose the DatabaseHelper inheritance in order to force
 // the user to go through Folder's overloads, as they take care of the device mountpoint
 // fetching & path composition
-class MediaFolder : public DatabaseHelpers<MediaFolder, policy::FolderTable> {
+class MediaFolder : public DatabaseHelpers<MediaFolder, policy::MediaFolderTable> {
 public:
   MediaFolder(MediaExplorerPtr ml, sqlite::Row& row);
   MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent , int64_t deviceId , bool isRemovable);
 
-  static bool createTable(DBConnection connection);
+  static bool CreateTable(DBConnection connection);
   static std::shared_ptr<MediaFolder> create(MediaExplorerPtr ml, const std::string& path, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs);
   static bool blacklist(MediaExplorerPtr ml, const std::string& fullPath);
   static std::vector<std::shared_ptr<MediaFolder>> FetchAll(MediaExplorerPtr ml, int64_t parentFolderId);
@@ -44,7 +44,7 @@ public:
 
   int64_t id() const;
   const std::string& path() const;
-  std::vector<std::shared_ptr<MediaFile>> files();
+  std::vector<std::shared_ptr<MediaFile>> Files();
   std::vector<std::shared_ptr<MediaFolder>> folders();
   std::shared_ptr<MediaFolder> parent();
   int64_t deviceId() const;
@@ -69,7 +69,7 @@ private:
   // This contains the full path, including device mountpoint.
   mutable std::string m_fullPath;
 
-  friend struct policy::FolderTable;
+  friend struct policy::MediaFolderTable;
 };
 
 }

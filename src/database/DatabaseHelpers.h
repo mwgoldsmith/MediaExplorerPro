@@ -20,12 +20,12 @@ class DatabaseHelpers {
 public:
   template <typename... Args>
   static std::shared_ptr<IMPL> Fetch(MediaExplorerPtr ml, const std::string& req, Args&&... args) {
-    return sqlite::Tools::fetchOne<IMPL>(ml, req, std::forward<Args>(args)...);
+    return sqlite::Tools::FetchOne<IMPL>(ml, req, std::forward<Args>(args)...);
   }
 
   static std::shared_ptr<IMPL> Fetch(MediaExplorerPtr ml, int64_t pkValue) {
     static std::string req = "SELECT * FROM " + TABLEPOLICY::Name + " WHERE " + TABLEPOLICY::PrimaryKeyColumn + " = ?";
-    return sqlite::Tools::fetchOne<IMPL>(ml, req, pkValue);
+    return sqlite::Tools::FetchOne<IMPL>(ml, req, pkValue);
   }
 
   /*
@@ -56,7 +56,7 @@ public:
 
   static bool destroy(MediaExplorerPtr ml, int64_t pkValue) {
     static const std::string req = "DELETE FROM " + TABLEPOLICY::Name + " WHERE " + TABLEPOLICY::PrimaryKeyColumn + " = ?";
-    auto res = sqlite::Tools::executeDelete(ml->GetConnection(), req, pkValue);
+    auto res = sqlite::Tools::ExecuteDelete(ml->GetConnection(), req, pkValue);
     if (res == true)
       RemoveFromCache(pkValue);
     return res;
@@ -80,7 +80,7 @@ protected:
     */
   template <typename... Args>
   static bool insert(MediaExplorerPtr ml, std::shared_ptr<IMPL> self, const std::string& req, Args&&... args) {
-    int64_t pKey = sqlite::Tools::executeInsert(ml->GetConnection(), req, std::forward<Args>(args)...);
+    int64_t pKey = sqlite::Tools::ExecuteInsert(ml->GetConnection(), req, std::forward<Args>(args)...);
     if (pKey == 0)
       return false;
     Lock l{ Mutex };

@@ -36,7 +36,7 @@ void mxp::fs::Directory::read() const {
 
     auto path = m_path + file.get();
     if((f.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) != 0) {
-      m_dirs.emplace_back(m_fsFactory.CreateFsDirectory(path));
+      m_dirs.emplace_back(m_fsFactory.CreateDirectoryFromPath(path));
     } else {
       m_files.emplace_back(std::make_shared<File>(path));
     }

@@ -66,7 +66,7 @@ void mxp::Parser::restore() {
   if (m_services.empty() == true)
     return;
 
-  static const std::string req = "SELECT * FROM " + policy::FileTable::Name
+  static const std::string req = "SELECT * FROM " + policy::MediaFileTable::Name
       + " WHERE parsed = 0 AND is_present = 1";
   auto files = MediaFile::FetchAll<MediaFile>(m_ml, req);
 

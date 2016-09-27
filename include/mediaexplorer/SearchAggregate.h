@@ -15,7 +15,7 @@ namespace mxp {
 struct SearchAggregate {
   //std::vector<AlbumPtr> albums;
   //std::vector<ArtistPtr> artists;
-  //std::vector<GenrePtr> genres;
+  std::vector<GenrePtr> genres;
   MediaSearchAggregate media;
   std::vector<PlaylistPtr> playlists;
 };

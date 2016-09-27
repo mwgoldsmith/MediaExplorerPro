@@ -39,7 +39,7 @@ public:
   virtual bool move(int64_t mediaId, unsigned int position) override;
   virtual bool remove(int64_t mediaId) override;
 
-  static bool createTable(DBConnection dbConn);
+  static bool CreateTable(DBConnection dbConn);
   static bool createTriggers(DBConnection dbConn);
   static std::vector<PlaylistPtr> search(MediaExplorerPtr ml, const std::string& name);
   static std::vector<PlaylistPtr> listAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);

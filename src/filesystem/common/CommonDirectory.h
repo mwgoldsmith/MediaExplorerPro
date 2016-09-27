@@ -17,7 +17,7 @@ class CommonDirectory : public IDirectory {
 public:
   CommonDirectory(const std::string& path, factory::IFileSystem& fsFactory);
   virtual const std::string& path() const override;
-  virtual const std::vector<std::shared_ptr<mxp::fs::IFile>>& files() const override;
+  virtual const std::vector<std::shared_ptr<mxp::fs::IFile>>& Files() const override;
   virtual const std::vector<std::shared_ptr<mxp::fs::IDirectory>>& dirs() const override;
   virtual std::shared_ptr<IDevice> device() const override;
 

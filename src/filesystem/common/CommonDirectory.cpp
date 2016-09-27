@@ -45,7 +45,7 @@ const std::string& CommonDirectory::path() const {
   return m_path;
 }
 
-const std::vector<std::shared_ptr<mxp::fs::IFile>>& CommonDirectory::files() const {
+const std::vector<std::shared_ptr<mxp::fs::IFile>>& CommonDirectory::Files() const {
   if (m_dirs.size() == 0 && m_files.size() == 0)
     read();
   return m_files;

@@ -20,16 +20,16 @@ Settings::Settings()
 bool Settings::load(DBConnection dbConn) {
   m_dbConn = dbConn;
   sqlite::Statement s(m_dbConn->GetConnection(), "SELECT * FROM Settings");
-  auto row = s.row();
+  auto row = s.Row();
   // First launch: no settings
   if (row == nullptr) {
-    if (sqlite::Tools::executeInsert(m_dbConn, "INSERT INTO Settings VALUES(?)", MediaExplorer::DbModelVersion) == false)
+    if (sqlite::Tools::ExecuteInsert(m_dbConn, "INSERT INTO Settings VALUES(?)", MediaExplorer::DbModelVersion) == false)
       return false;
     m_dbModelVersion = MediaExplorer::DbModelVersion;
   } else {
     row >> m_dbModelVersion;
     // safety check: there sould only be one row
-    assert( s.row() == nullptr );
+    assert( s.Row() == nullptr );
   }
   return true;
 }
@@ -42,7 +42,7 @@ bool Settings::save() {
   static const std::string req = "UPDATE Settings SET db_model_version = ?";
   if (m_changed == false)
     return true;
-  if (sqlite::Tools::executeUpdate(m_dbConn, req, m_dbModelVersion) == true) {
+  if (sqlite::Tools::ExecuteUpdate(m_dbConn, req, m_dbModelVersion) == true) {
     m_changed = false;
     return true;
   }
@@ -54,11 +54,11 @@ void Settings::setDbModelVersion(uint32_t dbModelVersion) {
   m_changed = true;
 }
 
-bool Settings::createTable(DBConnection dbConn) {
+bool Settings::CreateTable(DBConnection dbConn) {
   const std::string req = "CREATE TABLE IF NOT EXISTS Settings("
       "db_model_version UNSIGNED INTEGER NOT NULL DEFAULT 1"
       ")";
-  return sqlite::Tools::executeRequest(dbConn, req);
+  return sqlite::Tools::ExecuteRequest(dbConn, req);
 }
 
 }

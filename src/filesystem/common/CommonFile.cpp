@@ -24,10 +24,10 @@ const std::string& mxp::fs::CommonFile::path() const {
   return m_path;
 }
 
-const std::string& mxp::fs::CommonFile::fullPath() const {
+const std::string& mxp::fs::CommonFile::FullPath() const {
   return m_fullPath;
 }
 
-const std::string& mxp::fs::CommonFile::extension() const {
+const std::string& mxp::fs::CommonFile::Extension() const {
   return m_extension;
 }

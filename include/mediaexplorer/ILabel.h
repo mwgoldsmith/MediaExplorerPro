@@ -36,7 +36,7 @@ public:
 
   virtual int64_t id() const = 0;
   virtual const std::string& name() const = 0;
-  virtual std::vector<MediaPtr> files() = 0;
+  virtual std::vector<MediaPtr> Files() = 0;
 };
 
 }

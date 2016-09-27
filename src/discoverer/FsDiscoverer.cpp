@@ -29,7 +29,7 @@ bool mxp::FsDiscoverer::Discover(const std::string& entryPoint) {
   if (entryPoint.find("://") != std::string::npos)
     return false;
 
-  std::shared_ptr<mxp::fs::IDirectory> fsDir = m_fsFactory->CreateFsDirectory(entryPoint);
+  std::shared_ptr<mxp::fs::IDirectory> fsDir = m_fsFactory->CreateDirectoryFromPath(entryPoint);
   // Otherwise, create a directory and check it for modifications
   if (fsDir == nullptr) {
     LOG_ERROR("Failed to create an IDirectory for ", entryPoint);
@@ -51,7 +51,7 @@ void mxp::FsDiscoverer::reload() {
   auto rootFolders = mxp::MediaFolder::FetchAll(m_ml, 0);
   
   for (const auto& f : rootFolders) {
-    auto folder = m_fsFactory->CreateFsDirectory(f->path());
+    auto folder = m_fsFactory->CreateDirectoryFromPath(f->path());
     if (folder == nullptr) {
       m_ml->DeleteFolder(*f);
       continue;
@@ -67,7 +67,7 @@ void mxp::FsDiscoverer::reload(const std::string& entryPoint) {
     LOG_ERROR("Can't reload ", entryPoint, ": folder wasn't found in database");
     return;
   }
-  auto folderFs = m_fsFactory->CreateFsDirectory(folder->path());
+  auto folderFs = m_fsFactory->CreateDirectoryFromPath(folder->path());
   if (folderFs == nullptr) {
     LOG_ERROR(" Failed to create a fs::IDirectory representing ", folder->path());
   }
@@ -146,14 +146,14 @@ void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::M
 
 void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::MediaFolder& parentFolder) const {
   LOG_INFO("Checking file in ", parentFolderFs.path());
-  static const std::string req = "SELECT * FROM " + policy::FileTable::Name
+  static const std::string req = "SELECT * FROM " + policy::MediaFileTable::Name
       + " WHERE folder_id = ?";
   auto files = mxp::MediaFile::FetchAll<mxp::MediaFile>(m_ml, req, parentFolder.id());
   std::vector<std::shared_ptr<mxp::fs::IFile>> filesToAdd;
   std::vector<std::shared_ptr<mxp::MediaFile>> filesToRemove;
-  for (const auto& fileFs: parentFolderFs.files()) {
+  for (const auto& fileFs: parentFolderFs.Files()) {
     auto it = std::find_if(begin(files), end(files), [fileFs](const std::shared_ptr<mxp::MediaFile>& f) {
-      return f->mrl() == fileFs->fullPath();
+      return f->mrl() == fileFs->FullPath();
     });
     if (it == end(files)) {
       filesToAdd.push_back(fileFs);
@@ -165,7 +165,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
       continue;
     }
     auto& file = (*it);
-    LOG_INFO("Forcing file refresh ", fileFs->fullPath());
+    LOG_INFO("Forcing file refresh ", fileFs->FullPath());
     // Pre-cache the file's media, since we need it to remove. However, better doing it
     // out of a write context, since that way, other threads can also read the database.
     file->media();
@@ -192,7 +192,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
 }
 
 bool mxp::FsDiscoverer::hasDotNoMediaFile(const mxp::fs::IDirectory& directory) {
-  const auto& files = directory.files();
+  const auto& files = directory.Files();
   return std::find_if(begin(files), end(files), [](const std::shared_ptr<mxp::fs::IFile>& file) {
     return file->name() == ".nomedia";
   }) != end(files);

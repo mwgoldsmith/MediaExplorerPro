@@ -19,6 +19,8 @@
 #include "MediaFolder.h"
 #include "Label.h"
 #include "Media.h"
+#include "Genre.h"
+#include "History.h"
 #include "MediaExplorer.h"
 #include "Playlist.h"
 #include "Types.h"
@@ -58,6 +60,8 @@ mxp::MediaExplorer::~MediaExplorer() {
   mxp::Playlist::clear();
   mxp::VideoTrack::clear();
   mxp::AudioTrack::clear();
+  mxp::History::clear();
+  mxp::Genre::clear();
 }
 
 bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb* cb) {
@@ -116,9 +120,11 @@ bool mxp::MediaExplorer::Shutdown() {
   mxp::MediaDevice::clear();
   mxp::Label::clear();
   mxp::Playlist::clear();
-  
   mxp::VideoTrack::clear();
   mxp::AudioTrack::clear();
+  mxp::History::clear();
+  mxp::Genre::clear();
+
   LOG_DEBUG("MXP-CS-900 - Shutdown end");
   return true;
 }
@@ -153,6 +159,19 @@ mxp::DBConnection mxp::MediaExplorer::GetConnection() const {
 
 mxp::IMediaExplorerCb* mxp::MediaExplorer::GetCallbacks() const {
   return m_callbacks;
+}
+
+std::vector<mxp::GenrePtr> mxp::MediaExplorer::GenreList(mxp::SortingCriteria sort, bool desc) const {
+  return Genre::listAll(this, sort, desc);
+}
+
+mxp::GenrePtr mxp::MediaExplorer::Genre(int64_t id) const {
+  return Genre::Fetch(this, id);
+}
+
+
+bool mxp::MediaExplorer::AddToHistory(const std::string& mrl) {
+  return History::insert(GetConnection(), mrl);
 }
 
 bool mxp::MediaExplorer::DeleteFolder(const mxp::MediaFolder& folder) {
@@ -210,13 +229,17 @@ std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::SearchPlaylists(const std::str
   return mxp::Playlist::search(this, name);
 }
 
-//std::vector<mxp::GenrePtr> SearchGenre(const std::string& genre) const { }
+std::vector<mxp::GenrePtr> mxp::MediaExplorer::SearchGenre(const std::string& genre) const {
+  if(ValidateSearchPattern(genre) == false)
+    return{};
+  return Genre::search(this, genre);
+}
 
 mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) const { 
   SearchAggregate res;
   //res.albums = searchAlbums(pattern);
   //res.artists = searchArtists(pattern);
-  //res.genres = searchGenre(pattern);
+  res.genres = SearchGenre(pattern);
   res.media = SearchMedia(pattern);
   res.playlists = SearchPlaylists(pattern);
   return res;
@@ -235,7 +258,7 @@ const std::vector<std::string> supportedVideoExtensions{
 };
 
   auto type = mxp::IMedia::Type::UnknownType;
-  auto ext = fileFs.extension();
+  auto ext = fileFs.Extension();
   auto predicate = [ext](const std::string& v) {
     return strcasecmp(v.c_str(), ext.c_str()) == 0;
   };
@@ -250,17 +273,17 @@ const std::vector<std::string> supportedVideoExtensions{
     return nullptr;
   }
 
-  LOG_INFO("Adding ", fileFs.fullPath());
+  LOG_INFO("Adding ", fileFs.FullPath());
   auto mptr = mxp::Media::create(this, type, fileFs);
   if (mptr == nullptr) {
-    LOG_ERROR("Failed to add media ", fileFs.fullPath(), " to the media library");
+    LOG_ERROR("Failed to add media ", fileFs.FullPath(), " to the media library");
     return nullptr;
   }
 
   // For now, assume all media are made of a single file
   auto file = mptr->addFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
   if (file == nullptr) {
-    LOG_ERROR("Failed to add file ", fileFs.fullPath(), " to media #", mptr->id());
+    LOG_ERROR("Failed to add file ", fileFs.FullPath(), " to media #", mptr->id());
     mxp::Media::destroy(this, mptr->id());
     return nullptr;
   }
@@ -303,15 +326,19 @@ void mxp::MediaExplorer::Reload(const std::string& entryPoint) {
 
 bool mxp::MediaExplorer::CreateAllTables() {
   auto t = m_db->NewTransaction();
-  auto res = MediaDevice::createTable(m_db.get()) &&
-    MediaFolder::createTable(m_db.get()) &&
-      Media::createTable(m_db.get()) &&
-      MediaFile::createTable(m_db.get()) &&
-      Label::createTable(m_db.get()) &&
-      Playlist::createTable(m_db.get()) &&
-      VideoTrack::createTable(m_db.get()) &&
-      AudioTrack::createTable(m_db.get()) &&
-      Settings::createTable(m_db.get());
+  auto res = MediaDevice::CreateTable(m_db.get()) &&
+    MediaFolder::CreateTable(m_db.get()) &&
+    Media::CreateTable(m_db.get()) &&
+    MediaFile::CreateTable(m_db.get()) &&
+    Label::CreateTable(m_db.get()) &&
+    Playlist::CreateTable(m_db.get()) &&
+    Genre::CreateTable(m_db.get()) &&
+    VideoTrack::CreateTable(m_db.get()) &&
+    AudioTrack::CreateTable(m_db.get()) &&
+    Media::createTriggers(m_db.get()) &&
+    Playlist::createTriggers(m_db.get()) &&
+    History::CreateTable(m_db.get()) &&
+    Settings::CreateTable(m_db.get());
 
   if (res == false) {
     return false;
@@ -332,7 +359,7 @@ bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
     std::string req = "PRAGMA writable_schema = 1;"
         "delete from sqlite_master;"
         "PRAGMA writable_schema = 0;";
-    if (sqlite::Tools::executeRequest(GetConnection(), req) == false)
+    if (sqlite::Tools::ExecuteRequest(GetConnection(), req) == false)
       return false;
     if (CreateAllTables() == false)
       return false;
@@ -385,6 +412,10 @@ std::shared_ptr<mxp::ModificationNotifier> mxp::MediaExplorer::GetNotifier() con
   return m_modificationNotifier;
 }
 
-extern "C" mxp::IMediaExplorer* mxp_newInstance() {
+extern "C" {
+
+MXPAPI mxp::IMediaExplorer* mxp_newInstance() {
   return new mxp::MediaExplorer();
+}
+
 }

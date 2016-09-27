@@ -27,8 +27,11 @@ public:
    */
   template <typename T>
   Row& operator>>(T& t) {
-    if (m_idx + 1 > m_nbColumns)
+    if(m_idx + 1 > m_nbColumns) {
       throw errors::ColumnOutOfRange(m_idx, m_nbColumns);
+    }
+
+#pragma warning( suppress : 4244 4800)
     t = sqlite::Traits<T>::Load(m_stmt, m_idx);
     m_idx++;
     return *this;

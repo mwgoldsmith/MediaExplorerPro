@@ -9,9 +9,10 @@
 #include "Playlist.h"
 #include "Media.h"
 
-const std::string mxp::policy::PlaylistTable::Name = "Playlist";
-const std::string mxp::policy::PlaylistTable::PrimaryKeyColumn = "id_playlist";
-int64_t mxp::Playlist::* const mxp::policy::PlaylistTable::PrimaryKey = &Playlist::m_id;
+using mxp::policy::PlaylistTable;
+const std::string PlaylistTable::Name = "Playlist";
+const std::string PlaylistTable::PrimaryKeyColumn = "id_playlist";
+int64_t mxp::Playlist::* const PlaylistTable::PrimaryKey = &mxp::Playlist::m_id;
 
 mxp::Playlist::Playlist(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
@@ -28,8 +29,7 @@ mxp::Playlist::Playlist(MediaExplorerPtr ml, const std::string& name)
 
 std::shared_ptr<mxp::Playlist> mxp::Playlist::create(MediaExplorerPtr ml, const std::string& name) {
   auto self = std::make_shared<Playlist>(ml, name);
-  static const std::string req = "INSERT INTO " + policy::PlaylistTable::Name +
-      "(name, creation_date) VALUES(?, ?)";
+  static const auto req = "INSERT INTO " + PlaylistTable::Name + "(name, creation_date) VALUES(?, ?)";
 
   try {
     if (insert(ml, self, req, name, self->m_creationDate) == false) {
@@ -55,10 +55,13 @@ const std::string& mxp::Playlist::name() const {
 bool mxp::Playlist::setName(const std::string& name) {
   if (name == m_name)
     return true;
-  static const auto req = "UPDATE " + policy::PlaylistTable::Name + " SET name = ? WHERE id_playlist = ?";
-  if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, name, m_id) == false)
+
+  static const auto req = "UPDATE " + PlaylistTable::Name + " SET name = ? WHERE id_playlist = ?";
+  if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, name, m_id) == false)
     return false;
+
   m_name = name;
+
   return true;
 }
 
@@ -68,9 +71,9 @@ time_t mxp::Playlist::creationDate() const {
 
 std::vector<mxp::MediaPtr> mxp::Playlist::media() const {
   static const auto req = "SELECT m.* FROM " + policy::MediaTable::Name + " m "
-      "LEFT JOIN PlaylistMediaRelation pmr ON pmr.media_id = m.id_media "
-      "WHERE pmr.playlist_id = ? AND m.is_present = 1 "
-      "ORDER BY pmr.position";
+    "LEFT JOIN PlaylistMediaRelation pmr ON pmr.media_id = m.id_media "
+    "WHERE pmr.playlist_id = ? AND m.is_present = 1 "
+    "ORDER BY pmr.position";
   return Media::FetchAll<IMedia>(m_ml, req, m_id);
 }
 
@@ -83,7 +86,7 @@ bool mxp::Playlist::add(int64_t mediaId, unsigned int position) {
   // position isn't a foreign key, but we want it to be passed as NULL if it equals to 0
   // When the position is NULL, the insertion triggers takes care of counting the number of records to auto append.
   try {
-    return sqlite::Tools::executeInsert(m_ml->GetConnection(), req, mediaId, m_id, sqlite::ForeignKey{position}) != 0;
+    return sqlite::Tools::ExecuteInsert(m_ml->GetConnection(), req, mediaId, m_id, sqlite::ForeignKey{position}) != 0;
   } catch (const sqlite::errors::ConstraintViolation& ex) {
     LOG_WARN("Rejected playlist insertion: ", ex.what());
     return false;
@@ -93,40 +96,38 @@ bool mxp::Playlist::add(int64_t mediaId, unsigned int position) {
 bool mxp::Playlist::move(int64_t mediaId, unsigned int position) {
   if (position == 0)
     return false;
-  static const std::string req = "UPDATE PlaylistMediaRelation SET position = ? WHERE "
-      "playlist_id = ? AND media_id = ?";
-  return sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, position, m_id, mediaId);
+  static const std::string req = "UPDATE PlaylistMediaRelation SET position = ? WHERE playlist_id = ? AND media_id = ?";
+  return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, position, m_id, mediaId);
 }
 
 bool mxp::Playlist::remove(int64_t mediaId) {
   static const std::string req = "DELETE FROM PlaylistMediaRelation WHERE playlist_id = ? AND media_id = ?";
-  return sqlite::Tools::executeDelete(m_ml->GetConnection(), req, m_id, mediaId);
+  return sqlite::Tools::ExecuteDelete(m_ml->GetConnection(), req, m_id, mediaId);
 }
 
-bool mxp::Playlist::createTable(DBConnection dbConn) {
-  static const auto req = "CREATE TABLE IF NOT EXISTS " + policy::PlaylistTable::Name + 
-      "(" + policy::PlaylistTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+bool mxp::Playlist::CreateTable(DBConnection dbConn) {
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + PlaylistTable::Name + 
+      "(" + PlaylistTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
       "name TEXT UNIQUE,"
       "creation_date UNSIGNED INT NOT NULL"
       ")";
   static const auto relTableReq = "CREATE TABLE IF NOT EXISTS PlaylistMediaRelation("
-      "media_id INTEGER,"
-      "playlist_id INTEGER,"
-      "position INTEGER,"
-      "PRIMARY KEY(media_id, playlist_id),"
-      "FOREIGN KEY(media_id) REFERENCES " + policy::MediaTable::Name +
-      "(" + policy::MediaTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
-      "FOREIGN KEY(playlist_id) REFERENCES " + policy::PlaylistTable::Name + 
-      "(" + policy::PlaylistTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
-      ")";
-  static const auto vtableReq = "CREATE VIRTUAL TABLE IF NOT EXISTS "
-      + policy::PlaylistTable::Name + "Fts USING FTS3("
-        "name"
-        ")";
+    "media_id INTEGER,"
+    "playlist_id INTEGER,"
+    "position INTEGER,"
+    "PRIMARY KEY(media_id, playlist_id),"
+    "FOREIGN KEY(media_id) REFERENCES " + policy::MediaTable::Name +
+    "(" + policy::MediaTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
+    "FOREIGN KEY(playlist_id) REFERENCES " + PlaylistTable::Name + 
+    "(" + PlaylistTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
+    ")";
+  static const auto vtableReq = "CREATE VIRTUAL TABLE IF NOT EXISTS " + PlaylistTable::Name + "Fts USING FTS3("
+    "name"
+    ")";
   //FIXME Enforce (playlist_id,position) uniqueness
-  return sqlite::Tools::executeRequest(dbConn, req) &&
-      sqlite::Tools::executeRequest(dbConn, relTableReq) &&
-      sqlite::Tools::executeRequest(dbConn, vtableReq);
+  return sqlite::Tools::ExecuteRequest(dbConn, req) &&
+      sqlite::Tools::ExecuteRequest(dbConn, relTableReq) &&
+      sqlite::Tools::ExecuteRequest(dbConn, vtableReq);
 }
 
 bool mxp::Playlist::createTriggers(DBConnection dbConn) {
@@ -156,37 +157,37 @@ bool mxp::Playlist::createTriggers(DBConnection dbConn) {
       " AND position = new.position"
       " AND media_id != new.media_id;"
       " END";
-  static const std::string vtriggerInsert = "CREATE TRIGGER IF NOT EXISTS insert_playlist_fts AFTER INSERT ON "
-      + policy::PlaylistTable::Name +
+  static const auto vtriggerInsert = "CREATE TRIGGER IF NOT EXISTS insert_playlist_fts AFTER INSERT ON "
+      + PlaylistTable::Name +
       " BEGIN"
-      " INSERT INTO " + policy::PlaylistTable::Name + "Fts(rowid, name) VALUES(new.id_playlist, new.name);"
+      " INSERT INTO " + PlaylistTable::Name + "Fts(rowid, name) VALUES(new.id_playlist, new.name);"
       " END";
-  static const std::string vtriggerUpdate = "CREATE TRIGGER IF NOT EXISTS update_playlist_fts AFTER UPDATE OF name"
-      " ON " + policy::PlaylistTable::Name +
+  static const auto vtriggerUpdate = "CREATE TRIGGER IF NOT EXISTS update_playlist_fts AFTER UPDATE OF name"
+      " ON " + PlaylistTable::Name +
       " BEGIN"
-      " UPDATE " + policy::PlaylistTable::Name + "Fts SET name = new.name WHERE rowid = new.id_playlist;"
+      " UPDATE " + PlaylistTable::Name + "Fts SET name = new.name WHERE rowid = new.id_playlist;"
       " END";
-  static const std::string vtriggerDelete = "CREATE TRIGGER IF NOT EXISTS delete_playlist_fts BEFORE DELETE ON "
-      + policy::PlaylistTable::Name +
+  static const auto vtriggerDelete = "CREATE TRIGGER IF NOT EXISTS delete_playlist_fts BEFORE DELETE ON "
+      + PlaylistTable::Name +
       " BEGIN"
-      " DELETE FROM " + policy::PlaylistTable::Name + "Fts WHERE rowid = old.id_playlist;"
+      " DELETE FROM " + PlaylistTable::Name + "Fts WHERE rowid = old.id_playlist;"
       " END";
-  return sqlite::Tools::executeRequest(dbConn, req) &&
-      sqlite::Tools::executeRequest(dbConn, autoAppendReq) &&
-      sqlite::Tools::executeRequest(dbConn, autoShiftPosReq) &&
-      sqlite::Tools::executeRequest(dbConn, vtriggerInsert) &&
-      sqlite::Tools::executeRequest(dbConn, vtriggerUpdate) &&
-      sqlite::Tools::executeRequest(dbConn, vtriggerDelete);
+  return sqlite::Tools::ExecuteRequest(dbConn, req) &&
+      sqlite::Tools::ExecuteRequest(dbConn, autoAppendReq) &&
+      sqlite::Tools::ExecuteRequest(dbConn, autoShiftPosReq) &&
+      sqlite::Tools::ExecuteRequest(dbConn, vtriggerInsert) &&
+      sqlite::Tools::ExecuteRequest(dbConn, vtriggerUpdate) &&
+      sqlite::Tools::ExecuteRequest(dbConn, vtriggerDelete);
 }
 
 std::vector<mxp::PlaylistPtr> mxp::Playlist::search(MediaExplorerPtr ml, const std::string& name) {
-  static const auto req = "SELECT * FROM " + policy::PlaylistTable::Name + " WHERE id_playlist IN "
-      "(SELECT rowid FROM " + policy::PlaylistTable::Name + "Fts WHERE name MATCH ?)";
+  static const auto req = "SELECT * FROM " + PlaylistTable::Name + " WHERE id_playlist IN "
+      "(SELECT rowid FROM " + PlaylistTable::Name + "Fts WHERE name MATCH ?)";
   return FetchAll<IPlaylist>(ml, req, name + "*");
 }
 
 std::vector<mxp::PlaylistPtr> mxp::Playlist::listAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc) {
-  auto req = "SELECT * FROM " + policy::PlaylistTable::Name + " ORDER BY ";
+  auto req = "SELECT * FROM " + PlaylistTable::Name + " ORDER BY ";
   switch (sort) {
   case SortingCriteria::InsertionDate:
     req += "creation_date";
@@ -195,8 +196,10 @@ std::vector<mxp::PlaylistPtr> mxp::Playlist::listAll(MediaExplorerPtr ml, Sortin
     req += "name";
     break;
   }
+
   if (desc == true)
     req += " DESC";
+
   return FetchAll<IPlaylist>(ml, req);
 }
 

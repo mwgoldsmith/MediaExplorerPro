@@ -39,8 +39,8 @@ Transaction::Transaction(DBConnection dbConn)
   assert(CurrentTransaction == nullptr);
   LOG_DEBUG("Starting SQLite transaction");
   Statement s(dbConn->GetConnection(), "BEGIN");
-  s.execute();
-  while (s.row() != nullptr)
+  s.Execute();
+  while (s.Row() != nullptr)
     ;
   CurrentTransaction = this;
 }
@@ -48,8 +48,8 @@ Transaction::Transaction(DBConnection dbConn)
 Transaction::~Transaction() {
   if (CurrentTransaction != nullptr) {
     Statement s(m_dbConn->GetConnection(), "ROLLBACK");
-    s.execute();
-    while (s.row() != nullptr)
+    s.Execute();
+    while (s.Row() != nullptr)
       ;
     CurrentTransaction = nullptr;
   }
@@ -58,8 +58,8 @@ Transaction::~Transaction() {
 void Transaction::Commit() {
   auto chrono = std::chrono::steady_clock::now();
   Statement s(m_dbConn->GetConnection(), "COMMIT");
-  s.execute();
-  while (s.row() != nullptr)
+  s.Execute();
+  while (s.Row() != nullptr)
     ;
   auto duration = std::chrono::steady_clock::now() - chrono;
   LOG_DEBUG("Flushed transaction in ", std::chrono::duration_cast<std::chrono::microseconds>(duration).count(), "µs");

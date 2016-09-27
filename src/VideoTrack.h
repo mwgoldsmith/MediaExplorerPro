@@ -37,7 +37,7 @@ public:
   virtual const std::string& language() const override;
   virtual const std::string& description() const override;
 
-  static bool createTable(DBConnection dbConnection);
+  static bool CreateTable(DBConnection dbConnection);
   static std::shared_ptr<VideoTrack> create(MediaExplorerPtr ml, const std::string& codec,
                                             unsigned int width, unsigned int height, float fps, int64_t mediaId,
                                             const std::string& language, const std::string& description);

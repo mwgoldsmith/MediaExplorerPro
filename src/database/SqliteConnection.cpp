@@ -55,12 +55,12 @@ SqliteConnection::Handle SqliteConnection::GetConnection() {
     if (res != SQLITE_OK)
       throw std::runtime_error("Failed to connect to database");
     sqlite::Statement s(dbConnection, "PRAGMA foreign_keys = ON");
-    s.execute();
-    while (s.row() != nullptr)
+    s.Execute();
+    while (s.Row() != nullptr)
       ;
     s = sqlite::Statement(dbConnection, "PRAGMA recursive_triggers = ON");
-    s.execute();
-    while (s.row() != nullptr)
+    s.Execute();
+    while (s.Row() != nullptr)
       ;
     m_conns.emplace(compat::this_thread::get_id(), std::move(dbConn));
     sqlite3_update_hook(dbConnection, &updateHook, this);

@@ -36,19 +36,19 @@ public:
   }
 
   template <typename... Args>
-  void execute(Args&&... args) {
+  void Execute(Args&&... args) {
     m_bindIdx = 1;
     (void)std::initializer_list<bool>({ _bind(std::forward<Args>(args))... });
   }
 
-  Row row() {
+  Row Row() {
     auto maxRetries = 10;
     while (true) {
       auto res = sqlite3_step(m_stmt.get());
       if (res == SQLITE_ROW)
-        return Row(m_stmt.get());
+        return mxp::sqlite::Row(m_stmt.get());
       else if (res == SQLITE_DONE)
-        return Row();
+        return mxp::sqlite::Row();
       else if (res == SQLITE_BUSY && (Transaction::TransactionInProgress() == false || m_isCommit == true) && maxRetries-- > 0)
         continue;
       std::string errMsg = sqlite3_errmsg(m_dbConn);

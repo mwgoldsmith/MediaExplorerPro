@@ -37,7 +37,7 @@ public:
   Media(MediaExplorerPtr ml, const std::string &title, Type type);
 
   static std::shared_ptr<Media> create(MediaExplorerPtr ml, Type type, const fs::IFile& file);
-  static bool createTable(DBConnection connection);
+  static bool CreateTable(DBConnection connection);
   static bool createTriggers(DBConnection connection);
 
   virtual int64_t id() const override;
@@ -49,21 +49,21 @@ public:
   //virtual AlbumTrackPtr albumTrack() const override;
   //void setAlbumTrack(AlbumTrackPtr albumTrack);
   virtual int64_t duration() const override;
-  void setDuration(int64_t duration);
+  void SetDuration(int64_t duration);
   //virtual ShowEpisodePtr showEpisode() const override;
   //void setShowEpisode(ShowEpisodePtr episode);
   virtual bool addLabel(LabelPtr label) override;
   virtual bool removeLabel(LabelPtr label) override;
   virtual std::vector<LabelPtr> labels() override;
-  virtual int playCount() const  override;
-  virtual bool increasePlayCount() override;
+  virtual int PlayCount() const  override;
+  virtual bool IncreasePlayCount() override;
   virtual float progress() const override;
-  virtual bool setProgress(float progress) override;
+  virtual bool SetProgress(float progress) override;
   virtual int rating() const override;
   virtual bool setRating(int rating) override;
   virtual bool isFavorite() const override;
   virtual bool setFavorite(bool favorite) override;
-  virtual const std::vector<MediaFilePtr>& files() const override;
+  virtual const std::vector<MediaFilePtr>& Files() const override;
   //virtual MoviePtr movie() const override;
   //void setMovie(MoviePtr movie);
   bool addVideoTrack(const std::string& codec, unsigned int width, unsigned int height, float fps, const std::string& language, const std::string& description);
@@ -71,8 +71,8 @@ public:
   bool addAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc);
   virtual std::vector<AudioTrackPtr> audioTracks() override;
   virtual const std::string& thumbnail() override;
-  virtual unsigned int insertionDate() const override;
-  virtual unsigned int releaseDate() const override;
+  virtual time_t insertionDate() const override;
+  virtual time_t releaseDate() const override;
   void setReleaseDate(unsigned int date);
   void setThumbnail(const std::string& thumbnail);
   bool save();
@@ -97,8 +97,8 @@ private:
   time_t       m_lastPlayedDate;
   float        m_progress;
   int          m_rating;
-  unsigned int m_insertionDate;
-  unsigned int m_releaseDate;
+  time_t       m_insertionDate;
+  time_t       m_releaseDate;
   std::string  m_thumbnail;
   std::string  m_title;
   // We store the filename as a shortcut when sorting. The filename (*not* the title
@@ -114,7 +114,7 @@ private:
   mutable Cache<std::vector<MediaFilePtr>> m_files;
   bool m_changed;
 
-  friend policy::MediaTable;
+  friend struct policy::MediaTable;
 };
 
 }

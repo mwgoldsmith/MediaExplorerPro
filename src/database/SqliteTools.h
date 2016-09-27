@@ -1,24 +1,6 @@
 /*****************************************************************************
- * Media Library
- *****************************************************************************
- * Copyright (C) 2015 Hugo Beauzée-Luyssen, Videolabs
- *
- * Authors: Hugo Beauzée-Luyssen<hugo@beauzee.fr>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
- *****************************************************************************/
+* Media Explorer
+*****************************************************************************/
 
 #ifndef SQLITETOOLS_H
 #define SQLITETOOLS_H
@@ -64,9 +46,9 @@ public:
 
     std::vector<std::shared_ptr<INTF>> results;
     auto stmt = Statement(dbConnection->GetConnection(), req);
-    stmt.execute(std::forward<Args>(args)...);
+    stmt.Execute(std::forward<Args>(args)...);
     Row sqliteRow;
-    while ((sqliteRow = stmt.row()) != nullptr) {
+    while ((sqliteRow = stmt.Row()) != nullptr) {
       auto row = IMPL::load(ml, sqliteRow);
       results.push_back(row);
     }
@@ -76,7 +58,7 @@ public:
   }
 
   template <typename T, typename... Args>
-  static std::shared_ptr<T> fetchOne(MediaExplorerPtr ml, const std::string& req, Args&&... args) {
+  static std::shared_ptr<T> FetchOne(MediaExplorerPtr ml, const std::string& req, Args&&... args) {
     auto dbConnection = ml->GetConnection();
     SqliteConnection::ReadContext ctx;
     if (Transaction::TransactionInProgress() == false)
@@ -84,8 +66,8 @@ public:
     auto chrono = std::chrono::steady_clock::now();
 
     auto stmt = Statement(dbConnection->GetConnection(), req);
-    stmt.execute(std::forward<Args>(args)...);
-    auto row = stmt.row();
+    stmt.Execute(std::forward<Args>(args)...);
+    auto row = stmt.Row();
     if (row == nullptr)
       return nullptr;
     auto res = T::load(ml, row);
@@ -95,27 +77,27 @@ public:
   }
 
   template <typename... Args>
-  static bool executeRequest(DBConnection dbConnection, const std::string& req, Args&&... args) {
+  static bool ExecuteRequest(DBConnection dbConnection, const std::string& req, Args&&... args) {
     SqliteConnection::WriteContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireWriteContext();
-    return executeRequestLocked(dbConnection, req, std::forward<Args>(args)...);
+    return ExecuteRequestLocked(dbConnection, req, std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  static bool executeDelete(DBConnection dbConnection, const std::string& req, Args&&... args) {
+  static bool ExecuteDelete(DBConnection dbConnection, const std::string& req, Args&&... args) {
     SqliteConnection::WriteContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireWriteContext();
-    if (executeRequestLocked(dbConnection, req, std::forward<Args>(args)...) == false)
+    if (ExecuteRequestLocked(dbConnection, req, std::forward<Args>(args)...) == false)
       return false;
     return sqlite3_changes(dbConnection->GetConnection()) > 0;
   }
 
   template <typename... Args>
-  static bool executeUpdate(DBConnection dbConnection, const std::string& req, Args&&... args) {
-    // The code would be exactly the same, do not freak out because it calls executeDelete :)
-    return executeDelete(dbConnection, req, std::forward<Args>(args)...);
+  static bool ExecuteUpdate(DBConnection dbConnection, const std::string& req, Args&&... args) {
+    // The code would be exactly the same, do not freak out because it calls ExecuteDelete :)
+    return ExecuteDelete(dbConnection, req, std::forward<Args>(args)...);
   }
 
   /**
@@ -123,22 +105,22 @@ public:
    * Returns 0 (which is an invalid sqlite primary key) when insertion fails.
    */
   template <typename... Args>
-  static int64_t executeInsert(DBConnection dbConnection, const std::string& req, Args&&... args) {
+  static int64_t ExecuteInsert(DBConnection dbConnection, const std::string& req, Args&&... args) {
     SqliteConnection::WriteContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireWriteContext();
-    if (executeRequestLocked(dbConnection, req, std::forward<Args>(args)...) == false)
+    if (ExecuteRequestLocked(dbConnection, req, std::forward<Args>(args)...) == false)
       return 0;
     return sqlite3_last_insert_rowid(dbConnection->GetConnection());
   }
 
 private:
   template <typename... Args>
-  static bool executeRequestLocked(DBConnection dbConnection, const std::string& req, Args&&... args) {
+  static bool ExecuteRequestLocked(DBConnection dbConnection, const std::string& req, Args&&... args) {
     auto chrono = std::chrono::steady_clock::now();
     auto stmt = Statement(dbConnection->GetConnection(), req);
-    stmt.execute(std::forward<Args>(args)...);
-    while (stmt.row() != nullptr)
+    stmt.Execute(std::forward<Args>(args)...);
+    while (stmt.Row() != nullptr)
       ;
     auto duration = std::chrono::steady_clock::now() - chrono;
     LOG_DEBUG("Executed ", req, " in ", std::chrono::duration_cast<std::chrono::microseconds>(duration).count(), "µs");

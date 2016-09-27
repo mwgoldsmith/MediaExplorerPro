@@ -7,7 +7,6 @@
 
 #include "mediaexplorer/IMediaFile.h"
 #include "database/DatabaseHelpers.h"
-#include "database/SqliteConnection.h"
 #include "filesystem/IFile.h"
 #include "utils/Cache.h"
 
@@ -17,14 +16,14 @@ class MediaFile;
 class Media;
 
 namespace policy {
-struct FileTable {
+struct MediaFileTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
   static int64_t MediaFile::*const PrimaryKey;
 };
 }
 
-class MediaFile : public IMediaFile, public DatabaseHelpers<MediaFile, policy::FileTable> {
+class MediaFile : public IMediaFile, public DatabaseHelpers<MediaFile, policy::MediaFileTable> {
 public:
   MediaFile(MediaExplorerPtr ml, sqlite::Row& row);
   MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
@@ -40,7 +39,7 @@ public:
   std::shared_ptr<Media> media() const;
   bool destroy();
 
-  static bool createTable(DBConnection dbConnection);
+  static bool CreateTable(DBConnection dbConnection);
   static std::shared_ptr<MediaFile> create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
 
 private:
@@ -49,7 +48,7 @@ private:
   int64_t          m_mediaId;
   std::string      m_mrl;
   Type             m_type;
-  unsigned int     m_lastModificationDate;
+  time_t           m_lastModificationDate;
   bool             m_isParsed;
   int64_t          m_folderId;
   bool             m_isPresent;
@@ -58,7 +57,7 @@ private:
   mutable Cache<std::string>          m_fullPath;
   mutable Cache<std::weak_ptr<Media>> m_media;
 
-  friend policy::FileTable;
+  friend policy::MediaFileTable;
 };
 
 } /* namespace mxp */

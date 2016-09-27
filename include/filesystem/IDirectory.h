@@ -39,7 +39,7 @@ public:
   // Returns the absolute path to this directory
   virtual const std::string& path() const = 0;
   // Returns a list of absolute files path
-  virtual const std::vector<std::shared_ptr<IFile>>& files() const = 0;
+  virtual const std::vector<std::shared_ptr<IFile>>& Files() const = 0;
   // Returns a list of absolute path to this folder subdirectories
   virtual const std::vector<std::shared_ptr<IDirectory>>& dirs() const = 0;
   virtual std::shared_ptr<IDevice> device() const = 0;

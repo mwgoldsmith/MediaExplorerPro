@@ -59,14 +59,14 @@ public:
    */
   virtual int64_t duration() const = 0;
   //virtual ShowEpisodePtr showEpisode() const = 0;
-  virtual int playCount() const = 0;
-  virtual bool increasePlayCount() = 0;
-  virtual const std::vector<MediaFilePtr>& files() const = 0;
+  virtual int PlayCount() const = 0;
+  virtual bool IncreasePlayCount() = 0;
+  virtual const std::vector<MediaFilePtr>& Files() const = 0;
   /**
    *  @brief progress Returns the progress, in the [0;1] range
    */
   virtual float progress() const = 0;
-  virtual bool setProgress(float progress) = 0;
+  virtual bool SetProgress(float progress) = 0;
   /**
    *  @brief rating The media rating, or -1 if unset.
    *  It is up to the application to determine the values it wishes to use.
@@ -89,8 +89,8 @@ public:
    *   The media library
    */
   virtual const std::string& thumbnail() = 0;
-  virtual unsigned int insertionDate() const = 0;
-  virtual unsigned int releaseDate() const = 0;
+  virtual time_t insertionDate() const = 0;
+  virtual time_t releaseDate() const = 0;
 };
 
 }

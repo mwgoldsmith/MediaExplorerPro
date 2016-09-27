@@ -26,13 +26,12 @@
 #include "filesystem/IDirectory.h"
 #include "filesystem/IDevice.h"
 
-namespace mxp {
+using mxp::policy::MediaTable;
+const std::string MediaTable::Name = "Media";
+const std::string MediaTable::PrimaryKeyColumn = "id_media";
+int64_t mxp::Media::* const MediaTable::PrimaryKey = &mxp::Media::m_id;
 
-const std::string policy::MediaTable::Name = "Media";
-const std::string policy::MediaTable::PrimaryKeyColumn = "id_media";
-int64_t Media::* const policy::MediaTable::PrimaryKey = &Media::m_id;
-
-Media::Media(MediaExplorerPtr ml, sqlite::Row& row)
+mxp::Media::Media(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml)
   , m_changed(false) {
   row >> m_id
@@ -52,7 +51,7 @@ Media::Media(MediaExplorerPtr ml, sqlite::Row& row)
     >> m_isPresent;
 }
 
-Media::Media(MediaExplorerPtr ml, const std::string& title, Type type)
+mxp::Media::Media(MediaExplorerPtr ml, const std::string& title, Type type)
   : m_ml(ml)
   , m_id(0)
   , m_type(type)
@@ -72,20 +71,20 @@ Media::Media(MediaExplorerPtr ml, const std::string& title, Type type)
   , m_changed(false) {
 }
 
-std::shared_ptr<Media> Media::create(MediaExplorerPtr ml, Type type, const fs::IFile& file) {
+std::shared_ptr<mxp::Media> mxp::Media::create(MediaExplorerPtr ml, Type type, const fs::IFile& file) {
   auto self = std::make_shared<Media>(ml, file.name(), type);
-  static const std::string req = "INSERT INTO " + policy::MediaTable::Name + "(type, insertion_date, title, filename) VALUES(?, ?, ?, ?)";
+  static const std::string req = "INSERT INTO " + MediaTable::Name + "(type, insertion_date, title, filename) VALUES(?, ?, ?, ?)";
 
   if (insert(ml, self, req, type, self->m_insertionDate, self->m_title, self->m_filename) == false)
     return nullptr;
   return self;
 }
 
-int64_t Media::duration() const {
+int64_t mxp::Media::duration() const {
   return m_duration;
 }
 
-void Media::setDuration(int64_t duration) {
+void mxp::Media::SetDuration(int64_t duration) {
   if (m_duration == duration)
     return;
   m_duration = duration;
@@ -144,133 +143,133 @@ void Media::setMovie(MoviePtr movie) {
   m_changed = true;
 }
 */
-int Media::playCount() const {
+int mxp::Media::PlayCount() const {
   return m_playCount;
 }
 
-bool Media::increasePlayCount() {
-  static const auto req = "UPDATE " + policy::MediaTable::Name + " SET "
+bool mxp::Media::IncreasePlayCount() {
+  static const auto req = "UPDATE " + MediaTable::Name + " SET "
       "play_count = ?, last_played_date = ? WHERE id_media = ?";
   auto lastPlayedDate = time(nullptr);
-  if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, m_playCount + 1, lastPlayedDate, m_id) == false)
+  if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, m_playCount + 1, lastPlayedDate, m_id) == false)
     return false;
   m_playCount++;
   m_lastPlayedDate = lastPlayedDate;
   return true;
 }
 
-float Media::progress() const {
+float mxp::Media::progress() const {
   return m_progress;
 }
 
-bool Media::setProgress(float progress) {
-  static const auto req = "UPDATE " + policy::MediaTable::Name + " SET progress = ? WHERE id_media = ?";
+bool mxp::Media::SetProgress(float progress) {
+  static const auto req = "UPDATE " + MediaTable::Name + " SET progress = ? WHERE id_media = ?";
   if (progress == m_progress || progress < 0 || progress > 1.0)
     return true;
-  if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, progress, m_id) == false)
+  if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, progress, m_id) == false)
     return false;
   m_progress = progress;
   return true;
 }
 
-int Media::rating() const {
+int mxp::Media::rating() const {
   return m_rating;
 }
 
-bool Media::setRating(int rating) {
-  static const auto req = "UPDATE " + policy::MediaTable::Name + " SET rating = ? WHERE id_media = ?";
+bool mxp::Media::setRating(int rating) {
+  static const auto req = "UPDATE " + MediaTable::Name + " SET rating = ? WHERE id_media = ?";
   if (m_rating == rating)
     return true;
-  if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, rating, m_id) == false)
+  if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, rating, m_id) == false)
     return false;
   m_rating = rating;
   return true;
 }
 
-bool Media::isFavorite() const {
+bool mxp::Media::isFavorite() const {
   return m_isFavorite;
 }
 
-bool Media::setFavorite(bool favorite) {
-  static const auto req = "UPDATE " + policy::MediaTable::Name + " SET is_favorite = ? WHERE id_media = ?";
+bool mxp::Media::setFavorite(bool favorite) {
+  static const auto req = "UPDATE " + MediaTable::Name + " SET is_favorite = ? WHERE id_media = ?";
   if (m_isFavorite == favorite)
     return true;
-  if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, favorite, m_id) == false)
+  if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, favorite, m_id) == false)
     return false;
   m_isFavorite = favorite;
   return true;
 }
 
-const std::vector<MediaFilePtr>& Media::files() const {
+const std::vector<mxp::MediaFilePtr>& mxp::Media::Files() const {
   auto lock = m_files.Lock();
   if (m_files.IsCached() == false) {
-    static const auto req = "SELECT * FROM " + policy::FileTable::Name
+    static const auto req = "SELECT * FROM " + policy::MediaFileTable::Name
         + " WHERE media_id = ?";
     m_files = MediaFile::FetchAll<IMediaFile>(m_ml, req, m_id);
   }
   return m_files;
 }
 
-bool Media::addVideoTrack(const std::string& codec, unsigned int width, unsigned int height, float fps, const std::string& language, const std::string& description) {
+bool mxp::Media::addVideoTrack(const std::string& codec, unsigned int width, unsigned int height, float fps, const std::string& language, const std::string& description) {
   return VideoTrack::create(m_ml, codec, width, height, fps, m_id, language, description) != nullptr;
 }
 
-std::vector<VideoTrackPtr> Media::videoTracks() {
+std::vector<mxp::VideoTrackPtr> mxp::Media::videoTracks() {
   static const auto req = "SELECT * FROM " + policy::VideoTrackTable::Name +
       " WHERE media_id = ?";
   return VideoTrack::FetchAll<IVideoTrack>(m_ml, req, m_id);
 }
 
-bool Media::addAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc) {
+bool mxp::Media::addAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc) {
   return AudioTrack::create(m_ml, codec, bitrate, sampleRate, nbChannels, language, desc, m_id) != nullptr;
 }
 
-std::vector<AudioTrackPtr> Media::audioTracks() {
+std::vector<mxp::AudioTrackPtr> mxp::Media::audioTracks() {
   static const auto req = "SELECT * FROM " + policy::AudioTrackTable::Name +
       " WHERE media_id = ?";
   return AudioTrack::FetchAll<IAudioTrack>(m_ml, req, m_id);
 }
 
-unsigned int Media::insertionDate() const {
+time_t mxp::Media::insertionDate() const {
   return m_insertionDate;
 }
 
-unsigned int Media::releaseDate() const {
+time_t mxp::Media::releaseDate() const {
   return m_releaseDate;
 }
 
-void Media::setReleaseDate(unsigned int date) {
+void mxp::Media::setReleaseDate(unsigned int date) {
   if (m_releaseDate == date)
     return;
   m_releaseDate = date;
   m_changed = true;
 }
 
-const std::string &Media::thumbnail() {
+const std::string& mxp::Media::thumbnail() {
   return m_thumbnail;
 }
 
-void Media::setThumbnail(const std::string& thumbnail) {
+void mxp::Media::setThumbnail(const std::string& thumbnail) {
   if (m_thumbnail == thumbnail)
     return;
   m_thumbnail = thumbnail;
   m_changed = true;
 }
 
-bool Media::save() {
-  static const auto req = "UPDATE " + policy::MediaTable::Name + " SET "
+bool mxp::Media::save() {
+  static const auto req = "UPDATE " + MediaTable::Name + " SET "
       "type = ?, subtype = ?, duration = ?, progress = ?, release_date = ?, "
       "thumbnail = ?, title = ? WHERE id_media = ?";
   if (m_changed == false)
     return true;
-  if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, m_type, m_subType, m_duration, m_progress, m_releaseDate, m_thumbnail, m_title, m_id) == false) {
+  if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, m_type, m_subType, m_duration, m_progress, m_releaseDate, m_thumbnail, m_title, m_id) == false) {
     return false;
   }
   m_changed = false;
   return true;
 }
 
-std::shared_ptr<MediaFile> Media::addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IMediaFile::Type type) {
+std::shared_ptr<mxp::MediaFile> mxp::Media::addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IMediaFile::Type type) {
   auto file = MediaFile::create(m_ml, m_id, type, fileFs, parentFolder.id(), parentFolderFs.device()->IsRemovable());
   if (file == nullptr)
     return nullptr;
@@ -280,7 +279,7 @@ std::shared_ptr<MediaFile> Media::addFile(const fs::IFile& fileFs, MediaFolder& 
   return file;
 }
 
-void Media::removeFile(MediaFile& file) {
+void mxp::Media::removeFile(MediaFile& file) {
   file.destroy();
   auto lock = m_files.Lock();
   if (m_files.IsCached() == false)
@@ -294,8 +293,8 @@ std::vector<mxp::MediaPtr> mxp::Media::listAll(mxp::MediaExplorerPtr ml, mxp::IM
   std::string req;
 
   if (sort == mxp::SortingCriteria::LastModificationDate) {
-    req = "SELECT m.* FROM " + policy::MediaTable::Name + " m INNER JOIN "
-        + policy::FileTable::Name + " f ON m.id_media = f.media_id"
+    req = "SELECT m.* FROM " + MediaTable::Name + " m INNER JOIN "
+        + policy::MediaFileTable::Name + " f ON m.id_media = f.media_id"
         " WHERE m.type = ?"
         " AND (f.type = ? OR f.type = ?)"
         " ORDER BY f.last_modification_date";
@@ -305,7 +304,7 @@ std::vector<mxp::MediaPtr> mxp::Media::listAll(mxp::MediaExplorerPtr ml, mxp::IM
     return FetchAll<mxp::IMedia>(ml, req, type, mxp::MediaFile::Type::Entire, mxp::MediaFile::Type::Main);
   }
 
-  req = "SELECT * FROM " + policy::MediaTable::Name + " WHERE type = ? AND is_present = 1 ORDER BY ";
+  req = "SELECT * FROM " + MediaTable::Name + " WHERE type = ? AND is_present = 1 ORDER BY ";
   switch (sort) {
   case mxp::SortingCriteria::Duration:
     req += "duration";
@@ -326,38 +325,38 @@ std::vector<mxp::MediaPtr> mxp::Media::listAll(mxp::MediaExplorerPtr ml, mxp::IM
   return FetchAll<IMedia>(ml, req, type);
 }
 
-int64_t Media::id() const {
+int64_t mxp::Media::id() const {
   return m_id;
 }
 
-IMedia::Type Media::type() {
+mxp::IMedia::Type mxp::Media::type() {
   return m_type;
 }
 
-IMedia::SubType Media::subType() const {
+mxp::IMedia::SubType mxp::Media::subType() const {
   return m_subType;
 }
 
-void Media::setType(Type type) {
+void mxp::Media::setType(Type type) {
   if (m_type != type)
     return;
   m_type = type;
   m_changed = true;
 }
 
-const std::string &Media::title() const {
+const std::string& mxp::Media::title() const {
   return m_title;
 }
 
-void Media::setTitle(const std::string &title) {
+void mxp::Media::setTitle(const std::string &title) {
   if (m_title == title)
     return;
   m_title = title;
   m_changed = true;
 }
 
-bool Media::createTable(DBConnection connection) {
-  auto req = "CREATE TABLE IF NOT EXISTS " + policy::MediaTable::Name + "("
+bool mxp::Media::CreateTable(DBConnection connection) {
+  auto req = "CREATE TABLE IF NOT EXISTS " + MediaTable::Name + "("
       "id_media INTEGER PRIMARY KEY AUTOINCREMENT,"
       "type INTEGER,"
       "subtype INTEGER,"
@@ -375,111 +374,112 @@ bool Media::createTable(DBConnection connection) {
       "is_present BOOLEAN NOT NULL DEFAULT 1"
       ")";
   static const auto indexReq = "CREATE INDEX IF NOT EXISTS index_last_played_date ON "
-      + policy::MediaTable::Name + "(last_played_date DESC)";
+      + MediaTable::Name + "(last_played_date DESC)";
   static const auto vtableReq = "CREATE VIRTUAL TABLE IF NOT EXISTS "
-      + policy::MediaTable::Name + "Fts USING FTS3("
+      + MediaTable::Name + "Fts USING FTS3("
       "title,"
       "labels"
       ")";
-  return sqlite::Tools::executeRequest(connection, req) &&
-      sqlite::Tools::executeRequest(connection, indexReq) &&
-      sqlite::Tools::executeRequest(connection, vtableReq);
+  return sqlite::Tools::ExecuteRequest(connection, req) &&
+      sqlite::Tools::ExecuteRequest(connection, indexReq) &&
+      sqlite::Tools::ExecuteRequest(connection, vtableReq);
 }
 
-bool Media::createTriggers(DBConnection connection) {
+bool mxp::Media::createTriggers(DBConnection connection) {
   static const auto triggerReq = "CREATE TRIGGER IF NOT EXISTS has_files_present AFTER UPDATE OF "
-      "is_present ON " + policy::FileTable::Name +
+      "is_present ON " + policy::MediaFileTable::Name +
       " BEGIN "
-      " UPDATE " + policy::MediaTable::Name + " SET is_present="
-      "(SELECT COUNT(id_file) FROM " + policy::FileTable::Name + " WHERE media_id=new.media_id AND is_present=1) "
+      " UPDATE " + MediaTable::Name + " SET is_present="
+      "(SELECT COUNT(id_file) FROM " + policy::MediaFileTable::Name + " WHERE media_id=new.media_id AND is_present=1) "
       "WHERE id_media=new.media_id;"
       " END;";
   static const auto triggerReq2 = "CREATE TRIGGER IF NOT EXISTS cascade_file_deletion AFTER DELETE ON "
-      + policy::FileTable::Name +
+      + policy::MediaFileTable::Name +
       " BEGIN "
-      " DELETE FROM " + policy::MediaTable::Name + " WHERE "
-      "(SELECT COUNT(id_file) FROM " + policy::FileTable::Name + " WHERE media_id=old.media_id) = 0"
+      " DELETE FROM " + MediaTable::Name + " WHERE "
+      "(SELECT COUNT(id_file) FROM " + policy::MediaFileTable::Name + " WHERE media_id=old.media_id) = 0"
       " AND id_media=old.media_id;"
       " END;";
   static const auto vtableInsertTrigger = "CREATE TRIGGER IF NOT EXISTS insert_media_fts"
-      " AFTER INSERT ON " + policy::MediaTable::Name +
+      " AFTER INSERT ON " + MediaTable::Name +
       " BEGIN"
-      " INSERT INTO " + policy::MediaTable::Name + "Fts(rowid,title,labels) VALUES(new.id_media, new.title, '');"
+      " INSERT INTO " + MediaTable::Name + "Fts(rowid,title,labels) VALUES(new.id_media, new.title, '');"
       " END";
   static const auto vtableDeleteTrigger = "CREATE TRIGGER IF NOT EXISTS delete_media_fts"
-      " BEFORE DELETE ON " + policy::MediaTable::Name +
+      " BEFORE DELETE ON " + MediaTable::Name +
       " BEGIN"
-      " DELETE FROM " + policy::MediaTable::Name + "Fts WHERE rowid = old.id_media;"
+      " DELETE FROM " + MediaTable::Name + "Fts WHERE rowid = old.id_media;"
       " END";
   static const auto vtableUpdateTitleTrigger2 = "CREATE TRIGGER IF NOT EXISTS update_media_title_fts"
-      " AFTER UPDATE OF title ON " + policy::MediaTable::Name +
+      " AFTER UPDATE OF title ON " + MediaTable::Name +
       " BEGIN"
-      " UPDATE " + policy::MediaTable::Name + "Fts SET title = new.title WHERE rowid = new.id_media;"
+      " UPDATE " + MediaTable::Name + "Fts SET title = new.title WHERE rowid = new.id_media;"
       " END";
-  return sqlite::Tools::executeRequest(connection, triggerReq) &&
-      sqlite::Tools::executeRequest(connection, triggerReq2) &&
-      sqlite::Tools::executeRequest(connection, vtableInsertTrigger) &&
-      sqlite::Tools::executeRequest(connection, vtableDeleteTrigger) &&
-      sqlite::Tools::executeRequest(connection, vtableUpdateTitleTrigger2);
+  return sqlite::Tools::ExecuteRequest(connection, triggerReq) &&
+      sqlite::Tools::ExecuteRequest(connection, triggerReq2) &&
+      sqlite::Tools::ExecuteRequest(connection, vtableInsertTrigger) &&
+      sqlite::Tools::ExecuteRequest(connection, vtableDeleteTrigger) &&
+      sqlite::Tools::ExecuteRequest(connection, vtableUpdateTitleTrigger2);
 }
 
-bool Media::addLabel(LabelPtr label) {
+bool mxp::Media::addLabel(LabelPtr label) {
   if (m_id == 0 || label->id() == 0) {
     LOG_ERROR("Both file & label need to be inserted in database before being linked together");
     return false;
   }
   auto req = "INSERT INTO LabelFileRelation VALUES(?, ?)";
-  if (sqlite::Tools::executeInsert(m_ml->GetConnection(), req, label->id(), m_id) == 0)
+  if (sqlite::Tools::ExecuteInsert(m_ml->GetConnection(), req, label->id(), m_id) == 0)
     return false;
-  const auto reqFts = "UPDATE " + policy::MediaTable::Name + "Fts "
+  const auto reqFts = "UPDATE " + MediaTable::Name + "Fts "
     "SET labels = labels || ' ' || ? WHERE rowid = ?";
-  return sqlite::Tools::executeUpdate(m_ml->GetConnection(), reqFts, label->name(), m_id);
+  return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->name(), m_id);
 }
 
-bool Media::removeLabel(LabelPtr label) {
+bool mxp::Media::removeLabel(LabelPtr label) {
   if (m_id == 0 || label->id() == 0) {
     LOG_ERROR("Can't unlink a label/file not inserted in database");
     return false;
   }
+
   auto req = "DELETE FROM LabelFileRelation WHERE label_id = ? AND media_id = ?";
-  if (sqlite::Tools::executeDelete(m_ml->GetConnection(), req, label->id(), m_id) == false)
+  if(sqlite::Tools::ExecuteDelete(m_ml->GetConnection(), req, label->id(), m_id) == false) {
     return false;
-  const auto reqFts = "UPDATE " + policy::MediaTable::Name + "Fts "
-      "SET labels = TRIM(REPLACE(labels, ?, '')) WHERE rowid = ?";
-  return sqlite::Tools::executeUpdate(m_ml->GetConnection(), reqFts, label->name(), m_id);
+  }
+
+  const auto reqFts = "UPDATE " + MediaTable::Name + "Fts SET labels = TRIM(REPLACE(labels, ?, '')) WHERE rowid = ?";
+  return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->name(), m_id);
 }
 
-std::vector<LabelPtr> Media::labels() {
+std::vector<mxp::LabelPtr> mxp::Media::labels() {
   static const auto req = "SELECT l.* FROM " + policy::LabelTable::Name + " l "
       "INNER JOIN LabelFileRelation lfr ON lfr.label_id = l.id_label "
       "WHERE lfr.media_id = ?";
   return Label::FetchAll<ILabel>(m_ml, req, m_id);
 }
 
-std::vector<MediaPtr> Media::search(MediaExplorerPtr ml, const std::string& title) {
-  static const auto req = "SELECT * FROM " + policy::MediaTable::Name + " WHERE"
-      " id_media IN (SELECT rowid FROM " + policy::MediaTable::Name + "Fts"
-      " WHERE " + policy::MediaTable::Name + "Fts MATCH ?)"
+std::vector<mxp::MediaPtr> mxp::Media::search(MediaExplorerPtr ml, const std::string& title) {
+  static const auto req = "SELECT * FROM " + MediaTable::Name + " WHERE"
+      " id_media IN (SELECT rowid FROM " + MediaTable::Name + "Fts"
+      " WHERE " + MediaTable::Name + "Fts MATCH ?)"
       "AND is_present = 1";
   return Media::FetchAll<IMedia>(ml, req, title + "*");
 }
 
-std::vector<MediaPtr> Media::fetchHistory(MediaExplorerPtr ml) {
-  static const auto req = "SELECT * FROM " + policy::MediaTable::Name + 
+std::vector<mxp::MediaPtr> mxp::Media::fetchHistory(MediaExplorerPtr ml) {
+  static const auto req = "SELECT * FROM " + MediaTable::Name + 
       " WHERE last_played_date IS NOT NULL"
       " ORDER BY last_played_date DESC LIMIT 100";
   return FetchAll<IMedia>(ml, req);
 }
 
-void Media::clearHistory(MediaExplorerPtr ml) {
+void mxp::Media::clearHistory(MediaExplorerPtr ml) {
   auto dbConn = ml->GetConnection();
-  static const auto req = "UPDATE " + policy::MediaTable::Name + " SET "
+  static const auto req = "UPDATE " + MediaTable::Name + " SET "
       "play_count = 0,"
       "last_played_date = NULL,"
       "progress = 0";
   // Clear the entire cache since quite a few items are now containing invalid info.
   clear();
-  sqlite::Tools::executeUpdate(dbConn, req);
+  sqlite::Tools::ExecuteUpdate(dbConn, req);
 }
 
-}

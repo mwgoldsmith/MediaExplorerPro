@@ -18,7 +18,7 @@ public:
   bool save();
   void setDbModelVersion(uint32_t dbModelVersion);
 
-  static bool createTable(DBConnection dbConn);
+  static bool CreateTable(DBConnection dbConn);
 
 private:
   DBConnection m_dbConn;

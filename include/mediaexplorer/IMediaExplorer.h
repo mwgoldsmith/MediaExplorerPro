@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "Fixup.h"
 #include "Types.h"
 #include "factory/IFileSystem.h"
 #include "mediaexplorer/ILogger.h"
@@ -33,8 +34,8 @@ public:
   virtual LabelPtr CreateLabel(const std::string& label) = 0;
   virtual bool DeleteLabel(LabelPtr label) = 0;
 
-  //virtual std::vector<GenrePtr> GenreLists(SortingCriteria sort, bool desc) const = 0;
-  //virtual GenrePtr Genre(int64_t id) const = 0;
+  virtual std::vector<GenrePtr> GenreList(SortingCriteria sort, bool desc) const = 0;
+  virtual GenrePtr Genre(int64_t id) const = 0;
 
   virtual PlaylistPtr CreatePlaylist(const std::string& name) = 0;
   virtual bool DeletePlaylist(int64_t playlistId) = 0;
@@ -43,7 +44,7 @@ public:
 
   virtual MediaSearchAggregate SearchMedia(const std::string& title) const = 0;
   virtual std::vector<PlaylistPtr> SearchPlaylists(const std::string& name) const = 0;
-  //virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const = 0;
+  virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const = 0;
   virtual SearchAggregate Search(const std::string& pattern) const = 0;
 
   virtual bool DeleteMedia(int64_t mediaId) const = 0;
@@ -54,23 +55,26 @@ public:
   virtual void Reload(const std::string& entryPoint) = 0;
   
   /**
-   * @brief discover Launch a discovery on the provided entry point.
-   * The actuall discovery will run asynchronously, meaning this method will immediatly return.
-   * Depending on which discoverer modules where provided, this might or might not work
+   * @brief Discover launches a discovery on the provided entry point.
+   *
    * @param entryPoint What to discover.
+   *
+   * The actual discovery will run asynchronously, meaning this method will immediately return.
+   * Depending on which discoverer modules where provided, this might or might not work
    */
   virtual void Discover(const std::string& entryPoint) = 0;
 
   /**
-   * @brief pauseBackgroundOperations Will stop potentially CPU intensive background
-   * operations, until resumeBackgroundOperations() is called.
+   * @brief PauseBackgroundOperations will stop potentially CPU intensive background
+   *        operations, until ResumeBackgroundOperations() is called.
+   *
    * If an operation is currently running, it will finish before pausing.
    */
   virtual void PauseBackgroundOperations() = 0;
 
   /**
-   * @brief resumeBackgroundOperations Resumes background tasks, previously
-   * interrupted by pauseBackgroundOperations().
+   * @brief ResumeBackgroundOperations Resumes background tasks, previously interrupted by
+   *        PauseBackgroundOperations().
    */
   virtual void ResumeBackgroundOperations() = 0;
 };
@@ -78,7 +82,7 @@ public:
 } /* namespace mxp */
 
 extern "C" {
-  mxp::IMediaExplorer* mxp_newInstance();
+  MXPAPI mxp::IMediaExplorer* mxp_newInstance();
 }
 
 #endif /* MXP_IMEDIAEXPLORER_H */

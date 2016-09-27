@@ -15,8 +15,8 @@ public:
   explicit CommonFile(const std::string& filePath);
   virtual const std::string& name() const override;
   virtual const std::string& path() const override;
-  virtual const std::string& fullPath() const override;
-  virtual const std::string& extension() const override;
+  virtual const std::string& FullPath() const override;
+  virtual const std::string& Extension() const override;
 
 protected:
   const std::string m_path;

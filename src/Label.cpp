@@ -11,7 +11,6 @@
 #include "database/SqliteTools.h"
 
 using mxp::policy::LabelTable;
-
 const std::string LabelTable::Name = "Label";
 const std::string LabelTable::PrimaryKeyColumn = "id_label";
 int64_t mxp::Label::* const LabelTable::PrimaryKey = &mxp::Label::m_id;
@@ -36,7 +35,7 @@ const std::string& mxp::Label::name() const {
   return m_name;
 }
 
-std::vector<mxp::MediaPtr> mxp::Label::files() {
+std::vector<mxp::MediaPtr> mxp::Label::Files() {
   static const std::string req = "SELECT f.* FROM " + policy::MediaTable::Name + " f "
       "INNER JOIN LabelFileRelation lfr ON lfr.media_id = f.id_media "
       "WHERE lfr.label_id = ?";
@@ -51,7 +50,7 @@ mxp::LabelPtr mxp::Label::create(MediaExplorerPtr ml, const std::string& name) {
   return self;
 }
 
-bool mxp::Label::createTable(DBConnection dbConnection) {
+bool mxp::Label::CreateTable(DBConnection dbConnection) {
   static const auto req = "CREATE TABLE IF NOT EXISTS " + policy::LabelTable::Name + "("
       "id_label INTEGER PRIMARY KEY AUTOINCREMENT, "
       "name TEXT UNIQUE ON CONFLICT FAIL"
@@ -69,7 +68,7 @@ bool mxp::Label::createTable(DBConnection dbConnection) {
       " WHERE labels MATCH old.name;"
       " END";
 
-  return sqlite::Tools::executeRequest(dbConnection, req) &&
-      sqlite::Tools::executeRequest(dbConnection, relReq) &&
-      sqlite::Tools::executeRequest(dbConnection, ftsTrigger);
+  return sqlite::Tools::ExecuteRequest(dbConnection, req) &&
+      sqlite::Tools::ExecuteRequest(dbConnection, relReq) &&
+      sqlite::Tools::ExecuteRequest(dbConnection, ftsTrigger);
 }

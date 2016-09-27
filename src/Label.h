@@ -6,7 +6,6 @@
 #define LABEL_H
 
 #include <string>
-
 #include "mediaexplorer/ILabel.h"
 #include "database/DatabaseHelpers.h"
 
@@ -25,25 +24,25 @@ struct LabelTable {
 
 class Label : public ILabel, public DatabaseHelpers<Label, policy::LabelTable> {
 public:
-  Label( MediaExplorerPtr ml, sqlite::Row& row);
-  Label( MediaExplorerPtr ml, const std::string& name);
+  Label(MediaExplorerPtr ml, sqlite::Row& row);
+  Label(MediaExplorerPtr ml, const std::string& name);
 
 public:
   virtual int64_t id() const override;
   virtual const std::string& name() const override;
-  virtual std::vector<MediaPtr> files() override;
+  virtual std::vector<MediaPtr> Files() override;
 
-  static LabelPtr create( MediaExplorerPtr ml, const std::string& name);
-  static bool createTable( DBConnection dbConnection);
+  static LabelPtr create(MediaExplorerPtr ml, const std::string& name);
+  static bool CreateTable(DBConnection dbConnection);
 
 private:
   MediaExplorerPtr m_ml;
-  int64_t m_id;
-  std::string m_name;
+  int64_t          m_id;
+  std::string      m_name;
 
   friend struct policy::LabelTable;
 };
 
-}
+} /* namespace mxp */
 
-#endif // LABEL_H
+#endif /* LABEL_H */

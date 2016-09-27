@@ -30,7 +30,7 @@ mxp::factory::FileSystemFactory::FileSystemFactory(mxp::DeviceListerPtr lister)
   : m_deviceLister(lister) {
 }
 
-std::shared_ptr<mxp::fs::IFile> mxp::factory::FileSystemFactory::CreateFsFile(const std::string& path) {
+std::shared_ptr<mxp::fs::IFile> mxp::factory::FileSystemFactory::CreateFileFromPath(const std::string& path) {
   std::shared_ptr<mxp::fs::IFile> res;
 
   try {
@@ -43,7 +43,7 @@ std::shared_ptr<mxp::fs::IFile> mxp::factory::FileSystemFactory::CreateFsFile(co
   return res;
 }
 
-std::shared_ptr<mxp::fs::IDirectory> mxp::factory::FileSystemFactory::CreateFsDirectory(const std::string& path) {
+std::shared_ptr<mxp::fs::IDirectory> mxp::factory::FileSystemFactory::CreateDirectoryFromPath(const std::string& path) {
   std::lock_guard<mxp::compat::Mutex> lock(m_mutex);
   const auto it = m_dirs.find(path);
   if (it != end(m_dirs)) {

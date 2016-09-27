@@ -22,8 +22,8 @@ class FileSystemFactory : public IFileSystem {
   
 public:
   FileSystemFactory(DeviceListerPtr lister);
-  virtual std::shared_ptr<fs::IFile> CreateFsFile(const std::string& path) override;
-  virtual std::shared_ptr<fs::IDirectory> CreateFsDirectory(const std::string& path) override;
+  virtual std::shared_ptr<fs::IFile> CreateFileFromPath(const std::string& path) override;
+  virtual std::shared_ptr<fs::IDirectory> CreateDirectoryFromPath(const std::string& path) override;
   virtual std::shared_ptr<fs::IDevice> CreateDevice(const std::string& uuid) override;
   virtual std::shared_ptr<fs::IDevice> CreateDeviceFromPath(const std::string& path) override;
   virtual void Refresh() override;
