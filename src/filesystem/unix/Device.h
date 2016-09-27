@@ -22,13 +22,18 @@
 
 #pragma once
 
-#include "filesystem/common/CommonDevice.h"
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+#if !defined(_WIN32)
 
 #include <memory>
 #include <unordered_map>
 
-namespace mxp {
+#include "filesystem/common/CommonDevice.h"
 
+namespace mxp {
 namespace fs {
 
 class Device : public CommonDevice {
@@ -36,6 +41,7 @@ public:
     Device( const std::string& uuid, const std::string& mountpoint, bool isRemovable );
 };
 
-}
+} /* namespace fs */
+} /* namespace mxp */
 
-}
+#endif /* _WIN32 */

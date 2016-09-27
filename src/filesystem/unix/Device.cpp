@@ -24,15 +24,12 @@
 # include "config.h"
 #endif
 
+#ifndef _WIN32
+
 #include "Device.h"
 
-namespace mxp {
-
-namespace fs {
-Device::Device( const std::string& uuid, const std::string& mountpoint, bool isRemovable )
-    : CommonDevice( uuid, mountpoint, isRemovable ) {
+mxp::fs::Device::Device( const std::string& uuid, const std::string& mountpoint, bool isRemovable )
+    : mxp::fs::CommonDevice( uuid, mountpoint, isRemovable ) {
 }
 
-}
-
-}
+#endif /* _WIN32 */
