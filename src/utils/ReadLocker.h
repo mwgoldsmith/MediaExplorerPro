@@ -12,7 +12,7 @@ namespace utils {
 
 class ReadLocker {
 public:
-  ReadLocker(SWMRLock& l)
+  explicit ReadLocker(SWMRLock& l)
     : m_lock(l) {
   }
 

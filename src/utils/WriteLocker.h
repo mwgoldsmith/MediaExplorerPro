@@ -12,7 +12,7 @@ namespace utils {
 
 class WriteLocker {
 public:
-  WriteLocker(SWMRLock& l)
+  explicit WriteLocker(SWMRLock& l)
     : m_lock(l) {
   }
 
