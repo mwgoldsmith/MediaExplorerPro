@@ -255,9 +255,6 @@
     <ClInclude Include="..\..\..\src\filesystem\unix\Directory.h">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\unix\File.h">
-      <Filter>Source Files\filesystem\unix</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\filesystem\unix\Device.h">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClInclude>
@@ -284,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\include\mediaexplorer\IMediaFile.h">
       <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\filesystem\unix\File.h">
+      <Filter>Source Files\filesystem\common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -365,9 +365,6 @@
     <ClCompile Include="..\..\..\src\filesystem\unix\Directory.cpp">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\unix\File.cpp">
-      <Filter>Source Files\filesystem\unix</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\filesystem\unix\Device.cpp">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClCompile>
@@ -388,6 +385,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\MediaDevice.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\filesystem\unix\File.cpp">
+      <Filter>Source Files\filesystem\common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
