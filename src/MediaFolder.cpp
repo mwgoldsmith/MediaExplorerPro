@@ -7,9 +7,9 @@
 # include "config.h"
 #endif
 
-#include "File.h"
-#include "Folder.h"
-#include "Device.h"
+#include "MediaFile.h"
+#include "MediaFolder.h"
+#include "MediaDevice.h"
 #include "Media.h"
 
 #include "database/SqliteTools.h"
@@ -24,10 +24,12 @@ namespace mxp {
 namespace policy {
   const std::string FolderTable::Name = "Folder";
   const std::string FolderTable::PrimaryKeyColumn = "id_folder";
-  int64_t Folder::* const FolderTable::PrimaryKey = &Folder::m_id;
+  int64_t MediaFolder::* const FolderTable::PrimaryKey = &MediaFolder::m_id;
+  //const policy::FolderTable::PrimaryKeyMethod policy::FolderTable::SetPrimaryKey = &mxp::Folder::SetId;
+
 }
 
-Folder::Folder(MediaExplorerPtr ml, sqlite::Row& row)
+MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
     >> m_path
@@ -38,7 +40,7 @@ Folder::Folder(MediaExplorerPtr ml, sqlite::Row& row)
     >> m_isRemovable;
 }
 
-Folder::Folder(MediaExplorerPtr ml, const std::string& path, int64_t parent, int64_t deviceId, bool isRemovable)
+MediaFolder::MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent, int64_t deviceId, bool isRemovable)
   : m_ml(ml)
   , m_id(0)
   , m_path(path)
@@ -49,8 +51,8 @@ Folder::Folder(MediaExplorerPtr ml, const std::string& path, int64_t parent, int
   , m_isRemovable(isRemovable) {
 }
 
-bool Folder::createTable(DBConnection connection) {
-  std::string req = "CREATE TABLE IF NOT EXISTS " + policy::FolderTable::Name +
+bool MediaFolder::createTable(DBConnection connection) {
+  auto req = "CREATE TABLE IF NOT EXISTS " + policy::FolderTable::Name +
       "("
       "id_folder INTEGER PRIMARY KEY AUTOINCREMENT,"
       "path TEXT,"
@@ -59,13 +61,11 @@ bool Folder::createTable(DBConnection connection) {
       "device_id UNSIGNED INTEGER,"
       "is_present BOOLEAN NOT NULL DEFAULT 1,"
       "is_removable BOOLEAN NOT NULL,"
-      "FOREIGN KEY (parent_id) REFERENCES " + policy::FolderTable::Name +
-      "(id_folder) ON DELETE CASCADE,"
-      "FOREIGN KEY (device_id) REFERENCES " + policy::DeviceTable::Name +
-      "(id_device) ON DELETE CASCADE,"
+      "FOREIGN KEY (parent_id) REFERENCES " + policy::FolderTable::Name + "(id_folder) ON DELETE CASCADE,"
+      "FOREIGN KEY (device_id) REFERENCES " + policy::DeviceTable::Name + "(id_device) ON DELETE CASCADE,"
       "UNIQUE(path, device_id) ON CONFLICT FAIL"
       ")";
-  std::string triggerReq = "CREATE TRIGGER IF NOT EXISTS is_device_present AFTER UPDATE OF is_present ON "
+  auto triggerReq = "CREATE TRIGGER IF NOT EXISTS is_device_present AFTER UPDATE OF is_present ON "
       + policy::DeviceTable::Name +
       " BEGIN"
       " UPDATE " + policy::FolderTable::Name + " SET is_present = new.is_present WHERE device_id = new.id_device;"
@@ -74,16 +74,14 @@ bool Folder::createTable(DBConnection connection) {
       sqlite::Tools::executeRequest(connection, triggerReq);
 }
 
-std::shared_ptr<Folder> Folder::create(MediaExplorerPtr ml, const std::string& fullPath,
-                    int64_t parentId, Device& device, fs::IDevice& deviceFs) {
+std::shared_ptr<MediaFolder> MediaFolder::create(MediaExplorerPtr ml, const std::string& fullPath, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs) {
   std::string path;
   if (device.IsRemovable() == true)
     path = utils::file::removePath(fullPath, deviceFs.mountpoint());
   else
     path = fullPath;
-  auto self = std::make_shared<Folder>(ml, path, parentId, device.id(), device.IsRemovable());
-  static const std::string req = "INSERT INTO " + policy::FolderTable::Name +
-      "(path, parent_id, device_id, is_removable) VALUES(?, ?, ?, ?)";
+  auto self = std::make_shared<MediaFolder>(ml, path, parentId, device.id(), device.IsRemovable());
+  static const auto req = "INSERT INTO " + policy::FolderTable::Name + "(path, parent_id, device_id, is_removable) VALUES(?, ?, ?, ?)";
   if (insert(ml, self, req, path, sqlite::ForeignKey(parentId), device.id(), device.IsRemovable()) == false)
     return nullptr;
   if (device.IsRemovable() == true) {
@@ -93,7 +91,7 @@ std::shared_ptr<Folder> Folder::create(MediaExplorerPtr ml, const std::string& f
   return self;
 }
 
-bool Folder::blacklist(MediaExplorerPtr ml, const std::string& fullPath) {
+bool MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPath) {
   // Ensure we delete the existing folder if any & blacklist the folder in an "atomic" way
   auto t = ml->GetConnection()->NewTransaction();
 
@@ -102,13 +100,13 @@ bool Folder::blacklist(MediaExplorerPtr ml, const std::string& fullPath) {
     // Let the foreign key destroy everything beneath this folder
     destroy(ml, f->id());
   }
-  auto folderFs = ml->GetFileSystem()->CreateDirectory(fullPath);
+  auto folderFs = ml->GetFileSystem()->CreateFsDirectory(fullPath);
   if (folderFs == nullptr)
     return false;
   auto deviceFs = folderFs->device();
-  auto device = Device::fromUuid(ml, deviceFs->uuid());
+  auto device = MediaDevice::fromUuid(ml, deviceFs->uuid());
   if (device == nullptr)
-    device = Device::create(ml, deviceFs->uuid(), deviceFs->IsRemovable());
+    device = MediaDevice::create(ml, deviceFs->uuid(), deviceFs->IsRemovable());
   std::string path;
   if (deviceFs->IsRemovable() == true)
     path = utils::file::removePath(fullPath, deviceFs->mountpoint());
@@ -121,16 +119,16 @@ bool Folder::blacklist(MediaExplorerPtr ml, const std::string& fullPath) {
   return res;
 }
 
-std::shared_ptr<Folder> Folder::fromPath(MediaExplorerPtr ml, const std::string& fullPath) {
+std::shared_ptr<MediaFolder> MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath) {
   return fromPath(ml, fullPath, false);
 }
 
-std::shared_ptr<Folder> Folder::blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath) {
+std::shared_ptr<MediaFolder> MediaFolder::blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath) {
   return fromPath(ml, fullPath, true);
 }
 
-std::shared_ptr<Folder> Folder::fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool blacklisted) {
-  auto folderFs = ml->GetFileSystem()->CreateDirectory(fullPath);
+std::shared_ptr<MediaFolder> MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool blacklisted) {
+  auto folderFs = ml->GetFileSystem()->CreateFsDirectory(fullPath);
   if (folderFs == nullptr)
     return nullptr;
   auto deviceFs = folderFs->device();
@@ -144,7 +142,7 @@ std::shared_ptr<Folder> Folder::fromPath(MediaExplorerPtr ml, const std::string&
   }
   std::string req = "SELECT * FROM " + policy::FolderTable::Name + " WHERE path = ? AND device_id = ? AND is_blacklisted = ?";
 
-  auto device = Device::fromUuid(ml, deviceFs->uuid());
+  auto device = MediaDevice::fromUuid(ml, deviceFs->uuid());
   // We are trying to find a folder. If we don't know the device it's on, we don't know the folder.
   if (device == nullptr)
     return nullptr;
@@ -157,11 +155,11 @@ std::shared_ptr<Folder> Folder::fromPath(MediaExplorerPtr ml, const std::string&
   return folder;
 }
 
-int64_t Folder::id() const {
+int64_t MediaFolder::id() const {
   return m_id;
 }
 
-const std::string& Folder::path() const {
+const std::string& MediaFolder::path() const {
   if (m_isRemovable == false)
     return m_path;
 
@@ -169,45 +167,45 @@ const std::string& Folder::path() const {
   if (m_deviceMountpoint.IsCached() == true)
     return m_fullPath;
 
-  auto device = Device::Fetch(m_ml, m_deviceId);
+  auto device = MediaDevice::Fetch(m_ml, m_deviceId);
   auto deviceFs = m_ml->GetFileSystem()->CreateDevice(device->uuid());
   m_deviceMountpoint = deviceFs->mountpoint();
   m_fullPath = m_deviceMountpoint.Get() + m_path;
   return m_fullPath;
 }
 
-std::vector<std::shared_ptr<File>> Folder::files() {
+std::vector<std::shared_ptr<MediaFile>> MediaFolder::files() {
   static const std::string req = "SELECT * FROM " + policy::FileTable::Name +
     " WHERE folder_id = ?";
-  return File::FetchAll<File>(m_ml, req, m_id);
+  return MediaFile::FetchAll<MediaFile>(m_ml, req, m_id);
 }
 
-std::vector<std::shared_ptr<Folder>> Folder::folders() {
+std::vector<std::shared_ptr<MediaFolder>> MediaFolder::folders() {
   return FetchAll(m_ml, m_id);
 }
 
-std::shared_ptr<Folder> Folder::parent() {
+std::shared_ptr<MediaFolder> MediaFolder::parent() {
   return Fetch(m_ml, m_parent);
 }
 
-int64_t Folder::deviceId() const {
+int64_t MediaFolder::deviceId() const {
   return m_deviceId;
 }
 
-bool Folder::isPresent() const {
+bool MediaFolder::isPresent() const {
   return m_isPresent;
 }
 
-std::vector<std::shared_ptr<Folder>> Folder::FetchAll(MediaExplorerPtr ml, int64_t parentFolderId) {
+std::vector<std::shared_ptr<MediaFolder>> MediaFolder::FetchAll(MediaExplorerPtr ml, int64_t parentFolderId) {
   if (parentFolderId == 0) {
-    static const std::string req = "SELECT * FROM " + policy::FolderTable::Name
+    static const auto req = "SELECT * FROM " + policy::FolderTable::Name
         + " WHERE parent_id IS NULL AND is_blacklisted = 0 AND is_present = 1";
-    return DatabaseHelpers::FetchAll<Folder>(ml, req);
+    return DatabaseHelpers::FetchAll<MediaFolder>(ml, req);
   }
   else {
     static const std::string req = "SELECT * FROM " + policy::FolderTable::Name
         + " WHERE parent_id = ? AND is_blacklisted = 0 AND is_present = 1";
-    return DatabaseHelpers::FetchAll<Folder>(ml, req, parentFolderId);
+    return DatabaseHelpers::FetchAll<MediaFolder>(ml, req, parentFolderId);
   }
 }
 

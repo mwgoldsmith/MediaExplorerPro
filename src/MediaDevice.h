@@ -9,29 +9,31 @@
 
 namespace mxp {
 
-class Device;
+class MediaDevice;
 
 namespace policy {
 struct DeviceTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
-  static int64_t Device::*const PrimaryKey;
+  static int64_t MediaDevice::*const PrimaryKey;
+  //using PrimaryKeyMethod = void(mxp::Device::*)(int64_t) ;
+  //static const PrimaryKeyMethod SetPrimaryKey;
 };
 }
 
-class Device : public DatabaseHelpers<Device, policy::DeviceTable> {
+class MediaDevice : public DatabaseHelpers<MediaDevice, policy::DeviceTable> {
 public:
-  Device(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable);
-  Device(MediaExplorerPtr ml, sqlite::Row& row);
+  MediaDevice(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable);
+  MediaDevice(MediaExplorerPtr ml, sqlite::Row& row);
   int64_t id() const;
   const std::string& uuid() const;
   bool IsRemovable() const;
   bool isPresent() const;
   void setPresent(bool value);
 
-  static std::shared_ptr<Device> create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable);
+  static std::shared_ptr<MediaDevice> create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable);
   static bool createTable(DBConnection connection);
-  static std::shared_ptr<Device> fromUuid(MediaExplorerPtr ml, const std::string& uuid);
+  static std::shared_ptr<MediaDevice> fromUuid(MediaExplorerPtr ml, const std::string& uuid);
 
 private:
   MediaExplorerPtr m_ml;

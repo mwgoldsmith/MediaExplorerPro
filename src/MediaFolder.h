@@ -12,9 +12,9 @@
 
 namespace mxp {
 
-class File;
-class Folder;
-class Device;
+class MediaFile;
+class MediaFolder;
+class MediaDevice;
 
 namespace fs {
   class IDirectory;
@@ -24,36 +24,38 @@ namespace policy {
 struct FolderTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
-  static int64_t Folder::*const PrimaryKey;
+  static int64_t MediaFolder::*const PrimaryKey;
+  //using PrimaryKeyMethod = void(mxp::Folder::*)(int64_t) ;
+  //static const PrimaryKeyMethod SetPrimaryKey;
 };
 }
 
 // This doesn't publicly expose the DatabaseHelper inheritance in order to force
 // the user to go through Folder's overloads, as they take care of the device mountpoint
 // fetching & path composition
-class Folder : public DatabaseHelpers<Folder, policy::FolderTable> {
+class MediaFolder : public DatabaseHelpers<MediaFolder, policy::FolderTable> {
 public:
-  Folder(MediaExplorerPtr ml, sqlite::Row& row);
-  Folder(MediaExplorerPtr ml, const std::string& path, int64_t parent , int64_t deviceId , bool isRemovable);
+  MediaFolder(MediaExplorerPtr ml, sqlite::Row& row);
+  MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent , int64_t deviceId , bool isRemovable);
 
   static bool createTable(DBConnection connection);
-  static std::shared_ptr<Folder> create(MediaExplorerPtr ml, const std::string& path, int64_t parentId, Device& device, fs::IDevice& deviceFs);
+  static std::shared_ptr<MediaFolder> create(MediaExplorerPtr ml, const std::string& path, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs);
   static bool blacklist(MediaExplorerPtr ml, const std::string& fullPath);
-  static std::vector<std::shared_ptr<Folder>> FetchAll(MediaExplorerPtr ml, int64_t parentFolderId);
+  static std::vector<std::shared_ptr<MediaFolder>> FetchAll(MediaExplorerPtr ml, int64_t parentFolderId);
 
-  static std::shared_ptr<Folder> fromPath(MediaExplorerPtr ml, const std::string& fullPath);
-  static std::shared_ptr<Folder> blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath);
+  static std::shared_ptr<MediaFolder> fromPath(MediaExplorerPtr ml, const std::string& fullPath);
+  static std::shared_ptr<MediaFolder> blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath);
 
   int64_t id() const;
   const std::string& path() const;
-  std::vector<std::shared_ptr<File>> files();
-  std::vector<std::shared_ptr<Folder>> folders();
-  std::shared_ptr<Folder> parent();
+  std::vector<std::shared_ptr<MediaFile>> files();
+  std::vector<std::shared_ptr<MediaFolder>> folders();
+  std::shared_ptr<MediaFolder> parent();
   int64_t deviceId() const;
   bool isPresent() const;
 
 private:
-  static std::shared_ptr<Folder> fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool includeBlacklisted);
+  static std::shared_ptr<MediaFolder> fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool includeBlacklisted);
 
 private:
   MediaExplorerPtr m_ml;

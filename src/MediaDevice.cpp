@@ -6,15 +6,16 @@
 # include "config.h"
 #endif
 
-#include "Device.h"
+#include "MediaDevice.h"
 
 namespace mxp {
 
 const std::string policy::DeviceTable::Name = "Device";
 const std::string policy::DeviceTable::PrimaryKeyColumn = "id_device";
-int64_t Device::* const policy::DeviceTable::PrimaryKey = &Device::m_id;
+int64_t MediaDevice::* const policy::DeviceTable::PrimaryKey = &MediaDevice::m_id;
+//const mxp::policy::DeviceTable::PrimaryKeyMethod mxp::policy::DeviceTable::SetPrimaryKey = &mxp::Device::SetId;
 
-Device::Device(MediaExplorerPtr ml, sqlite::Row& row)
+MediaDevice::MediaDevice(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
     >> m_uuid
@@ -24,7 +25,7 @@ Device::Device(MediaExplorerPtr ml, sqlite::Row& row)
   //only be here for sqlite triggering purposes
 }
 
-Device::Device(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable)
+MediaDevice::MediaDevice(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable)
   : m_ml(ml)
   , m_id(0)
   , m_uuid(uuid)
@@ -33,23 +34,23 @@ Device::Device(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable)
   , m_isPresent(true) {
 }
 
-int64_t Device::id() const {
+int64_t MediaDevice::id() const {
   return m_id;
 }
 
-const std::string&Device::uuid() const {
+const std::string&MediaDevice::uuid() const {
   return m_uuid;
 }
 
-bool Device::IsRemovable() const {
+bool MediaDevice::IsRemovable() const {
   return m_isRemovable;
 }
 
-bool Device::isPresent() const {
+bool MediaDevice::isPresent() const {
   return m_isPresent;
 }
 
-void Device::setPresent(bool value) {
+void MediaDevice::setPresent(bool value) {
   static const std::string req = "UPDATE " + policy::DeviceTable::Name +
       " SET is_present = ? WHERE id_device = ?";
   if (sqlite::Tools::executeUpdate(m_ml->GetConnection(), req, value, m_id) == false)
@@ -57,17 +58,16 @@ void Device::setPresent(bool value) {
   m_isPresent = value;
 }
 
-std::shared_ptr<Device> Device::create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable) {
-  static const std::string req = "INSERT INTO " + policy::DeviceTable::Name
-      + "(uuid, is_removable, is_present) VALUES(?, ?, ?)";
-  auto self = std::make_shared<Device>(ml, uuid, isRemovable);
+std::shared_ptr<MediaDevice> MediaDevice::create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable) {
+  static const auto req = "INSERT INTO " + policy::DeviceTable::Name + "(uuid, is_removable, is_present) VALUES(?, ?, ?)";
+  auto self = std::make_shared<MediaDevice>(ml, uuid, isRemovable);
   if (insert(ml, self, req, uuid, isRemovable, self->isPresent()) == false)
     return nullptr;
   return self;
 }
 
-bool Device::createTable(DBConnection connection) {
-  static const std::string req = "CREATE TABLE IF NOT EXISTS " + policy::DeviceTable::Name + "("
+bool MediaDevice::createTable(DBConnection connection) {
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + policy::DeviceTable::Name + "("
       "id_device INTEGER PRIMARY KEY AUTOINCREMENT,"
       "uuid TEXT UNIQUE ON CONFLICT FAIL,"
       "is_removable BOOLEAN,"
@@ -76,8 +76,8 @@ bool Device::createTable(DBConnection connection) {
   return sqlite::Tools::executeRequest(connection, req);
 }
 
-std::shared_ptr<Device> Device::fromUuid(MediaExplorerPtr ml, const std::string& uuid) {
-  static const std::string req = "SELECT * FROM " + policy::DeviceTable::Name +
+std::shared_ptr<MediaDevice> MediaDevice::fromUuid(MediaExplorerPtr ml, const std::string& uuid) {
+  static const auto req = "SELECT * FROM " + policy::DeviceTable::Name +
       " WHERE uuid = ?";
   return Fetch(ml, req, uuid);
 }

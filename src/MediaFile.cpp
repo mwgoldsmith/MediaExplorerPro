@@ -6,18 +6,19 @@
 # include "config.h"
 #endif
 
-#include "File.h"
+#include "MediaFile.h"
 
 #include "Media.h"
-#include "Folder.h"
+#include "MediaFolder.h"
 
-namespace mxp {
+using mxp::policy::FileTable;
+const std::string FileTable::Name = "MediaFile";
+const std::string FileTable::PrimaryKeyColumn = "id_file";
+int64_t mxp::MediaFile::* const FileTable::PrimaryKey = &mxp::MediaFile::m_id;
 
-const std::string policy::FileTable::Name = "File";
-const std::string policy::FileTable::PrimaryKeyColumn = "id_file";
-int64_t File::* const policy::FileTable::PrimaryKey = &File::m_id;
+//const mxp::policy::FileTable::PrimaryKeyMethod PrimaryKeyMethod = &mxp::MediaFile::SetId;
 
-File::File(MediaExplorerPtr ml, sqlite::Row& row)
+mxp::MediaFile::MediaFile(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
     >> m_mediaId
@@ -30,7 +31,7 @@ File::File(MediaExplorerPtr ml, sqlite::Row& row)
     >> m_isRemovable;
 }
 
-File::File(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable)
+mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable)
   : m_ml(ml)
   , m_id(0)
   , m_mediaId(mediaId)
@@ -43,37 +44,37 @@ File::File(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fil
   , m_isRemovable(isRemovable) {
 }
 
-int64_t File::id() const {
+int64_t mxp::MediaFile::id() const {
   return m_id;
 }
 
-const std::string& File::mrl() const {
+const std::string& mxp::MediaFile::mrl() const {
   if (m_isRemovable == false)
     return m_mrl;
 
   auto lock = m_fullPath.Lock();
   if (m_fullPath.IsCached())
     return m_fullPath;
-  auto folder = Folder::Fetch(m_ml, m_folderId);
+  auto folder = MediaFolder::Fetch(m_ml, m_folderId);
   if (folder == nullptr)
     return m_mrl;
   m_fullPath = folder->path() + m_mrl;
   return m_fullPath;
 }
 
-IFile::Type File::type() const {
+mxp::IFile::Type mxp::MediaFile::type() const {
   return m_type;
 }
 
-unsigned int File::lastModificationDate() const {
+time_t mxp::MediaFile::lastModificationDate() const {
   return m_lastModificationDate;
 }
 
-bool File::isParsed() const {
+bool mxp::MediaFile::isParsed() const {
   return m_isParsed;
 }
 
-std::shared_ptr<Media> File::media() const {
+std::shared_ptr<mxp::Media> mxp::MediaFile::media() const {
   auto lock = m_media.Lock();
   if (m_media.IsCached() == false) {
     m_media = Media::Fetch(m_ml, m_mediaId);
@@ -81,11 +82,11 @@ std::shared_ptr<Media> File::media() const {
   return m_media.Get().lock();
 }
 
-bool File::destroy() {
+bool mxp::MediaFile::destroy() {
   return DatabaseHelpers::destroy(m_ml, m_id);
 }
 
-void File::markParsed() {
+void mxp::MediaFile::markParsed() {
   if (m_isParsed == true)
     return;
   static const std::string req = "UPDATE " + policy::FileTable::Name + " SET parsed = 1 WHERE id_file = ?";
@@ -94,7 +95,7 @@ void File::markParsed() {
   m_isParsed = true;
 }
 
-bool File::createTable(DBConnection dbConnection) {
+bool mxp::MediaFile::createTable(DBConnection dbConnection) {
   std::string req = "CREATE TABLE IF NOT EXISTS " + policy::FileTable::Name + "("
       "id_file INTEGER PRIMARY KEY AUTOINCREMENT,"
       "media_id INT NOT NULL,"
@@ -123,8 +124,8 @@ bool File::createTable(DBConnection dbConnection) {
       sqlite::Tools::executeRequest(dbConnection, indexReq);
 }
 
-std::shared_ptr<File> File::create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) {
-  auto self = std::make_shared<File>(ml, mediaId, type, fileFs, folderId, isRemovable);
+std::shared_ptr<mxp::MediaFile> mxp::MediaFile::create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) {
+  auto self = std::make_shared<MediaFile>(ml, mediaId, type, fileFs, folderId, isRemovable);
   static const std::string req = "INSERT INTO " + policy::FileTable::Name +
       "(media_id, mrl, type, folder_id, last_modification_date, is_removable) VALUES(?, ?, ?, ?, ?, ?)";
 
@@ -135,4 +136,3 @@ std::shared_ptr<File> File::create(MediaExplorerPtr ml, int64_t mediaId, Type ty
   return self;
 }
 
-}

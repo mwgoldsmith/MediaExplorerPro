@@ -2,8 +2,8 @@
  * Media Explorer
  *****************************************************************************/
 
-#ifndef FILE_H
-#define FILE_H
+#ifndef MEDIAFILE_H
+#define MEDIAFILE_H
 
 #include "mediaexplorer/IFile.h"
 #include "database/DatabaseHelpers.h"
@@ -13,25 +13,27 @@
 
 namespace mxp {
 
-class File;
+class MediaFile;
 class Media;
 
 namespace policy {
 struct FileTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
-  static int64_t File::*const PrimaryKey;
+  static int64_t MediaFile::*const PrimaryKey;
+//using PrimaryKeyMethod = void(mxp::MediaFile::*)(int64_t) ;
+//static const PrimaryKeyMethod SetPrimaryKey;
 };
 }
 
-class File : public IFile, public DatabaseHelpers<File, policy::FileTable> {
+class MediaFile : public IFile, public DatabaseHelpers<MediaFile, policy::FileTable> {
 public:
-  File(MediaExplorerPtr ml, sqlite::Row& row);
-  File(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
+  MediaFile(MediaExplorerPtr ml, sqlite::Row& row);
+  MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
   virtual int64_t id() const override;
   virtual const std::string& mrl() const override;
   virtual Type type() const override;
-  virtual unsigned int lastModificationDate() const override;
+  virtual time_t lastModificationDate() const override;
   /// Explicitely mark a media as fully parsed, meaning no metadata service needs to run anymore.
   //FIXME: This lacks granularity as we don't have a straight forward way to know which service
   //needs to run or not.
@@ -41,7 +43,7 @@ public:
   bool destroy();
 
   static bool createTable(DBConnection dbConnection);
-  static std::shared_ptr<File> create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
+  static std::shared_ptr<MediaFile> create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
 
 private:
   MediaExplorerPtr m_ml;
@@ -64,4 +66,4 @@ private:
 
 } /* namespace mxp */
 
-#endif /* FILE_H */
+#endif /* MEDIAFILE_H */
