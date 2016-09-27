@@ -27,8 +27,14 @@
 #  define strcasecmp _stricmp
 #endif
 
-#ifndef HAVE_THREAD_LOCAL
-#  define thread_local __thread
+#ifdef _MSC_VER
+#  define THREAD_LOCAL __declspec(thread)
+#else
+#  ifndef HAVE_THREAD_LOCAL
+#    define THREAD_LOCAL __thread
+#  else
+#    define THREAD_LOCAL thread_local
+#  endif
 #endif
 
 #endif /* FIXUP_H */

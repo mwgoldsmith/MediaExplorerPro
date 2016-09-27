@@ -26,11 +26,12 @@
 
 #include "SqliteTransaction.h"
 #include "SqliteTools.h"
+#include "Fixup.h"
 
 namespace mxp {
 namespace sqlite {
 
-__declspec(thread) Transaction* Transaction::CurrentTransaction = nullptr;
+THREAD_LOCAL Transaction* Transaction::CurrentTransaction = nullptr;
 
 Transaction::Transaction(DBConnection dbConn)
   : m_dbConn(dbConn)

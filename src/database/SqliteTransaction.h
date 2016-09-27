@@ -23,15 +23,20 @@
 #ifndef SQLITETRANSACTION_H
 #define SQLITETRANSACTION_H
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include "SqliteConnection.h"
 #include "Types.h"
+#include "Fixup.h"
 
 namespace mxp {
 namespace sqlite {
 
 class Transaction {
 public:
-  Transaction(DBConnection dbConn);
+  explicit Transaction(DBConnection dbConn);
   ~Transaction();
   void Commit();
   static bool TransactionInProgress();
@@ -40,7 +45,7 @@ private:
   DBConnection                   m_dbConn;
   SqliteConnection::WriteContext m_ctx;
 
-  static __declspec(thread) Transaction* CurrentTransaction;
+  static THREAD_LOCAL Transaction* CurrentTransaction;
 };
 
 } /* namespace sqlite */
