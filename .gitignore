@@ -64,7 +64,9 @@ build/msvc*/
 *.idb
 
 .vs/
-*opendb
+*.opendb
 build*/
 external*/*.tar.gz
 external*/*.tar.bz2
+*.VC.db
+.suo
