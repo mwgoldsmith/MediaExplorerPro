@@ -165,7 +165,7 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\IAudioTrack.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceLister.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceListerCb.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IFile.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaFile.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\ILabel.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\ILogger.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IMedia.h" />

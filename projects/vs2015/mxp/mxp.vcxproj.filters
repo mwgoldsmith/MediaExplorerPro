@@ -111,9 +111,6 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceListerCb.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IFile.h">
-      <Filter>Header Files\mediaexplorer</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\mediaexplorer\ILabel.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
@@ -284,6 +281,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\MediaDevice.h">
       <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaFile.h">
+      <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
