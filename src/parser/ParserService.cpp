@@ -9,34 +9,32 @@
 #include "Parser.h"
 #include "ParserService.h"
 
-namespace mxp {
-
-ParserService::ParserService()
+mxp::ParserService::ParserService()
   : m_ml(nullptr)
     , m_cb(nullptr)
     , m_parserCb(nullptr)
     , m_stopParser(false)
     , m_paused(false) {}
 
-void ParserService::Start() {
+void mxp::ParserService::Start() {
   // Ensure we don't start multiple times.
   assert(m_threads.size() == 0);
   for (auto i = 0u; i < nbThreads(); ++i)
     m_threads.emplace_back(&ParserService::mainloop, this);
 }
 
-void ParserService::pause() {
+void mxp::ParserService::pause() {
   std::lock_guard<compat::Mutex> lock(m_lock);
   m_paused = true;
 }
 
-void ParserService::resume() {
+void mxp::ParserService::resume() {
   std::lock_guard<compat::Mutex> lock(m_lock);
   m_paused = false;
   m_cond.notify_all();
 }
 
-void ParserService::signalStop() {
+void mxp::ParserService::signalStop() {
   for (auto& t : m_threads) {
     if (t.joinable()) { {
         std::lock_guard<compat::Mutex> lock(m_lock);
@@ -47,20 +45,20 @@ void ParserService::signalStop() {
   }
 }
 
-void ParserService::stop() {
+void mxp::ParserService::stop() {
   for (auto& t : m_threads) {
     if (t.joinable())
       t.join();
   }
 }
 
-void ParserService::Parse(std::unique_ptr<parser::Task> t) {
+void mxp::ParserService::Parse(std::unique_ptr<mxp::parser::Task> t) {
   std::lock_guard<compat::Mutex> lock(m_lock);
   m_tasks.push(std::move(t));
   m_cond.notify_all();
 }
 
-void ParserService::initialize(MediaExplorer* ml, IParserCb* parserCb) {
+void mxp::ParserService::initialize(mxp::MediaExplorer* ml, mxp::IParserCb* parserCb) {
   m_ml = ml;
   m_cb = ml->GetCallbacks();
   m_notifier = ml->GetNotifier();
@@ -69,18 +67,18 @@ void ParserService::initialize(MediaExplorer* ml, IParserCb* parserCb) {
   initialize();
 }
 
-uint8_t ParserService::nbNativeThreads() const {
+uint8_t mxp::ParserService::nbNativeThreads() const {
   auto nbProcs = compat::Thread::hardware_concurrency();
   if (nbProcs == 0)
     return 1;
   return nbProcs;
 }
 
-bool ParserService::initialize() {
+bool mxp::ParserService::initialize() {
   return true;
 }
 
-void ParserService::mainloop() {
+void mxp::ParserService::mainloop() {
   // It would be unsafe to call name() at the end of this function, since
   // we might stop the thread during ParserService destruction. This implies
   // that the underlying service has been deleted already.
@@ -105,7 +103,9 @@ void ParserService::mainloop() {
       task = std::move(m_tasks.front());
       m_tasks.pop();
     }
+    
     parser::Task::Status status;
+
     try {
       LOG_INFO("Executing ", serviceName, " task on ", task->file->mrl());
       status = run(*task);
@@ -116,7 +116,6 @@ void ParserService::mainloop() {
     }
     m_parserCb->done(std::move(task), status);
   }
-  LOG_INFO("Exiting ParserService [", serviceName, "] thread");
-}
 
+  LOG_INFO("Exiting ParserService [", serviceName, "] thread");
 }

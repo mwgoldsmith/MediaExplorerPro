@@ -9,14 +9,14 @@
 
 #include "mediaexplorer/IMedia.h"
 #include "factory/IFileSystem.h"
-#include "File.h"
+#include "MediaFile.h"
 #include "database/DatabaseHelpers.h"
 #include "utils/Cache.h"
 
 namespace mxp {
 
 //class Album;
-class Folder;
+class MediaFolder;
 //class ShowEpisode;
 //class AlbumTrack;
 class Media;
@@ -79,8 +79,8 @@ public:
   void setThumbnail(const std::string& thumbnail);
   bool save();
 
-  std::shared_ptr<File> addFile(const fs::IFile& fileFs, Folder& parentFolder, fs::IDirectory& parentFolderFs , IFile::Type type);
-  void removeFile(File& file);
+  std::shared_ptr<MediaFile> addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs , IFile::Type type);
+  void removeFile(MediaFile& file);
 
   static std::vector<MediaPtr> listAll(MediaExplorerPtr ml, Type type , SortingCriteria sort, bool desc);
   static std::vector<MediaPtr> search(MediaExplorerPtr ml, const std::string& title);
@@ -96,7 +96,7 @@ private:
   SubType      m_subType;
   int64_t      m_duration;
   unsigned int m_playCount;
-  unsigned int m_lastPlayedDate;
+  time_t       m_lastPlayedDate;
   float        m_progress;
   int          m_rating;
   unsigned int m_insertionDate;

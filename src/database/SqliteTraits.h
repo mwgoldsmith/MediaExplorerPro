@@ -48,7 +48,7 @@ struct Traits<T, typename std::enable_if<IsSameDecay<T, std::string>::value>::ty
   }
 
   static std::string Load(sqlite3_stmt* stmt, int pos) {
-    auto tmp = (const char*)sqlite3_column_text(stmt, pos);
+    auto tmp = reinterpret_cast<const char*>(sqlite3_column_text(stmt, pos));
     if (tmp != nullptr)
       return std::string(tmp);
     return std::string();
@@ -56,9 +56,7 @@ struct Traits<T, typename std::enable_if<IsSameDecay<T, std::string>::value>::ty
 };
 
 template <typename T>
-struct Traits<T, typename std::enable_if<std::is_floating_point<
-    typename std::decay<T>::type
-  >::value>::type> {
+struct Traits<T, typename std::enable_if<std::is_floating_point<typename std::decay<T>::type>::value>::type> {
   static constexpr int
   (*Bind)(sqlite3_stmt *, int, double) = &sqlite3_bind_double;
 
@@ -74,9 +72,7 @@ struct Traits<std::nullptr_t> {
 };
 
 template <typename T>
-struct Traits<T, typename std::enable_if<std::is_enum<
-    typename std::decay<T>::type
-  >::value>::type> {
+struct Traits<T, typename std::enable_if<std::is_enum<typename std::decay<T>::type>::value>::type> {
   using type_t = typename std::underlying_type<typename std::decay<T>::type>::type;
   static int Bind(sqlite3_stmt* stmt, int pos, T value) {
     return sqlite3_bind_int(stmt, pos, static_cast<type_t>(value));

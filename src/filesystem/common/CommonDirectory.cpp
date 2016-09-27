@@ -27,7 +27,9 @@
 #include "CommonDirectory.h"
 #include "factory/IFileSystem.h"
 #include "utils/Filename.h"
+#if !defined(_WIN32)
 #include <dirent.h>
+#endif
 #include <cerrno>
 #include <cstring>
 

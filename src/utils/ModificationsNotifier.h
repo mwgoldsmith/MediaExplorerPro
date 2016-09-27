@@ -59,7 +59,7 @@ public:
 
 private:
   void run();
-  void notify();
+  //void notify();
 
 private:
   template<typename T>

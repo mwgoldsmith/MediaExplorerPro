@@ -28,7 +28,7 @@
 #include "utils/Charsets.h"
 #include "utils/Filename.h"
 #include "factory/IFileSystem.h"
-#include "File.h"
+#include "filesystem/unix/File.h"
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -39,7 +39,7 @@ namespace mxp {
 namespace fs {
 
 Directory::Directory(const std::string& path , factory::IFileSystem& fsFactory)
-  : CommonDirectory( mxp::utils::file::toAbsolutePathPath( path ), fsFactory ) {
+  : CommonDirectory( mxp::utils::file::toAbsolutePath( path ), fsFactory ) {
 }
 
 void Directory::read() const {
@@ -55,7 +55,7 @@ void Directory::read() const {
       continue;
     auto path = m_path + file.get();
     if ( ( f.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) != 0 )
-      m_dirs.emplace_back( m_fsFactory.CreateDirectory( path ) );
+      m_dirs.emplace_back( m_fsFactory.CreateFsDirectory( path ) );
     else
       m_files.emplace_back( std::make_shared<File>( path ) );
   } while ( FindNextFile( h, &f ) != 0 );

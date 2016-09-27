@@ -38,12 +38,12 @@ class IFileSystem {
 public:
   virtual ~IFileSystem() = default;
 
-  virtual std::shared_ptr<fs::IFile> CreateFile( const std::string& path ) = 0;
+  virtual std::shared_ptr<fs::IFile> CreateFsFile( const std::string& path ) = 0;
   ///
   /// \brief CreateDirectory creates a representation of a directory
   /// \param path An absolute path to a directory
   ///
-  virtual std::shared_ptr<fs::IDirectory> CreateDirectory( const std::string& path ) = 0;
+  virtual std::shared_ptr<fs::IDirectory> CreateFsDirectory( const std::string& path ) = 0;
   ///
   /// \brief CreateDevice creates a representation of a device
   /// \param uuid The device UUID

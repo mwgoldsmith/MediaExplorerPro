@@ -29,7 +29,7 @@
 namespace mxp {
 
 class Media;
-class File;
+class MediaFile;
 
 namespace parser {
 
@@ -50,7 +50,7 @@ struct Task {
     Fatal
   };
 
-  Task(std::shared_ptr<Media> media, std::shared_ptr<File> file)
+  Task(std::shared_ptr<Media> media, std::shared_ptr<MediaFile> file)
     : media(media)
       , file(file)
       , currentService(0)
@@ -89,7 +89,7 @@ struct Task {
   };
 
   std::shared_ptr<Media> media;
-  std::shared_ptr<File> file;
+  std::shared_ptr<MediaFile> file;
   unsigned int currentService;
 
   std::vector<VideoTrackInfo> videoTracks;

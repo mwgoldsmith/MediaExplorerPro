@@ -40,7 +40,7 @@ private:
   DBConnection                   m_dbConn;
   SqliteConnection::WriteContext m_ctx;
 
-  static thread_local Transaction* CurrentTransaction;
+  static __declspec(thread) Transaction* CurrentTransaction;
 };
 
 } /* namespace sqlite */

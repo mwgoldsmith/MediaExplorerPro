@@ -31,7 +31,7 @@ public:
   virtual int64_t id() const override;
   virtual const std::string& codec() const override;
   virtual unsigned int bitrate() const override;
-  virtual unsigned int sampleRate() const override;
+  virtual unsigned int SampleRate() const override;
   virtual unsigned int nbChannels() const override;
   virtual const std::string& language() const override;
   virtual const std::string& description() const override;

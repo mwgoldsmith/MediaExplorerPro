@@ -16,8 +16,6 @@ const std::string FileTable::Name = "MediaFile";
 const std::string FileTable::PrimaryKeyColumn = "id_file";
 int64_t mxp::MediaFile::* const FileTable::PrimaryKey = &mxp::MediaFile::m_id;
 
-//const mxp::policy::FileTable::PrimaryKeyMethod PrimaryKeyMethod = &mxp::MediaFile::SetId;
-
 mxp::MediaFile::MediaFile(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id

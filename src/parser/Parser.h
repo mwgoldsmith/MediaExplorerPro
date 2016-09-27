@@ -8,7 +8,7 @@
 #include <queue>
 
 #include "ParserService.h"
-#include "File.h"
+#include "MediaFile.h"
 
 namespace mxp {
 
@@ -26,7 +26,7 @@ public:
   Parser(MediaExplorer* ml);
   virtual ~Parser();
   void AddService(ServicePtr service);
-  void Parse(std::shared_ptr<Media> media, std::shared_ptr<File> file);
+  void Parse(std::shared_ptr<Media> media, std::shared_ptr<MediaFile> file);
   void Start();
   void pause();
   void resume();

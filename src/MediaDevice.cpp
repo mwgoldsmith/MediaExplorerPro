@@ -13,7 +13,6 @@ namespace mxp {
 const std::string policy::DeviceTable::Name = "Device";
 const std::string policy::DeviceTable::PrimaryKeyColumn = "id_device";
 int64_t MediaDevice::* const policy::DeviceTable::PrimaryKey = &MediaDevice::m_id;
-//const mxp::policy::DeviceTable::PrimaryKeyMethod mxp::policy::DeviceTable::SetPrimaryKey = &mxp::Device::SetId;
 
 MediaDevice::MediaDevice(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {

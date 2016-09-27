@@ -16,8 +16,6 @@ struct DeviceTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
   static int64_t MediaDevice::*const PrimaryKey;
-  //using PrimaryKeyMethod = void(mxp::Device::*)(int64_t) ;
-  //static const PrimaryKeyMethod SetPrimaryKey;
 };
 }
 

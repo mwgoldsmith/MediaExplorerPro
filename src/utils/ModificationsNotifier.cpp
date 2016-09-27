@@ -33,11 +33,12 @@ namespace mxp {
 
 ModificationNotifier::ModificationNotifier(MediaExplorerPtr ml)
   : m_ml(ml)
-    , m_cb(ml->GetCallbacks())
-    , m_stop(false) {}
+  , m_cb(ml->GetCallbacks())
+  , m_stop(false) {
+}
 
 ModificationNotifier::~ModificationNotifier() {
-  if (m_notifierThread.joinable() == true) {
+  if(m_notifierThread.joinable() == true) {
     m_stop = true;
     m_cond.notify_all();
     m_notifierThread.join();
@@ -45,8 +46,8 @@ ModificationNotifier::~ModificationNotifier() {
 }
 
 void ModificationNotifier::Start() {
-  assert( m_notifierThread.get_id() == compat::Thread::id{} );
-  m_notifierThread = compat::Thread{&ModificationNotifier::run, this};
+  assert(m_notifierThread.get_id() == compat::Thread::id{});
+  m_notifierThread = compat::Thread{ &ModificationNotifier::run, this };
 }
 
 void ModificationNotifier::NotifyMediaCreation(MediaPtr media) {
@@ -101,7 +102,7 @@ void ModificationNotifier::run() {
 #if !defined(_LIBCPP_STD_VER) || (_LIBCPP_STD_VER > 11 && !defined(_LIBCPP_HAS_NO_CXX14_CONSTEXPR))
   constexpr auto ZeroTimeout = std::chrono::time_point<std::chrono::steady_clock>{};
 #else
-    const auto ZeroTimeout = std::chrono::time_point<std::chrono::steady_clock>{};
+  const auto ZeroTimeout = std::chrono::time_point<std::chrono::steady_clock>{};
 #endif
 
   // Create some other queue to swap with the ones that are used
@@ -112,16 +113,17 @@ void ModificationNotifier::run() {
   //Queue<IAlbum> albums;
   //Queue<IAlbumTrack> tracks;
 
-  while (m_stop == false) { {
+  while(m_stop == false) {
+    {
       std::unique_lock<compat::Mutex> lock(m_lock);
-      if (m_timeout == ZeroTimeout)
+      if(m_timeout == ZeroTimeout)
         m_cond.wait(lock, [this, ZeroTimeout]() {
-                      return m_timeout != ZeroTimeout || m_stop == true;
-                    });
+        return m_timeout != ZeroTimeout || m_stop == true;
+      });
       m_cond.wait_until(lock, m_timeout, [this]() {
-                          return m_stop == true;
-                        });
-      if (m_stop == true)
+        return m_stop == true;
+      });
+      if(m_stop == true)
         break;
       auto now = std::chrono::steady_clock::now();
       auto nextTimeout = ZeroTimeout;

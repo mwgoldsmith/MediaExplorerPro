@@ -31,7 +31,7 @@
 namespace mxp {
 
 class MediaExplorer;
-class Folder;
+class MediaFolder;
 
 class FsDiscoverer : public IDiscoverer {
 public:
@@ -45,10 +45,10 @@ private:
   /// \brief checkSubfolders
   /// \return true if files in this folder needs to be listed, false otherwise
   ///
-  void checkFolder(fs::IDirectory& currentFolderFs, Folder& currentFolder) const;
-  void checkFiles(fs::IDirectory& parentFolderFs, Folder& parentFolder) const;
+  void checkFolder(fs::IDirectory& currentFolderFs, MediaFolder& currentFolder) const;
+  void checkFiles(fs::IDirectory& parentFolderFs, MediaFolder& parentFolder) const;
   static bool hasDotNoMediaFile(const fs::IDirectory& directory);
-  bool addFolder(fs::IDirectory& folder, Folder* parentFolder) const;
+  bool addFolder(fs::IDirectory& folder, MediaFolder* parentFolder) const;
   void checkDevices();
 
 private:

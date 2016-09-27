@@ -16,9 +16,9 @@
 
 namespace mxp {
 
-class Device;
+class MediaDevice;
 class DiscovererWorker;
-class Folder;
+class MediaFolder;
 class Genre;
 class Media;
 class ModificationNotifier;
@@ -64,7 +64,7 @@ public:
   //virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const override;
   virtual SearchAggregate Search(const std::string& pattern) const override;
 
-  std::shared_ptr<mxp::Media> CreateMedia(const fs::IFile& fileFs, mxp::Folder& parentFolder, fs::IDirectory& parentFolderFs);
+  std::shared_ptr<mxp::Media> CreateMedia(const fs::IFile& fileFs, mxp::MediaFolder& parentFolder, fs::IDirectory& parentFolderFs);
   virtual bool DeleteMedia(int64_t mediaId) const override;
   virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) override;
   virtual MediaPtr Media(int64_t mediaId) const override;
@@ -73,9 +73,9 @@ public:
   IMediaExplorerCb* GetCallbacks() const;
   std::shared_ptr<ModificationNotifier> GetNotifier() const;
 
-  std::shared_ptr<Device> FindDevice(const std::string& uuid);
+  std::shared_ptr<MediaDevice> FindDevice(const std::string& uuid);
 
-  bool DeleteFolder(const Folder& folder);
+  bool DeleteFolder(const MediaFolder& folder);
 
   virtual void Reload() override;
   virtual void Reload(const std::string& entryPoint) override;

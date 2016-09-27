@@ -34,10 +34,10 @@ public:
   virtual int64_t id() const = 0;
   virtual const std::string& codec() const = 0;
   /**
-         * @return The bitrate in bits per second
-         */
+   * @return The bitrate in bits per second
+   */
   virtual unsigned int bitrate() const = 0;
-  virtual unsigned int sampleRate() const = 0;
+  virtual unsigned int SampleRate() const = 0;
   virtual unsigned int nbChannels() const = 0;
   virtual const std::string& language() const = 0;
   virtual const std::string& description() const = 0;

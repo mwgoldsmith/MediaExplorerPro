@@ -22,7 +22,7 @@ public:
     auto it = connMap.find(req);
     if (it == end(connMap)) {
       sqlite3_stmt* stmt;
-      int res = sqlite3_prepare_v2(dbConnection, req.c_str(), -1, &stmt, NULL);
+      auto res = sqlite3_prepare_v2(dbConnection, req.c_str(), -1, &stmt, nullptr);
       if (res != SQLITE_OK) {
         throw std::runtime_error(std::string("Failed to compile request: ") + req + " " + sqlite3_errmsg(dbConnection));
       }
@@ -38,7 +38,7 @@ public:
   template <typename... Args>
   void execute(Args&&... args) {
     m_bindIdx = 1;
-    (void)std::initializer_list<bool>{ _bind(std::forward<Args>(args))... };
+    (void)std::initializer_list<bool>({ _bind(std::forward<Args>(args))... });
   }
 
   Row row() {

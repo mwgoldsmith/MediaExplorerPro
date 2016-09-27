@@ -12,8 +12,6 @@
 const std::string mxp::policy::PlaylistTable::Name = "Playlist";
 const std::string mxp::policy::PlaylistTable::PrimaryKeyColumn = "id_playlist";
 int64_t mxp::Playlist::* const mxp::policy::PlaylistTable::PrimaryKey = &Playlist::m_id;
-//const mxp::policy::PlaylistTable::PrimaryKeyMethod mxp::policy::PlaylistTable::SetPrimaryKey = &mxp::Playlist::SetId;
-
 
 mxp::Playlist::Playlist(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {

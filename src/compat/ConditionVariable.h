@@ -42,51 +42,53 @@ namespace compat {
 
 namespace mxp {
 namespace compat {
+
 class ConditionVariable {
 public:
   using native_handle_type = PCONDITION_VARIABLE;
+
   ConditionVariable() {
-    InitializeConditionVariable( &m_cond );
+    InitializeConditionVariable(&m_cond);
   }
 
   void notify_one() noexcept {
-    WakeConditionVariable( &m_cond );
+    WakeConditionVariable(&m_cond);
   }
 
   void notify_all() noexcept {
-    WakeAllConditionVariable( &m_cond );
+    WakeAllConditionVariable(&m_cond);
   }
 
-  void wait( std::unique_lock<Mutex>& lock ) {
-    SleepConditionVariableCS( &m_cond, lock.mutex()->native_handle(), INFINITE );
+  void wait(std::unique_lock<Mutex>& lock) {
+    SleepConditionVariableCS(&m_cond, lock.mutex()->native_handle(), INFINITE);
   }
 
-  template <typename Pred>
-  void wait( std::unique_lock<Mutex>& lock, Pred pred ) {
-    while ( pred() == false )
-      SleepConditionVariableCS( &m_cond, lock.mutex()->native_handle(), INFINITE );
+  template<typename Pred>
+  void wait(std::unique_lock<Mutex>& lock, Pred pred) {
+    while (pred() == false)
+      SleepConditionVariableCS(&m_cond, lock.mutex()->native_handle(), INFINITE);
   }
 
-  template <typename Rep, typename Period, typename Pred>
-  bool wait_for( std::unique_lock<Mutex>& lock, const std::chrono::duration<Rep, Period>& relTime, Pred pred ) {
-    auto timeout = std::chrono::duration_cast<std::chrono::milliseconds>( relTime );
-    while ( pred() == false ) {
+  template<typename Rep, typename Period, typename Pred>
+  bool wait_for(std::unique_lock<Mutex>& lock, const std::chrono::duration<Rep, Period>& relTime, Pred pred) {
+    auto timeout = std::chrono::duration_cast<std::chrono::milliseconds>(relTime);
+    while (pred() == false) {
       auto now = std::chrono::system_clock::now();
-      if ( SleepConditionVariableCS( &m_cond, lock.mutex()->native_handle(), timeout.count() ) == 0 ) {
+      if (SleepConditionVariableCS(&m_cond, lock.mutex()->native_handle(), timeout.count()) == 0) {
         auto res = GetLastError();
-        if ( res == ERROR_TIMEOUT )
+        if (res == ERROR_TIMEOUT)
           return false;
-        throw std::system_error{ std::make_error_code( std::errc::resource_unavailable_try_again ) };
+        throw std::system_error{std::make_error_code(std::errc::resource_unavailable_try_again)};
       }
-      timeout -= std::chrono::duration_cast<std::chrono::milliseconds>( std::chrono::system_clock::now() - now );
+      timeout -= std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now() - now);
     }
     return true;
   }
 
-  template <typename Clock, typename Period, typename Pred>
-  bool wait_until( std::unique_lock<Mutex>& lock, const std::chrono::time_point<Clock, Period>& relTime, Pred&& pred ) {
+  template<typename Clock, typename Period, typename Pred>
+  bool wait_until(std::unique_lock<Mutex>& lock, const std::chrono::time_point<Clock, Period>& relTime, Pred&& pred) {
     auto timeout = relTime - std::chrono::steady_clock::now();
-    return wait_for( lock, timeout, std::forward<Pred>( pred ) );
+    return wait_for(lock, timeout, std::forward<Pred>(pred));
   }
 
   native_handle_type native_handle() {
@@ -96,6 +98,7 @@ public:
 private:
   CONDITION_VARIABLE m_cond;
 };
+
 }
 }
 

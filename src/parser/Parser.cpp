@@ -6,15 +6,13 @@
 # include "config.h"
 #endif
 
-#include "File.h"
+#include "MediaFile.h"
 #include "Media.h"
 #include "Parser.h"
 #include "mediaexplorer/IMediaExplorer.h"
 #include "utils/ModificationsNotifier.h"
 
-namespace mxp {
-
-Parser::Parser(MediaExplorer* ml)
+mxp::Parser::Parser(mxp::MediaExplorer* ml)
   : m_ml(ml)
     , m_callback(ml->GetCallbacks())
     , m_notifier(ml->GetNotifier())
@@ -22,40 +20,40 @@ Parser::Parser(MediaExplorer* ml)
     , m_opDone(0)
     , m_percent(0) {}
 
-Parser::~Parser() {
+mxp::Parser::~Parser() {
   stop();
 }
 
-void Parser::AddService(ServicePtr service) {
+void mxp::Parser::AddService(ServicePtr service) {
   service->initialize(m_ml, this);
   m_services.push_back(std::move(service));
 }
 
-void Parser::Parse(std::shared_ptr<Media> media, std::shared_ptr<File> file) {
+void mxp::Parser::Parse(std::shared_ptr<Media> media, std::shared_ptr<MediaFile> file) {
   if (m_services.size() == 0)
     return;
-  m_services[0]->Parse(std::unique_ptr<parser::Task>(new parser::Task(media, file)));
+  m_services[0]->Parse(std::make_unique<parser::Task>(media, file));
   m_opToDo += m_services.size();
   UpdateStats();
 }
 
-void Parser::Start() {
+void mxp::Parser::Start() {
   restore();
   for (auto& s : m_services)
     s->Start();
 }
 
-void Parser::pause() {
+void mxp::Parser::pause() {
   for (auto& s : m_services)
     s->pause();
 }
 
-void Parser::resume() {
+void mxp::Parser::resume() {
   for (auto& s : m_services)
     s->resume();
 }
 
-void Parser::stop() {
+void mxp::Parser::stop() {
   for (auto& s : m_services) {
     s->signalStop();
   }
@@ -64,13 +62,13 @@ void Parser::stop() {
   }
 }
 
-void Parser::restore() {
+void mxp::Parser::restore() {
   if (m_services.empty() == true)
     return;
 
   static const std::string req = "SELECT * FROM " + policy::FileTable::Name
       + " WHERE parsed = 0 AND is_present = 1";
-  auto files = File::FetchAll<File>(m_ml, req);
+  auto files = MediaFile::FetchAll<MediaFile>(m_ml, req);
 
   for (auto& f : files) {
     auto m = f->media();
@@ -78,7 +76,7 @@ void Parser::restore() {
   }
 }
 
-void Parser::UpdateStats() {
+void mxp::Parser::UpdateStats() {
   auto percent = m_opToDo > 0 ? (m_opDone * 100 / m_opToDo) : 0;
   if (percent != m_percent) {
     m_percent = percent;
@@ -88,7 +86,7 @@ void Parser::UpdateStats() {
   }
 }
 
-void Parser::done(std::unique_ptr<parser::Task> t, parser::Task::Status status) {
+void mxp::Parser::done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::Status status) {
   ++m_opDone;
 
   auto serviceIdx = ++t->currentService;
@@ -113,6 +111,4 @@ void Parser::done(std::unique_ptr<parser::Task> t, parser::Task::Status status) 
     return;
   }
   m_services[serviceIdx]->Parse(std::move(t));
-}
-
 }

@@ -58,7 +58,7 @@ public:
   }
 
   bool try_lock() {
-    return TryEnterCriticalSection(&m_lock);
+    return TryEnterCriticalSection(&m_lock) != 0;
   }
 
   void unlock() {

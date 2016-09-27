@@ -25,8 +25,6 @@ struct FolderTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
   static int64_t MediaFolder::*const PrimaryKey;
-  //using PrimaryKeyMethod = void(mxp::Folder::*)(int64_t) ;
-  //static const PrimaryKeyMethod SetPrimaryKey;
 };
 }
 

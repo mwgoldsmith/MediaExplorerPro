@@ -21,8 +21,6 @@ struct FileTable {
   static const std::string Name;
   static const std::string PrimaryKeyColumn;
   static int64_t MediaFile::*const PrimaryKey;
-//using PrimaryKeyMethod = void(mxp::MediaFile::*)(int64_t) ;
-//static const PrimaryKeyMethod SetPrimaryKey;
 };
 }
 

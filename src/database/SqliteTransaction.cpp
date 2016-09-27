@@ -30,7 +30,7 @@
 namespace mxp {
 namespace sqlite {
 
-thread_local Transaction* Transaction::CurrentTransaction = nullptr;
+__declspec(thread) Transaction* Transaction::CurrentTransaction = nullptr;
 
 Transaction::Transaction(DBConnection dbConn)
   : m_dbConn(dbConn)

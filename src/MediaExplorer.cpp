@@ -10,13 +10,14 @@
 #include <functional>
 #if defined(WIN32)
 #include <direct.h>
+#include "Fixup.h"
 #else
 #include <sys/stat.h>
 #endif
 #include "AudioTrack.h"
-#include "Device.h"
-#include "File.h"
-#include "Folder.h"
+#include "MediaDevice.h"
+#include "MediaFile.h"
+#include "MediaFolder.h"
 #include "Label.h"
 #include "Media.h"
 #include "MediaExplorer.h"
@@ -53,12 +54,11 @@ mxp::MediaExplorer::~MediaExplorer() {
     m_parser->stop();
 
   mxp::Media::clear();
-  mxp::Folder::clear();
-  mxp::File::clear();
-  mxp::Device::clear();
+  mxp::MediaFolder::clear();
+  mxp::MediaFile::clear();
+  mxp::MediaDevice::clear();
   mxp::Label::clear();
   mxp::Playlist::clear();
-  
   mxp::VideoTrack::clear();
   mxp::AudioTrack::clear();
 }
@@ -114,9 +114,9 @@ bool mxp::MediaExplorer::Shutdown() {
     m_parser->stop();
   }
   mxp::Media::clear();
-  mxp::Folder::clear();
-  mxp::File::clear();
-  mxp::Device::clear();
+  mxp::MediaFolder::clear();
+  mxp::MediaFile::clear();
+  mxp::MediaDevice::clear();
   mxp::Label::clear();
   mxp::Playlist::clear();
   
@@ -158,12 +158,12 @@ mxp::IMediaExplorerCb* mxp::MediaExplorer::GetCallbacks() const {
   return m_callbacks;
 }
 
-bool mxp::MediaExplorer::DeleteFolder(const mxp::Folder& folder) {
+bool mxp::MediaExplorer::DeleteFolder(const mxp::MediaFolder& folder) {
   return false;
 }
 
-std::shared_ptr<mxp::Device> mxp::MediaExplorer::FindDevice(const std::string& uuid) {
-  return mxp::Device::fromUuid(this, uuid);
+std::shared_ptr<mxp::MediaDevice> mxp::MediaExplorer::FindDevice(const std::string& uuid) {
+  return mxp::MediaDevice::fromUuid(this, uuid);
 }
 
 mxp::PlaylistPtr mxp::MediaExplorer::CreatePlaylist(const std::string& name) { 
@@ -226,7 +226,7 @@ mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) cons
 }
 
 
-std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile& fileFs, mxp::Folder& parentFolder, mxp::fs::IDirectory& parentFolderFs) {
+std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile& fileFs, mxp::MediaFolder& parentFolder, mxp::fs::IDirectory& parentFolderFs) {
 
 const std::vector<std::string> supportedVideoExtensions{
   // Videos
@@ -261,7 +261,7 @@ const std::vector<std::string> supportedVideoExtensions{
   }
 
   // For now, assume all media are made of a single file
-  auto file = mptr->addFile(fileFs, parentFolder, parentFolderFs, mxp::File::Type::Entire);
+  auto file = mptr->addFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
   if (file == nullptr) {
     LOG_ERROR("Failed to add file ", fileFs.fullPath(), " to media #", mptr->id());
     mxp::Media::destroy(this, mptr->id());
@@ -306,10 +306,10 @@ void mxp::MediaExplorer::Reload(const std::string& entryPoint) {
 
 bool mxp::MediaExplorer::CreateAllTables() {
   auto t = m_db->NewTransaction();
-  auto res = Device::createTable(m_db.get()) &&
-      Folder::createTable(m_db.get()) &&
+  auto res = MediaDevice::createTable(m_db.get()) &&
+    MediaFolder::createTable(m_db.get()) &&
       Media::createTable(m_db.get()) &&
-      File::createTable(m_db.get()) &&
+      MediaFile::createTable(m_db.get()) &&
       Label::createTable(m_db.get()) &&
       Playlist::createTable(m_db.get()) &&
       VideoTrack::createTable(m_db.get()) &&
@@ -353,7 +353,7 @@ bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
 
 void mxp::MediaExplorer::StartDiscoverer() {
   m_discoverer.reset(new DiscovererWorker(this));
-  m_discoverer->AddDiscoverer(std::unique_ptr<IDiscoverer>(new FsDiscoverer(m_fsFactory, this, m_callbacks)));
+  m_discoverer->AddDiscoverer(std::unique_ptr<IDiscoverer>(std::make_unique<FsDiscoverer>(m_fsFactory, this, m_callbacks)));
   m_discoverer->reload();
 }
 
@@ -361,7 +361,7 @@ void mxp::MediaExplorer::StartParser() {
   m_parser.reset(new Parser(this));
 
   //auto vlcService = std::unique_ptr<VLCMetadataService>(new VLCMetadataService);
-  auto metadataService = std::unique_ptr<mxp::MetadataParser>(new mxp::MetadataParser);
+  auto metadataService = std::make_unique<mxp::MetadataParser>();
   //auto thumbnailerService = std::unique_ptr<VLCThumbnailer>(new VLCThumbnailer);
   //m_parser->AddService(std::move(vlcService));
   m_parser->AddService(std::move(metadataService));

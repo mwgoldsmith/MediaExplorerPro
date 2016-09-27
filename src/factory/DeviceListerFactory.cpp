@@ -17,6 +17,7 @@
 mxp::DeviceListerPtr mxp::factory::createDeviceLister() {
 #if (defined(__linux__) && !defined(__ANDROID__)) || defined(_WIN32)
   return std::make_shared<fs::DeviceLister>();
-#endif
+#else
   return nullptr;
+#endif
 }

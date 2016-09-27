@@ -25,8 +25,6 @@ namespace policy {
   const std::string FolderTable::Name = "Folder";
   const std::string FolderTable::PrimaryKeyColumn = "id_folder";
   int64_t MediaFolder::* const FolderTable::PrimaryKey = &MediaFolder::m_id;
-  //const policy::FolderTable::PrimaryKeyMethod policy::FolderTable::SetPrimaryKey = &mxp::Folder::SetId;
-
 }
 
 MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)

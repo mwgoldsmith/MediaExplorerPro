@@ -9,9 +9,9 @@
 #include <algorithm>
 #include <queue>
 
-#include "Device.h"
-#include "File.h"
-#include "Folder.h"
+#include "MediaDevice.h"
+#include "MediaFile.h"
+#include "MediaFolder.h"
 #include "FsDiscoverer.h"
 #include "Media.h"
 #include "MediaExplorer.h"
@@ -29,13 +29,13 @@ bool mxp::FsDiscoverer::Discover(const std::string& entryPoint) {
   if (entryPoint.find("://") != std::string::npos)
     return false;
 
-  std::shared_ptr<mxp::fs::IDirectory> fsDir = m_fsFactory->CreateDirectory(entryPoint);
+  std::shared_ptr<mxp::fs::IDirectory> fsDir = m_fsFactory->CreateFsDirectory(entryPoint);
   // Otherwise, create a directory and check it for modifications
   if (fsDir == nullptr) {
     LOG_ERROR("Failed to create an IDirectory for ", entryPoint);
     return false;
   }
-  auto f = mxp::Folder::fromPath(m_ml, fsDir->path());
+  auto f = mxp::MediaFolder::fromPath(m_ml, fsDir->path());
   // If the folder exists, we assume it will be handled by reload()
   if (f != nullptr)
     return true;
@@ -48,10 +48,10 @@ void mxp::FsDiscoverer::reload() {
   LOG_INFO("Reloading all folders");
   // Start by checking if previously known devices have been plugged/unplugged
   checkDevices();
-  auto rootFolders = mxp::Folder::FetchAll(m_ml, 0);
+  auto rootFolders = mxp::MediaFolder::FetchAll(m_ml, 0);
   
   for (const auto& f : rootFolders) {
-    auto folder = m_fsFactory->CreateDirectory(f->path());
+    auto folder = m_fsFactory->CreateFsDirectory(f->path());
     if (folder == nullptr) {
       m_ml->DeleteFolder(*f);
       continue;
@@ -62,12 +62,12 @@ void mxp::FsDiscoverer::reload() {
 
 void mxp::FsDiscoverer::reload(const std::string& entryPoint) {
   LOG_INFO("Reloading folder ", entryPoint);
-  auto folder = mxp::Folder::fromPath(m_ml, entryPoint);
+  auto folder = mxp::MediaFolder::fromPath(m_ml, entryPoint);
   if (folder == nullptr) {
     LOG_ERROR("Can't reload ", entryPoint, ": folder wasn't found in database");
     return;
   }
-  auto folderFs = m_fsFactory->CreateDirectory(folder->path());
+  auto folderFs = m_fsFactory->CreateFsDirectory(folder->path());
   if (folderFs == nullptr) {
     LOG_ERROR(" Failed to create a fs::IDirectory representing ", folder->path());
   }
@@ -76,7 +76,7 @@ void mxp::FsDiscoverer::reload(const std::string& entryPoint) {
 
 void mxp::FsDiscoverer::checkDevices() {
   m_fsFactory->Refresh();
-  auto devices = Device::FetchAll(m_ml);
+  auto devices = MediaDevice::FetchAll(m_ml);
   for (auto& d : devices) {
     auto deviceFs = m_fsFactory->CreateDevice(d->uuid());
     auto fsDevicePresent = deviceFs != nullptr && deviceFs->isPresent();
@@ -89,7 +89,7 @@ void mxp::FsDiscoverer::checkDevices() {
   }
 }
 
-void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::Folder& currentFolder) const {
+void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::MediaFolder& currentFolder) const {
   // We already know of this folder, though it may now contain a .nomedia file.
   // In this case, simply delete the folder.
   if (hasDotNoMediaFile(currentFolderFs)) {
@@ -101,9 +101,9 @@ void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::F
     m_cb->onDiscoveryProgress(currentFolderFs.path());
   // Load the folders we already know of:
   LOG_INFO("Checking for modifications in ", currentFolderFs.path());
-  auto subFoldersInDB = mxp::Folder::FetchAll(m_ml, currentFolder.id());
+  auto subFoldersInDB = mxp::MediaFolder::FetchAll(m_ml, currentFolder.id());
   for (const auto& subFolder : currentFolderFs.dirs()) {
-    auto it = std::find_if(begin(subFoldersInDB), end(subFoldersInDB), [&subFolder](const std::shared_ptr<mxp::Folder>& f) {
+    auto it = std::find_if(begin(subFoldersInDB), end(subFoldersInDB), [&subFolder](const std::shared_ptr<mxp::MediaFolder>& f) {
       return f->path() == subFolder->path();
     });
     // We don't know this folder, it's a new one
@@ -119,7 +119,7 @@ void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::F
       } catch (mxp::sqlite::errors::ConstraintViolation& ex) {
         // Best attempt to detect a foreign key violation, indicating the parent folders have been
         // deleted due to blacklisting
-        if (strstr(ex.what(), "foreign key") != NULL) {
+        if (strstr(ex.what(), "foreign key") != nullptr) {
           LOG_WARN("Creation of a folder failed because the parent is non existing: ", ex.what(),
             ". Assuming it was deleted due to blacklisting");
           return;
@@ -144,15 +144,15 @@ void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::F
   LOG_INFO("Done checking subfolders in ", currentFolderFs.path());
 }
 
-void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Folder& parentFolder) const {
+void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::MediaFolder& parentFolder) const {
   LOG_INFO("Checking file in ", parentFolderFs.path());
   static const std::string req = "SELECT * FROM " + policy::FileTable::Name
       + " WHERE folder_id = ?";
-  auto files = mxp::File::FetchAll<mxp::File>(m_ml, req, parentFolder.id());
+  auto files = mxp::MediaFile::FetchAll<mxp::MediaFile>(m_ml, req, parentFolder.id());
   std::vector<std::shared_ptr<mxp::fs::IFile>> filesToAdd;
-  std::vector<std::shared_ptr<mxp::File>> filesToRemove;
+  std::vector<std::shared_ptr<mxp::MediaFile>> filesToRemove;
   for (const auto& fileFs: parentFolderFs.files()) {
-    auto it = std::find_if(begin(files), end(files), [fileFs](const std::shared_ptr<mxp::File>& f) {
+    auto it = std::find_if(begin(files), end(files), [fileFs](const std::shared_ptr<mxp::MediaFile>& f) {
       return f->mrl() == fileFs->fullPath();
     });
     if (it == end(files)) {
@@ -176,7 +176,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Fol
 
   auto t = m_ml->GetConnection()->NewTransaction();
   for (auto file : files) {
-    LOG_INFO("File ", file->mrl(), " not found on filesystem, deleting it");
+    LOG_INFO("MediaFile ", file->mrl(), " not found on filesystem, deleting it");
     file->media()->removeFile(*file);
   }
 
@@ -198,17 +198,17 @@ bool mxp::FsDiscoverer::hasDotNoMediaFile(const mxp::fs::IDirectory& directory) 
   }) != end(files);
 }
 
-bool mxp::FsDiscoverer::addFolder(mxp::fs::IDirectory& folder, mxp::Folder* parentFolder) const {
+bool mxp::FsDiscoverer::addFolder(mxp::fs::IDirectory& folder, mxp::MediaFolder* parentFolder) const {
   auto deviceFs = folder.device();
   // We are creating a folder, there has to be a device containing it.
   assert(deviceFs != nullptr);
-  auto device = mxp::Device::fromUuid(m_ml, deviceFs->uuid());
+  auto device = mxp::MediaDevice::fromUuid(m_ml, deviceFs->uuid());
   if (device == nullptr) {
     LOG_INFO("Creating new device in DB ", deviceFs->uuid());
-    device = mxp::Device::create(m_ml, deviceFs->uuid(), deviceFs->IsRemovable());
+    device = mxp::MediaDevice::create(m_ml, deviceFs->uuid(), deviceFs->IsRemovable());
   }
 
-  auto f = mxp::Folder::create(m_ml, folder.path(), parentFolder != nullptr ? parentFolder->id() : 0, *device, *deviceFs);
+  auto f = mxp::MediaFolder::create(m_ml, folder.path(), parentFolder != nullptr ? parentFolder->id() : 0, *device, *deviceFs);
                           
   LOG_INFO("Created new folder in DB ", folder.path());
   if (f == nullptr)

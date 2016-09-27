@@ -1,24 +1,6 @@
 ﻿/*****************************************************************************
- * Media Library
- *****************************************************************************
- * Copyright (C) 2015 Hugo Beauzée-Luyssen, Videolabs
- *
- * Authors: Hugo Beauzée-Luyssen<hugo@beauzee.fr>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
- *****************************************************************************/
+* Media Explorer
+*****************************************************************************/
 
 #if HAVE_CONFIG_H
 # include "config.h"
@@ -28,7 +10,7 @@
 //#include "Album.h"
 //#include "AlbumTrack.h"
 //#include "Artist.h"
-#include "File.h"
+#include "MediaFile.h"
 //#include "Genre.h"
 #include "Media.h"
 #include "MetadataParser.h"
@@ -36,9 +18,7 @@
 #include "utils/Filename.h"
 #include "utils/ModificationsNotifier.h"
 
-namespace mxp {
-
-bool MetadataParser::initialize() {
+bool mxp::MetadataParser::initialize() {
   //m_unknownArtist = Artist::Fetch(m_ml, UnknownArtistID);
   //if (m_unknownArtist == nullptr)
   LOG_ERROR("Failed to cache unknown artist");
@@ -46,16 +26,16 @@ bool MetadataParser::initialize() {
  return false;
 }
 
-parser::Task::Status MetadataParser::run(parser::Task& task) {
+mxp::parser::Task::Status mxp::MetadataParser::run(mxp::parser::Task& task) {
   auto& media = task.media;
 
   auto t = m_ml->GetConnection()->NewTransaction();
-  bool isAudio = task.videoTracks.empty();
-  for (const auto& t : task.videoTracks) {
-    media->addVideoTrack(t.fcc, t.width, t.height, t.fps, t.language, t.description);
+  auto isAudio = task.videoTracks.empty();
+  for (const auto& track : task.videoTracks) {
+    media->addVideoTrack(track.fcc, track.width, track.height, track.fps, track.language, track.description);
   }
-  for (const auto& t : task.audioTracks) {
-    media->addAudioTrack(t.fcc, t.bitrate, t.samplerate, t.nbChannels, t.language, t.description);
+  for (const auto& track : task.audioTracks) {
+    media->addAudioTrack(track.fcc, track.bitrate, track.samplerate, track.nbChannels, track.language, track.description);
   }
   t->Commit();
   if (isAudio == true) {
@@ -74,7 +54,7 @@ parser::Task::Status MetadataParser::run(parser::Task& task) {
 
 /* Video files */
 
-bool MetadataParser::parseVideoFile(parser::Task& task) const {
+bool mxp::MetadataParser::parseVideoFile(mxp::parser::Task& task) const {
   auto media = task.media.get();
   media->setType(IMedia::Type::VideoType);
   if (task.title.length() == 0)
@@ -100,7 +80,7 @@ bool MetadataParser::parseVideoFile(parser::Task& task) const {
 
 /* Audio files */
 
-bool MetadataParser::parseAudioFile(parser::Task& task) const {
+bool mxp::MetadataParser::parseAudioFile(mxp::parser::Task& task) const {
   task.media->setType(IMedia::Type::AudioType);
 
   //if (task.artworkMrl.empty() == false)
@@ -371,11 +351,11 @@ bool MetadataParser::link(Media& media, std::shared_ptr<Album> album,
 }
 */
 
-const char* MetadataParser::name() const {
+const char* mxp::MetadataParser::name() const {
   return "Metadata";
 }
 
-uint8_t MetadataParser::nbThreads() const {
+uint8_t mxp::MetadataParser::nbThreads() const {
   //    auto nbProcs = std::thread::hardware_concurrency();
   //    if (nbProcs == 0)
   //        return 1;
@@ -384,4 +364,3 @@ uint8_t MetadataParser::nbThreads() const {
   return 1;
 }
 
-}

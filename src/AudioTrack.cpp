@@ -9,11 +9,14 @@
 #include "AudioTrack.h"
 #include "Media.h"
 
+using mxp::policy::AudioTrackTable;
+
+const std::string AudioTrackTable::Name = "AudioTrack";
+const std::string AudioTrackTable::PrimaryKeyColumn = "id_track";
+int64_t mxp::AudioTrack::* const AudioTrackTable::PrimaryKey = &mxp::AudioTrack::m_id;
+
 namespace mxp {
 
-const std::string policy::AudioTrackTable::Name = "AudioTrack";
-const std::string policy::AudioTrackTable::PrimaryKeyColumn = "id_track";
-int64_t AudioTrack::* const policy::AudioTrackTable::PrimaryKey = &AudioTrack::m_id;
 
 AudioTrack::AudioTrack(MediaExplorerPtr, sqlite::Row& row) {
   row >> m_id
@@ -42,6 +45,7 @@ int64_t AudioTrack::id() const {
   return m_id;
 }
 
+
 const std::string& AudioTrack::codec() const {
   return m_codec;
 }
@@ -50,7 +54,7 @@ unsigned int AudioTrack::bitrate() const {
   return m_bitrate;
 }
 
-unsigned int AudioTrack::sampleRate() const {
+unsigned int AudioTrack::SampleRate() const {
   return m_sampleRate;
 }
 

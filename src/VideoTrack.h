@@ -27,9 +27,7 @@ struct VideoTrackTable {
 class VideoTrack : public IVideoTrack, public DatabaseHelpers<VideoTrack, policy::VideoTrackTable> {
 public:
   VideoTrack(MediaExplorerPtr, sqlite::Row& row);
-  VideoTrack(MediaExplorerPtr, const std::string& codec,
-             unsigned int width, unsigned int height, float fps, int64_t mediaId,
-             const std::string& language, const std::string& description);
+  VideoTrack(MediaExplorerPtr, const std::string& codec, unsigned int width, unsigned int height, float fps, int64_t mediaId, const std::string& language, const std::string& description);
 
   virtual int64_t id() const override;
   virtual const std::string& codec() const override;

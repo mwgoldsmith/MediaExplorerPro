@@ -13,11 +13,11 @@
 
 #if defined(__linux__) || defined(__APPLE__)
 # include "filesystem/unix/Directory.h"
-# include "filesystem/unix/File.h"
 # include "filesystem/unix/Device.h"
+# include "filesystem/unix/File.h"
 #elif defined(_WIN32)
 # include "filesystem/win32/Directory.h"
-# include "filesystem/win32/File.h"
+# include "filesystem/unix/File.h"
 # include "filesystem/win32/Device.h"
 #else
 # error No filesystem implementation for this architecture
@@ -31,7 +31,7 @@ mxp::factory::FileSystemFactory::FileSystemFactory(mxp::DeviceListerPtr lister)
   : m_deviceLister(lister) {
 }
 
-std::shared_ptr<mxp::fs::IFile> mxp::factory::FileSystemFactory::CreateFile(const std::string& path) {
+std::shared_ptr<mxp::fs::IFile> mxp::factory::FileSystemFactory::CreateFsFile(const std::string& path) {
   std::shared_ptr<mxp::fs::IFile> res;
 
   try {
@@ -44,7 +44,7 @@ std::shared_ptr<mxp::fs::IFile> mxp::factory::FileSystemFactory::CreateFile(cons
   return res;
 }
 
-std::shared_ptr<mxp::fs::IDirectory> mxp::factory::FileSystemFactory::CreateDirectory(const std::string& path) {
+std::shared_ptr<mxp::fs::IDirectory> mxp::factory::FileSystemFactory::CreateFsDirectory(const std::string& path) {
   std::lock_guard<mxp::compat::Mutex> lock(m_mutex);
   const auto it = m_dirs.find(path);
   if (it != end(m_dirs)) {

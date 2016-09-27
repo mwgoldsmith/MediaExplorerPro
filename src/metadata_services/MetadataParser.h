@@ -44,7 +44,7 @@ protected:
  // bool link(Media& media, std::shared_ptr<Album> album, std::shared_ptr<Artist> albumArtist, std::shared_ptr<Artist> artist) const;
   //std::shared_ptr<Album> handleAlbum(parser::Task& task, std::shared_ptr<Artist> albumArtist, std::shared_ptr<Artist> artist) const;
 
-private:
+//private:
   //std::shared_ptr<Artist> m_unknownArtist;
 };
 
