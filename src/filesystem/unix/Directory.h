@@ -22,6 +22,8 @@
 
 #pragma once
 
+#ifndef _WIN32
+
 #include "filesystem/common/CommonDirectory.h"
 
 namespace mxp {
@@ -41,3 +43,5 @@ private:
 }
 
 }
+
+#endif

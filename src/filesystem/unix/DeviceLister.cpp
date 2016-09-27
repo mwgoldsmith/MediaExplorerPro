@@ -24,11 +24,14 @@
 # include "config.h"
 #endif
 
+#if !defined(_WIN32)
+
 #include "DeviceLister.h"
 #include "logging/Logger.h"
 #include "utils/Filename.h"
 
 #include <dirent.h>
+#include <unistd.h>
 #include <mntent.h>
 #include <sys/types.h>
 #include <vector>
@@ -39,7 +42,6 @@
 #include <algorithm>
 #include <cstring>
 #include <limits.h>
-#include <unistd.h>
 
 namespace mxp {
 namespace fs {
@@ -234,3 +236,5 @@ std::vector<std::tuple<std::string, std::string, bool>> mxp::fs::DeviceLister::D
 
 }
 }
+
+#endif
