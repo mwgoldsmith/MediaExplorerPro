@@ -34,7 +34,7 @@ mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const
   , m_mediaId(mediaId)
   , m_mrl(isRemovable == true ? file.name() : file.fullPath())
   , m_type(type)
-  , m_lastModificationDate(file.lastModificationDate())
+  , m_lastModificationDate(file.LastModificationDate())
   , m_isParsed(false)
   , m_folderId(folderId)
   , m_isPresent(true)
@@ -63,7 +63,7 @@ mxp::IMediaFile::Type mxp::MediaFile::type() const {
   return m_type;
 }
 
-time_t mxp::MediaFile::lastModificationDate() const {
+time_t mxp::MediaFile::LastModificationDate() const {
   return m_lastModificationDate;
 }
 

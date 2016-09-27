@@ -41,10 +41,10 @@ public:
   virtual void reload(const std::string& entryPoint) override;
 
 private:
-  ///
-  /// \brief checkSubfolders
-  /// \return true if files in this folder needs to be listed, false otherwise
-  ///
+  /**
+   *  @brief checkSubfolders
+   *  @return true if files in this folder needs to be listed, false otherwise
+   */
   void checkFolder(fs::IDirectory& currentFolderFs, MediaFolder& currentFolder) const;
   void checkFiles(fs::IDirectory& parentFolderFs, MediaFolder& parentFolder) const;
   static bool hasDotNoMediaFile(const fs::IDirectory& directory);

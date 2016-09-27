@@ -10,14 +10,13 @@
 #include "filesystem/IDirectory.h"
 #include "filesystem/IFile.h"
 #include "logging/Logger.h"
+# include "filesystem/common/File.h"
 
 #if defined(__linux__) || defined(__APPLE__)
 # include "filesystem/unix/Directory.h"
 # include "filesystem/unix/Device.h"
-# include "filesystem/unix/File.h"
 #elif defined(_WIN32)
 # include "filesystem/win32/Directory.h"
-# include "filesystem/unix/File.h"
 # include "filesystem/win32/Device.h"
 #else
 # error No filesystem implementation for this architecture

@@ -12,21 +12,21 @@ namespace mxp {
 class IMediaFile {
 public:
   enum class Type {
-    /// Unknown type, so far
+    // Unknown type, so far
     Unknown,
-    /// The file is the entire media.
-    /// This implies there's only a single file for a media
+    // The file is the entire media.
+    // This implies there's only a single file for a media
     Entire,
-    /// The main file of a media.
-    /// This implies the media has other parts, for instance, the "Main"
-    /// part is the video plus some default soundtrack, and there is
-    /// another file of type "soundtrack"
+    // The main file of a media.
+    // This implies the media has other parts, for instance, the "Main"
+    // part is the video plus some default soundtrack, and there is
+    // another file of type "soundtrack"
     Main,
-    /// A part of a media (for instance, the first half of a movie)
+    // A part of a media (for instance, the first half of a movie)
     Part,
-    /// External soundtrack
+    // External soundtrack
     Soundtrack,
-    /// External subtitles
+    // External subtitles
     Subtitles,
   };
 
@@ -34,7 +34,7 @@ public:
   virtual int64_t id() const = 0;
   virtual const std::string& mrl() const = 0;
   virtual Type type() const = 0;
-  virtual time_t lastModificationDate() const = 0;
+  virtual time_t LastModificationDate() const = 0;
 };
 
 } /* namespace mxp */

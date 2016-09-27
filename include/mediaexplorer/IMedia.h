@@ -34,63 +34,63 @@ class IShowEpisode;
 class ITrackInformation;
 
 class IMedia {
-  public:
-    enum class Type : uint8_t {
-      VideoType,
-      AudioType,
-      UnknownType
-    };
-    enum class SubType : uint8_t {
-      Unknown,
-      ShowEpisode,
-      Movie,
-      AlbumTrack,
-    };
+public:
+  enum class Type : uint8_t {
+    VideoType,
+    AudioType,
+    UnknownType
+  };
+  enum class SubType : uint8_t {
+    Unknown,
+    ShowEpisode,
+    Movie,
+    AlbumTrack,
+  };
 
-    virtual ~IMedia() = default;
+  virtual ~IMedia() = default;
 
-    virtual int64_t id() const = 0;
-    virtual Type type() = 0;
-    virtual SubType subType() const = 0;
-    virtual const std::string& title() const = 0;
-    //virtual AlbumTrackPtr albumTrack() const = 0;
-    /**
-     * @brief duration Returns the media duration in ms
-     */
-    virtual int64_t duration() const = 0;
-    //virtual ShowEpisodePtr showEpisode() const = 0;
-    virtual int playCount() const = 0;
-    virtual bool increasePlayCount() = 0;
-    virtual const std::vector<MediaFilePtr>& files() const = 0;
-    ///
-    /// \brief progress Returns the progress, in the [0;1] range
-    ///
-    virtual float progress() const = 0;
-    virtual bool setProgress(float progress) = 0;
-    ///
-    /// \brief rating The media rating, or -1 if unset.
-    /// It is up to the application to determine the values it wishes to use.
-    /// No value is enforced, and any positive value (less or equal to INT32_MAX)
-    /// will be accepted.
-    ///
-    virtual int rating() const = 0;
-    virtual bool setRating(int rating) = 0;
-    virtual bool isFavorite() const = 0;
-    virtual bool setFavorite(bool favorite) = 0;
-    virtual bool addLabel(LabelPtr label) = 0;
-    virtual bool removeLabel(LabelPtr label) = 0;
-    virtual std::vector<LabelPtr> labels() = 0;
-    //virtual MoviePtr movie() const = 0;
-    virtual std::vector<VideoTrackPtr> videoTracks() = 0;
-    virtual std::vector<AudioTrackPtr> audioTracks() = 0;
-    ///
-    /// \brief thumbnail Returns the path of a thumbnail for this media
-    /// \return A path, relative to the thumbnailPath configured when initializing
-    ///  The media library
-    ///
-    virtual const std::string& thumbnail() = 0;
-    virtual unsigned int insertionDate() const = 0;
-    virtual unsigned int releaseDate() const = 0;
+  virtual int64_t id() const = 0;
+  virtual Type type() = 0;
+  virtual SubType subType() const = 0;
+  virtual const std::string& title() const = 0;
+  //virtual AlbumTrackPtr albumTrack() const = 0;
+  /**
+   * @brief duration Returns the media duration in ms
+   */
+  virtual int64_t duration() const = 0;
+  //virtual ShowEpisodePtr showEpisode() const = 0;
+  virtual int playCount() const = 0;
+  virtual bool increasePlayCount() = 0;
+  virtual const std::vector<MediaFilePtr>& files() const = 0;
+  /**
+   *  @brief progress Returns the progress, in the [0;1] range
+   */
+  virtual float progress() const = 0;
+  virtual bool setProgress(float progress) = 0;
+  /**
+   *  @brief rating The media rating, or -1 if unset.
+   *  It is up to the application to determine the values it wishes to use.
+   *  No value is enforced, and any positive value (less or equal to INT32_MAX)
+   *  will be accepted.
+   */
+  virtual int rating() const = 0;
+  virtual bool setRating(int rating) = 0;
+  virtual bool isFavorite() const = 0;
+  virtual bool setFavorite(bool favorite) = 0;
+  virtual bool addLabel(LabelPtr label) = 0;
+  virtual bool removeLabel(LabelPtr label) = 0;
+  virtual std::vector<LabelPtr> labels() = 0;
+  //virtual MoviePtr movie() const = 0;
+  virtual std::vector<VideoTrackPtr> videoTracks() = 0;
+  virtual std::vector<AudioTrackPtr> audioTracks() = 0;
+  /**
+   *  @brief thumbnail Returns the path of a thumbnail for this media
+   *  @return A path, relative to the thumbnailPath configured when initializing
+   *   The media library
+   */
+  virtual const std::string& thumbnail() = 0;
+  virtual unsigned int insertionDate() const = 0;
+  virtual unsigned int releaseDate() const = 0;
 };
 
 }

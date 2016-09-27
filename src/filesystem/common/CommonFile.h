@@ -12,7 +12,7 @@ namespace fs {
 
 class CommonFile : public IFile {
 public:
-  CommonFile(const std::string& filePath);
+  explicit CommonFile(const std::string& filePath);
   virtual const std::string& name() const override;
   virtual const std::string& path() const override;
   virtual const std::string& fullPath() const override;

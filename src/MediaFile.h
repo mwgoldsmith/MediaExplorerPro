@@ -31,8 +31,8 @@ public:
   virtual int64_t id() const override;
   virtual const std::string& mrl() const override;
   virtual Type type() const override;
-  virtual time_t lastModificationDate() const override;
-  /// Explicitely mark a media as fully parsed, meaning no metadata service needs to run anymore.
+  virtual time_t LastModificationDate() const override;
+  // Explicitely mark a media as fully parsed, meaning no metadata service needs to run anymore.
   //FIXME: This lacks granularity as we don't have a straight forward way to know which service
   //needs to run or not.
   void markParsed();
@@ -45,18 +45,17 @@ public:
 
 private:
   MediaExplorerPtr m_ml;
+  int64_t          m_id;
+  int64_t          m_mediaId;
+  std::string      m_mrl;
+  Type             m_type;
+  unsigned int     m_lastModificationDate;
+  bool             m_isParsed;
+  int64_t          m_folderId;
+  bool             m_isPresent;
+  bool             m_isRemovable;
 
-  int64_t m_id;
-  int64_t m_mediaId;
-  std::string m_mrl;
-  Type m_type;
-  unsigned int m_lastModificationDate;
-  bool m_isParsed;
-  int64_t m_folderId;
-  bool m_isPresent;
-  bool m_isRemovable;
-
-  mutable Cache<std::string> m_fullPath;
+  mutable Cache<std::string>          m_fullPath;
   mutable Cache<std::weak_ptr<Media>> m_media;
 
   friend policy::FileTable;

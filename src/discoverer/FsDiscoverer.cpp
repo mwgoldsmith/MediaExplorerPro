@@ -159,7 +159,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
       filesToAdd.push_back(fileFs);
       continue;
     }
-    if (fileFs->lastModificationDate() == (*it)->lastModificationDate()) {
+    if (fileFs->LastModificationDate() == (*it)->LastModificationDate()) {
       // Unchanged file
       files.erase(it);
       continue;

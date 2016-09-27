@@ -210,14 +210,14 @@ std::shared_ptr<Album> MetadataParser::handleAlbum(parser::Task& task, std::shar
   return album;
 }*/
 
-///
-/// \brief MetadataParser::handleArtists Returns Artist's involved on a track
-/// \param media The track to analyze
-/// \param vlcMedia VLC's media
-/// \return A pair containing:
-/// The album artist as a first element
-/// The track artist as a second element, or nullptr if it is the same as album artist
-///
+/**
+ *  @brief MetadataParser::handleArtists Returns Artist's involved on a track
+ *  @param media The track to analyze
+ *  @param vlcMedia VLC's media
+ *  @return A pair containing:
+ *  The album artist as a first element
+ *  The track artist as a second element, or nullptr if it is the same as album artist
+ */
 /*
 std::pair<std::shared_ptr<Artist>, std::shared_ptr<Artist>> MetadataParser::handleArtists(parser::Task& task) const {
   std::shared_ptr<Artist> albumArtist;

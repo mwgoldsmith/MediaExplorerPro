@@ -16,7 +16,7 @@ class File : public CommonFile {
 public:
   explicit File(const std::string& filePath);
 
-  virtual time_t lastModificationDate() const override;
+  virtual time_t LastModificationDate() const override;
 
 private:
   mutable time_t m_lastModificationDate;
