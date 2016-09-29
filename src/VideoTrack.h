@@ -38,19 +38,17 @@ public:
   virtual const std::string& description() const override;
 
   static bool CreateTable(DBConnection dbConnection);
-  static std::shared_ptr<VideoTrack> create(MediaExplorerPtr ml, const std::string& codec,
-                                            unsigned int width, unsigned int height, float fps, int64_t mediaId,
-                                            const std::string& language, const std::string& description);
+  static std::shared_ptr<VideoTrack> Create(MediaExplorerPtr ml, const std::string& codec, unsigned int width, unsigned int height, float fps, int64_t mediaId, const std::string& language, const std::string& description);
 
 private:
-  int64_t m_id;
-  std::string m_codec;
+  int64_t      m_id;
+  std::string  m_codec;
   unsigned int m_width;
   unsigned int m_height;
-  float m_fps;
-  int64_t m_mediaId;
-  std::string m_language;
-  std::string m_description;
+  float        m_fps;
+  int64_t      m_mediaId;
+  std::string  m_language;
+  std::string  m_description;
 
 private:
   friend struct policy::VideoTrackTable;

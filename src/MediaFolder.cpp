@@ -68,7 +68,7 @@ bool mxp::MediaFolder::CreateTable(DBConnection connection) {
       sqlite::Tools::ExecuteRequest(connection, triggerReq);
 }
 
-std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::create(MediaExplorerPtr ml, const std::string& fullPath, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs) {
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::Create(MediaExplorerPtr ml, const std::string& fullPath, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs) {
   std::string path;
   if(device.IsRemovable() == true) {
     path = utils::file::removePath(fullPath, deviceFs.mountpoint());
@@ -95,7 +95,7 @@ bool mxp::MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPat
   // Ensure we delete the existing folder if any & blacklist the folder in an "atomic" way
   auto t = ml->GetConnection()->NewTransaction();
 
-  auto f = fromPath(ml, fullPath);
+  auto f = FindByPath(ml, fullPath);
   if (f != nullptr) {
     // Let the foreign key destroy everything beneath this folder
     destroy(ml, f->id());
@@ -107,9 +107,9 @@ bool mxp::MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPat
   }
 
   auto deviceFs = folderFs->device();
-  auto device = MediaDevice::fromUuid(ml, deviceFs->uuid());
+  auto device = MediaDevice::FindByUuid(ml, deviceFs->uuid());
   if(device == nullptr) {
-    device = MediaDevice::create(ml, deviceFs->uuid(), deviceFs->IsRemovable());
+    device = MediaDevice::Create(ml, deviceFs->uuid(), deviceFs->IsRemovable());
   }
 
   std::string path;
@@ -127,15 +127,15 @@ bool mxp::MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPat
   return res;
 }
 
-std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath) {
-  return fromPath(ml, fullPath, false);
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::FindByPath(MediaExplorerPtr ml, const std::string& fullPath) {
+  return FindByPath(ml, fullPath, false);
 }
 
 std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath) {
-  return fromPath(ml, fullPath, true);
+  return FindByPath(ml, fullPath, true);
 }
 
-std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool blacklisted) {
+std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::FindByPath(MediaExplorerPtr ml, const std::string& fullPath, bool blacklisted) {
   auto folderFs = ml->GetFileSystem()->CreateDirectoryFromPath(fullPath);
   if(folderFs == nullptr) {
     return nullptr;
@@ -153,7 +153,7 @@ std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::fromPath(MediaExplorerPtr ml
   }
 
   auto req = "SELECT * FROM " + MediaFolderTable::Name + " WHERE path = ? AND device_id = ? AND is_blacklisted = ?";
-  auto device = MediaDevice::fromUuid(ml, deviceFs->uuid());
+  auto device = MediaDevice::FindByUuid(ml, deviceFs->uuid());
   // We are trying to find a folder. If we don't know the device it's on, we don't know the folder.
   if(device == nullptr) {
     return nullptr;

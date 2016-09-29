@@ -30,9 +30,9 @@ public:
   bool isPresent() const;
   void setPresent(bool value);
 
-  static std::shared_ptr<MediaDevice> create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable);
   static bool CreateTable(DBConnection connection);
-  static std::shared_ptr<MediaDevice> fromUuid(MediaExplorerPtr ml, const std::string& uuid);
+  static std::shared_ptr<MediaDevice> Create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable); 
+  static std::shared_ptr<MediaDevice> FindByUuid(MediaExplorerPtr ml, const std::string& uuid);
 
 private:
   MediaExplorerPtr m_ml;

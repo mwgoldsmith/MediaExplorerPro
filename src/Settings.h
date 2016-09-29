@@ -5,27 +5,26 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include "Types.h"
 #include <cstdint>
+#include "Types.h"
 
 namespace mxp {
 
 class Settings {
 public:
   Settings();
-  bool load(DBConnection dbConn);
-  uint32_t dbModelVersion() const;
-  bool save();
-  void setDbModelVersion(uint32_t dbModelVersion);
+
+  bool Load(DBConnection dbConn);
+  bool Save();
+  uint32_t DbModelVersion() const;
+  void SetDbModelVersion(uint32_t DbModelVersion);
 
   static bool CreateTable(DBConnection dbConn);
 
 private:
   DBConnection m_dbConn;
-
-  uint32_t m_dbModelVersion;
-
-  bool m_changed;
+  uint32_t     m_dbModelVersion;
+  bool         m_changed;
 };
 
 }

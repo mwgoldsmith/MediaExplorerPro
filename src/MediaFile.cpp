@@ -124,7 +124,7 @@ bool mxp::MediaFile::CreateTable(DBConnection dbConnection) {
       sqlite::Tools::ExecuteRequest(dbConnection, indexReq);
 }
 
-std::shared_ptr<mxp::MediaFile> mxp::MediaFile::create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) {
+std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) {
   auto self = std::make_shared<MediaFile>(ml, mediaId, type, fileFs, folderId, isRemovable);
   static const auto req = "INSERT INTO " + MediaFileTable::Name +
       "(media_id, mrl, type, folder_id, last_modification_date, is_removable) VALUES(?, ?, ?, ?, ?, ?)";
@@ -138,3 +138,24 @@ std::shared_ptr<mxp::MediaFile> mxp::MediaFile::create(MediaExplorerPtr ml, int6
   return self;
 }
 
+std::shared_ptr<mxp::MediaFile> mxp::MediaFile::FindByPath(MediaExplorerPtr ml, const std::string& path) {
+  static const std::string req = "SELECT * FROM " + MediaFileTable::Name + " WHERE mrl = ?";
+  auto file = Fetch(ml, req, path);
+  if(file == nullptr)
+    return nullptr;
+  // safety checks: since this only works for files on non removable devices, isPresent must be true
+  // and isRemovable must be false
+  assert(file->m_isPresent == true);
+  assert(file->m_isRemovable == false);
+  return file;
+}
+
+std::shared_ptr<mxp::MediaFile> mxp::MediaFile::FindByFileName(MediaExplorerPtr ml, const std::string& fileName, int64_t folderId) {
+  static const std::string req = "SELECT * FROM " + MediaFileTable::Name + " WHERE mrl = ? AND folder_id = ?";
+  auto file = Fetch(ml, req, fileName, folderId);
+  if(file == nullptr)
+    return nullptr;
+
+  assert(file->m_isRemovable == true);
+  return file;
+}

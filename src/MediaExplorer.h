@@ -44,40 +44,37 @@ public:
   virtual bool Shutdown() override;
 
   virtual std::string& GetVersion() const override;
+  virtual FileSystemPtr GetFileSystem() const override;
   virtual void SetLogger(ILogger* logger) override;
   virtual void SetCallbacks(IMediaExplorerCb* cb) override;
-  virtual FileSystemPtr GetFileSystem() const override;
 
+  // Labels
   virtual LabelPtr CreateLabel(const std::string& label) override;
   virtual bool DeleteLabel(LabelPtr label) override;
   
+  // Genres
   virtual std::vector<GenrePtr> GenreList(SortingCriteria sort, bool desc) const override;
   virtual GenrePtr Genre(int64_t id) const override;
 
-  bool AddToHistory(const std::string& mrl);
-
+  // Playlists
   virtual PlaylistPtr CreatePlaylist(const std::string& name) override;
   virtual bool DeletePlaylist(int64_t playlistId) override;
   virtual std::vector<PlaylistPtr> PlaylistList(SortingCriteria sort, bool desc) override;
   virtual PlaylistPtr Playlist(int64_t id) const override;
+
+  // Media
+  virtual bool DeleteMedia(int64_t mediaId) const override;
+  virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) override;
+  virtual MediaPtr Media(int64_t mediaId) const override;
+  mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const;
 
   virtual MediaSearchAggregate SearchMedia(const std::string& title) const override;
   virtual std::vector<PlaylistPtr> SearchPlaylists(const std::string& name) const override;
   virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const override;
   virtual SearchAggregate Search(const std::string& pattern) const override;
 
-  std::shared_ptr<mxp::Media> CreateMedia(const fs::IFile& fileFs, mxp::MediaFolder& parentFolder, fs::IDirectory& parentFolderFs);
-  virtual bool DeleteMedia(int64_t mediaId) const override;
-  virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) override;
-  virtual MediaPtr Media(int64_t mediaId) const override;
-
-  DBConnection GetConnection() const;
-  IMediaExplorerCb* GetCallbacks() const;
-  std::shared_ptr<ModificationNotifier> GetNotifier() const;
-
-  std::shared_ptr<MediaDevice> FindDevice(const std::string& uuid);
-
-  bool DeleteFolder(const MediaFolder& folder);
+  virtual bool IgnoreFolder(const std::string& path) override;
+  virtual bool UnignoreFolder(const std::string& path) override;
 
   virtual void Reload() override;
   virtual void Reload(const std::string& entryPoint) override;
@@ -85,6 +82,17 @@ public:
 
   virtual void PauseBackgroundOperations() override;
   virtual void ResumeBackgroundOperations() override;
+
+  std::shared_ptr<mxp::Media> CreateMedia(const fs::IFile& fileFs, mxp::MediaFolder& parentFolder, fs::IDirectory& parentFolderFs);
+  bool AddToHistory(const std::string& mrl);
+
+  DBConnection GetConnection() const;
+  IMediaExplorerCb* GetCallbacks() const;
+  std::shared_ptr<ModificationNotifier> GetNotifier() const;
+
+  std::shared_ptr<MediaDevice> FindMediaDevice(const std::string& uuid);
+
+  bool DeleteMediaFolder(const MediaFolder& folder);
 
 public:
   static const uint32_t DbModelVersion;

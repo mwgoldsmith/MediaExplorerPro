@@ -93,7 +93,7 @@ const std::string& mxp::History::mrl() const {
   return m_mrl;
 }
 
-unsigned int mxp::History::insertionDate() const {
+unsigned int mxp::History::InsertionDate() const {
   return m_date;
 }
 
@@ -101,7 +101,7 @@ bool mxp::History::isFavorite() const {
   return m_favorite;
 }
 
-bool mxp::History::setFavorite(bool isFavorite) {
+bool mxp::History::SetFavorite(bool isFavorite) {
   if (isFavorite == m_favorite)
     return true;
 

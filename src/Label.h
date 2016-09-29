@@ -32,8 +32,8 @@ public:
   virtual const std::string& name() const override;
   virtual std::vector<MediaPtr> Files() override;
 
-  static LabelPtr create(MediaExplorerPtr ml, const std::string& name);
   static bool CreateTable(DBConnection dbConnection);
+  static LabelPtr Create(MediaExplorerPtr ml, const std::string& name);
 
 private:
   MediaExplorerPtr m_ml;

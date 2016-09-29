@@ -27,15 +27,16 @@ struct HistoryTable {
 class History : public IHistoryEntry, public DatabaseHelpers<History, policy::HistoryTable> {
 public:
   History(MediaExplorerPtr ml, sqlite::Row& row);
+
+  virtual const std::string& mrl() const override;
+  virtual unsigned int InsertionDate() const override;
+  virtual bool isFavorite() const override;
+  virtual bool SetFavorite(bool isFavorite) override;
+
   static bool CreateTable(DBConnection dbConnection);
   static bool insert(DBConnection dbConn, const std::string& mrl);
   static std::vector<HistoryPtr> fetch(MediaExplorerPtr ml);
   static bool clearStreams(MediaExplorerPtr ml);
-
-  virtual const std::string& mrl() const override;
-  virtual unsigned int insertionDate() const override;
-  virtual bool isFavorite() const override;
-  virtual bool setFavorite(bool isFavorite) override;
 
   static constexpr unsigned int MaxEntries = 100u;
 

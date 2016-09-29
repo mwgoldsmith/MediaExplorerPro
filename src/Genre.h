@@ -31,10 +31,11 @@ public:
   //virtual std::vector<AlbumPtr> albums(SortingCriteria sort, bool desc) const override;
 
   static bool CreateTable(DBConnection dbConn);
-  static std::shared_ptr<Genre> create(MediaExplorerPtr ml, const std::string& name);
-  static std::shared_ptr<Genre> fromName(MediaExplorerPtr ml, const std::string& name);
-  static std::vector<GenrePtr> search(MediaExplorerPtr ml, const std::string& name);
-  static std::vector<GenrePtr> listAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
+  static std::shared_ptr<Genre> Create(MediaExplorerPtr ml, const std::string& name);
+  static std::vector<GenrePtr> Search(MediaExplorerPtr ml, const std::string& name);
+  static std::vector<GenrePtr> ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
+
+  static std::shared_ptr<Genre> FindByName(MediaExplorerPtr ml, const std::string& name);
 
 private:
   MediaExplorerPtr m_ml;

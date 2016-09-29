@@ -27,7 +27,7 @@ mxp::Playlist::Playlist(MediaExplorerPtr ml, const std::string& name)
   , m_name(name)
   , m_creationDate(time(nullptr)) {}
 
-std::shared_ptr<mxp::Playlist> mxp::Playlist::create(MediaExplorerPtr ml, const std::string& name) {
+std::shared_ptr<mxp::Playlist> mxp::Playlist::Create(MediaExplorerPtr ml, const std::string& name) {
   auto self = std::make_shared<Playlist>(ml, name);
   static const auto req = "INSERT INTO " + PlaylistTable::Name + "(name, creation_date) VALUES(?, ?)";
 
@@ -130,7 +130,7 @@ bool mxp::Playlist::CreateTable(DBConnection dbConn) {
       sqlite::Tools::ExecuteRequest(dbConn, vtableReq);
 }
 
-bool mxp::Playlist::createTriggers(DBConnection dbConn) {
+bool mxp::Playlist::CreateTriggers(DBConnection dbConn) {
   static const std::string req = "CREATE TRIGGER IF NOT EXISTS update_playlist_order AFTER UPDATE OF position"
       " ON PlaylistMediaRelation"
       " BEGIN "
@@ -180,13 +180,13 @@ bool mxp::Playlist::createTriggers(DBConnection dbConn) {
       sqlite::Tools::ExecuteRequest(dbConn, vtriggerDelete);
 }
 
-std::vector<mxp::PlaylistPtr> mxp::Playlist::search(MediaExplorerPtr ml, const std::string& name) {
+std::vector<mxp::PlaylistPtr> mxp::Playlist::Search(MediaExplorerPtr ml, const std::string& name) {
   static const auto req = "SELECT * FROM " + PlaylistTable::Name + " WHERE id_playlist IN "
       "(SELECT rowid FROM " + PlaylistTable::Name + "Fts WHERE name MATCH ?)";
   return FetchAll<IPlaylist>(ml, req, name + "*");
 }
 
-std::vector<mxp::PlaylistPtr> mxp::Playlist::listAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc) {
+std::vector<mxp::PlaylistPtr> mxp::Playlist::ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc) {
   auto req = "SELECT * FROM " + PlaylistTable::Name + " ORDER BY ";
   switch (sort) {
   case SortingCriteria::InsertionDate:

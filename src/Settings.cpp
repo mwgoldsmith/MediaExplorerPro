@@ -10,14 +10,12 @@
 #include "Settings.h"
 #include "database/SqliteTools.h"
 
-namespace mxp {
-
-Settings::Settings()
+mxp::Settings::Settings()
   : m_dbConn(nullptr)
-    , m_dbModelVersion(0)
-    , m_changed(false) {}
+  , m_dbModelVersion(0)
+  , m_changed(false) {}
 
-bool Settings::load(DBConnection dbConn) {
+bool mxp::Settings::Load(DBConnection dbConn) {
   m_dbConn = dbConn;
   sqlite::Statement s(m_dbConn->GetConnection(), "SELECT * FROM Settings");
   auto row = s.Row();
@@ -34,11 +32,7 @@ bool Settings::load(DBConnection dbConn) {
   return true;
 }
 
-uint32_t Settings::dbModelVersion() const {
-  return m_dbModelVersion;
-}
-
-bool Settings::save() {
+bool mxp::Settings::Save() {
   static const std::string req = "UPDATE Settings SET db_model_version = ?";
   if (m_changed == false)
     return true;
@@ -49,16 +43,18 @@ bool Settings::save() {
   return false;
 }
 
-void Settings::setDbModelVersion(uint32_t dbModelVersion) {
-  m_dbModelVersion = dbModelVersion;
+uint32_t mxp::Settings::DbModelVersion() const {
+  return m_dbModelVersion;
+}
+
+void mxp::Settings::SetDbModelVersion(uint32_t DbModelVersion) {
+  m_dbModelVersion = DbModelVersion;
   m_changed = true;
 }
 
-bool Settings::CreateTable(DBConnection dbConn) {
+bool mxp::Settings::CreateTable(DBConnection dbConn) {
   const std::string req = "CREATE TABLE IF NOT EXISTS Settings("
       "db_model_version UNSIGNED INTEGER NOT NULL DEFAULT 1"
       ")";
   return sqlite::Tools::ExecuteRequest(dbConn, req);
-}
-
 }

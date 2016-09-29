@@ -74,8 +74,8 @@ struct Task {
   std::shared_ptr<MediaFile> file;
   unsigned int currentService;
 
-  std::vector<VideoTrackInfo> videoTracks;
-  std::vector<AudioTrackInfo> audioTracks;
+  std::vector<VideoTrackInfo> VideoTracks;
+  std::vector<AudioTrackInfo> AudioTracks;
 
   std::string albumArtist;
   std::string artist;
@@ -83,7 +83,7 @@ struct Task {
   std::string title;
   std::string artworkMrl;
   std::string genre;
-  std::string releaseDate;
+  std::string ReleaseDate;
   std::string showName;
   int trackNumber;
   int discNumber;

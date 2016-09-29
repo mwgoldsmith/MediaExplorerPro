@@ -83,7 +83,7 @@ bool mxp::AudioTrack::CreateTable(DBConnection dbConnection) {
   return sqlite::Tools::ExecuteRequest(dbConnection, req);
 }
 
-std::shared_ptr<mxp::AudioTrack> mxp::AudioTrack::create(MediaExplorerPtr ml, const std::string& codec,
+std::shared_ptr<mxp::AudioTrack> mxp::AudioTrack::Create(MediaExplorerPtr ml, const std::string& codec,
                                                unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels,
                                                const std::string& language, const std::string& desc, int64_t mediaId) {
   static const auto req = "INSERT INTO " + AudioTrackTable::Name

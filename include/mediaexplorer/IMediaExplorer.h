@@ -65,6 +65,20 @@ public:
   virtual void Discover(const std::string& entryPoint) = 0;
 
   /**
+  * @brief IgnoreFolder blacklists a folder from media file discovery.
+  *
+  * @param path Path of the folder to ignore
+  */
+  virtual bool IgnoreFolder(const std::string& path) = 0;
+
+  /**
+  * @brief UnignoreFolder removes a blacklisted folder from media file discovery.
+  *
+  * @param path Path of the folder to un-ignore
+  */
+  virtual bool UnignoreFolder(const std::string& path) = 0;
+
+  /**
    * @brief PauseBackgroundOperations will stop potentially CPU intensive background
    *        operations, until ResumeBackgroundOperations() is called.
    *

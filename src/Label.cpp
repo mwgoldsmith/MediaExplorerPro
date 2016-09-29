@@ -42,7 +42,7 @@ std::vector<mxp::MediaPtr> mxp::Label::Files() {
   return Media::FetchAll<IMedia>(m_ml, req, m_id);
 }
 
-mxp::LabelPtr mxp::Label::create(MediaExplorerPtr ml, const std::string& name) {
+mxp::LabelPtr mxp::Label::Create(MediaExplorerPtr ml, const std::string& name) {
   auto self = std::make_shared<Label>(ml, name);
   auto req = "INSERT INTO Label VALUES(NULL, ?)";
   if (insert(ml, self, req, self->m_name) == false)

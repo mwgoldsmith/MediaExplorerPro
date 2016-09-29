@@ -18,7 +18,7 @@
 #include "filesystem/IDevice.h"
 #include "logging/Logger.h"
 
-mxp::FsDiscoverer::FsDiscoverer(std::shared_ptr<mxp::factory::IFileSystem> fsFactory, mxp::MediaExplorer* ml, mxp::IMediaExplorerCb* cb)
+mxp::FsDiscoverer::FsDiscoverer(FileSystemPtr fsFactory, mxp::MediaExplorer* ml, mxp::IMediaExplorerCb* cb)
   : m_ml(ml)
   , m_fsFactory(fsFactory)
   , m_cb(cb) {}
@@ -35,7 +35,7 @@ bool mxp::FsDiscoverer::Discover(const std::string& entryPoint) {
     LOG_ERROR("Failed to create an IDirectory for ", entryPoint);
     return false;
   }
-  auto f = mxp::MediaFolder::fromPath(m_ml, fsDir->path());
+  auto f = mxp::MediaFolder::FindByPath(m_ml, fsDir->path());
   // If the folder exists, we assume it will be handled by reload()
   if (f != nullptr)
     return true;
@@ -53,7 +53,7 @@ void mxp::FsDiscoverer::reload() {
   for (const auto& f : rootFolders) {
     auto folder = m_fsFactory->CreateDirectoryFromPath(f->path());
     if (folder == nullptr) {
-      m_ml->DeleteFolder(*f);
+      m_ml->DeleteMediaFolder(*f);
       continue;
     }
     checkFolder(*folder, *f);
@@ -62,7 +62,7 @@ void mxp::FsDiscoverer::reload() {
 
 void mxp::FsDiscoverer::reload(const std::string& entryPoint) {
   LOG_INFO("Reloading folder ", entryPoint);
-  auto folder = mxp::MediaFolder::fromPath(m_ml, entryPoint);
+  auto folder = mxp::MediaFolder::FindByPath(m_ml, entryPoint);
   if (folder == nullptr) {
     LOG_ERROR("Can't reload ", entryPoint, ": folder wasn't found in database");
     return;
@@ -94,7 +94,7 @@ void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::M
   // In this case, simply delete the folder.
   if (hasDotNoMediaFile(currentFolderFs)) {
     LOG_INFO("Deleting folder ", currentFolderFs.path(), " due to a .nomedia file");
-    m_ml->DeleteFolder(currentFolder);
+    m_ml->DeleteMediaFolder(currentFolder);
     return;
   }
   if (m_cb != nullptr)
@@ -138,7 +138,7 @@ void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::M
   // Now all folders we had in DB but haven't seen from the FS must have been deleted.
   for (auto f : subFoldersInDB) {
     LOG_INFO("Folder ", f->path(), " not found eviceFs->uuid()in FS, deleting it");
-    m_ml->DeleteFolder(*f);
+    m_ml->DeleteMediaFolder(*f);
   }
   checkFiles(currentFolderFs, currentFolder);
   LOG_INFO("Done checking subfolders in ", currentFolderFs.path());
@@ -202,13 +202,13 @@ bool mxp::FsDiscoverer::addFolder(mxp::fs::IDirectory& folder, mxp::MediaFolder*
   auto deviceFs = folder.device();
   // We are creating a folder, there has to be a device containing it.
   assert(deviceFs != nullptr);
-  auto device = mxp::MediaDevice::fromUuid(m_ml, deviceFs->uuid());
+  auto device = mxp::MediaDevice::FindByUuid(m_ml, deviceFs->uuid());
   if (device == nullptr) {
     LOG_INFO("Creating new device in DB ", deviceFs->uuid());
-    device = mxp::MediaDevice::create(m_ml, deviceFs->uuid(), deviceFs->IsRemovable());
+    device = mxp::MediaDevice::Create(m_ml, deviceFs->uuid(), deviceFs->IsRemovable());
   }
 
-  auto f = mxp::MediaFolder::create(m_ml, folder.path(), parentFolder != nullptr ? parentFolder->id() : 0, *device, *deviceFs);
+  auto f = mxp::MediaFolder::Create(m_ml, folder.path(), parentFolder != nullptr ? parentFolder->id() : 0, *device, *deviceFs);
                           
   LOG_INFO("Created new folder in DB ", folder.path());
   if (f == nullptr)

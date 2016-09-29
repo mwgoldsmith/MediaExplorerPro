@@ -37,19 +37,17 @@ public:
   virtual const std::string& description() const override;
 
   static bool CreateTable(DBConnection dbConnection);
-  static std::shared_ptr<AudioTrack> create(MediaExplorerPtr ml, const std::string& codec,
-                                            unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels,
-                                            const std::string& language, const std::string& desc, int64_t mediaId);
+  static std::shared_ptr<AudioTrack> Create(MediaExplorerPtr ml, const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc, int64_t mediaId);
 
 private:
-  int64_t m_id;
-  std::string m_codec;
+  int64_t      m_id;
+  std::string  m_codec;
   unsigned int m_bitrate;
   unsigned int m_sampleRate;
   unsigned int m_nbChannels;
-  std::string m_language;
-  std::string m_description;
-  int64_t m_mediaId;
+  std::string  m_language;
+  std::string  m_description;
+  int64_t      m_mediaId;
 
 private:
   friend struct policy::AudioTrackTable;

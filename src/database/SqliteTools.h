@@ -49,7 +49,7 @@ public:
     stmt.Execute(std::forward<Args>(args)...);
     Row sqliteRow;
     while ((sqliteRow = stmt.Row()) != nullptr) {
-      auto row = IMPL::load(ml, sqliteRow);
+      auto row = IMPL::Load(ml, sqliteRow);
       results.push_back(row);
     }
     auto duration = std::chrono::steady_clock::now() - chrono;
@@ -70,7 +70,7 @@ public:
     auto row = stmt.Row();
     if (row == nullptr)
       return nullptr;
-    auto res = T::load(ml, row);
+    auto res = T::Load(ml, row);
     auto duration = std::chrono::steady_clock::now() - chrono;
     LOG_DEBUG("Executed ", req, " in ", std::chrono::duration_cast<std::chrono::microseconds>(duration).count(), "µs");
     return res;

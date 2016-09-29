@@ -71,7 +71,7 @@ mxp::Media::Media(MediaExplorerPtr ml, const std::string& title, Type type)
   , m_changed(false) {
 }
 
-std::shared_ptr<mxp::Media> mxp::Media::create(MediaExplorerPtr ml, Type type, const fs::IFile& file) {
+std::shared_ptr<mxp::Media> mxp::Media::Create(MediaExplorerPtr ml, Type type, const fs::IFile& file) {
   auto self = std::make_shared<Media>(ml, file.name(), type);
   static const std::string req = "INSERT INTO " + MediaTable::Name + "(type, insertion_date, title, filename) VALUES(?, ?, ?, ?)";
 
@@ -176,7 +176,7 @@ int mxp::Media::rating() const {
   return m_rating;
 }
 
-bool mxp::Media::setRating(int rating) {
+bool mxp::Media::SetRating(int rating) {
   static const auto req = "UPDATE " + MediaTable::Name + " SET rating = ? WHERE id_media = ?";
   if (m_rating == rating)
     return true;
@@ -190,7 +190,7 @@ bool mxp::Media::isFavorite() const {
   return m_isFavorite;
 }
 
-bool mxp::Media::setFavorite(bool favorite) {
+bool mxp::Media::SetFavorite(bool favorite) {
   static const auto req = "UPDATE " + MediaTable::Name + " SET is_favorite = ? WHERE id_media = ?";
   if (m_isFavorite == favorite)
     return true;
@@ -210,53 +210,53 @@ const std::vector<mxp::MediaFilePtr>& mxp::Media::Files() const {
   return m_files;
 }
 
-bool mxp::Media::addVideoTrack(const std::string& codec, unsigned int width, unsigned int height, float fps, const std::string& language, const std::string& description) {
-  return VideoTrack::create(m_ml, codec, width, height, fps, m_id, language, description) != nullptr;
+bool mxp::Media::AddVideoTrack(const std::string& codec, unsigned int width, unsigned int height, float fps, const std::string& language, const std::string& description) {
+  return VideoTrack::Create(m_ml, codec, width, height, fps, m_id, language, description) != nullptr;
 }
 
-std::vector<mxp::VideoTrackPtr> mxp::Media::videoTracks() {
+std::vector<mxp::VideoTrackPtr> mxp::Media::VideoTracks() {
   static const auto req = "SELECT * FROM " + policy::VideoTrackTable::Name +
       " WHERE media_id = ?";
   return VideoTrack::FetchAll<IVideoTrack>(m_ml, req, m_id);
 }
 
-bool mxp::Media::addAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc) {
-  return AudioTrack::create(m_ml, codec, bitrate, sampleRate, nbChannels, language, desc, m_id) != nullptr;
+bool mxp::Media::AddAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc) {
+  return AudioTrack::Create(m_ml, codec, bitrate, sampleRate, nbChannels, language, desc, m_id) != nullptr;
 }
 
-std::vector<mxp::AudioTrackPtr> mxp::Media::audioTracks() {
+std::vector<mxp::AudioTrackPtr> mxp::Media::AudioTracks() {
   static const auto req = "SELECT * FROM " + policy::AudioTrackTable::Name +
       " WHERE media_id = ?";
   return AudioTrack::FetchAll<IAudioTrack>(m_ml, req, m_id);
 }
 
-time_t mxp::Media::insertionDate() const {
+time_t mxp::Media::InsertionDate() const {
   return m_insertionDate;
 }
 
-time_t mxp::Media::releaseDate() const {
+time_t mxp::Media::ReleaseDate() const {
   return m_releaseDate;
 }
 
-void mxp::Media::setReleaseDate(unsigned int date) {
+void mxp::Media::SetReleaseDate(time_t date) {
   if (m_releaseDate == date)
     return;
   m_releaseDate = date;
   m_changed = true;
 }
 
-const std::string& mxp::Media::thumbnail() {
+const std::string& mxp::Media::Thumbnail() {
   return m_thumbnail;
 }
 
-void mxp::Media::setThumbnail(const std::string& thumbnail) {
+void mxp::Media::SetThumbnail(const std::string& thumbnail) {
   if (m_thumbnail == thumbnail)
     return;
   m_thumbnail = thumbnail;
   m_changed = true;
 }
 
-bool mxp::Media::save() {
+bool mxp::Media::Save() {
   static const auto req = "UPDATE " + MediaTable::Name + " SET "
       "type = ?, subtype = ?, duration = ?, progress = ?, release_date = ?, "
       "thumbnail = ?, title = ? WHERE id_media = ?";
@@ -269,8 +269,8 @@ bool mxp::Media::save() {
   return true;
 }
 
-std::shared_ptr<mxp::MediaFile> mxp::Media::addFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IMediaFile::Type type) {
-  auto file = MediaFile::create(m_ml, m_id, type, fileFs, parentFolder.id(), parentFolderFs.device()->IsRemovable());
+std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IMediaFile::Type type) {
+  auto file = MediaFile::Create(m_ml, m_id, type, fileFs, parentFolder.id(), parentFolderFs.device()->IsRemovable());
   if (file == nullptr)
     return nullptr;
   auto lock = m_files.Lock();
@@ -289,7 +289,7 @@ void mxp::Media::removeFile(MediaFile& file) {
   }));
 }
 
-std::vector<mxp::MediaPtr> mxp::Media::listAll(mxp::MediaExplorerPtr ml, mxp::IMedia::Type type, mxp::SortingCriteria sort, bool desc) {
+std::vector<mxp::MediaPtr> mxp::Media::ListAll(mxp::MediaExplorerPtr ml, mxp::IMedia::Type type, mxp::SortingCriteria sort, bool desc) {
   std::string req;
 
   if (sort == mxp::SortingCriteria::LastModificationDate) {
@@ -337,7 +337,7 @@ mxp::IMedia::SubType mxp::Media::subType() const {
   return m_subType;
 }
 
-void mxp::Media::setType(Type type) {
+void mxp::Media::SetType(Type type) {
   if (m_type != type)
     return;
   m_type = type;
@@ -348,7 +348,7 @@ const std::string& mxp::Media::title() const {
   return m_title;
 }
 
-void mxp::Media::setTitle(const std::string &title) {
+void mxp::Media::SetTitle(const std::string &title) {
   if (m_title == title)
     return;
   m_title = title;
@@ -385,7 +385,7 @@ bool mxp::Media::CreateTable(DBConnection connection) {
       sqlite::Tools::ExecuteRequest(connection, vtableReq);
 }
 
-bool mxp::Media::createTriggers(DBConnection connection) {
+bool mxp::Media::CreateTriggers(DBConnection connection) {
   static const auto triggerReq = "CREATE TRIGGER IF NOT EXISTS has_files_present AFTER UPDATE OF "
       "is_present ON " + policy::MediaFileTable::Name +
       " BEGIN "
@@ -422,7 +422,7 @@ bool mxp::Media::createTriggers(DBConnection connection) {
       sqlite::Tools::ExecuteRequest(connection, vtableUpdateTitleTrigger2);
 }
 
-bool mxp::Media::addLabel(LabelPtr label) {
+bool mxp::Media::AddLabel(LabelPtr label) {
   if (m_id == 0 || label->id() == 0) {
     LOG_ERROR("Both file & label need to be inserted in database before being linked together");
     return false;
@@ -435,7 +435,7 @@ bool mxp::Media::addLabel(LabelPtr label) {
   return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->name(), m_id);
 }
 
-bool mxp::Media::removeLabel(LabelPtr label) {
+bool mxp::Media::RemoveLabel(LabelPtr label) {
   if (m_id == 0 || label->id() == 0) {
     LOG_ERROR("Can't unlink a label/file not inserted in database");
     return false;
@@ -457,7 +457,7 @@ std::vector<mxp::LabelPtr> mxp::Media::labels() {
   return Label::FetchAll<ILabel>(m_ml, req, m_id);
 }
 
-std::vector<mxp::MediaPtr> mxp::Media::search(MediaExplorerPtr ml, const std::string& title) {
+std::vector<mxp::MediaPtr> mxp::Media::Search(MediaExplorerPtr ml, const std::string& title) {
   static const auto req = "SELECT * FROM " + MediaTable::Name + " WHERE"
       " id_media IN (SELECT rowid FROM " + MediaTable::Name + "Fts"
       " WHERE " + MediaTable::Name + "Fts MATCH ?)"
@@ -465,7 +465,7 @@ std::vector<mxp::MediaPtr> mxp::Media::search(MediaExplorerPtr ml, const std::st
   return Media::FetchAll<IMedia>(ml, req, title + "*");
 }
 
-std::vector<mxp::MediaPtr> mxp::Media::fetchHistory(MediaExplorerPtr ml) {
+std::vector<mxp::MediaPtr> mxp::Media::FetchHistory(MediaExplorerPtr ml) {
   static const auto req = "SELECT * FROM " + MediaTable::Name + 
       " WHERE last_played_date IS NOT NULL"
       " ORDER BY last_played_date DESC LIMIT 100";

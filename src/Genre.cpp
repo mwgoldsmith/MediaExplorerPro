@@ -24,8 +24,8 @@ mxp::Genre::Genre(MediaExplorerPtr ml, sqlite::Row& row)
 
 mxp::Genre::Genre(MediaExplorerPtr ml, const std::string& name)
   : m_ml(ml)
-    , m_id(0)
-    , m_name(name) {}
+  , m_id(0)
+  , m_name(name) {}
 
 int64_t mxp::Genre::id() const {
   return m_id;
@@ -79,7 +79,7 @@ bool mxp::Genre::CreateTable(DBConnection dbConn) {
       sqlite::Tools::ExecuteRequest(dbConn, vtableDeleteTrigger);
 }
 
-std::shared_ptr<mxp::Genre> mxp::Genre::create(MediaExplorerPtr ml, const std::string& name) {
+std::shared_ptr<mxp::Genre> mxp::Genre::Create(MediaExplorerPtr ml, const std::string& name) {
   static const auto req = "INSERT INTO " + GenreTable::Name + "(name) VALUES(?)";
   auto self = std::make_shared<Genre>(ml, name);
   if (insert(ml, self, req, name) == false)
@@ -87,18 +87,18 @@ std::shared_ptr<mxp::Genre> mxp::Genre::create(MediaExplorerPtr ml, const std::s
   return self;
 }
 
-std::shared_ptr<mxp::Genre> mxp::Genre::fromName(MediaExplorerPtr ml, const std::string& name) {
+std::shared_ptr<mxp::Genre> mxp::Genre::FindByName(MediaExplorerPtr ml, const std::string& name) {
   static const auto req = "SELECT * FROM " + GenreTable::Name + " WHERE name = ?";
   return Fetch(ml, req, name);
 }
 
-std::vector<mxp::GenrePtr> mxp::Genre::search(MediaExplorerPtr ml, const std::string& name) {
+std::vector<mxp::GenrePtr> mxp::Genre::Search(MediaExplorerPtr ml, const std::string& name) {
   static const auto req = "SELECT * FROM " + GenreTable::Name + " WHERE id_genre IN "
       "(SELECT rowid FROM " + GenreTable::Name + "Fts WHERE name MATCH ?)";
   return FetchAll<IGenre>(ml, req, name + "*");
 }
 
-std::vector<mxp::GenrePtr> mxp::Genre::listAll(MediaExplorerPtr ml, SortingCriteria, bool desc) {
+std::vector<mxp::GenrePtr> mxp::Genre::ListAll(MediaExplorerPtr ml, SortingCriteria, bool desc) {
   auto req = "SELECT * FROM " + GenreTable::Name + " ORDER BY name";
   if (desc == true)
     req += " DESC";

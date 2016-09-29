@@ -57,7 +57,7 @@ void mxp::MediaDevice::setPresent(bool value) {
   m_isPresent = value;
 }
 
-std::shared_ptr<mxp::MediaDevice> mxp::MediaDevice::create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable) {
+std::shared_ptr<mxp::MediaDevice> mxp::MediaDevice::Create(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable) {
   static const auto req = "INSERT INTO " + MediaDeviceTable::Name + "(uuid, is_removable, is_present) VALUES(?, ?, ?)";
   auto self = std::make_shared<MediaDevice>(ml, uuid, isRemovable);
   if(insert(ml, self, req, uuid, isRemovable, self->isPresent()) == false) {
@@ -77,7 +77,7 @@ bool mxp::MediaDevice::CreateTable(DBConnection connection) {
   return sqlite::Tools::ExecuteRequest(connection, req);
 }
 
-std::shared_ptr<mxp::MediaDevice> mxp::MediaDevice::fromUuid(MediaExplorerPtr ml, const std::string& uuid) {
+std::shared_ptr<mxp::MediaDevice> mxp::MediaDevice::FindByUuid(MediaExplorerPtr ml, const std::string& uuid) {
   static const auto req = "SELECT * FROM " + MediaDeviceTable::Name + " WHERE uuid = ?";
   return Fetch(ml, req, uuid);
 }

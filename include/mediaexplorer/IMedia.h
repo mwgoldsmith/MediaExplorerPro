@@ -74,23 +74,23 @@ public:
    *  will be accepted.
    */
   virtual int rating() const = 0;
-  virtual bool setRating(int rating) = 0;
+  virtual bool SetRating(int rating) = 0;
   virtual bool isFavorite() const = 0;
-  virtual bool setFavorite(bool favorite) = 0;
-  virtual bool addLabel(LabelPtr label) = 0;
-  virtual bool removeLabel(LabelPtr label) = 0;
+  virtual bool SetFavorite(bool favorite) = 0;
+  virtual bool AddLabel(LabelPtr label) = 0;
+  virtual bool RemoveLabel(LabelPtr label) = 0;
   virtual std::vector<LabelPtr> labels() = 0;
   //virtual MoviePtr movie() const = 0;
-  virtual std::vector<VideoTrackPtr> videoTracks() = 0;
-  virtual std::vector<AudioTrackPtr> audioTracks() = 0;
+  virtual std::vector<VideoTrackPtr> VideoTracks() = 0;
+  virtual std::vector<AudioTrackPtr> AudioTracks() = 0;
   /**
    *  @brief thumbnail Returns the path of a thumbnail for this media
    *  @return A path, relative to the thumbnailPath configured when initializing
    *   The media library
    */
-  virtual const std::string& thumbnail() = 0;
-  virtual time_t insertionDate() const = 0;
-  virtual time_t releaseDate() const = 0;
+  virtual const std::string& Thumbnail() = 0;
+  virtual time_t InsertionDate() const = 0;
+  virtual time_t ReleaseDate() const = 0;
 };
 
 }

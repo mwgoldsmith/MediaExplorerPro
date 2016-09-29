@@ -64,7 +64,7 @@ const std::string& mxp::VideoTrack::description() const {
   return m_description;
 }
 
-std::shared_ptr<mxp::VideoTrack> mxp::VideoTrack::create(MediaExplorerPtr ml, const std::string& codec, unsigned int width,
+std::shared_ptr<mxp::VideoTrack> mxp::VideoTrack::Create(MediaExplorerPtr ml, const std::string& codec, unsigned int width,
                                                unsigned int height, float fps, int64_t mediaId,
                                                const std::string& language, const std::string& description) {
   static const auto req = "INSERT INTO " + VideoTrackTable::Name

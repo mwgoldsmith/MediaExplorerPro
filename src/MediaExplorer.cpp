@@ -30,10 +30,13 @@
 #include "discoverer/FsDiscoverer.h"
 #include "factory/DeviceListerFactory.h"
 #include "factory/FileSystemFactory.h"
+#include "factory/MediaContainerFactory.h"
 #include "logging/Logger.h"
 #include "mediaexplorer/ILogger.h"
+#include "filesystem/IDevice.h"
 #include "metadata_services/MetadataParser.h"
 #include "parser/Parser.h"
+#include "utils/Filename.h"
 #include "utils/ModificationsNotifier.h"
 
 std::string mxp::MediaExplorer::s_version = PACKAGE_STRING;
@@ -90,10 +93,10 @@ bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb*
     return false;
   }
 
-  if (m_settings.load(m_db.get()) == false) {
+  if (m_settings.Load(m_db.get()) == false) {
     return false;
-  } else if (m_settings.dbModelVersion() != DbModelVersion) {
-    if (UpdateDatabaseModel(m_settings.dbModelVersion()) == false) {
+  } else if (m_settings.DbModelVersion() != DbModelVersion) {
+    if (UpdateDatabaseModel(m_settings.DbModelVersion()) == false) {
       return false;
     }
   }
@@ -146,7 +149,7 @@ mxp::FileSystemPtr mxp::MediaExplorer::GetFileSystem() const {
 }
 
 mxp::LabelPtr mxp::MediaExplorer::CreateLabel(const std::string& label) {
-  return mxp::Label::create(this, label);
+  return mxp::Label::Create(this, label);
 }
 
 bool mxp::MediaExplorer::DeleteLabel(mxp::LabelPtr label) {
@@ -162,7 +165,7 @@ mxp::IMediaExplorerCb* mxp::MediaExplorer::GetCallbacks() const {
 }
 
 std::vector<mxp::GenrePtr> mxp::MediaExplorer::GenreList(mxp::SortingCriteria sort, bool desc) const {
-  return Genre::listAll(this, sort, desc);
+  return Genre::ListAll(this, sort, desc);
 }
 
 mxp::GenrePtr mxp::MediaExplorer::Genre(int64_t id) const {
@@ -174,16 +177,46 @@ bool mxp::MediaExplorer::AddToHistory(const std::string& mrl) {
   return History::insert(GetConnection(), mrl);
 }
 
-bool mxp::MediaExplorer::DeleteFolder(const mxp::MediaFolder& folder) {
-  return false;
+bool mxp::MediaExplorer::DeleteMediaFolder(const mxp::MediaFolder& folder) {
+  if(MediaFolder::destroy(this, folder.id()) == false)
+    return false;
+
+  Media::clear();
+
+  return true;
 }
 
-std::shared_ptr<mxp::MediaDevice> mxp::MediaExplorer::FindDevice(const std::string& uuid) {
-  return mxp::MediaDevice::fromUuid(this, uuid);
+bool mxp::MediaExplorer::IgnoreFolder(const std::string& path) {
+  return MediaFolder::blacklist(this, path);
+}
+
+bool mxp::MediaExplorer::UnignoreFolder(const std::string& path) {
+  auto folder = MediaFolder::blacklistedFolder(this, path);
+  if(folder == nullptr) {
+    return false;
+  }
+
+  DeleteMediaFolder(*folder);
+
+  // We are about to refresh the folder we blacklisted earlier, if we don't have a discoverer, stop early
+  if(m_discoverer == nullptr) {
+    return true;
+  }
+
+  auto parentPath = mxp::utils::file::parentDirectory(path);
+  // If the parent folder was never added to the media library, the discoverer will reject it.
+  // We could check it from here, but that would mean fetching the folder twice, which would be a waste.
+  m_discoverer->reload(parentPath);
+
+  return true;
+}
+
+std::shared_ptr<mxp::MediaDevice> mxp::MediaExplorer::FindMediaDevice(const std::string& uuid) {
+  return mxp::MediaDevice::FindByUuid(this, uuid);
 }
 
 mxp::PlaylistPtr mxp::MediaExplorer::CreatePlaylist(const std::string& name) { 
-  return mxp::Playlist::create(this, name);
+  return mxp::Playlist::Create(this, name);
 }
 
 bool mxp::MediaExplorer::DeletePlaylist(int64_t playlistId) { 
@@ -192,7 +225,7 @@ bool mxp::MediaExplorer::DeletePlaylist(int64_t playlistId) {
 }
 
 std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::PlaylistList(mxp::SortingCriteria sort, bool desc) { 
-  return mxp::Playlist::listAll(this, sort, desc);
+  return mxp::Playlist::ListAll(this, sort, desc);
 }
 
 mxp::PlaylistPtr mxp::MediaExplorer::Playlist(int64_t id) const { 
@@ -202,7 +235,7 @@ mxp::PlaylistPtr mxp::MediaExplorer::Playlist(int64_t id) const {
 mxp::MediaSearchAggregate mxp::MediaExplorer::SearchMedia(const std::string& title) const { 
   if (ValidateSearchPattern(title) == false)
     return{};
-  auto tmp = mxp::Media::search(this, title);
+  auto tmp = mxp::Media::Search(this, title);
   mxp::MediaSearchAggregate res;
   for (auto& m : tmp) {
     switch (m->subType()) {
@@ -226,13 +259,13 @@ mxp::MediaSearchAggregate mxp::MediaExplorer::SearchMedia(const std::string& tit
 std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::SearchPlaylists(const std::string& name) const {
   if (ValidateSearchPattern(name) == false)
     return{};
-  return mxp::Playlist::search(this, name);
+  return mxp::Playlist::Search(this, name);
 }
 
 std::vector<mxp::GenrePtr> mxp::MediaExplorer::SearchGenre(const std::string& genre) const {
   if(ValidateSearchPattern(genre) == false)
     return{};
-  return Genre::search(this, genre);
+  return Genre::Search(this, genre);
 }
 
 mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) const { 
@@ -263,6 +296,8 @@ const std::vector<std::string> supportedVideoExtensions{
     return strcasecmp(v.c_str(), ext.c_str()) == 0;
   };
 
+  mxp::factory::createMediaContainer(fileFs.FullPath());
+
   if (std::find_if(begin(supportedVideoExtensions), end(supportedVideoExtensions), predicate) != end(supportedVideoExtensions)) {
     type = mxp::IMedia::Type::VideoType;
   //} else if (std::find_if(begin(supportedAudioExtensions), end(supportedAudioExtensions), predicate) != end(supportedAudioExtensions)) {
@@ -274,14 +309,14 @@ const std::vector<std::string> supportedVideoExtensions{
   }
 
   LOG_INFO("Adding ", fileFs.FullPath());
-  auto mptr = mxp::Media::create(this, type, fileFs);
+  auto mptr = mxp::Media::Create(this, type, fileFs);
   if (mptr == nullptr) {
     LOG_ERROR("Failed to add media ", fileFs.FullPath(), " to the media library");
     return nullptr;
   }
 
   // For now, assume all media are made of a single file
-  auto file = mptr->addFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
+  auto file = mptr->AddFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
   if (file == nullptr) {
     LOG_ERROR("Failed to add file ", fileFs.FullPath(), " to media #", mptr->id());
     mxp::Media::destroy(this, mptr->id());
@@ -301,11 +336,44 @@ bool mxp::MediaExplorer::DeleteMedia(int64_t mediaId) const {
 }
 
 std::vector<mxp::MediaPtr> mxp::MediaExplorer::MediaList(mxp::SortingCriteria sort, bool desc) {
-  return mxp::Media::listAll(this, mxp::IMedia::Type::VideoType, sort, desc);
+  return mxp::Media::ListAll(this, mxp::IMedia::Type::VideoType, sort, desc);
 }
 
 mxp::MediaPtr mxp::MediaExplorer::Media(int64_t mediaId) const {
   return mxp::Media::Fetch(this, mediaId);
+}
+
+mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const {
+  auto device = m_fsFactory->CreateDeviceFromPath(mrl);
+  if(device == nullptr) {
+    LOG_WARN("Failed to create a device associated with mrl ", mrl);
+    return nullptr;
+  }
+
+  std::shared_ptr<MediaFile> file;
+  if(device->IsRemovable() == false) {
+    file = MediaFile::FindByPath(this, mrl);
+  } else {
+    auto folder = MediaFolder::FindByPath(this, utils::file::directory(mrl));
+    if(folder == nullptr) {
+      LOG_WARN("Failed to find folder containing ", mrl);
+      return nullptr;
+    }
+
+    if(folder->isPresent() == false) {
+      LOG_INFO("Found a folder containing ", mrl, " but it is not present");
+      return nullptr;
+    }
+
+    file = MediaFile::FindByFileName(this, utils::file::fileName(mrl), folder->id());
+  }
+
+  if(file == nullptr) {
+    LOG_WARN("Failed to fetch file for ", mrl, "(device ", device->uuid(), " was ", device->IsRemovable() ? "NOT" : "", "removable)");
+    return nullptr;
+  }
+
+  return file->media();
 }
 
 void mxp::MediaExplorer::Discover(const std::string& entryPoint) {
@@ -335,8 +403,8 @@ bool mxp::MediaExplorer::CreateAllTables() {
     Genre::CreateTable(m_db.get()) &&
     VideoTrack::CreateTable(m_db.get()) &&
     AudioTrack::CreateTable(m_db.get()) &&
-    Media::createTriggers(m_db.get()) &&
-    Playlist::createTriggers(m_db.get()) &&
+    Media::CreateTriggers(m_db.get()) &&
+    Playlist::CreateTriggers(m_db.get()) &&
     History::CreateTable(m_db.get()) &&
     Settings::CreateTable(m_db.get());
 
@@ -369,8 +437,8 @@ bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
 
   // Safety check: ensure we didn't forget a migration along the way
   assert(prevVersion == DbModelVersion);
-  m_settings.setDbModelVersion(DbModelVersion);
-  m_settings.save();
+  m_settings.SetDbModelVersion(DbModelVersion);
+  m_settings.Save();
 
   return true;
 }

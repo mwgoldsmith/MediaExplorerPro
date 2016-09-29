@@ -34,14 +34,6 @@ public:
   MediaFolder(MediaExplorerPtr ml, sqlite::Row& row);
   MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent , int64_t deviceId , bool isRemovable);
 
-  static bool CreateTable(DBConnection connection);
-  static std::shared_ptr<MediaFolder> create(MediaExplorerPtr ml, const std::string& path, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs);
-  static bool blacklist(MediaExplorerPtr ml, const std::string& fullPath);
-  static std::vector<std::shared_ptr<MediaFolder>> FetchAll(MediaExplorerPtr ml, int64_t parentFolderId);
-
-  static std::shared_ptr<MediaFolder> fromPath(MediaExplorerPtr ml, const std::string& fullPath);
-  static std::shared_ptr<MediaFolder> blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath);
-
   int64_t id() const;
   const std::string& path() const;
   std::vector<std::shared_ptr<MediaFile>> Files();
@@ -50,24 +42,32 @@ public:
   int64_t deviceId() const;
   bool isPresent() const;
 
+  static bool CreateTable(DBConnection connection);
+  static std::shared_ptr<MediaFolder> Create(MediaExplorerPtr ml, const std::string& path, int64_t parentId, MediaDevice& device, fs::IDevice& deviceFs);
+  static bool blacklist(MediaExplorerPtr ml, const std::string& fullPath);
+  static std::vector<std::shared_ptr<MediaFolder>> FetchAll(MediaExplorerPtr ml, int64_t parentFolderId);
+
+  static std::shared_ptr<MediaFolder> FindByPath(MediaExplorerPtr ml, const std::string& fullPath);
+  static std::shared_ptr<MediaFolder> blacklistedFolder(MediaExplorerPtr ml, const std::string& fullPath);
+
 private:
-  static std::shared_ptr<MediaFolder> fromPath(MediaExplorerPtr ml, const std::string& fullPath, bool includeBlacklisted);
+  static std::shared_ptr<MediaFolder> FindByPath(MediaExplorerPtr ml, const std::string& fullPath, bool includeBlacklisted);
 
 private:
   MediaExplorerPtr m_ml;
+  int64_t          m_id;
+  int64_t          m_parent;
+  bool             m_isBlacklisted;
+  int64_t          m_deviceId;
+  bool             m_isPresent;
+  bool             m_isRemovable;
 
-  int64_t m_id;
   // This contains the path relative to the device mountpoint (ie. excluding it)
-  std::string m_path;
-  int64_t m_parent;
-  bool m_isBlacklisted;
-  int64_t m_deviceId;
-  bool m_isPresent;
-  bool m_isRemovable;
+  std::string                m_path;
+  // This contains the full path, including device mountpoint.
+  mutable std::string        m_fullPath;
 
   mutable Cache<std::string> m_deviceMountpoint;
-  // This contains the full path, including device mountpoint.
-  mutable std::string m_fullPath;
 
   friend struct policy::MediaFolderTable;
 };

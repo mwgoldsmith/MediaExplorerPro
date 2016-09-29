@@ -42,10 +42,10 @@ public:
     return sqlite::Tools::FetchAll<IMPL, INTF>(ml, req, std::forward<Args>(args)...);
   }
 
-  static std::shared_ptr<IMPL> load(MediaExplorerPtr ml, sqlite::Row& row) {
+  static std::shared_ptr<IMPL> Load(MediaExplorerPtr ml, sqlite::Row& row) {
     Lock l{ Mutex };
 
-    auto key = row.load<int64_t>(0);
+    auto key = row.Load<int64_t>(0);
     auto it = Store.find(key);
     if (it != Store.end())
       return it->second;

@@ -27,8 +27,6 @@ public:
   Playlist(MediaExplorerPtr ml, sqlite::Row& row);
   Playlist(MediaExplorerPtr ml, const std::string& name);
 
-  static std::shared_ptr<Playlist> create(MediaExplorerPtr ml, const std::string& name);
-
   virtual int64_t id() const override;
   virtual const std::string& name() const override;
   virtual bool setName(const std::string& name) override;
@@ -39,10 +37,12 @@ public:
   virtual bool move(int64_t mediaId, unsigned int position) override;
   virtual bool remove(int64_t mediaId) override;
 
+
   static bool CreateTable(DBConnection dbConn);
-  static bool createTriggers(DBConnection dbConn);
-  static std::vector<PlaylistPtr> search(MediaExplorerPtr ml, const std::string& name);
-  static std::vector<PlaylistPtr> listAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
+  static std::shared_ptr<Playlist> Create(MediaExplorerPtr ml, const std::string& name);
+  static bool CreateTriggers(DBConnection dbConn);
+  static std::vector<PlaylistPtr> Search(MediaExplorerPtr ml, const std::string& name);
+  static std::vector<PlaylistPtr> ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
 
 private:
   MediaExplorerPtr m_ml;
