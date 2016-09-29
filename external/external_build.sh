@@ -158,8 +158,9 @@ if ! fileInstalled "libsqlite3.la"; then
             -DSQLITE_ENABLE_COLUMN_METADATA=1     \
             -DSQLITE_ENABLE_UNLOCK_NOTIFY=1       \
             -DSQLITE_SECURE_DELETE=1              \
-            -DSQLITE_ENABLE_DBSTAT_VTAB=1"
-fi
+            -DSQLITE_ENABLE_DBSTAT_VTAB=1         \
+            -DSQLITE_ENABLE_FTS3=1                \
+            -DSQLITE_ENABLE_FTS3_PARENTHESIS=1"
 
 ########
 ## ffmpeg
