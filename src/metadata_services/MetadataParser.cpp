@@ -11,7 +11,7 @@
 //#include "AlbumTrack.h"
 //#include "Artist.h"
 #include "MediaFile.h"
-//#include "Genre.h"
+#include "Genre.h"
 #include "Media.h"
 #include "MetadataParser.h"
 //#include "Show.h"
@@ -30,12 +30,12 @@ mxp::parser::Task::Status mxp::MetadataParser::run(mxp::parser::Task& task) {
   auto& media = task.media;
 
   auto t = m_ml->GetConnection()->NewTransaction();
-  auto isAudio = task.videoTracks.empty();
-  for (const auto& track : task.videoTracks) {
-    media->addVideoTrack(track.fcc, track.width, track.height, track.fps, track.language, track.description);
+  auto isAudio = task.VideoTracks.empty();
+  for (const auto& track : task.VideoTracks) {
+    media->AddVideoTrack(track.fcc, track.width, track.height, track.fps, track.language, track.description);
   }
-  for (const auto& track : task.audioTracks) {
-    media->addAudioTrack(track.fcc, track.bitrate, track.samplerate, track.nbChannels, track.language, track.description);
+  for (const auto& track : task.AudioTracks) {
+    media->AddAudioTrack(track.fcc, track.bitrate, track.samplerate, track.nbChannels, track.language, track.description);
   }
   t->Commit();
   if (isAudio == true) {
@@ -47,7 +47,7 @@ mxp::parser::Task::Status mxp::MetadataParser::run(mxp::parser::Task& task) {
   }
   auto duration = task.duration;
   media->SetDuration(duration);
-  if (media->save() == false)
+  if (media->Save() == false)
     return parser::Task::Status::Error;
   return parser::Task::Status::Success;
 }
@@ -56,7 +56,7 @@ mxp::parser::Task::Status mxp::MetadataParser::run(mxp::parser::Task& task) {
 
 bool mxp::MetadataParser::parseVideoFile(mxp::parser::Task& task) const {
   auto media = task.media.get();
-  media->setType(IMedia::Type::VideoType);
+  media->SetType(IMedia::Type::VideoType);
   if (task.title.length() == 0)
     return true;
 /*
@@ -81,10 +81,10 @@ bool mxp::MetadataParser::parseVideoFile(mxp::parser::Task& task) const {
 /* Audio files */
 
 bool mxp::MetadataParser::parseAudioFile(mxp::parser::Task& task) const {
-  task.media->setType(IMedia::Type::AudioType);
+  task.media->SetType(IMedia::Type::AudioType);
 
   //if (task.artworkMrl.empty() == false)
-  //  task.media->setThumbnail(task.artworkMrl);
+  //  task.media->SetThumbnail(task.artworkMrl);
 
   //auto artists = handleArtists(task);
   //auto album = handleAlbum(task, artists.first, artists.second);
@@ -264,7 +264,7 @@ std::shared_ptr<AlbumTrack> MetadataParser::handleTrack(std::shared_ptr<Album> a
     }
   }
   if (title.empty() == false)
-    task.media->setTitle(title);
+    task.media->SetTitle(title);
 
   auto track = std::static_pointer_cast<AlbumTrack>(album->addTrack(task.media, task.trackNumber, task.discNumber));
   if (track == nullptr) {
@@ -275,9 +275,9 @@ std::shared_ptr<AlbumTrack> MetadataParser::handleTrack(std::shared_ptr<Album> a
     track->setArtist(artist);
 
   if (task.genre.length() != 0) {
-    auto genre = Genre::fromName(m_ml, task.genre);
+    auto genre = Genre::FindByName(m_ml, task.genre);
     if (genre == nullptr) {
-      genre = Genre::create(m_ml, task.genre);
+      genre = Genre::Create(m_ml, task.genre);
       if (genre == nullptr) {
         LOG_ERROR("Failed to create a genre in database");
         return nullptr;
@@ -285,9 +285,9 @@ std::shared_ptr<AlbumTrack> MetadataParser::handleTrack(std::shared_ptr<Album> a
     }
     track->setGenre(genre);
   }
-  if (task.releaseDate.empty() == false) {
-    auto releaseYear = atoi(task.releaseDate.c_str());
-    task.media->setReleaseDate(releaseYear);
+  if (task.ReleaseDate.empty() == false) {
+    auto releaseYear = atoi(task.ReleaseDate.c_str());
+    task.media->SetReleaseDate(releaseYear);
     // Let the album handle multiple dates. In order to do this properly, we need
     // to know if the date has been changed before, which can be known only by
     // using Album class internals.

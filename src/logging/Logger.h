@@ -8,29 +8,60 @@
 #include <atomic>
 #include <memory>
 #include <sstream>
+#include <ctime>
+#include <chrono>
+#include <time.h>
 
+#include "compat/Thread.h"
+#include "compat/Mutex.h"
 #include "mediaexplorer/ILogger.h"
+#include "mediaexplorer/LogLevel.h"
 #include "mediaexplorer/Types.h"
 
 namespace mxp {
 
 class Log {
 private:
+  static double Round(double val) {
+    return (val < 0) ? ceil(val - 0.5) : floor(val + 0.5);
+  }
+
+  static std::string CurrentTime() {
+    auto n = std::chrono::system_clock::now();
+    auto now_c = std::chrono::system_clock::to_time_t(n);
+    auto ms = static_cast<int>(Round((std::chrono::milliseconds(now_c).count() % 1000) * 1000.0) / 1000.0);
+    auto t = std::localtime(&now_c);
+    char buffer[32];
+
+    snprintf(buffer, sizeof(buffer) / sizeof(char), "%d-%02d-%02d %02d:%02d:%02d.%03d ", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday, t->tm_hour, t->tm_min, t->tm_sec, ms);
+
+    return std::string(buffer);
+  }
+
+  static std::string CurrentThreadId() {
+    auto t = compat::this_thread::get_id().m_id;
+    char buffer[32];
+
+    snprintf(buffer, sizeof(buffer) / sizeof(char), "[ %lX ] ", t);
+
+    return std::string(buffer);
+  }
+
   template <typename T>
-  static void createMsg(std::stringstream& s, T&& t) {
+  static void CreateMsg(std::stringstream& s, T&& t) {
     s << t;
   }
 
   template <typename T, typename... Args>
-  static void createMsg(std::stringstream& s, T&& t, Args&&... args) {
+  static void CreateMsg(std::stringstream& s, T&& t, Args&&... args) {
     s << std::forward<T>(t);
-    createMsg(s, std::forward<Args>(args)...);
+    CreateMsg(s, std::forward<Args>(args)...);
   }
 
   template <typename... Args>
-  static std::string createMsg(Args&&... args) {
+  static std::string CreateMsg(Args&&... args) {
     std::stringstream stream;
-    createMsg(stream, std::forward<Args>(args)...);
+    CreateMsg(stream, std::forward<Args>(args)...);
     stream << "\n";
     return stream.str();
   }
@@ -41,7 +72,7 @@ private:
       return;
     }
 
-    auto msg = createMsg(std::forward<Args>(args)...);
+    auto msg = CreateMsg(std::forward<Args>(args)...);
     auto l = s_logger.load(std::memory_order_consume);
     if (l == nullptr) {
       l = s_defaultLogger.get();
@@ -52,19 +83,19 @@ private:
 
     switch (lvl) {
     case LogLevel::Error:
-      l->Error(msg);
+      l->Error(CurrentTime() + "[ ERROR   ] " + CurrentThreadId() + msg);
       break;
     case LogLevel::Warning:
-      l->Warning(msg);
+      l->Warning(CurrentTime() + "[ WARNING ] " + CurrentThreadId() + msg);
       break;
     case LogLevel::Info:
-      l->Info(msg);
+      l->Info(CurrentTime() + "[ INFO    ] " + CurrentThreadId() + msg);
       break;
     case LogLevel::Debug:
-      l->Debug(msg);
+      l->Debug(CurrentTime() + "[ DEBUG   ] " + CurrentThreadId() + msg);
       break;
-    case LogLevel::Verbose:
-      l->Verbose(msg);
+    case LogLevel::Trace:
+      l->Trace(CurrentTime() + "[ TRACE   ] " + CurrentThreadId() + msg);
       break;
     }
   }
@@ -103,8 +134,8 @@ public:
   }
 
   template <typename... Args>
-  static void Verbose(Args&&... args) {
-    log(mxp::LogLevel::Verbose, std::forward<Args>(args)...);
+  static void Trace(Args&&... args) {
+    log(mxp::LogLevel::Trace, std::forward<Args>(args)...);
   }
 
 private:
@@ -129,6 +160,6 @@ private:
 #define LOG_WARN(...)    mxp::Log::Warning(LOG_ORIGIN, ' ', __VA_ARGS__)
 #define LOG_INFO(...)    mxp::Log::Info(LOG_ORIGIN, ' ', __VA_ARGS__)
 #define LOG_DEBUG(...)   mxp::Log::Debug(LOG_ORIGIN, ' ', __VA_ARGS__)
-#define LOG_VERBOSE(...) mxp::Log::Verbose(LOG_ORIGIN, ' ', __VA_ARGS__)
+#define LOG_TRACE(...)   mxp::Log::Trace(LOG_ORIGIN, ' ', __VA_ARGS__)
 
 #endif /* LOGGER_H */

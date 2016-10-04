@@ -12,24 +12,45 @@ namespace mxp {
 class IostreamLogger : public ILogger {
 public:
   virtual void Error(const std::string& msg) override {
-    std::cout << "ERROR:   " << msg;
+    Lock();
+    std::cout << msg;
+    Unlock();
   }
 
   virtual void Warning(const std::string& msg) override {
-    std::cout << "WARNING: " << msg;
+    Lock();
+    std::cout << msg;
+    Unlock();
   }
 
   virtual void Info(const std::string& msg) override {
-    std::cout << "INFO:    " << msg;
+    Lock();
+    std::cout << msg;
+    Unlock();
   }
 
   virtual void Debug(const std::string& msg) override {
-    std::cout << "DEBUG:   " << msg;
+    Lock();
+    std::cout << msg;
+    Unlock();
   }
 
-  virtual void Verbose(const std::string& msg) override {
-    std::cout << "VERBOSE: " << msg;
+  virtual void Trace(const std::string& msg) override {
+    Lock();
+    std::cout << msg;
+    Unlock();
   }
+
+private:
+  virtual void Lock() {
+    m_lock.lock();
+  }
+
+  virtual void Unlock() {
+    m_lock.unlock();
+  }
+
+  compat::Mutex m_lock;
 };
 
 }

@@ -8,7 +8,7 @@
 namespace mxp {
 
 enum class LogLevel {
-  Verbose,
+  Trace,
   Debug,
   Info,
   Warning,
