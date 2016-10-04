@@ -178,7 +178,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
     </ClCompile>
@@ -205,13 +205,13 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -226,7 +226,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
     </ClCompile>
@@ -248,12 +248,12 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -269,7 +269,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
     </ClCompile>
@@ -302,7 +302,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -326,7 +326,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
       <BrowseInformationFile>$(IntDir)bsc\</BrowseInformationFile>
     </ClCompile>
@@ -354,7 +354,7 @@
       <PreprocessorDefinitions>HAVE_CONFIG_H;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
-      <ProgramDataBaseFileName>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -406,6 +406,7 @@
     <ClInclude Include="..\..\..\src\database\SqliteTraits.h" />
     <ClInclude Include="..\..\..\src\database\SqliteTransaction.h" />
     <ClInclude Include="..\..\..\src\database\Statement.h" />
+    <ClInclude Include="..\..\..\src\factory\ParserMediaFactory.h" />
     <ClInclude Include="..\..\..\src\Genre.h" />
     <ClInclude Include="..\..\..\src\History.h" />
     <ClInclude Include="..\..\..\src\MediaDevice.h" />
@@ -481,7 +482,12 @@
     <ClInclude Include="..\..\..\src\logging\Logger.h" />
     <ClInclude Include="..\..\..\src\Media.h" />
     <ClInclude Include="..\..\..\src\MediaExplorer.h" />
-    <ClInclude Include="..\..\..\src\metadata_services\MetadataParser.h" />
+    <ClInclude Include="..\..\..\src\metadata_services\FormatService.h" />
+    <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h" />
+    <ClInclude Include="..\..\..\src\parser\MediaContainer.h" />
+    <ClInclude Include="..\..\..\src\parser\MediaTrack.h" />
+    <ClInclude Include="..\..\..\src\parser\MediaType.h" />
+    <ClInclude Include="..\..\..\src\parser\ParserMedia.h" />
     <ClInclude Include="..\..\..\src\parser\Parser.h" />
     <ClInclude Include="..\..\..\src\parser\ParserService.h" />
     <ClInclude Include="..\..\..\src\parser\Task.h" />
@@ -502,6 +508,7 @@
     <ClCompile Include="..\..\..\src\database\SqliteConnection.cpp" />
     <ClCompile Include="..\..\..\src\database\SqliteTools.cpp" />
     <ClCompile Include="..\..\..\src\database\SqliteTransaction.cpp" />
+    <ClCompile Include="..\..\..\src\factory\ParserMediaFactory.cpp" />
     <ClCompile Include="..\..\..\src\Genre.cpp" />
     <ClCompile Include="..\..\..\src\History.cpp" />
     <ClCompile Include="..\..\..\src\MediaDevice.cpp" />
@@ -582,12 +589,13 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\MediaFolder.cpp" />
     <ClCompile Include="..\..\..\src\Label.cpp" />
-    <ClCompile Include="..\..\..\src\logging\IostreamLogger.cpp" />
     <ClCompile Include="..\..\..\src\logging\Logger.cpp" />
     <ClCompile Include="..\..\..\src\Media.cpp" />
     <ClCompile Include="..\..\..\src\MediaExplorer.cpp" />
-    <ClCompile Include="..\..\..\src\metadata_services\MetadataParser.cpp" />
+    <ClCompile Include="..\..\..\src\metadata_services\FormatService.cpp" />
+    <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp" />
     <ClCompile Include="..\..\..\src\parser\Parser.cpp" />
+    <ClCompile Include="..\..\..\src\parser\ParserMedia.cpp" />
     <ClCompile Include="..\..\..\src\parser\ParserService.cpp" />
     <ClCompile Include="..\..\..\src\Playlist.cpp" />
     <ClCompile Include="..\..\..\src\Settings.cpp" />

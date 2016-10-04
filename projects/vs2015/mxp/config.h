@@ -20,9 +20,9 @@
 
 #undef HAVE_TVOS
 
-#define CXX11_THREADS      1
+//#define CXX11_THREADS      1
 
-#define CXX11_MUTEX        1
+//#define CXX11_MUTEX        1
 
 #define HAVE_THREAD_LOCAL 1
 
