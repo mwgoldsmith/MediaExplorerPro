@@ -31,12 +31,12 @@ public:
    *  @brief signalStop Will trigger the threads for termination.
    *  This doesn't wait for the threads to be done, but ensure they won't
    *  queue another operation.
-   *  This is usefull to ask all the threads to terminate asynchronously, before
+   *  This is useful to ask all the threads to terminate asynchronously, before
    *  waiting for them to actually stop in the stop() method.
    */
   void signalStop();
   /**
-   *  @brief stop Effectively wait the the underlying threads to join.
+   *  @brief stop Effectively wait the underlying threads to join.
    */
   void stop();
   void Parse(std::unique_ptr<parser::Task> t);
@@ -44,10 +44,10 @@ public:
 
 protected:
   uint8_t nbNativeThreads() const;
-  // Can be overriden to run service dependent initializations
+  // Can be overridden to run service dependent initializations
   virtual bool initialize();
   virtual parser::Task::Status run(parser::Task& task) = 0;
-  virtual const char* name() const = 0;
+  virtual const char* Name() const = 0;
   virtual uint8_t nbThreads() const = 0;
 
 private:

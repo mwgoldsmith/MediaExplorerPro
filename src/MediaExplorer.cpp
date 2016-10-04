@@ -30,14 +30,15 @@
 #include "discoverer/FsDiscoverer.h"
 #include "factory/DeviceListerFactory.h"
 #include "factory/FileSystemFactory.h"
-#include "factory/MediaContainerFactory.h"
+#include "factory/ParserMediaFactory.h"
 #include "logging/Logger.h"
 #include "mediaexplorer/ILogger.h"
 #include "filesystem/IDevice.h"
-#include "metadata_services/MetadataParser.h"
+#include "metadata_services/MetadataService.h"
 #include "parser/Parser.h"
 #include "utils/Filename.h"
 #include "utils/ModificationsNotifier.h"
+#include "metadata_services/FormatService.h"
 
 std::string mxp::MediaExplorer::s_version = PACKAGE_STRING;
 
@@ -45,7 +46,7 @@ const uint32_t mxp::MediaExplorer::DbModelVersion = 2;
 
 mxp::MediaExplorer::MediaExplorer()
   : m_callbacks{ nullptr } {
-  mxp::Log::SetLogLevel(LogLevel::Debug);
+  mxp::Log::SetLogLevel(LogLevel::Trace);
 }
 
 mxp::MediaExplorer::~MediaExplorer() {
@@ -69,6 +70,10 @@ mxp::MediaExplorer::~MediaExplorer() {
 
 bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb* cb) {
   LOG_DEBUG("Initializing start");
+
+  if(m_fsFactory == nullptr) {
+    m_pmFactory.reset(new mxp::factory::ParserMediaFactory(this));
+  }
 
   if (m_deviceLister == nullptr) {
     m_deviceLister = mxp::factory::createDeviceLister();
@@ -114,9 +119,11 @@ bool mxp::MediaExplorer::Shutdown() {
   if (m_discoverer != nullptr) {
     m_discoverer->stop();
   }
+
   if (m_parser != nullptr) {
     m_parser->stop();
   }
+
   mxp::Media::clear();
   mxp::MediaFolder::clear();
   mxp::MediaFile::clear();
@@ -153,7 +160,7 @@ mxp::LabelPtr mxp::MediaExplorer::CreateLabel(const std::string& label) {
 }
 
 bool mxp::MediaExplorer::DeleteLabel(mxp::LabelPtr label) {
-  return mxp::Label::destroy(this, label->id());
+  return mxp::Label::destroy(this, label->Id());
 }
 
 mxp::DBConnection mxp::MediaExplorer::GetConnection() const {
@@ -172,13 +179,12 @@ mxp::GenrePtr mxp::MediaExplorer::Genre(int64_t id) const {
   return Genre::Fetch(this, id);
 }
 
-
 bool mxp::MediaExplorer::AddToHistory(const std::string& mrl) {
   return History::insert(GetConnection(), mrl);
 }
 
 bool mxp::MediaExplorer::DeleteMediaFolder(const mxp::MediaFolder& folder) {
-  if(MediaFolder::destroy(this, folder.id()) == false)
+  if(MediaFolder::destroy(this, folder.Id()) == false)
     return false;
 
   Media::clear();
@@ -221,7 +227,6 @@ mxp::PlaylistPtr mxp::MediaExplorer::CreatePlaylist(const std::string& name) {
 
 bool mxp::MediaExplorer::DeletePlaylist(int64_t playlistId) { 
   return mxp::Playlist::destroy(this, playlistId);
-
 }
 
 std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::PlaylistList(mxp::SortingCriteria sort, bool desc) { 
@@ -281,22 +286,23 @@ mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) cons
 
 std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile& fileFs, mxp::MediaFolder& parentFolder, mxp::fs::IDirectory& parentFolderFs) {
 
-const std::vector<std::string> supportedVideoExtensions{
-  // Videos
-  "avi", "3gp", "amv", "asf", "divx", "dv", "flv", "gxf",
-  "iso", "m1v", "m2v", "m2t", "m2ts", "m4v", "mkv", "mov",
-  "mp2", "mp4", "mpeg", "mpeg1", "mpeg2", "mpeg4", "mpg",
-  "mts", "mxf", "nsv", "nuv", "ogm", "ogv", "ogx", "ps",
-  "rec", "rm", "rmvb", "tod", "ts", "vob", "vro", "webm", "wmv"
-};
+  const std::vector<std::string> supportedVideoExtensions{
+    // Videos
+    "avi", "3gp", "amv", "asf", "divx", "dv", "flv", "gxf",
+    "iso", "m1v", "m2v", "m2t", "m2ts", "m4v", "mkv", "mov",
+    "mp2", "mp4", "mpeg", "mpeg1", "mpeg2", "mpeg4", "mpg",
+    "mts", "mxf", "nsv", "nuv", "ogm", "ogv", "ogx", "ps",
+    "rec", "rm", "rmvb", "tod", "ts", "vob", "vro", "webm", "wmv"
+  };
+
+  LOG_TRACE("Creating media for ", fileFs.FullPath());
+  // TODO: Get container type
 
   auto type = mxp::IMedia::Type::UnknownType;
   auto ext = fileFs.Extension();
   auto predicate = [ext](const std::string& v) {
     return strcasecmp(v.c_str(), ext.c_str()) == 0;
   };
-
-  mxp::factory::createMediaContainer(fileFs.FullPath());
 
   if (std::find_if(begin(supportedVideoExtensions), end(supportedVideoExtensions), predicate) != end(supportedVideoExtensions)) {
     type = mxp::IMedia::Type::VideoType;
@@ -305,6 +311,7 @@ const std::vector<std::string> supportedVideoExtensions{
   }
 
   if (type == mxp::IMedia::Type::UnknownType) {
+    LOG_TRACE("Unknown type for file ", fileFs.Name());
     return nullptr;
   }
 
@@ -318,8 +325,8 @@ const std::vector<std::string> supportedVideoExtensions{
   // For now, assume all media are made of a single file
   auto file = mptr->AddFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
   if (file == nullptr) {
-    LOG_ERROR("Failed to add file ", fileFs.FullPath(), " to media #", mptr->id());
-    mxp::Media::destroy(this, mptr->id());
+    LOG_ERROR("Failed to add file ", fileFs.FullPath(), " to media #", mptr->Id());
+    mxp::Media::destroy(this, mptr->Id());
     return nullptr;
   }
 
@@ -365,7 +372,7 @@ mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const {
       return nullptr;
     }
 
-    file = MediaFile::FindByFileName(this, utils::file::fileName(mrl), folder->id());
+    file = MediaFile::FindByFileName(this, utils::file::fileName(mrl), folder->Id());
   }
 
   if(file == nullptr) {
@@ -452,23 +459,26 @@ void mxp::MediaExplorer::StartDiscoverer() {
 void mxp::MediaExplorer::StartParser() {
   m_parser.reset(new Parser(this));
 
-  //auto vlcService = std::unique_ptr<VLCMetadataService>(new VLCMetadataService);
-  auto metadataService = std::make_unique<mxp::MetadataParser>();
+  auto formatService = std::make_unique<mxp::FormatService>();
+  auto metadataService = std::make_unique<mxp::MetadataService>();
   //auto thumbnailerService = std::unique_ptr<VLCThumbnailer>(new VLCThumbnailer);
-  //m_parser->AddService(std::move(vlcService));
+  m_parser->AddService(std::move(formatService));
   m_parser->AddService(std::move(metadataService));
   //m_parser->AddService(std::move(thumbnailerService));
+
   m_parser->Start();
 }
 
 void mxp::MediaExplorer::PauseBackgroundOperations() {
-  if (m_parser != nullptr)
+  if(m_parser != nullptr) {
     m_parser->pause();
+  }
 }
 
 void mxp::MediaExplorer::ResumeBackgroundOperations() {
-  if (m_parser != nullptr)
+  if(m_parser != nullptr) {
     m_parser->resume();
+  }
 }
 
 void mxp::MediaExplorer::StartDeletionNotifier() {
@@ -478,6 +488,18 @@ void mxp::MediaExplorer::StartDeletionNotifier() {
 
 std::shared_ptr<mxp::ModificationNotifier> mxp::MediaExplorer::GetNotifier() const {
   return m_modificationNotifier;
+}
+
+std::shared_ptr<mxp::factory::ParserMediaFactory> mxp::MediaExplorer::GetParserMediaFactory() const {
+  return m_pmFactory;
+}
+
+void mxp::MediaExplorer::OnDevicePlugged(const std::string&, const std::string&) {
+  m_fsFactory->Refresh();
+}
+
+void mxp::MediaExplorer::OnDeviceUnplugged(const std::string&) {
+  m_fsFactory->Refresh();
 }
 
 extern "C" {

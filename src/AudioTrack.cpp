@@ -26,26 +26,26 @@ mxp::AudioTrack::AudioTrack(MediaExplorerPtr, sqlite::Row& row) {
 }
 
 mxp::AudioTrack::AudioTrack(MediaExplorerPtr, const std::string& codec, unsigned int bitrate, unsigned int sampleRate,
-                       unsigned int nbChannels, const std::string& language, const std::string& desc,
+                       unsigned int numChannels, const std::string& language, const std::string& desc,
                        int64_t mediaId)
   : m_id(0)
   , m_codec(codec)
   , m_bitrate(bitrate)
   , m_sampleRate(sampleRate)
-  , m_nbChannels(nbChannels)
+  , m_nbChannels(numChannels)
   , m_language(language)
   , m_description(desc)
   , m_mediaId(mediaId) {}
 
-int64_t mxp::AudioTrack::id() const {
+int64_t mxp::AudioTrack::Id() const {
   return m_id;
 }
 
-const std::string& mxp::AudioTrack::codec() const {
+const std::string& mxp::AudioTrack::Codec() const {
   return m_codec;
 }
 
-unsigned int mxp::AudioTrack::bitrate() const {
+unsigned int mxp::AudioTrack::Bitrate() const {
   return m_bitrate;
 }
 
@@ -53,15 +53,15 @@ unsigned int mxp::AudioTrack::SampleRate() const {
   return m_sampleRate;
 }
 
-unsigned int mxp::AudioTrack::nbChannels() const {
+unsigned int mxp::AudioTrack::NumChannels() const {
   return m_nbChannels;
 }
 
-const std::string& mxp::AudioTrack::language() const {
+const std::string& mxp::AudioTrack::Language() const {
   return m_language;
 }
 
-const std::string& mxp::AudioTrack::description() const {
+const std::string& mxp::AudioTrack::Description() const {
   return m_description;
 }
 
@@ -84,12 +84,12 @@ bool mxp::AudioTrack::CreateTable(DBConnection dbConnection) {
 }
 
 std::shared_ptr<mxp::AudioTrack> mxp::AudioTrack::Create(MediaExplorerPtr ml, const std::string& codec,
-                                               unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels,
+                                               unsigned int bitrate, unsigned int sampleRate, unsigned int numChannels,
                                                const std::string& language, const std::string& desc, int64_t mediaId) {
   static const auto req = "INSERT INTO " + AudioTrackTable::Name
       + "(codec, bitrate, samplerate, nb_channels, language, description, media_id) VALUES(?, ?, ?, ?, ?, ?, ?)";
-  auto track = std::make_shared<AudioTrack>(ml, codec, bitrate, sampleRate, nbChannels, language, desc, mediaId);
-  if (insert(ml, track, req, codec, bitrate, sampleRate, nbChannels, language, desc, mediaId) == false)
+  auto track = std::make_shared<AudioTrack>(ml, codec, bitrate, sampleRate, numChannels, language, desc, mediaId);
+  if (insert(ml, track, req, codec, bitrate, sampleRate, numChannels, language, desc, mediaId) == false)
     return nullptr;
   return track;
 }

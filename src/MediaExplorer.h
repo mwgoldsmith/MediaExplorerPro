@@ -8,9 +8,11 @@
 #include <string>
 #include <memory>
 
+#include "mediaexplorer/IDeviceListerCb.h"
 #include "mediaexplorer/ILogger.h"
 #include "mediaexplorer/IMediaExplorer.h"
 #include "mediaexplorer/IMediaExplorerCb.h"
+#include "factory/ParserMediaFactory.h"
 #include "Settings.h"
 #include "Types.h"
 
@@ -35,7 +37,7 @@ class IFile;
 class IDirectory;
 }
 
-class MediaExplorer : public IMediaExplorer {
+class MediaExplorer : public IMediaExplorer, public IDeviceListerCb {
 public:
   MediaExplorer();
   ~MediaExplorer();
@@ -89,10 +91,15 @@ public:
   DBConnection GetConnection() const;
   IMediaExplorerCb* GetCallbacks() const;
   std::shared_ptr<ModificationNotifier> GetNotifier() const;
+  std::shared_ptr<factory::ParserMediaFactory> GetParserMediaFactory() const;
 
   std::shared_ptr<MediaDevice> FindMediaDevice(const std::string& uuid);
 
   bool DeleteMediaFolder(const MediaFolder& folder);
+
+private:
+  virtual void OnDevicePlugged(const std::string& uuid, const std::string& mountpoint) override;
+  virtual void OnDeviceUnplugged(const std::string& uuid) override;
 
 public:
   static const uint32_t DbModelVersion;
@@ -114,6 +121,7 @@ protected:
   std::unique_ptr<Parser>               m_parser;
   std::unique_ptr<DiscovererWorker>     m_discoverer;
   std::shared_ptr<ModificationNotifier> m_modificationNotifier;
+  std::shared_ptr<factory::ParserMediaFactory>   m_pmFactory;
   DeviceListerPtr                       m_deviceLister;
   FileSystemPtr                         m_fsFactory;
   IMediaExplorerCb*                     m_callbacks;

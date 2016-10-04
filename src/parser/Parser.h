@@ -23,7 +23,7 @@ class Parser : IParserCb {
 public:
   using ServicePtr = std::unique_ptr<ParserService>;
 
-  Parser(MediaExplorer* ml);
+  explicit Parser(MediaExplorer* ml);
   virtual ~Parser();
   void AddService(ServicePtr service);
   void Parse(std::shared_ptr<Media> media, std::shared_ptr<MediaFile> file);

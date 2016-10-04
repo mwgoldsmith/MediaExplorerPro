@@ -58,14 +58,14 @@ struct Task {
 
   struct AudioTrackInfo {
     AudioTrackInfo(const std::string& fcc, unsigned int bitrate, unsigned int samplerate,
-                   unsigned int nbChannels, const std::string& language, const std::string& description)
-      : fcc(fcc), bitrate(bitrate), samplerate(samplerate), nbChannels(nbChannels),
+                   unsigned int numChannels, const std::string& language, const std::string& description)
+      : fcc(fcc), bitrate(bitrate), samplerate(samplerate), numChannels(numChannels),
         language(language), description(description) { }
 
     std::string fcc;
     unsigned int bitrate;
     unsigned int samplerate;
-    unsigned int nbChannels;
+    unsigned int numChannels;
     std::string language;
     std::string description;
   };

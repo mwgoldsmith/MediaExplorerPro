@@ -21,7 +21,7 @@ class FileSystemFactory : public IFileSystem {
   using DirCacheMap    = std::unordered_map<std::string, std::shared_ptr<fs::IDirectory>>;
   
 public:
-  FileSystemFactory(DeviceListerPtr lister);
+  explicit FileSystemFactory(DeviceListerPtr lister);
   virtual std::shared_ptr<fs::IFile> CreateFileFromPath(const std::string& path) override;
   virtual std::shared_ptr<fs::IDirectory> CreateDirectoryFromPath(const std::string& path) override;
   virtual std::shared_ptr<fs::IDevice> CreateDevice(const std::string& uuid) override;

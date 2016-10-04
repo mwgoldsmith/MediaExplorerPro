@@ -28,8 +28,8 @@ public:
   Label(MediaExplorerPtr ml, const std::string& name);
 
 public:
-  virtual int64_t id() const override;
-  virtual const std::string& name() const override;
+  virtual int64_t Id() const override;
+  virtual const std::string& Name() const override;
   virtual std::vector<MediaPtr> Files() override;
 
   static bool CreateTable(DBConnection dbConnection);

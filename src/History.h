@@ -30,7 +30,7 @@ public:
 
   virtual const std::string& mrl() const override;
   virtual unsigned int InsertionDate() const override;
-  virtual bool isFavorite() const override;
+  virtual bool IsFavorite() const override;
   virtual bool SetFavorite(bool isFavorite) override;
 
   static bool CreateTable(DBConnection dbConnection);

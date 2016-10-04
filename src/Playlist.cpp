@@ -44,15 +44,15 @@ std::shared_ptr<mxp::Playlist> mxp::Playlist::Create(MediaExplorerPtr ml, const 
   return nullptr;
 }
 
-int64_t mxp::Playlist::id() const {
+int64_t mxp::Playlist::Id() const {
   return m_id;
 }
 
-const std::string& mxp::Playlist::name() const {
+const std::string& mxp::Playlist::Name() const {
   return m_name;
 }
 
-bool mxp::Playlist::setName(const std::string& name) {
+bool mxp::Playlist::SetName(const std::string& name) {
   if (name == m_name)
     return true;
 
@@ -65,7 +65,7 @@ bool mxp::Playlist::setName(const std::string& name) {
   return true;
 }
 
-time_t mxp::Playlist::creationDate() const {
+time_t mxp::Playlist::CreationDate() const {
   return m_creationDate;
 }
 

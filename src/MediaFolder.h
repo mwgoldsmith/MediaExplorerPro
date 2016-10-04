@@ -34,7 +34,7 @@ public:
   MediaFolder(MediaExplorerPtr ml, sqlite::Row& row);
   MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent , int64_t deviceId , bool isRemovable);
 
-  int64_t id() const;
+  int64_t Id() const;
   const std::string& path() const;
   std::vector<std::shared_ptr<MediaFile>> Files();
   std::vector<std::shared_ptr<MediaFolder>> folders();

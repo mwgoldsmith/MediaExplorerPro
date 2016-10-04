@@ -37,12 +37,12 @@ mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)
 mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent, int64_t deviceId, bool isRemovable)
   : m_ml(ml)
   , m_id(0)
-  , m_path(path)
   , m_parent(parent)
   , m_isBlacklisted(false)
   , m_deviceId(deviceId)
   , m_isPresent(true)
-  , m_isRemovable(isRemovable) {
+  , m_isRemovable(isRemovable)
+  , m_path(path) {
 }
 
 bool mxp::MediaFolder::CreateTable(DBConnection connection) {
@@ -76,10 +76,10 @@ std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::Create(MediaExplorerPtr ml, 
     path = fullPath;
   }
 
-  auto self = std::make_shared<MediaFolder>(ml, path, parentId, device.id(), device.IsRemovable());
+  auto self = std::make_shared<MediaFolder>(ml, path, parentId, device.Id(), device.IsRemovable());
   static const auto req = "INSERT INTO " + MediaFolderTable::Name + "(path, parent_id, device_id, is_removable) VALUES(?, ?, ?, ?)";
 #pragma warning( suppress : 4244 )
-  if(insert(ml, self, req, path, sqlite::ForeignKey(parentId), device.id(), device.IsRemovable()) == false) {
+  if(insert(ml, self, req, path, sqlite::ForeignKey(parentId), device.Id(), device.IsRemovable()) == false) {
     return nullptr;
   }
 
@@ -98,7 +98,7 @@ bool mxp::MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPat
   auto f = FindByPath(ml, fullPath);
   if (f != nullptr) {
     // Let the foreign key destroy everything beneath this folder
-    destroy(ml, f->id());
+    destroy(ml, f->Id());
   }
 
   auto folderFs = ml->GetFileSystem()->CreateDirectoryFromPath(fullPath);
@@ -121,7 +121,7 @@ bool mxp::MediaFolder::blacklist(MediaExplorerPtr ml, const std::string& fullPat
 
   static const auto req = "INSERT INTO " + MediaFolderTable::Name +
       "(path, parent_id, is_blacklisted, device_id, is_removable) VALUES(?, ?, ?, ?, ?)";
-  auto res = sqlite::Tools::ExecuteInsert(ml->GetConnection(), req, path, nullptr, true, device->id(), deviceFs->IsRemovable()) != 0;
+  auto res = sqlite::Tools::ExecuteInsert(ml->GetConnection(), req, path, nullptr, true, device->Id(), deviceFs->IsRemovable()) != 0;
   t->Commit();
 
   return res;
@@ -160,7 +160,7 @@ std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::FindByPath(MediaExplorerPtr 
   }
 
   auto path = utils::file::removePath(fullPath, deviceFs->mountpoint());
-  auto folder = Fetch(ml, req, path, device->id(), blacklisted);
+  auto folder = Fetch(ml, req, path, device->Id(), blacklisted);
   if(folder == nullptr) {
     return nullptr;
   }
@@ -170,7 +170,7 @@ std::shared_ptr<mxp::MediaFolder> mxp::MediaFolder::FindByPath(MediaExplorerPtr 
   return folder;
 }
 
-int64_t mxp::MediaFolder::id() const {
+int64_t mxp::MediaFolder::Id() const {
   return m_id;
 }
 

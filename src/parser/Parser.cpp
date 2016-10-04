@@ -14,11 +14,11 @@
 
 mxp::Parser::Parser(mxp::MediaExplorer* ml)
   : m_ml(ml)
-    , m_callback(ml->GetCallbacks())
-    , m_notifier(ml->GetNotifier())
-    , m_opToDo(0)
-    , m_opDone(0)
-    , m_percent(0) {}
+  , m_callback(ml->GetCallbacks())
+  , m_notifier(ml->GetNotifier())
+  , m_opToDo(0)
+  , m_opDone(0)
+  , m_percent(0) {}
 
 mxp::Parser::~Parser() {
   stop();

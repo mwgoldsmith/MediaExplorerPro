@@ -2,10 +2,11 @@
  * Media Explorer
  *****************************************************************************/
 
-#ifndef IVIDEOTRACK_H
-#define IVIDEOTRACK_H
+#ifndef MXP_IVIDEOTRACK_H
+#define MXP_IVIDEOTRACK_H
 
-#include "mediaexplorer/IMediaExplorer.h"
+#include <string>
+#include <stdint.h>
 
 namespace mxp {
 
@@ -13,16 +14,24 @@ class IVideoTrack {
 public:
   virtual ~IVideoTrack() {}
 
-  virtual int64_t id() const = 0;
-  virtual const std::string& codec() const = 0;
-  virtual unsigned int width() const = 0;
-  virtual unsigned int height() const = 0;
-  virtual float fps() const = 0;
-  virtual const std::string& description() const = 0;
-  virtual const std::string& language() const = 0;
+  /**
+   * @return Identifier of the record for the video track.
+   */
+  virtual int64_t Id() const = 0;
+
+  virtual const std::string& Codec() const = 0;
+
+  virtual unsigned int Width() const = 0;
+
+  virtual unsigned int Height() const = 0;
+
+  virtual float Fps() const = 0;
+
+  virtual const std::string& Description() const = 0;
+
+  virtual const std::string& Language() const = 0;
 };
 
 }
 
-#endif // IVIDEOTRACK_H
-
+#endif /* MXP_IVIDEOTRACK_H */

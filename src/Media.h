@@ -36,7 +36,7 @@ public:
   Media(MediaExplorerPtr ml , sqlite::Row& row);
   Media(MediaExplorerPtr ml, const std::string &title, Type type);
 
-  virtual int64_t id() const override;
+  virtual int64_t Id() const override;
   virtual Type type() override;
   virtual SubType subType() const override;
   virtual const std::string& title() const override;
@@ -54,7 +54,7 @@ public:
   virtual bool SetProgress(float progress) override;
   virtual int rating() const override;
   virtual bool SetRating(int rating) override;
-  virtual bool isFavorite() const override;
+  virtual bool IsFavorite() const override;
   virtual bool SetFavorite(bool favorite) override;
   virtual const std::vector<MediaFilePtr>& Files() const override;
   //virtual MoviePtr movie() const override;
@@ -66,9 +66,9 @@ public:
   virtual time_t ReleaseDate() const override;
 
   bool AddVideoTrack(const std::string& codec, unsigned int width, unsigned int height, float fps, const std::string& language, const std::string& description);
-  bool AddAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc);
+  bool AddAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int numChannels, const std::string& language, const std::string& desc);
 
-  std::shared_ptr<MediaFile> AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IMediaFile::Type type);
+  std::shared_ptr<MediaFile> AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, mxp::IMediaFile::Type type);
   void removeFile(MediaFile& file);
 
   void SetType(Type type);

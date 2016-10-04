@@ -36,31 +36,31 @@ mxp::VideoTrack::VideoTrack(MediaExplorerPtr, const std::string& codec, unsigned
   , m_language(language)
   , m_description(description) {}
 
-int64_t mxp::VideoTrack::id() const {
+int64_t mxp::VideoTrack::Id() const {
   return m_id;
 }
 
-const std::string& mxp::VideoTrack::codec() const {
+const std::string& mxp::VideoTrack::Codec() const {
   return m_codec;
 }
 
-unsigned int mxp::VideoTrack::width() const {
+unsigned int mxp::VideoTrack::Width() const {
   return m_width;
 }
 
-unsigned int mxp::VideoTrack::height() const {
+unsigned int mxp::VideoTrack::Height() const {
   return m_height;
 }
 
-float mxp::VideoTrack::fps() const {
+float mxp::VideoTrack::Fps() const {
   return m_fps;
 }
 
-const std::string& mxp::VideoTrack::language() const {
+const std::string& mxp::VideoTrack::Language() const {
   return m_language;
 }
 
-const std::string& mxp::VideoTrack::description() const {
+const std::string& mxp::VideoTrack::Description() const {
   return m_description;
 }
 

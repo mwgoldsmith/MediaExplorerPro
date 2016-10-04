@@ -6,6 +6,7 @@
 #define MXP_IMEDIAFILE_H
 
 #include <string>
+#include <stdint.h>
 
 namespace mxp {
 
@@ -31,7 +32,7 @@ public:
   };
 
   virtual ~IMediaFile() = default;
-  virtual int64_t id() const = 0;
+  virtual int64_t Id() const = 0;
   virtual const std::string& mrl() const = 0;
   virtual Type type() const = 0;
   virtual time_t LastModificationDate() const = 0;

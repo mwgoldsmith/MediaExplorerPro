@@ -49,7 +49,7 @@ public:
 
   virtual ~IMedia() = default;
 
-  virtual int64_t id() const = 0;
+  virtual int64_t Id() const = 0;
   virtual Type type() = 0;
   virtual SubType subType() const = 0;
   virtual const std::string& title() const = 0;
@@ -75,7 +75,7 @@ public:
    */
   virtual int rating() const = 0;
   virtual bool SetRating(int rating) = 0;
-  virtual bool isFavorite() const = 0;
+  virtual bool IsFavorite() const = 0;
   virtual bool SetFavorite(bool favorite) = 0;
   virtual bool AddLabel(LabelPtr label) = 0;
   virtual bool RemoveLabel(LabelPtr label) = 0;

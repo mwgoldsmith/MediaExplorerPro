@@ -25,19 +25,19 @@ class AudioTrack : public IAudioTrack, public DatabaseHelpers<AudioTrack, policy
 public:
   AudioTrack(MediaExplorerPtr ml, sqlite::Row& row);
   AudioTrack(MediaExplorerPtr ml, const std::string& codec, unsigned int bitrate,
-             unsigned int sampleRate, unsigned int nbChannels, const std::string& language,
+             unsigned int sampleRate, unsigned int numChannels, const std::string& language,
              const std::string& desc, int64_t mediaId);
 
-  virtual int64_t id() const override;
-  virtual const std::string& codec() const override;
-  virtual unsigned int bitrate() const override;
+  virtual int64_t Id() const override;
+  virtual const std::string& Codec() const override;
+  virtual unsigned int Bitrate() const override;
   virtual unsigned int SampleRate() const override;
-  virtual unsigned int nbChannels() const override;
-  virtual const std::string& language() const override;
-  virtual const std::string& description() const override;
+  virtual unsigned int NumChannels() const override;
+  virtual const std::string& Language() const override;
+  virtual const std::string& Description() const override;
 
   static bool CreateTable(DBConnection dbConnection);
-  static std::shared_ptr<AudioTrack> Create(MediaExplorerPtr ml, const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc, int64_t mediaId);
+  static std::shared_ptr<AudioTrack> Create(MediaExplorerPtr ml, const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int numChannels, const std::string& language, const std::string& desc, int64_t mediaId);
 
 private:
   int64_t      m_id;

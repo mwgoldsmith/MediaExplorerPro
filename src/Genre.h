@@ -24,8 +24,8 @@ class Genre : public IGenre, public DatabaseHelpers<Genre, policy::GenreTable> {
 public:
   Genre(MediaExplorerPtr ml, sqlite::Row& row);
   Genre(MediaExplorerPtr ml, const std::string& name);
-  virtual int64_t id() const override;
-  virtual const std::string& name() const override;
+  virtual int64_t Id() const override;
+  virtual const std::string& Name() const override;
   //virtual std::vector<ArtistPtr> artists(SortingCriteria sort, bool desc) const override;
   //virtual std::vector<MediaPtr> tracks(SortingCriteria sort, bool desc) const override;
   //virtual std::vector<AlbumPtr> albums(SortingCriteria sort, bool desc) const override;

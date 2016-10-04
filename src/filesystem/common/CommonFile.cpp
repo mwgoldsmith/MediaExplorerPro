@@ -16,7 +16,7 @@ mxp::fs::CommonFile::CommonFile(const std::string& filePath)
   , m_extension(utils::file::extension(filePath)) {
 }
 
-const std::string& mxp::fs::CommonFile::name() const {
+const std::string& mxp::fs::CommonFile::Name() const {
   return m_name;
 }
 

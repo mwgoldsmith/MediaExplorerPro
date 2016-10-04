@@ -27,11 +27,11 @@ mxp::Label::Label(MediaExplorerPtr ml, const std::string& name)
   , m_name(name) {
 }
 
-int64_t mxp::Label::id() const {
+int64_t mxp::Label::Id() const {
   return m_id;
 }
 
-const std::string& mxp::Label::name() const {
+const std::string& mxp::Label::Name() const {
   return m_name;
 }
 

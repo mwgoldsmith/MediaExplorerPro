@@ -97,7 +97,7 @@ unsigned int mxp::History::InsertionDate() const {
   return m_date;
 }
 
-bool mxp::History::isFavorite() const {
+bool mxp::History::IsFavorite() const {
   return m_favorite;
 }
 

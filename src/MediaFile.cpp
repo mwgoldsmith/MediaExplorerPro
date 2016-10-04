@@ -32,7 +32,7 @@ mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const
   : m_ml(ml)
   , m_id(0)
   , m_mediaId(mediaId)
-  , m_mrl(isRemovable == true ? file.name() : file.FullPath())
+  , m_mrl(isRemovable == true ? file.Name() : file.FullPath())
   , m_type(type)
   , m_lastModificationDate(file.LastModificationDate())
   , m_isParsed(false)
@@ -41,7 +41,7 @@ mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const
   , m_isRemovable(isRemovable) {
 }
 
-int64_t mxp::MediaFile::id() const {
+int64_t mxp::MediaFile::Id() const {
   return m_id;
 }
 

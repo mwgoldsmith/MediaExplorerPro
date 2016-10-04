@@ -27,7 +27,7 @@ class MediaFile : public IMediaFile, public DatabaseHelpers<MediaFile, policy::M
 public:
   MediaFile(MediaExplorerPtr ml, sqlite::Row& row);
   MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
-  virtual int64_t id() const override;
+  virtual int64_t Id() const override;
   virtual const std::string& mrl() const override;
   virtual Type type() const override;
   virtual time_t LastModificationDate() const override;

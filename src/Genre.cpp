@@ -27,11 +27,11 @@ mxp::Genre::Genre(MediaExplorerPtr ml, const std::string& name)
   , m_id(0)
   , m_name(name) {}
 
-int64_t mxp::Genre::id() const {
+int64_t mxp::Genre::Id() const {
   return m_id;
 }
 
-const std::string& mxp::Genre::name() const {
+const std::string& mxp::Genre::Name() const {
   return m_name;
 }
 /*

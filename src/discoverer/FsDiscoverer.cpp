@@ -101,7 +101,7 @@ void mxp::FsDiscoverer::checkFolder(mxp::fs::IDirectory& currentFolderFs, mxp::M
     m_cb->onDiscoveryProgress(currentFolderFs.path());
   // Load the folders we already know of:
   LOG_INFO("Checking for modifications in ", currentFolderFs.path());
-  auto subFoldersInDB = mxp::MediaFolder::FetchAll(m_ml, currentFolder.id());
+  auto subFoldersInDB = mxp::MediaFolder::FetchAll(m_ml, currentFolder.Id());
   for (const auto& subFolder : currentFolderFs.dirs()) {
     auto it = std::find_if(begin(subFoldersInDB), end(subFoldersInDB), [&subFolder](const std::shared_ptr<mxp::MediaFolder>& f) {
       return f->path() == subFolder->path();
@@ -148,7 +148,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
   LOG_INFO("Checking file in ", parentFolderFs.path());
   static const std::string req = "SELECT * FROM " + policy::MediaFileTable::Name
       + " WHERE folder_id = ?";
-  auto files = mxp::MediaFile::FetchAll<mxp::MediaFile>(m_ml, req, parentFolder.id());
+  auto files = mxp::MediaFile::FetchAll<mxp::MediaFile>(m_ml, req, parentFolder.Id());
   std::vector<std::shared_ptr<mxp::fs::IFile>> filesToAdd;
   std::vector<std::shared_ptr<mxp::MediaFile>> filesToRemove;
   for (const auto& fileFs: parentFolderFs.Files()) {
@@ -194,7 +194,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
 bool mxp::FsDiscoverer::hasDotNoMediaFile(const mxp::fs::IDirectory& directory) {
   const auto& files = directory.Files();
   return std::find_if(begin(files), end(files), [](const std::shared_ptr<mxp::fs::IFile>& file) {
-    return file->name() == ".nomedia";
+    return file->Name() == ".nomedia";
   }) != end(files);
 }
 
@@ -208,7 +208,7 @@ bool mxp::FsDiscoverer::addFolder(mxp::fs::IDirectory& folder, mxp::MediaFolder*
     device = mxp::MediaDevice::Create(m_ml, deviceFs->uuid(), deviceFs->IsRemovable());
   }
 
-  auto f = mxp::MediaFolder::Create(m_ml, folder.path(), parentFolder != nullptr ? parentFolder->id() : 0, *device, *deviceFs);
+  auto f = mxp::MediaFolder::Create(m_ml, folder.path(), parentFolder != nullptr ? parentFolder->Id() : 0, *device, *deviceFs);
                           
   LOG_INFO("Created new folder in DB ", folder.path());
   if (f == nullptr)

@@ -20,13 +20,14 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#ifndef ILABEL_H
-#define ILABEL_H
+#ifndef MXP_ILABEL_H
+#define MXP_ILABEL_H
 
 #include <memory>
+#include <string>
 #include <vector>
-
-#include "IMediaExplorer.h"
+#include <stdint.h>
+#include "mediaexplorer/Types.h"
 
 namespace mxp {
 
@@ -34,11 +35,22 @@ class ILabel {
 public:
   virtual ~ILabel() {}
 
-  virtual int64_t id() const = 0;
-  virtual const std::string& name() const = 0;
+  /**
+   * @return Identifier of the record for the label
+   */
+  virtual int64_t Id() const = 0;
+
+  /**
+   * @return Name of the label
+   */
+  virtual const std::string& Name() const = 0;
+
+  /**
+   * @return Vector of pointers to all of the media records with this label
+   */
   virtual std::vector<MediaPtr> Files() = 0;
 };
 
-}
+} /* namespace mxp */
 
-#endif // ILABEL_H
+#endif /* MXP_ILABEL_H */

@@ -29,13 +29,13 @@ public:
   VideoTrack(MediaExplorerPtr, sqlite::Row& row);
   VideoTrack(MediaExplorerPtr, const std::string& codec, unsigned int width, unsigned int height, float fps, int64_t mediaId, const std::string& language, const std::string& description);
 
-  virtual int64_t id() const override;
-  virtual const std::string& codec() const override;
-  virtual unsigned int width() const override;
-  virtual unsigned int height() const override;
-  virtual float fps() const override;
-  virtual const std::string& language() const override;
-  virtual const std::string& description() const override;
+  virtual int64_t Id() const override;
+  virtual const std::string& Codec() const override;
+  virtual unsigned int Width() const override;
+  virtual unsigned int Height() const override;
+  virtual float Fps() const override;
+  virtual const std::string& Language() const override;
+  virtual const std::string& Description() const override;
 
   static bool CreateTable(DBConnection dbConnection);
   static std::shared_ptr<VideoTrack> Create(MediaExplorerPtr ml, const std::string& codec, unsigned int width, unsigned int height, float fps, int64_t mediaId, const std::string& language, const std::string& description);

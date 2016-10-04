@@ -11,10 +11,10 @@
 
 mxp::ParserService::ParserService()
   : m_ml(nullptr)
-    , m_cb(nullptr)
-    , m_parserCb(nullptr)
-    , m_stopParser(false)
-    , m_paused(false) {}
+  , m_cb(nullptr)
+  , m_parserCb(nullptr)
+  , m_stopParser(false)
+  , m_paused(false) {}
 
 void mxp::ParserService::Start() {
   // Ensure we don't start multiple times.
@@ -35,8 +35,9 @@ void mxp::ParserService::resume() {
 }
 
 void mxp::ParserService::signalStop() {
-  for (auto& t : m_threads) {
-    if (t.joinable()) { {
+  for(auto& t : m_threads) {
+    if(t.joinable()) {
+      {
         std::lock_guard<compat::Mutex> lock(m_lock);
         m_cond.notify_all();
         m_stopParser = true;
@@ -79,10 +80,10 @@ bool mxp::ParserService::initialize() {
 }
 
 void mxp::ParserService::mainloop() {
-  // It would be unsafe to call name() at the end of this function, since
+  // It would be unsafe to call Name() at the end of this function, since
   // we might stop the thread during ParserService destruction. This implies
   // that the underlying service has been deleted already.
-  std::string serviceName = name();
+  std::string serviceName = Name();
   LOG_INFO("Entering ParserService [", serviceName, "] thread");
 
   while (m_stopParser == false) {
@@ -90,10 +91,11 @@ void mxp::ParserService::mainloop() {
       std::unique_lock<compat::Mutex> lock(m_lock);
       if (m_tasks.empty() == true || m_paused == true) {
         LOG_INFO("Halting ParserService mainloop");
+
         m_cond.wait(lock, [this]() {
-                      return (m_tasks.empty() == false && m_paused == false)
-                          || m_stopParser == true;
-                    });
+          return (m_tasks.empty() == false && m_paused == false) || m_stopParser == true;
+        });
+
         LOG_INFO("Resuming ParserService mainloop");
         // We might have been woken up because the parser is being destroyed
         if (m_stopParser == true)

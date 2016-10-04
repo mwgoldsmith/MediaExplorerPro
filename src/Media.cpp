@@ -72,7 +72,7 @@ mxp::Media::Media(MediaExplorerPtr ml, const std::string& title, Type type)
 }
 
 std::shared_ptr<mxp::Media> mxp::Media::Create(MediaExplorerPtr ml, Type type, const fs::IFile& file) {
-  auto self = std::make_shared<Media>(ml, file.name(), type);
+  auto self = std::make_shared<Media>(ml, file.Name(), type);
   static const std::string req = "INSERT INTO " + MediaTable::Name + "(type, insertion_date, title, filename) VALUES(?, ?, ?, ?)";
 
   if (insert(ml, self, req, type, self->m_insertionDate, self->m_title, self->m_filename) == false)
@@ -186,7 +186,7 @@ bool mxp::Media::SetRating(int rating) {
   return true;
 }
 
-bool mxp::Media::isFavorite() const {
+bool mxp::Media::IsFavorite() const {
   return m_isFavorite;
 }
 
@@ -220,8 +220,8 @@ std::vector<mxp::VideoTrackPtr> mxp::Media::VideoTracks() {
   return VideoTrack::FetchAll<IVideoTrack>(m_ml, req, m_id);
 }
 
-bool mxp::Media::AddAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int nbChannels, const std::string& language, const std::string& desc) {
-  return AudioTrack::Create(m_ml, codec, bitrate, sampleRate, nbChannels, language, desc, m_id) != nullptr;
+bool mxp::Media::AddAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int numChannels, const std::string& language, const std::string& desc) {
+  return AudioTrack::Create(m_ml, codec, bitrate, sampleRate, numChannels, language, desc, m_id) != nullptr;
 }
 
 std::vector<mxp::AudioTrackPtr> mxp::Media::AudioTracks() {
@@ -269,8 +269,8 @@ bool mxp::Media::Save() {
   return true;
 }
 
-std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, IMediaFile::Type type) {
-  auto file = MediaFile::Create(m_ml, m_id, type, fileFs, parentFolder.id(), parentFolderFs.device()->IsRemovable());
+std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs,mxp::IMediaFile::Type type) {
+  auto file = MediaFile::Create(m_ml, m_id, type, fileFs, parentFolder.Id(), parentFolderFs.device()->IsRemovable());
   if (file == nullptr)
     return nullptr;
   auto lock = m_files.Lock();
@@ -285,7 +285,7 @@ void mxp::Media::removeFile(MediaFile& file) {
   if (m_files.IsCached() == false)
     return;
   m_files.Get().erase(std::remove_if(begin(m_files.Get()), end(m_files.Get()), [&file](const MediaFilePtr& f) {
-    return f->id() == file.id();
+    return f->Id() == file.Id();
   }));
 }
 
@@ -325,7 +325,7 @@ std::vector<mxp::MediaPtr> mxp::Media::ListAll(mxp::MediaExplorerPtr ml, mxp::IM
   return FetchAll<IMedia>(ml, req, type);
 }
 
-int64_t mxp::Media::id() const {
+int64_t mxp::Media::Id() const {
   return m_id;
 }
 
@@ -423,31 +423,31 @@ bool mxp::Media::CreateTriggers(DBConnection connection) {
 }
 
 bool mxp::Media::AddLabel(LabelPtr label) {
-  if (m_id == 0 || label->id() == 0) {
+  if (m_id == 0 || label->Id() == 0) {
     LOG_ERROR("Both file & label need to be inserted in database before being linked together");
     return false;
   }
   auto req = "INSERT INTO LabelFileRelation VALUES(?, ?)";
-  if (sqlite::Tools::ExecuteInsert(m_ml->GetConnection(), req, label->id(), m_id) == 0)
+  if (sqlite::Tools::ExecuteInsert(m_ml->GetConnection(), req, label->Id(), m_id) == 0)
     return false;
   const auto reqFts = "UPDATE " + MediaTable::Name + "Fts "
     "SET labels = labels || ' ' || ? WHERE rowid = ?";
-  return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->name(), m_id);
+  return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->Name(), m_id);
 }
 
 bool mxp::Media::RemoveLabel(LabelPtr label) {
-  if (m_id == 0 || label->id() == 0) {
+  if (m_id == 0 || label->Id() == 0) {
     LOG_ERROR("Can't unlink a label/file not inserted in database");
     return false;
   }
 
   auto req = "DELETE FROM LabelFileRelation WHERE label_id = ? AND media_id = ?";
-  if(sqlite::Tools::ExecuteDelete(m_ml->GetConnection(), req, label->id(), m_id) == false) {
+  if(sqlite::Tools::ExecuteDelete(m_ml->GetConnection(), req, label->Id(), m_id) == false) {
     return false;
   }
 
   const auto reqFts = "UPDATE " + MediaTable::Name + "Fts SET labels = TRIM(REPLACE(labels, ?, '')) WHERE rowid = ?";
-  return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->name(), m_id);
+  return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->Name(), m_id);
 }
 
 std::vector<mxp::LabelPtr> mxp::Media::labels() {

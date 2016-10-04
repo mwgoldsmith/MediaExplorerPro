@@ -24,7 +24,7 @@ class MediaDevice : public DatabaseHelpers<MediaDevice, policy::MediaDeviceTable
 public:
   MediaDevice(MediaExplorerPtr ml, const std::string& uuid, bool isRemovable);
   MediaDevice(MediaExplorerPtr ml, sqlite::Row& row);
-  int64_t id() const;
+  int64_t Id() const;
   const std::string& uuid() const;
   bool IsRemovable() const;
   bool isPresent() const;

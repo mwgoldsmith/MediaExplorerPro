@@ -32,7 +32,7 @@ mxp::MediaDevice::MediaDevice(MediaExplorerPtr ml, const std::string& uuid, bool
   , m_isPresent(true) {
 }
 
-int64_t mxp::MediaDevice::id() const {
+int64_t mxp::MediaDevice::Id() const {
   return m_id;
 }
 
