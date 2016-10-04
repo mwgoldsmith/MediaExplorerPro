@@ -186,9 +186,6 @@
     <ClInclude Include="..\..\..\src\parser\Parser.h">
       <Filter>Source Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\logging\IostreamLogger.h">
-      <Filter>Source Files\logging</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\logging\Logger.h">
       <Filter>Source Files\logging</Filter>
     </ClInclude>
@@ -314,6 +311,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\parser\MediaType.h">
       <Filter>Source Files\parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\logging\ConsoleLogger.h">
+      <Filter>Source Files\logging</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

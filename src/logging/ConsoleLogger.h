@@ -9,7 +9,7 @@
 
 namespace mxp {
 
-class IostreamLogger : public ILogger {
+class ConsoleLogger : public ILogger {
 public:
   virtual void Error(const std::string& msg) override {
     Lock();

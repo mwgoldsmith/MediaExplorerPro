@@ -478,7 +478,7 @@
     <ClInclude Include="..\..\..\src\filesystem\win32\Directory.h" />
     <ClInclude Include="..\..\..\src\MediaFolder.h" />
     <ClInclude Include="..\..\..\src\Label.h" />
-    <ClInclude Include="..\..\..\src\logging\IostreamLogger.h" />
+    <ClInclude Include="..\..\..\src\logging\ConsoleLogger.h" />
     <ClInclude Include="..\..\..\src\logging\Logger.h" />
     <ClInclude Include="..\..\..\src\Media.h" />
     <ClInclude Include="..\..\..\src\MediaExplorer.h" />
