@@ -2,9 +2,12 @@
  * Media Explorer
  *****************************************************************************/
 
-#pragma once
+#ifndef CONSOLELOGGER_H
+#define CONSOLELOGGER_H
 
 #include <iostream>
+#include <string>
+#include "compat/Mutex.h"
 #include "mediaexplorer/ILogger.h"
 
 namespace mxp {
@@ -42,15 +45,17 @@ public:
   }
 
 private:
-  virtual void Lock() {
+  void Lock() {
     m_lock.lock();
   }
 
-  virtual void Unlock() {
+  void Unlock() {
     m_lock.unlock();
   }
 
   compat::Mutex m_lock;
 };
 
-}
+} /* namespace mxp */
+
+#endif /* CONSOLELOGGER_H */
