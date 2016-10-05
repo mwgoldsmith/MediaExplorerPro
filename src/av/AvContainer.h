@@ -6,6 +6,7 @@
 #define MEDIACONTAINER_H
 
 #include <string>
+#include <string>
 
 namespace mxp {
 namespace parser {

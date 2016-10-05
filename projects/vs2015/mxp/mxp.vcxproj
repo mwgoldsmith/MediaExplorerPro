@@ -395,6 +395,8 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\Types.h" />
     <ClInclude Include="..\..\..\include\Types.h" />
     <ClInclude Include="..\..\..\src\AudioTrack.h" />
+    <ClInclude Include="..\..\..\src\av\AvContainer.h" />
+    <ClInclude Include="..\..\..\src\av\AvType.h" />
     <ClInclude Include="..\..\..\src\compat\ConditionVariable.h" />
     <ClInclude Include="..\..\..\src\compat\Mutex.h" />
     <ClInclude Include="..\..\..\src\compat\Thread.h" />
@@ -484,9 +486,7 @@
     <ClInclude Include="..\..\..\src\MediaExplorer.h" />
     <ClInclude Include="..\..\..\src\metadata_services\FormatService.h" />
     <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h" />
-    <ClInclude Include="..\..\..\src\parser\MediaContainer.h" />
     <ClInclude Include="..\..\..\src\parser\MediaTrack.h" />
-    <ClInclude Include="..\..\..\src\parser\MediaType.h" />
     <ClInclude Include="..\..\..\src\parser\ParserMedia.h" />
     <ClInclude Include="..\..\..\src\parser\Parser.h" />
     <ClInclude Include="..\..\..\src\parser\ParserService.h" />

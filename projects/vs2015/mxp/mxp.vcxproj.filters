@@ -64,6 +64,9 @@
     <Filter Include="Source Files\filesystem\win32">
       <UniqueIdentifier>{7851adee-f1e4-4472-be23-3651f47070d2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\av">
+      <UniqueIdentifier>{717e20c4-b68c-4e57-a4e9-ecb56faad164}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\Fixup.h">
@@ -306,14 +309,14 @@
     <ClInclude Include="..\..\..\src\parser\MediaTrack.h">
       <Filter>Source Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\parser\MediaContainer.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\parser\MediaType.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\logging\ConsoleLogger.h">
       <Filter>Source Files\logging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\AvType.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\AvContainer.h">
+      <Filter>Source Files\av</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
