@@ -74,7 +74,7 @@ public:
     auto timeout = std::chrono::duration_cast<std::chrono::milliseconds>(relTime);
     while (pred() == false) {
       auto now = std::chrono::system_clock::now();
-      if (SleepConditionVariableCS(&m_cond, lock.mutex()->native_handle(), timeout.count()) == 0) {
+      if (SleepConditionVariableCS(&m_cond, lock.mutex()->native_handle(), static_cast<DWORD>(timeout.count())) == 0) {
         auto res = GetLastError();
         if (res == ERROR_TIMEOUT)
           return false;
