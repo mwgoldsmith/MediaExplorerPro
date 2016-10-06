@@ -42,7 +42,7 @@ private:
     auto t = compat::this_thread::get_id().m_id;
     char buffer[32];
 
-    snprintf(buffer, sizeof(buffer) / sizeof(char), "[ %lX ] ", t);
+    snprintf(buffer, sizeof(buffer) / sizeof(char), "[ %04X ] ", t);
 
     return std::string(buffer);
   }

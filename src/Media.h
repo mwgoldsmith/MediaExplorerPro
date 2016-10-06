@@ -37,22 +37,22 @@ public:
   Media(MediaExplorerPtr ml, const std::string &title, Type type);
 
   virtual int64_t Id() const override;
-  virtual Type type() override;
-  virtual SubType subType() const override;
-  virtual const std::string& title() const override;
+  virtual Type GetType() override;
+  virtual SubType GetSubType() const override;
+  virtual const std::string& GetTitle() const override;
   //virtual AlbumTrackPtr albumTrack() const override;
   //void setAlbumTrack(AlbumTrackPtr albumTrack);
-  virtual int64_t duration() const override;
+  virtual int64_t GetDuration() const override;
   //virtual ShowEpisodePtr showEpisode() const override;
   //void setShowEpisode(ShowEpisodePtr episode);
   virtual bool AddLabel(LabelPtr label) override;
   virtual bool RemoveLabel(LabelPtr label) override;
-  virtual std::vector<LabelPtr> labels() override;
-  virtual int PlayCount() const  override;
+  virtual std::vector<LabelPtr> GetLabels() override;
+  virtual int GetPlayCount() const  override;
   virtual bool IncreasePlayCount() override;
-  virtual float progress() const override;
+  virtual float GetProgress() const override;
   virtual bool SetProgress(float progress) override;
-  virtual int rating() const override;
+  virtual int Rating() const override;
   virtual bool SetRating(int rating) override;
   virtual bool IsFavorite() const override;
   virtual bool SetFavorite(bool favorite) override;
@@ -69,7 +69,7 @@ public:
   bool AddAudioTrack(const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int numChannels, const std::string& language, const std::string& desc);
 
   std::shared_ptr<MediaFile> AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, mxp::IMediaFile::Type type);
-  void removeFile(MediaFile& file);
+  void RemoveFile(MediaFile& file);
 
   void SetType(Type type);
   void SetTitle(const std::string& title);
@@ -86,7 +86,7 @@ public:
   static std::vector<MediaPtr> ListAll(MediaExplorerPtr ml, Type type , SortingCriteria sort, bool desc);
 
   static std::vector<MediaPtr> FetchHistory(MediaExplorerPtr ml);
-  static void clearHistory(MediaExplorerPtr ml);
+  static void ClearHistory(MediaExplorerPtr ml);
 
 private:
   MediaExplorerPtr m_ml;

@@ -177,11 +177,11 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
   auto t = m_ml->GetConnection()->NewTransaction();
   for (auto file : files) {
     LOG_INFO("MediaFile ", file->mrl(), " not found on filesystem, deleting it");
-    file->media()->removeFile(*file);
+    file->media()->RemoveFile(*file);
   }
 
   for (auto& f : filesToRemove)
-    f->media()->removeFile(*f);
+    f->media()->RemoveFile(*f);
 
   // Insert all files at once to avoid SQL write contention
   for (auto& p : filesToAdd)

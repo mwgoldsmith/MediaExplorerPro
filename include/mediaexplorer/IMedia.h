@@ -50,22 +50,22 @@ public:
   virtual ~IMedia() = default;
 
   virtual int64_t Id() const = 0;
-  virtual Type type() = 0;
-  virtual SubType subType() const = 0;
-  virtual const std::string& title() const = 0;
+  virtual Type GetType() = 0;
+  virtual SubType GetSubType() const = 0;
+  virtual const std::string& GetTitle() const = 0;
   //virtual AlbumTrackPtr albumTrack() const = 0;
   /**
    * @brief duration Returns the media duration in ms
    */
-  virtual int64_t duration() const = 0;
+  virtual int64_t GetDuration() const = 0;
   //virtual ShowEpisodePtr showEpisode() const = 0;
-  virtual int PlayCount() const = 0;
+  virtual int GetPlayCount() const = 0;
   virtual bool IncreasePlayCount() = 0;
   virtual const std::vector<MediaFilePtr>& Files() const = 0;
   /**
    *  @brief progress Returns the progress, in the [0;1] range
    */
-  virtual float progress() const = 0;
+  virtual float GetProgress() const = 0;
   virtual bool SetProgress(float progress) = 0;
   /**
    *  @brief rating The media rating, or -1 if unset.
@@ -73,13 +73,13 @@ public:
    *  No value is enforced, and any positive value (less or equal to INT32_MAX)
    *  will be accepted.
    */
-  virtual int rating() const = 0;
+  virtual int Rating() const = 0;
   virtual bool SetRating(int rating) = 0;
   virtual bool IsFavorite() const = 0;
   virtual bool SetFavorite(bool favorite) = 0;
   virtual bool AddLabel(LabelPtr label) = 0;
   virtual bool RemoveLabel(LabelPtr label) = 0;
-  virtual std::vector<LabelPtr> labels() = 0;
+  virtual std::vector<LabelPtr> GetLabels() = 0;
   //virtual MoviePtr movie() const = 0;
   virtual std::vector<VideoTrackPtr> VideoTracks() = 0;
   virtual std::vector<AudioTrackPtr> AudioTracks() = 0;

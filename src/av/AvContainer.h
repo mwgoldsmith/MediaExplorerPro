@@ -2,34 +2,51 @@
 * Media Explorer
 *****************************************************************************/
 
-#ifndef MEDIACONTAINER_H
-#define MEDIACONTAINER_H
+#ifndef AVCONTAINER_H
+#define AVCONTAINER_H
 
-#include <string>
 #include <string>
 
 namespace mxp {
-namespace parser {
+namespace av {
 
-struct MediaContainer {
-  MediaContainer() 
-    : Name({})
-    , LongName({})
-    , Extensions({}) {
+class AvContainer {
+public:
+  AvContainer() 
+    : m_name({})
+    , m_longName({})
+    , m_extensions({})
+    , m_mimeType({}) {
   }
 
-  MediaContainer(const char* name, const char* longName, const char* extensions)
-    : Name(name)
-    , LongName(longName)
-    , Extensions(extensions) {
+  /**
+   *
+   * @param name
+   * @param longName
+   * @param extensions
+   * @param mimeType
+   *
+   */
+  AvContainer(const char* name, const char* longName, const char* extensions, const char* mimeType)
+    : m_name(name)
+    , m_longName(longName)
+    , m_extensions(extensions)
+    , m_mimeType(mimeType) {
   }
 
-  const std::string Name;
-  const std::string LongName;
-  const std::string Extensions;
+  const std::string& GetName() const { return m_name; }
+  const std::string& GetLongName() const { return m_longName; }
+  const std::string& GetExtensions() const { return m_extensions; }
+  const std::string& GetMimeType() const { return m_mimeType; }
+
+private:
+  const std::string m_name;
+  const std::string m_longName;
+  const std::string m_extensions;
+  const std::string m_mimeType;
 };
 
-} /* namespace parser */
+} /* namespace av */
 } /* namespace mxp */
 
-#endif /* MEDIACONTAINER_H */
+#endif /* AVCONTAINER_H */

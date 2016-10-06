@@ -5,6 +5,7 @@
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavutil/avutil.h>
 }
 
 #include <vector>
@@ -26,10 +27,11 @@ namespace mxp {
 namespace parser {
 
 struct Stream {
-  Stream(AVCodecContext* codecContext, const AVCodec *codec, const AVMediaType mediaType)
+  Stream(AVCodecContext* codecContext, const AVCodec *codec, const AVMediaType mediaType, uint32_t index)
     : CodecContext(codecContext)
     , Codec(codec)
-    , MediaType(mediaType) { }
+    , AvType(mediaType)
+    , Index(index) { }
 
   ~Stream() {
     if (CodecContext != nullptr) {
@@ -40,36 +42,40 @@ struct Stream {
 
   AVCodecContext*       CodecContext;
   const AVCodec*        Codec;
-  const AVMediaType     MediaType;
+  const AVMediaType     AvType;
+  uint32_t              Index;
 };
 
 struct Metadata {
-  Metadata(const std::string&& key, const std::string&& value)
+  Metadata(const std::string&& key, const std::string&& value, uint32_t streamIndex)
     : Key{ std::move(key) }
-    , Value{ std::move(value) }{ }
+    , Value{ std::move(value) }
+    , StreamIndex{ streamIndex } {
+  }
 
   const std::string Key;
   const std::string Value;
+  const uint32_t    StreamIndex;
 };
 
 class Context {
 public:
-  void AddMetadata() {
+  void AddMetadata(const AVDictionary* dict, uint32_t streamIndex) {
     AVDictionaryEntry *tag = nullptr;
-    int ret;
-    while((tag = av_dict_get(m_fmtCtx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
-      LOG_TRACE("Metadata[n]: ",  tag->key, "=", tag->value);
-      m_metadata.emplace_back(std::make_shared<Metadata>(std::string(tag->key), std::string(tag->value)));
+
+    while((tag = av_dict_get(dict, "", tag, AV_DICT_IGNORE_SUFFIX))) {
+      LOG_TRACE("Metadata[", m_metadata.size(), "]: ",  tag->key, "=", tag->value);
+      m_metadata.emplace_back(std::make_shared<Metadata>(std::string(tag->key), std::string(tag->value), streamIndex));
     }
   }
 
-  void AddStream(AVCodecContext *codecContext, const AVMediaType mediaType) {
+  void AddStream(AVCodecContext *codecContext, const AVMediaType mediaType, uint32_t index) {
     auto codec = avcodec_find_decoder(codecContext->codec_id);
     if(codec == nullptr) {
       LOG_ERROR("Unsupported codec: ", avcodec_get_name(codecContext->codec_id));
     }
 
-    m_streams.emplace_back(std::make_shared<Stream>(codecContext, codec, mediaType));
+    m_streams.emplace_back(std::make_shared<Stream>(codecContext, codec, mediaType, index));
   }
 
   void ClearStreams() {
@@ -93,7 +99,7 @@ public:
   AVFormatContext*                       m_fmtCtx;
   std::vector<std::shared_ptr<Stream>>   m_streams;
   std::vector<std::shared_ptr<Metadata>> m_metadata;
-  std::shared_ptr<MediaContainer>        m_mediaContainer;
+  std::shared_ptr<av::AvContainer>       m_mediaContainer;
 };
 }
 }
@@ -113,27 +119,31 @@ mxp::parser::ParserMedia::ParserMedia(const std::shared_ptr<mxp::fs::IFile> file
     print_error("Cannot find stream information: ", err);
   } else {
     auto fmt = m_context->m_fmtCtx->iformat;
-    m_context->m_mediaContainer = std::make_shared<MediaContainer>(fmt->name, fmt->long_name, fmt->extensions);
+    m_context->m_mediaContainer = std::make_shared<av::AvContainer>(fmt->name, fmt->long_name, fmt->extensions, fmt->mime_type);
 
     LOG_INFO("Media file '", filename, "' contains ", m_context->m_fmtCtx->nb_streams, " streams.");
 
-    for(auto i = 0; i < m_context->m_fmtCtx->nb_streams; i++) {
-      auto context = m_context->m_fmtCtx->streams[i]->codec;
+    for(unsigned int i = 0; i < m_context->m_fmtCtx->nb_streams; i++) {
+      auto stream = m_context->m_fmtCtx->streams[i];
+      
+      auto context = stream->codec;
       LOG_DEBUG("Stream[", i, "] = { '", filename, "', ", av_get_media_type_string(context->codec_type), ", ", avcodec_get_name(context->codec_id), " }");
 
+      m_context->AddMetadata(stream->metadata, static_cast<uint32_t>(i));
+
       if(context->codec_type == AVMEDIA_TYPE_VIDEO) {
-        m_context->AddStream(context, context->codec_type);
+        m_context->AddStream(context, context->codec_type, i);
       } else if(context->codec_type == AVMEDIA_TYPE_AUDIO) {
-        m_context->AddStream(context, context->codec_type);
+        m_context->AddStream(context, context->codec_type, i);
       } else if(context->codec_type == AVMEDIA_TYPE_SUBTITLE) {
-        m_context->AddStream(context, context->codec_type);
+        m_context->AddStream(context, context->codec_type, i);
       } else {
         LOG_WARN("Unsupported media stream type '", av_get_media_type_string(context->codec_type), "' in '", filename, "'. Ignoring.");
       }
     }
 
     LOG_INFO("Loading metadata for media file '", filename, "'");
-    m_context->AddMetadata();
+    m_context->AddMetadata(m_context->m_fmtCtx->metadata, static_cast<uint32_t>(-1));
   }
 }
 
@@ -144,6 +154,6 @@ mxp::parser::ParserMedia::~ParserMedia() {
   }
 }
 
-std::shared_ptr<mxp::parser::MediaContainer> mxp::parser::ParserMedia::GetMediaContainer() {
+std::shared_ptr<mxp::av::AvContainer> mxp::parser::ParserMedia::GetMediaContainer() {
   return m_context->m_mediaContainer;
 }

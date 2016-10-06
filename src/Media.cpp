@@ -80,7 +80,7 @@ std::shared_ptr<mxp::Media> mxp::Media::Create(MediaExplorerPtr ml, Type type, c
   return self;
 }
 
-int64_t mxp::Media::duration() const {
+int64_t mxp::Media::GetDuration() const {
   return m_duration;
 }
 
@@ -143,7 +143,7 @@ void Media::setMovie(MoviePtr movie) {
   m_changed = true;
 }
 */
-int mxp::Media::PlayCount() const {
+int mxp::Media::GetPlayCount() const {
   return m_playCount;
 }
 
@@ -158,7 +158,7 @@ bool mxp::Media::IncreasePlayCount() {
   return true;
 }
 
-float mxp::Media::progress() const {
+float mxp::Media::GetProgress() const {
   return m_progress;
 }
 
@@ -172,7 +172,7 @@ bool mxp::Media::SetProgress(float progress) {
   return true;
 }
 
-int mxp::Media::rating() const {
+int mxp::Media::Rating() const {
   return m_rating;
 }
 
@@ -269,7 +269,7 @@ bool mxp::Media::Save() {
   return true;
 }
 
-std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs,mxp::IMediaFile::Type type) {
+std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, mxp::IMediaFile::Type type) {
   auto file = MediaFile::Create(m_ml, m_id, type, fileFs, parentFolder.Id(), parentFolderFs.device()->IsRemovable());
   if (file == nullptr)
     return nullptr;
@@ -279,7 +279,7 @@ std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, Med
   return file;
 }
 
-void mxp::Media::removeFile(MediaFile& file) {
+void mxp::Media::RemoveFile(MediaFile& file) {
   file.destroy();
   auto lock = m_files.Lock();
   if (m_files.IsCached() == false)
@@ -329,11 +329,11 @@ int64_t mxp::Media::Id() const {
   return m_id;
 }
 
-mxp::IMedia::Type mxp::Media::type() {
+mxp::IMedia::Type mxp::Media::GetType() {
   return m_type;
 }
 
-mxp::IMedia::SubType mxp::Media::subType() const {
+mxp::IMedia::SubType mxp::Media::GetSubType() const {
   return m_subType;
 }
 
@@ -344,7 +344,7 @@ void mxp::Media::SetType(Type type) {
   m_changed = true;
 }
 
-const std::string& mxp::Media::title() const {
+const std::string& mxp::Media::GetTitle() const {
   return m_title;
 }
 
@@ -450,7 +450,7 @@ bool mxp::Media::RemoveLabel(LabelPtr label) {
   return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->Name(), m_id);
 }
 
-std::vector<mxp::LabelPtr> mxp::Media::labels() {
+std::vector<mxp::LabelPtr> mxp::Media::GetLabels() {
   static const auto req = "SELECT l.* FROM " + policy::LabelTable::Name + " l "
       "INNER JOIN LabelFileRelation lfr ON lfr.label_id = l.id_label "
       "WHERE lfr.media_id = ?";
@@ -472,7 +472,7 @@ std::vector<mxp::MediaPtr> mxp::Media::FetchHistory(MediaExplorerPtr ml) {
   return FetchAll<IMedia>(ml, req);
 }
 
-void mxp::Media::clearHistory(MediaExplorerPtr ml) {
+void mxp::Media::ClearHistory(MediaExplorerPtr ml) {
   auto dbConn = ml->GetConnection();
   static const auto req = "UPDATE " + MediaTable::Name + " SET "
       "play_count = 0,"

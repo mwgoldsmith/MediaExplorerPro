@@ -27,7 +27,7 @@ mxp::parser::Task::Status mxp::FormatService::run(parser::Task & task) {
   auto file = task.file;
 
   // FIXME: This is now becoming an invalid predicate
-  if(media->duration() != -1) {
+  if(media->GetDuration() != -1) {
     LOG_INFO(file->mrl(), " was already parsed");
     return parser::Task::Status::Success;
   }

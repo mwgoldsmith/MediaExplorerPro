@@ -59,7 +59,7 @@ const std::string& mxp::MediaFile::mrl() const {
   return m_fullPath;
 }
 
-mxp::IMediaFile::Type mxp::MediaFile::type() const {
+mxp::IMediaFile::Type mxp::MediaFile::GetType() const {
   return m_type;
 }
 

@@ -7,7 +7,7 @@
 
 #include <memory>
 #include "filesystem/IFile.h"
-#include "parser/MediaContainer.h"
+#include "av/AvContainer.h"
 
 namespace mxp {
 namespace parser {
@@ -20,7 +20,7 @@ public:
   explicit ParserMedia(const std::shared_ptr<mxp::fs::IFile> file);
   ~ParserMedia();
 
-  std::shared_ptr<MediaContainer> GetMediaContainer();
+  std::shared_ptr<av::AvContainer> GetMediaContainer();
 
 private:
   const std::shared_ptr<mxp::fs::IFile> m_file;

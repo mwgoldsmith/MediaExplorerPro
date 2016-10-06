@@ -29,7 +29,7 @@ public:
   MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
   virtual int64_t Id() const override;
   virtual const std::string& mrl() const override;
-  virtual Type type() const override;
+  virtual Type GetType() const override;
   virtual time_t LastModificationDate() const override;
   // Explicitely mark a media as fully parsed, meaning no metadata service needs to run anymore.
   //FIXME: This lacks granularity as we don't have a straight forward way to know which service

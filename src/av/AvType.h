@@ -2,13 +2,15 @@
 * Media Explorer
 *****************************************************************************/
 
-#ifndef MEDIATYPE_H
-#define MEDIATYPE_H
+#ifndef AVTYPE_H
+#define AVTYPE_H
+
+#include <string>
 
 namespace mxp {
-namespace parser {
+namespace av {
  
-enum class MediaType {
+enum class AvType {
   None = -1,
   Audio,
   Image,
@@ -16,7 +18,10 @@ enum class MediaType {
   Video
 };
 
-} /* namespace parser */
+AvType GetAvType(int libAvType);
+std::string GetAvTypeString(AvType type);
+
+} /* namespace av */
 } /* namespace mxp */
 
-#endif /* MEDIATYPE_H */
+#endif /* AVTYPE_H */

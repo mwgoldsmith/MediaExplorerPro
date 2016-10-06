@@ -6,11 +6,7 @@
 # include "config.h"
 #endif
 
-extern "C" {
-#include <libavcodec/avcodec.h>
-#include <libavformat/avformat.h>
-}
-
+#include "av/AvController.h"
 #include "factory/ParserMediaFactory.h"
 #include "parser/ParserMedia.h"
 #include "logging/Logger.h"
@@ -19,7 +15,7 @@ extern "C" {
 
 mxp::factory::ParserMediaFactory::ParserMediaFactory(MediaExplorerPtr ml)
   : m_ml(ml) {
-  av_register_all();
+  av::AvController::Initialize();
 }
 
 std::shared_ptr<mxp::parser::ParserMedia> mxp::factory::ParserMediaFactory::CreateParserMedia(const std::shared_ptr<mxp::fs::IFile> file) {

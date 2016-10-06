@@ -34,7 +34,7 @@ public:
   virtual ~IMediaFile() = default;
   virtual int64_t Id() const = 0;
   virtual const std::string& mrl() const = 0;
-  virtual Type type() const = 0;
+  virtual Type GetType() const = 0;
   virtual time_t LastModificationDate() const = 0;
 };
 
