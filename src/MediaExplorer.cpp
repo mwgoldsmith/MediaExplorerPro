@@ -243,7 +243,7 @@ mxp::MediaSearchAggregate mxp::MediaExplorer::SearchMedia(const std::string& tit
   auto tmp = mxp::Media::Search(this, title);
   mxp::MediaSearchAggregate res;
   for (auto& m : tmp) {
-    switch (m->subType()) {
+    switch (m->GetSubType()) {
     //case mxp::IMedia::SubType::AlbumTrack:
     //  res.tracks.emplace_back(std::move(m));
     //  break;
