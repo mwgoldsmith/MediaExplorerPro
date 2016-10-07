@@ -42,7 +42,6 @@ public:
 private:
   MediaExplorerPtr m_ml;
   int64_t          m_id;
-  std::string      m_name;
 
   friend struct policy::MetadataTable;
 };

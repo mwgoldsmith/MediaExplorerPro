@@ -385,8 +385,10 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\IMedia.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorer.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorerCb.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMetadata.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IPlaylist.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\ISettings.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IStream.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IVideoTrack.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\LogLevel.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\MediaSearchAggregate.h" />
@@ -487,6 +489,7 @@
     <ClInclude Include="..\..\..\src\logging\Logger.h" />
     <ClInclude Include="..\..\..\src\Media.h" />
     <ClInclude Include="..\..\..\src\MediaExplorer.h" />
+    <ClInclude Include="..\..\..\src\Metadata.h" />
     <ClInclude Include="..\..\..\src\metadata_services\FormatService.h" />
     <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h" />
     <ClInclude Include="..\..\..\src\parser\MediaTrack.h" />
@@ -496,6 +499,7 @@
     <ClInclude Include="..\..\..\src\parser\Task.h" />
     <ClInclude Include="..\..\..\src\Playlist.h" />
     <ClInclude Include="..\..\..\src\Settings.h" />
+    <ClInclude Include="..\..\..\src\Stream.h" />
     <ClInclude Include="..\..\..\src\utils\Cache.h" />
     <ClInclude Include="..\..\..\src\utils\Charsets.h" />
     <ClInclude Include="..\..\..\src\utils\Filename.h" />
@@ -599,6 +603,7 @@
     <ClCompile Include="..\..\..\src\logging\Logger.cpp" />
     <ClCompile Include="..\..\..\src\Media.cpp" />
     <ClCompile Include="..\..\..\src\MediaExplorer.cpp" />
+    <ClCompile Include="..\..\..\src\Metadata.cpp" />
     <ClCompile Include="..\..\..\src\metadata_services\FormatService.cpp" />
     <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp" />
     <ClCompile Include="..\..\..\src\parser\Parser.cpp" />
@@ -606,6 +611,7 @@
     <ClCompile Include="..\..\..\src\parser\ParserService.cpp" />
     <ClCompile Include="..\..\..\src\Playlist.cpp" />
     <ClCompile Include="..\..\..\src\Settings.cpp" />
+    <ClCompile Include="..\..\..\src\Stream.cpp" />
     <ClCompile Include="..\..\..\src\utils\Filename.cpp" />
     <ClCompile Include="..\..\..\src\utils\ModificationsNotifier.cpp" />
     <ClCompile Include="..\..\..\src\VideoTrack.cpp" />

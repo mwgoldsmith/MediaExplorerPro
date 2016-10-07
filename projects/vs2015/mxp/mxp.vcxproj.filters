@@ -327,6 +327,18 @@
     <ClInclude Include="..\..\..\src\av\AvStream.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Metadata.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Stream.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IStream.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMetadata.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Label.cpp">
@@ -454,6 +466,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\av\AvStream.cpp">
       <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Metadata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Stream.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
