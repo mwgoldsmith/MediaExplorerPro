@@ -5,11 +5,11 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <string>
 #include <vector>
-#include "Types.h"
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IHistoryEntry.h"
+#include "mediaexplorer/Types.h"
+#include "Types.h"
 
 namespace mxp {
 
@@ -29,24 +29,29 @@ public:
   History(MediaExplorerPtr ml, sqlite::Row& row);
 
   virtual const std::string& mrl() const override;
+
   virtual unsigned int InsertionDate() const override;
+
   virtual bool IsFavorite() const override;
+
   virtual bool SetFavorite(bool isFavorite) override;
 
   static bool CreateTable(DBConnection dbConnection);
+
   static bool insert(DBConnection dbConn, const std::string& mrl);
+
   static std::vector<HistoryPtr> fetch(MediaExplorerPtr ml);
+
   static bool clearStreams(MediaExplorerPtr ml);
 
   static constexpr unsigned int MaxEntries = 100u;
 
 private:
   MediaExplorerPtr m_ml;
-
-  int64_t m_id;
-  std::string m_mrl;
-  unsigned int m_date;
-  bool m_favorite;
+  int64_t          m_id;
+  std::string      m_mrl;
+  unsigned int     m_date;
+  bool             m_favorite;
 
   friend policy::HistoryTable;
 };

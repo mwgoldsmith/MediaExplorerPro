@@ -5,11 +5,14 @@
 #ifndef MEDIA_H
 #define MEDIA_H
 
-#include "mediaexplorer/IMedia.h"
 #include "factory/IFileSystem.h"
 #include "MediaFile.h"
+
 #include "database/DatabaseHelpers.h"
+#include "mediaexplorer/IMedia.h"
+#include "mediaexplorer/Types.h"
 #include "utils/Cache.h"
+#include "Types.h"
 
 namespace mxp {
 

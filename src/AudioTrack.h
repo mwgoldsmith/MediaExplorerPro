@@ -5,9 +5,10 @@
 #ifndef AUDIOTRACK_H
 #define AUDIOTRACK_H
 
-#include "mediaexplorer/IAudioTrack.h"
-#include "mediaexplorer/IMediaExplorer.h"
 #include "database/DatabaseHelpers.h"
+#include "mediaexplorer/IAudioTrack.h"
+#include "mediaexplorer/Types.h"
+#include "Types.h"
 
 namespace mxp {
 
@@ -49,7 +50,6 @@ private:
   std::string  m_description;
   int64_t      m_mediaId;
 
-private:
   friend struct policy::AudioTrackTable;
 };
 
