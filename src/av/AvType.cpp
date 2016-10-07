@@ -55,7 +55,7 @@ std::string mxp::av::GetAvTypeString(AvType type) {
     break;
   }
 
-  LOG_WARN("Unsupported media type: ", type);
+  LOG_WARN("Unsupported media type: ", (int)type);
 
   return{};
 }

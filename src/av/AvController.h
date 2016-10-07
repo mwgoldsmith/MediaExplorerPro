@@ -5,6 +5,7 @@
 #ifndef AVCONTROLLER_H
 #define AVCONTROLLER_H
 
+#include <memory>
 #include <vector>
 #include "av/AvContainer.h"
 #include "av/AvCodec.h"
@@ -19,8 +20,8 @@ public:
   static bool Initialize();
 
 private:
-  static std::vector<AvContainer> s_containers;
-  static std::vector<AvCodec>     s_codecs;
+  static std::unique_ptr<std::vector<AvContainer>> s_containers;
+  static std::unique_ptr<std::vector<AvCodec>>     s_codecs;
 };
 
 } /* namespace av */

@@ -29,9 +29,9 @@ public:
    */
   AvContainer(const char* name, const char* longName, const char* extensions, const char* mimeType)
     : m_name(name)
-    , m_longName(longName)
-    , m_extensions(extensions)
-    , m_mimeType(mimeType) {
+    , m_longName(longName != nullptr ? longName : "")
+    , m_extensions(extensions != nullptr ? extensions : "")
+    , m_mimeType(mimeType != nullptr ? mimeType : "") {
   }
 
   const std::string& GetName() const { return m_name; }

@@ -318,6 +318,15 @@
     <ClInclude Include="..\..\..\src\av\AvContainer.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\av\AvCodec.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\AvController.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\AvStream.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Label.cpp">
@@ -433,6 +442,18 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp">
       <Filter>Source Files\metadata_services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\av\AvController.cpp">
+      <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\av\AvCodec.cpp">
+      <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\av\AvType.cpp">
+      <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\av\AvStream.cpp">
+      <Filter>Source Files\av</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

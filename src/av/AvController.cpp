@@ -48,6 +48,12 @@ static void AvLogCallback(void* avcl, int level, const char* format, va_list vl)
 }
 }
 
+
+using ContainerVector = std::vector<mxp::av::AvContainer>;
+using CodecVector = std::vector<mxp::av::AvCodec>;
+std::unique_ptr<ContainerVector> mxp::av::AvController::s_containers = std::unique_ptr<ContainerVector>(std::make_unique<ContainerVector>());
+std::unique_ptr<CodecVector> mxp::av::AvController::s_codecs = std::unique_ptr<CodecVector>(std::make_unique<CodecVector>());
+
 bool mxp::av::AvController::Initialize() {
   LOG_DEBUG("Initializing the AvController");
   av_log_set_callback(AvLogCallback);
@@ -62,7 +68,7 @@ bool mxp::av::AvController::Initialize() {
     auto mimeType = fmt->mime_type != nullptr ? fmt->mime_type : "";
 
     LOG_DEBUG("Format: ", fmt->name, "; ", longName, "; ", extensions, "; ", mimeType);
-    s_containers.emplace_back(AvContainer(fmt->name, longName, extensions, mimeType));
+    s_containers->emplace_back(AvContainer(fmt->name, longName, extensions, mimeType));
 
     fmt = av_iformat_next(fmt);
   }
@@ -74,7 +80,7 @@ bool mxp::av::AvController::Initialize() {
     auto type = GetAvType(codec->type);
 
     LOG_DEBUG("Codec: ", GetAvTypeString(type), "; ", codec->name, "; ", codec->long_name);
-    s_codecs.emplace_back(AvCodec(codec->name, longName, type));
+    s_codecs->emplace_back(AvCodec(codec->name, longName, type));
 
     codec = av_codec_next(codec);
   }
