@@ -1,29 +1,12 @@
 /*****************************************************************************
- * Media Library
- *****************************************************************************
- * Copyright (C) 2015 Hugo Beauzée-Luyssen, Videolabs
- *
- * Authors: Hugo Beauzée-Luyssen<hugo@beauzee.fr>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
- *****************************************************************************/
+* Media Explorer
+*****************************************************************************/
 
-#pragma once
+#ifndef MXP_IMEDIA_H
+#define MXP_IMEDIA_H
 
+#include <string>
 #include <vector>
-#include <memory>
 
 #include "mediaexplorer/IMediaExplorer.h"
 
@@ -40,6 +23,7 @@ public:
     AudioType,
     UnknownType
   };
+
   enum class SubType : uint8_t {
     Unknown,
     ShowEpisode,
@@ -50,23 +34,35 @@ public:
   virtual ~IMedia() = default;
 
   virtual int64_t Id() const = 0;
+
   virtual Type GetType() = 0;
+
   virtual SubType GetSubType() const = 0;
+
   virtual const std::string& GetTitle() const = 0;
+
   //virtual AlbumTrackPtr albumTrack() const = 0;
+
   /**
    * @brief duration Returns the media duration in ms
    */
   virtual int64_t GetDuration() const = 0;
+
   //virtual ShowEpisodePtr showEpisode() const = 0;
+
   virtual int GetPlayCount() const = 0;
+
   virtual bool IncreasePlayCount() = 0;
+
   virtual const std::vector<MediaFilePtr>& Files() const = 0;
+
   /**
    *  @brief progress Returns the progress, in the [0;1] range
    */
   virtual float GetProgress() const = 0;
+
   virtual bool SetProgress(float progress) = 0;
+
   /**
    *  @brief rating The media rating, or -1 if unset.
    *  It is up to the application to determine the values it wishes to use.
@@ -74,14 +70,23 @@ public:
    *  will be accepted.
    */
   virtual int Rating() const = 0;
+
   virtual bool SetRating(int rating) = 0;
+
   virtual bool IsFavorite() const = 0;
+
   virtual bool SetFavorite(bool favorite) = 0;
+
   virtual bool AddLabel(LabelPtr label) = 0;
+
   virtual bool RemoveLabel(LabelPtr label) = 0;
+
   virtual std::vector<LabelPtr> GetLabels() = 0;
+
   //virtual MoviePtr movie() const = 0;
+
   virtual std::vector<VideoTrackPtr> VideoTracks() = 0;
+
   virtual std::vector<AudioTrackPtr> AudioTracks() = 0;
   /**
    *  @brief thumbnail Returns the path of a thumbnail for this media
@@ -89,8 +94,12 @@ public:
    *   The media library
    */
   virtual const std::string& Thumbnail() = 0;
+
   virtual time_t InsertionDate() const = 0;
+
   virtual time_t ReleaseDate() const = 0;
 };
 
-}
+} /* namespace mxp */
+
+#endif /* MXP_IMEDIA_H */

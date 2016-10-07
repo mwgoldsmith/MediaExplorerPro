@@ -5,9 +5,8 @@
 #ifndef MXP_IGENRE_H
 #define MXP_IGENRE_H
 
-#include <stdint.h>
+#include <cinttypes>
 #include <string>
-#include <vector>
 
 namespace mxp {
 
