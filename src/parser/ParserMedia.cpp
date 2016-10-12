@@ -26,14 +26,14 @@ void print_error(const char *msg, int err) {
 namespace mxp {
 namespace parser {
 
-struct Stream {
-  Stream(AVCodecContext* codecContext, const AVCodec *codec, const AVMediaType mediaType, uint32_t index)
+struct ParserStream {
+  ParserStream(AVCodecContext* codecContext, const AVCodec *codec, const AVMediaType mediaType, uint32_t index)
     : CodecContext(codecContext)
     , Codec(codec)
     , AvType(mediaType)
     , Index(index) { }
 
-  ~Stream() {
+  ~ParserStream() {
     if (CodecContext != nullptr) {
       avcodec_close(CodecContext);
       CodecContext = nullptr;
@@ -46,8 +46,8 @@ struct Stream {
   uint32_t              Index;
 };
 
-struct Metadata {
-  Metadata(const std::string&& key, const std::string&& value, uint32_t streamIndex)
+struct ParserMetadata {
+  ParserMetadata(const std::string&& key, const std::string&& value, uint32_t streamIndex)
     : Key{ std::move(key) }
     , Value{ std::move(value) }
     , StreamIndex{ streamIndex } {
@@ -65,7 +65,7 @@ public:
 
     while((tag = av_dict_get(dict, "", tag, AV_DICT_IGNORE_SUFFIX))) {
       LOG_TRACE("Metadata[", m_metadata.size(), "]: ",  tag->key, "=", tag->value);
-      m_metadata.emplace_back(std::make_shared<Metadata>(std::string(tag->key), std::string(tag->value), streamIndex));
+      m_metadata.emplace_back(std::make_shared<ParserMetadata>(std::string(tag->key), std::string(tag->value), streamIndex));
     }
   }
 
@@ -75,7 +75,7 @@ public:
       LOG_ERROR("Unsupported codec: ", avcodec_get_name(codecContext->codec_id));
     }
 
-    m_streams.emplace_back(std::make_shared<Stream>(codecContext, codec, mediaType, index));
+    m_streams.emplace_back(std::make_shared<ParserStream>(codecContext, codec, mediaType, index));
   }
 
   void ClearStreams() {
@@ -91,14 +91,10 @@ public:
     }
   }
 
-  AVFormatContext* GetFormatContext() const { return m_fmtCtx; }
-
-  void SetFormatContext(AVFormatContext* context) { m_fmtCtx = context; }
-
 public:
   AVFormatContext*                       m_fmtCtx;
-  std::vector<std::shared_ptr<Stream>>   m_streams;
-  std::vector<std::shared_ptr<Metadata>> m_metadata;
+  std::vector<std::shared_ptr<ParserStream>>   m_streams;
+  std::vector<std::shared_ptr<ParserMetadata>> m_metadata;
   std::shared_ptr<av::AvContainer>       m_mediaContainer;
 };
 }
@@ -119,6 +115,7 @@ mxp::parser::ParserMedia::ParserMedia(const std::shared_ptr<mxp::fs::IFile> file
     print_error("Cannot find stream information: ", err);
   } else {
     auto fmt = m_context->m_fmtCtx->iformat;
+
     m_context->m_mediaContainer = std::make_shared<av::AvContainer>(fmt->name, fmt->long_name, fmt->extensions, fmt->mime_type);
 
     LOG_INFO("Media file '", filename, "' contains ", m_context->m_fmtCtx->nb_streams, " streams.");
