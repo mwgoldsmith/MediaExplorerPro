@@ -312,9 +312,6 @@
     <ClInclude Include="..\..\..\src\logging\ConsoleLogger.h">
       <Filter>Source Files\logging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\AvType.h">
-      <Filter>Source Files\av</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\av\AvContainer.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
@@ -322,9 +319,6 @@
       <Filter>Source Files\av</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\av\AvController.h">
-      <Filter>Source Files\av</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\av\AvStream.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Metadata.h">
@@ -337,6 +331,21 @@
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\include\mediaexplorer\IMetadata.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\ICodec.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\IContainer.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Codec.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Container.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\MediaType.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
   </ItemGroup>
@@ -458,19 +467,16 @@
     <ClCompile Include="..\..\..\src\av\AvController.cpp">
       <Filter>Source Files\av</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\av\AvCodec.cpp">
-      <Filter>Source Files\av</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\av\AvType.cpp">
-      <Filter>Source Files\av</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\av\AvStream.cpp">
-      <Filter>Source Files\av</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Metadata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Stream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Codec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Container.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

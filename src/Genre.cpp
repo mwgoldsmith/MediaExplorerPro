@@ -54,25 +54,24 @@ std::vector<AlbumPtr> Genre::albums(SortingCriteria sort, bool desc) const {
 }
 */
 bool mxp::Genre::CreateTable(DBConnection dbConn) {
-  static const auto req = "CREATE TABLE IF NOT EXISTS " + GenreTable::Name +
-      "("
-      "id_genre INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "name TEXT UNIQUE ON CONFLICT FAIL"
-      ")";
-  static const auto vtableReq = "CREATE VIRTUAL TABLE IF NOT EXISTS "
-      + GenreTable::Name + "Fts USING FTS3("
-        "name"
-        ")";
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + GenreTable::Name + "(" +
+    GenreTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "name TEXT UNIQUE ON CONFLICT FAIL"
+    ")";
+  static const auto vtableReq = "CREATE VIRTUAL TABLE IF NOT EXISTS " + 
+    GenreTable::Name + "Fts USING FTS3("
+    "name"
+    ")";
   static const auto vtableInsertTrigger = "CREATE TRIGGER IF NOT EXISTS insert_genre_fts"
-      " AFTER INSERT ON " + GenreTable::Name +
-      " BEGIN"
-      " INSERT INTO " + GenreTable::Name + "Fts(rowid,name) VALUES(new.id_genre, new.name);"
-      " END";
+    " AFTER INSERT ON " + GenreTable::Name +
+    " BEGIN"
+    " INSERT INTO " + GenreTable::Name + "Fts(rowid,name) VALUES(new.id_genre, new.name);"
+    " END";
   static const auto vtableDeleteTrigger = "CREATE TRIGGER IF NOT EXISTS delete_genre_fts"
-      " BEFORE DELETE ON " + GenreTable::Name +
-      " BEGIN"
-      " DELETE FROM " + GenreTable::Name + "Fts WHERE rowid = old.id_genre;"
-      " END";
+    " BEFORE DELETE ON " + GenreTable::Name +
+    " BEGIN"
+    " DELETE FROM " + GenreTable::Name + "Fts WHERE rowid = old.id_genre;"
+    " END";
   return sqlite::Tools::ExecuteRequest(dbConn, req) &&
       sqlite::Tools::ExecuteRequest(dbConn, vtableReq) &&
       sqlite::Tools::ExecuteRequest(dbConn, vtableInsertTrigger) &&

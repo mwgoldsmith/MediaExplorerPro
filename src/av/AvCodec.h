@@ -6,7 +6,7 @@
 #define AVCODEC_H
 
 #include <string>
-#include "av/AvType.h"
+#include <mediaexplorer/MediaType.h>
 
 namespace mxp {
 namespace av {
@@ -16,7 +16,7 @@ public:
   AvCodec()
     : m_name({})
     , m_longName({})
-    , m_type(AvType::None) {
+    , m_type(MediaType::None) {
   }
 
   /**
@@ -26,20 +26,20 @@ public:
   * @param type
   *
   */
-  AvCodec(const char* name, const char* longName, AvType type)
+  AvCodec(const char* name, const char* longName, MediaType type)
     : m_name(name)
-    , m_longName(longName)
+    , m_longName(longName != nullptr ? longName : "")
     , m_type(type) {
   }
 
   const std::string& GetName() const { return m_name; }
   const std::string& GetLongName() const { return m_longName; }
-  AvType GetType() const { return m_type; }
+  MediaType GetType() const { return m_type; }
 
 private:
   const std::string m_name;
   const std::string m_longName;
-  const AvType      m_type;
+  const MediaType   m_type;
 };
 
 } /* namespace av */

@@ -67,8 +67,7 @@ const std::string& mxp::VideoTrack::Description() const {
 std::shared_ptr<mxp::VideoTrack> mxp::VideoTrack::Create(MediaExplorerPtr ml, const std::string& codec, unsigned int width,
                                                unsigned int height, float fps, int64_t mediaId,
                                                const std::string& language, const std::string& description) {
-  static const auto req = "INSERT INTO " + VideoTrackTable::Name
-      + "(codec, width, height, fps, media_id, language, description) VALUES(?, ?, ?, ?, ?, ?, ?)";
+  static const auto req = "INSERT INTO " + VideoTrackTable::Name + "(codec, width, height, fps, media_id, language, description) VALUES(?, ?, ?, ?, ?, ?, ?)";
   auto track = std::make_shared<VideoTrack>(ml, codec, width, height, fps, mediaId, language, description);
   if (insert(ml, track, req, codec, width, height, fps, mediaId, language, description) == false)
     return nullptr;
@@ -76,18 +75,16 @@ std::shared_ptr<mxp::VideoTrack> mxp::VideoTrack::Create(MediaExplorerPtr ml, co
 }
 
 bool mxp::VideoTrack::CreateTable(DBConnection dbConnection) {
-  static const auto req = "CREATE TABLE IF NOT EXISTS " + VideoTrackTable::Name
-      + "(" +
-      VideoTrackTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "codec TEXT,"
-      "width UNSIGNED INTEGER,"
-      "height UNSIGNED INTEGER,"
-      "fps FLOAT,"
-      "media_id UNSIGNED INT,"
-      "language TEXT,"
-      "description TEXT,"
-      "FOREIGN KEY ( media_id ) REFERENCES " + policy::MediaTable::Name +
-      "(id_media) ON DELETE CASCADE"
-      ")";
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + VideoTrackTable::Name + "(" +
+    VideoTrackTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "codec TEXT,"
+    "width UNSIGNED INTEGER,"
+    "height UNSIGNED INTEGER,"
+    "fps FLOAT,"
+    "media_id UNSIGNED INT,"
+    "language TEXT,"
+    "description TEXT,"
+    "FOREIGN KEY (media_id) REFERENCES " + policy::MediaTable::Name + "(id_media) ON DELETE CASCADE"
+    ")";
   return sqlite::Tools::ExecuteRequest(dbConnection, req);
 }

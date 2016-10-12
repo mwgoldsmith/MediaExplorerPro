@@ -6,7 +6,6 @@
 #define MXP_ISTREAM_H
 
 #include <cinttypes>
-#include <string>
 #include <vector>
 #include "mediaexplorer/Types.h"
 
@@ -44,9 +43,23 @@ public:
   virtual MediaPtr GetMedia() const = 0;
 
   /**
+  * @param metadataId
+  *
+  * @return
+  */
+  virtual bool AddMetadata(int64_t metadataId) = 0;
+
+  /**
+  * @param metadataId
+  *
+  * @return
+  */
+  virtual bool RemoveMetadata(int64_t metadataId) = 0;
+
+  /**
    * @return
    */
-  virtual std::vector<MetadataPtr> GetMetadata() const = 0;
+  virtual const std::vector<MetadataPtr>& GetMetadata() const = 0;
 };
 
 } /* namespace mxp */

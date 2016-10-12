@@ -20,7 +20,6 @@
 #include "SqliteErrors.h"
 #include "SqliteTraits.h"
 #include "SqliteTransaction.h"
-#include "MediaExplorer.h"
 #include "Row.h"
 #include "Statement.h"
 

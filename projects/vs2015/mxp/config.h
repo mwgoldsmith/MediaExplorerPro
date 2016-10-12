@@ -1,14 +1,14 @@
 #pragma once
 
-#define PACKAGE_STRING    ""
+#define PACKAGE_STRING     ""
 
-#define MEDIALIB_MAJOR    0    
+#define MEDIALIB_MAJOR     0    
 
-#define MEDIALIB_MINOR    1    
+#define MEDIALIB_MINOR     1    
 
-#define MEDIALIB_MICRO    0    
+#define MEDIALIB_MICRO     0    
 
-#define HAVE_WIN32        1
+#define HAVE_WIN32         1
 
 #undef HAVE_LINUX
 
@@ -24,7 +24,7 @@
 
 //#define CXX11_MUTEX        1
 
-#define HAVE_THREAD_LOCAL 1
+#define HAVE_THREAD_LOCAL  1
 
 #undef HAVE_ANDROID
 
@@ -33,3 +33,7 @@
 #define HAVE_TESTS         1
 
 #undef HAVE_PTHREAD
+
+#define USE_CHAR           1
+
+#undef USE_WCHAR

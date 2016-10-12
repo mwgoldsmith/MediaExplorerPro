@@ -7,9 +7,11 @@
 
 #include <memory>
 #include "filesystem/IFile.h"
-#include "av/AvContainer.h"
+#include "mediaexplorer/Types.h"
+#include <Types.h>
 
 namespace mxp {
+class Media;
 namespace parser {
 
 class Context;
@@ -17,10 +19,10 @@ class Context;
 class ParserMedia {
 
 public:
-  explicit ParserMedia(const std::shared_ptr<mxp::fs::IFile> file);
+  ParserMedia(MediaExplorerPtr ml, std::shared_ptr<Media> media, const std::shared_ptr<mxp::fs::IFile> file);
   ~ParserMedia();
 
-  std::shared_ptr<av::AvContainer> GetMediaContainer();
+  ContainerPtr GetMediaContainer();
 
 private:
   const std::shared_ptr<mxp::fs::IFile> m_file;

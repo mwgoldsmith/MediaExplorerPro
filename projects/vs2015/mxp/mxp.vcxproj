@@ -375,6 +375,8 @@
     <ClInclude Include="..\..\..\include\filesystem\IFile.h" />
     <ClInclude Include="..\..\..\include\Fixup.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IAudioTrack.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\ICodec.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IContainer.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceLister.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceListerCb.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IGenre.h" />
@@ -392,6 +394,7 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\IVideoTrack.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\LogLevel.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\MediaSearchAggregate.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\MediaType.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\SearchAggregate.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\Types.h" />
@@ -400,11 +403,11 @@
     <ClInclude Include="..\..\..\src\av\AvCodec.h" />
     <ClInclude Include="..\..\..\src\av\AvContainer.h" />
     <ClInclude Include="..\..\..\src\av\AvController.h" />
-    <ClInclude Include="..\..\..\src\av\AvStream.h" />
-    <ClInclude Include="..\..\..\src\av\AvType.h" />
+    <ClInclude Include="..\..\..\src\Codec.h" />
     <ClInclude Include="..\..\..\src\compat\ConditionVariable.h" />
     <ClInclude Include="..\..\..\src\compat\Mutex.h" />
     <ClInclude Include="..\..\..\src\compat\Thread.h" />
+    <ClInclude Include="..\..\..\src\Container.h" />
     <ClInclude Include="..\..\..\src\database\DatabaseHelpers.h" />
     <ClInclude Include="..\..\..\src\database\Row.h" />
     <ClInclude Include="..\..\..\src\database\SqliteConnection.h" />
@@ -512,10 +515,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\AudioTrack.cpp" />
-    <ClCompile Include="..\..\..\src\av\AvCodec.cpp" />
     <ClCompile Include="..\..\..\src\av\AvController.cpp" />
-    <ClCompile Include="..\..\..\src\av\AvStream.cpp" />
-    <ClCompile Include="..\..\..\src\av\AvType.cpp" />
+    <ClCompile Include="..\..\..\src\Codec.cpp" />
+    <ClCompile Include="..\..\..\src\Container.cpp" />
     <ClCompile Include="..\..\..\src\database\SqliteConnection.cpp" />
     <ClCompile Include="..\..\..\src\database\SqliteTools.cpp" />
     <ClCompile Include="..\..\..\src\database\SqliteTransaction.cpp" />

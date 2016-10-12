@@ -69,11 +69,18 @@ public:
   virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) override;
   virtual MediaPtr Media(int64_t mediaId) const override;
   mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const;
-
   virtual MediaSearchAggregate SearchMedia(const std::string& title) const override;
   virtual std::vector<PlaylistPtr> SearchPlaylists(const std::string& name) const override;
   virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const override;
   virtual SearchAggregate Search(const std::string& pattern) const override;
+
+  virtual CodecPtr Codec(int64_t codecId) const override;
+  virtual ContainerPtr Container(int64_t containerId) const override;
+  virtual MetadataPtr Metadata(int64_t metadataId) const override;
+
+  virtual std::vector<CodecPtr> CodecList(mxp::SortingCriteria sort, bool desc) const override;
+
+  virtual std::vector<ContainerPtr> ContainerList(mxp::SortingCriteria sort, bool desc) const override;
 
   virtual bool IgnoreFolder(const std::string& path) override;
   virtual bool UnignoreFolder(const std::string& path) override;
@@ -105,12 +112,14 @@ public:
   static const uint32_t DbModelVersion;
 
 private:
+  void Destruct();
   bool CreateAllTables();
   bool UpdateDatabaseModel(unsigned int prevVersion);
 
-  virtual void StartDiscoverer();
-  virtual void StartParser();
-  virtual void StartDeletionNotifier();
+  void StartAvController();
+  void StartDiscoverer();
+  void StartParser();
+  void StartDeletionNotifier();
 
   bool ValidateSearchPattern(const std::string& pattern) const;
 

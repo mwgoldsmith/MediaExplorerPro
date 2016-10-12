@@ -87,7 +87,8 @@ void mxp::ParserService::mainloop() {
   LOG_INFO("Entering ParserService [", serviceName, "] thread");
 
   while (m_stopParser == false) {
-    std::unique_ptr<parser::Task> task; {
+    std::unique_ptr<parser::Task> task;
+    {
       std::unique_lock<compat::Mutex> lock(m_lock);
       if (m_tasks.empty() == true || m_paused == true) {
         LOG_INFO("Halting ParserService mainloop");

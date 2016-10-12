@@ -29,17 +29,6 @@ public:
    * @return The value of the metadata entry.
    */
   virtual const std::string& GetValue() const = 0;
-
-  /**
-   * @return Pointer to the instance of the Media record the metadata is associated with.
-   */
-  virtual MediaPtr GetMedia() const = 0;
-
-  /**
-   * @return Pointer to the instance of the Stream record the metadata is associated with,
-   *         or nullptr if not associated with a Stream.
-   */
-  virtual StreamPtr GetStream() const = 0;
 };
 
 } /* namespace mxp */

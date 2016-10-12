@@ -67,19 +67,17 @@ const std::string& mxp::AudioTrack::Description() const {
 
 bool mxp::AudioTrack::CreateTable(DBConnection dbConnection) {
   //FIXME: Index on media_id ? Unless it's already implied by the foreign key
-  static const auto req = "CREATE TABLE IF NOT EXISTS " + AudioTrackTable::Name
-      + "(" +
-      AudioTrackTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "codec TEXT,"
-      "bitrate UNSIGNED INTEGER,"
-      "samplerate UNSIGNED INTEGER,"
-      "nb_channels UNSIGNED INTEGER,"
-      "language TEXT,"
-      "description TEXT,"
-      "media_id UNSIGNED INT,"
-      "FOREIGN KEY ( media_id ) REFERENCES " + policy::MediaTable::Name
-      + "( id_media ) ON DELETE CASCADE"
-      ")";
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + AudioTrackTable::Name + "(" +
+    AudioTrackTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "codec TEXT,"
+    "bitrate UNSIGNED INTEGER,"
+    "samplerate UNSIGNED INTEGER,"
+    "nb_channels UNSIGNED INTEGER,"
+    "language TEXT,"
+    "description TEXT,"
+    "media_id UNSIGNED INT,"
+    "FOREIGN KEY (media_id) REFERENCES " + policy::MediaTable::Name + "(" + policy::MediaTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
+    ")";
   return sqlite::Tools::ExecuteRequest(dbConnection, req);
 }
 

@@ -18,14 +18,14 @@ int64_t mxp::MediaFile::* const MediaFileTable::PrimaryKey = &mxp::MediaFile::m_
 mxp::MediaFile::MediaFile(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
-    >> m_mediaId
-    >> m_mrl
-    >> m_type
-    >> m_lastModificationDate
-    >> m_isParsed
-    >> m_folderId
-    >> m_isPresent
-    >> m_isRemovable;
+      >> m_mediaId
+      >> m_mrl
+      >> m_type
+      >> m_lastModificationDate
+      >> m_isParsed
+      >> m_folderId
+      >> m_isPresent
+      >> m_isRemovable;
 }
 
 mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable)
@@ -89,7 +89,7 @@ void mxp::MediaFile::markParsed() {
     return;
   }
 
-  static const auto req = "UPDATE " + MediaFileTable::Name + " SET parsed = 1 WHERE id_file = ?";
+  static const auto req = "UPDATE " + MediaFileTable::Name + " SET parsed = 1 WHERE " + MediaFileTable::PrimaryKeyColumn + " = ?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, m_id) == false) {
     return;
   }
@@ -98,8 +98,8 @@ void mxp::MediaFile::markParsed() {
 }
 
 bool mxp::MediaFile::CreateTable(DBConnection dbConnection) {
-  auto req = "CREATE TABLE IF NOT EXISTS " + MediaFileTable::Name + "("
-    "id_file INTEGER PRIMARY KEY AUTOINCREMENT,"
+  auto req = "CREATE TABLE IF NOT EXISTS " + MediaFileTable::Name + "(" + 
+    MediaFileTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     "media_id INT NOT NULL,"
     "mrl TEXT,"
     "type UNSIGNED INTEGER,"
@@ -108,8 +108,8 @@ bool mxp::MediaFile::CreateTable(DBConnection dbConnection) {
     "folder_id UNSIGNED INTEGER,"
     "is_present BOOLEAN NOT NULL DEFAULT 1,"
     "is_removable BOOLEAN NOT NULL,"
-    "FOREIGN KEY (media_id) REFERENCES " + policy::MediaTable::Name + "(id_media) ON DELETE CASCADE,"
-    "FOREIGN KEY (folder_id) REFERENCES " + policy::MediaFolderTable::Name + "(id_folder) ON DELETE CASCADE,"
+    "FOREIGN KEY (media_id) REFERENCES " + policy::MediaTable::Name + "(" + policy::MediaTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
+    "FOREIGN KEY (folder_id) REFERENCES " + policy::MediaFolderTable::Name + "(" + policy::MediaFolderTable::PrimaryKeyColumn +  ") ON DELETE CASCADE,"
     "UNIQUE(mrl, folder_id) ON CONFLICT FAIL"
     ")";
   auto triggerReq = "CREATE TRIGGER IF NOT EXISTS is_folder_present AFTER UPDATE OF is_present ON "
@@ -118,7 +118,7 @@ bool mxp::MediaFile::CreateTable(DBConnection dbConnection) {
     " UPDATE " + MediaFileTable::Name + " SET is_present = new.is_present WHERE folder_id = new.id_folder;"
     " END";
   auto indexReq = "CREATE INDEX IF NOT EXISTS file_media_id_index ON " +
-      MediaFileTable::Name + "(media_id)";
+    MediaFileTable::Name + "(media_id)";
   return sqlite::Tools::ExecuteRequest(dbConnection, req) &&
       sqlite::Tools::ExecuteRequest(dbConnection, triggerReq) &&
       sqlite::Tools::ExecuteRequest(dbConnection, indexReq);
@@ -127,7 +127,7 @@ bool mxp::MediaFile::CreateTable(DBConnection dbConnection) {
 std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) {
   auto self = std::make_shared<MediaFile>(ml, mediaId, type, fileFs, folderId, isRemovable);
   static const auto req = "INSERT INTO " + MediaFileTable::Name +
-      "(media_id, mrl, type, folder_id, last_modification_date, is_removable) VALUES(?, ?, ?, ?, ?, ?)";
+    "(media_id, mrl, type, folder_id, last_modification_date, is_removable) VALUES(?, ?, ?, ?, ?, ?)";
 
 #pragma warning( suppress : 4244 )
   if(insert(ml, self, req, mediaId, self->m_mrl, type, sqlite::ForeignKey(folderId), self->m_lastModificationDate, isRemovable) == false) {
@@ -139,7 +139,7 @@ std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int6
 }
 
 std::shared_ptr<mxp::MediaFile> mxp::MediaFile::FindByPath(MediaExplorerPtr ml, const std::string& path) {
-  static const std::string req = "SELECT * FROM " + MediaFileTable::Name + " WHERE mrl = ?";
+  static const auto req = "SELECT * FROM " + MediaFileTable::Name + " WHERE mrl = ?";
   auto file = Fetch(ml, req, path);
   if(file == nullptr)
     return nullptr;
@@ -151,7 +151,7 @@ std::shared_ptr<mxp::MediaFile> mxp::MediaFile::FindByPath(MediaExplorerPtr ml, 
 }
 
 std::shared_ptr<mxp::MediaFile> mxp::MediaFile::FindByFileName(MediaExplorerPtr ml, const std::string& fileName, int64_t folderId) {
-  static const std::string req = "SELECT * FROM " + MediaFileTable::Name + " WHERE mrl = ? AND folder_id = ?";
+  static const auto req = "SELECT * FROM " + MediaFileTable::Name + " WHERE mrl = ? AND folder_id = ?";
   auto file = Fetch(ml, req, fileName, folderId);
   if(file == nullptr)
     return nullptr;

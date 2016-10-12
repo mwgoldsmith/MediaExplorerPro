@@ -1,5 +1,6 @@
 #include "FormatService.h"
 #include "Media.h"
+#include "MediaFile.h"
 #include "mediaexplorer/ILogger.h"
 
 bool mxp::FormatService::initialize() {
@@ -35,7 +36,7 @@ mxp::parser::Task::Status mxp::FormatService::run(parser::Task & task) {
   LOG_INFO("Parsing ", file->mrl());
   auto chrono = std::chrono::steady_clock::now();
 
-  auto parserMedia = m_ml->GetParserMediaFactory()->CreateParserMedia(file->mrl());
+  auto parserMedia = m_ml->GetParserMediaFactory()->CreateParserMedia(task.media, file->mrl());
 
   auto duration = std::chrono::steady_clock::now() - chrono;
   LOG_DEBUG("Parsing done in ", std::chrono::duration_cast<std::chrono::microseconds>(duration).count(), "µs");

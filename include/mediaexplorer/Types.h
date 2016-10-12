@@ -5,9 +5,43 @@
 #ifndef MXP_TYPES_H
 #define MXP_TYPES_H
 
+#include <codecvt>
+#include <locale>
 #include <memory>
+#include <string>
+
+#ifdef USE_CHAR
+#define __MTEXT(x) x
+using mstring = std::string;
+using mchar = char;
+#else
+#define __MTEXT(x) L##x
+using mstring = std::wstring;
+using mchar = wchar_t;
+#endif
+
+#define MTEXT(x) __MTEXT(x)
 
 namespace mxp {
+
+inline mstring ConvertFromNarrow(const std::string& str) {
+#ifdef USE_CHAR
+  return str;
+#else
+  using converter = std::codecvt_utf8<wchar_t>;
+  return std::wstring_convert<converter, wchar_t>().from_bytes(str);
+#endif
+}
+
+inline mstring ConvertFromWide(const std::wstring& wstr) {
+#ifdef USE_CHAR
+  using converter = std::codecvt_utf8<wchar_t>;
+  return std::wstring_convert<converter, wchar_t>().to_bytes(wstr);
+#else
+  return wstr;
+#endif
+}
+
 
 class IAudioTrack;
 class ICodec;

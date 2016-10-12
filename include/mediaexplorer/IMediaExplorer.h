@@ -54,6 +54,17 @@ public:
   virtual void Reload() = 0;
   virtual void Reload(const std::string& entryPoint) = 0;
   
+
+  virtual CodecPtr Codec(int64_t codecId) const = 0;
+
+  virtual ContainerPtr Container(int64_t containerId) const = 0;
+
+  virtual MetadataPtr Metadata(int64_t metadataId) const = 0;
+
+  virtual std::vector<CodecPtr> CodecList(mxp::SortingCriteria sort, bool desc) const = 0;
+
+  virtual std::vector<ContainerPtr> ContainerList(mxp::SortingCriteria sort, bool desc) const = 0;
+
   /**
    * @brief Discover launches a discovery on the provided entry point.
    *

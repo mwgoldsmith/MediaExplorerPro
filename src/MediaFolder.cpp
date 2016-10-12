@@ -45,24 +45,23 @@ mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, const std::string& path, int6
 }
 
 bool mxp::MediaFolder::CreateTable(DBConnection connection) {
-  auto req = "CREATE TABLE IF NOT EXISTS " + MediaFolderTable::Name +
-      "("
-      "id_folder INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "path TEXT,"
-      "parent_id UNSIGNED INTEGER,"
-      "is_blacklisted BOOLEAN NOT NULL DEFAULT 0,"
-      "device_id UNSIGNED INTEGER,"
-      "is_present BOOLEAN NOT NULL DEFAULT 1,"
-      "is_removable BOOLEAN NOT NULL,"
-      "FOREIGN KEY (parent_id) REFERENCES " + MediaFolderTable::Name + "(id_folder) ON DELETE CASCADE,"
-      "FOREIGN KEY (device_id) REFERENCES " + policy::MediaDeviceTable::Name + "(id_device) ON DELETE CASCADE,"
-      "UNIQUE(path, device_id) ON CONFLICT FAIL"
-      ")";
+  auto req = "CREATE TABLE IF NOT EXISTS " + MediaFolderTable::Name + "(" + 
+    MediaFolderTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "path TEXT,"
+    "parent_id UNSIGNED INTEGER,"
+    "is_blacklisted BOOLEAN NOT NULL DEFAULT 0,"
+    "device_id UNSIGNED INTEGER,"
+    "is_present BOOLEAN NOT NULL DEFAULT 1,"
+    "is_removable BOOLEAN NOT NULL,"
+    "FOREIGN KEY (parent_id) REFERENCES " + MediaFolderTable::Name + "(" + MediaFolderTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
+    "FOREIGN KEY (device_id) REFERENCES " + policy::MediaDeviceTable::Name + "(" + policy::MediaDeviceTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
+    "UNIQUE(path, device_id) ON CONFLICT FAIL"
+    ")";
   auto triggerReq = "CREATE TRIGGER IF NOT EXISTS is_device_present AFTER UPDATE OF is_present ON "
-      + policy::MediaDeviceTable::Name +
-      " BEGIN"
-      " UPDATE " + MediaFolderTable::Name + " SET is_present = new.is_present WHERE device_id = new.id_device;"
-      " END";
+    + policy::MediaDeviceTable::Name +
+    " BEGIN"
+    " UPDATE " + MediaFolderTable::Name + " SET is_present = new.is_present WHERE device_id = new.id_device;"
+    " END";
   return sqlite::Tools::ExecuteRequest(connection, req) &&
       sqlite::Tools::ExecuteRequest(connection, triggerReq);
 }

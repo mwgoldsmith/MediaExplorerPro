@@ -106,20 +106,18 @@ bool mxp::Playlist::remove(int64_t mediaId) {
 }
 
 bool mxp::Playlist::CreateTable(DBConnection dbConn) {
-  static const auto req = "CREATE TABLE IF NOT EXISTS " + PlaylistTable::Name + 
-      "(" + PlaylistTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-      "name TEXT UNIQUE,"
-      "creation_date UNSIGNED INT NOT NULL"
-      ")";
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + PlaylistTable::Name + "(" + 
+    PlaylistTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "name TEXT UNIQUE,"
+    "creation_date UNSIGNED INT NOT NULL"
+    ")";
   static const auto relTableReq = "CREATE TABLE IF NOT EXISTS PlaylistMediaRelation("
     "media_id INTEGER,"
     "playlist_id INTEGER,"
     "position INTEGER,"
     "PRIMARY KEY(media_id, playlist_id),"
-    "FOREIGN KEY(media_id) REFERENCES " + policy::MediaTable::Name +
-    "(" + policy::MediaTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
-    "FOREIGN KEY(playlist_id) REFERENCES " + PlaylistTable::Name + 
-    "(" + PlaylistTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
+    "FOREIGN KEY(media_id) REFERENCES " + policy::MediaTable::Name + "(" + policy::MediaTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
+    "FOREIGN KEY(playlist_id) REFERENCES " + PlaylistTable::Name +  "(" + PlaylistTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
     ")";
   static const auto vtableReq = "CREATE VIRTUAL TABLE IF NOT EXISTS " + PlaylistTable::Name + "Fts USING FTS3("
     "name"

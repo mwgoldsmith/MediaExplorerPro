@@ -14,15 +14,19 @@
 #include <sys/stat.h>
 #endif
 #include "AudioTrack.h"
-#include "MediaDevice.h"
-#include "MediaFile.h"
-#include "MediaFolder.h"
-#include "Label.h"
-#include "Media.h"
+#include "Codec.h"
+#include "Container.h"
 #include "Genre.h"
 #include "History.h"
+#include "Label.h"
+#include "Media.h"
+#include "MediaDevice.h"
 #include "MediaExplorer.h"
+#include "MediaFile.h"
+#include "MediaFolder.h"
+#include "Metadata.h"
 #include "Playlist.h"
+#include "Stream.h"
 #include "Types.h"
 #include "VideoTrack.h"
 #include "database/SqliteConnection.h"
@@ -31,49 +35,35 @@
 #include "factory/DeviceListerFactory.h"
 #include "factory/FileSystemFactory.h"
 #include "factory/ParserMediaFactory.h"
+#include "filesystem/IDevice.h"
 #include "logging/Logger.h"
 #include "mediaexplorer/ILogger.h"
-#include "filesystem/IDevice.h"
+#include "metadata_services/FormatService.h"
 #include "metadata_services/MetadataService.h"
 #include "parser/Parser.h"
 #include "utils/Filename.h"
 #include "utils/ModificationsNotifier.h"
-#include "metadata_services/FormatService.h"
+#include "av/AvController.h"
 
 std::string mxp::MediaExplorer::s_version = PACKAGE_STRING;
 
 const uint32_t mxp::MediaExplorer::DbModelVersion = 2;
 
+//********
+// Constructors and Destructor
 mxp::MediaExplorer::MediaExplorer()
   : m_callbacks{ nullptr } {
-  mxp::Log::SetLogLevel(LogLevel::Trace);
+  Log::SetLogLevel(LogLevel::Trace);
 }
 
 mxp::MediaExplorer::~MediaExplorer() {
-  if (m_discoverer != nullptr)
-    m_discoverer->stop();
-
-  if (m_parser != nullptr)
-    m_parser->stop();
-
-  mxp::Media::clear();
-  mxp::MediaFolder::clear();
-  mxp::MediaFile::clear();
-  mxp::MediaDevice::clear();
-  mxp::Label::clear();
-  mxp::Playlist::clear();
-  mxp::VideoTrack::clear();
-  mxp::AudioTrack::clear();
-  mxp::History::clear();
-  mxp::Genre::clear();
+  Destruct();
 }
 
+//********
+// Startup and shutdown
 bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb* cb) {
   LOG_DEBUG("Initializing start");
-
-  if(m_fsFactory == nullptr) {
-    m_pmFactory.reset(new mxp::factory::ParserMediaFactory(this));
-  }
 
   if (m_deviceLister == nullptr) {
     m_deviceLister = mxp::factory::createDeviceLister();
@@ -106,6 +96,7 @@ bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb*
     }
   }
   
+  StartAvController();
   StartDiscoverer();
   StartParser();
 
@@ -116,45 +107,128 @@ bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb*
 
 bool mxp::MediaExplorer::Shutdown() {
   LOG_DEBUG("MXP-CS-000 - Shutdown start");
-  if (m_discoverer != nullptr) {
-    m_discoverer->stop();
-  }
-
-  if (m_parser != nullptr) {
-    m_parser->stop();
-  }
-
-  mxp::Media::clear();
-  mxp::MediaFolder::clear();
-  mxp::MediaFile::clear();
-  mxp::MediaDevice::clear();
-  mxp::Label::clear();
-  mxp::Playlist::clear();
-  mxp::VideoTrack::clear();
-  mxp::AudioTrack::clear();
-  mxp::History::clear();
-  mxp::Genre::clear();
-
+  Destruct();
   LOG_DEBUG("MXP-CS-900 - Shutdown end");
   return true;
 }
 
-std::string& mxp::MediaExplorer::GetVersion() const {
-  return s_version;
+void mxp::MediaExplorer::Destruct() {
+  if(m_discoverer != nullptr) {
+    m_discoverer->stop();
+  }
+
+  if(m_parser != nullptr) {
+    m_parser->stop();
+  }
+
+  Media::clear();
+  MediaFolder::clear();
+  MediaFile::clear();
+  MediaDevice::clear();
+  Label::clear();
+  Playlist::clear();
+  VideoTrack::clear();
+  AudioTrack::clear();
+  History::clear();
+  Genre::clear();
+  Codec::clear();
+  Container::clear();
+  Stream::clear();
+  Metadata::clear();
 }
 
-void mxp::MediaExplorer::SetLogger(ILogger* logger) {
-  m_logger.reset(std::move(logger));
+//********
+// Initialization functions
+bool mxp::MediaExplorer::CreateAllTables() {
+  try {
+    auto t = m_db->NewTransaction();
+    auto res = MediaDevice::CreateTable(m_db.get()) &&
+      Codec::CreateTable(m_db.get()) &&
+      Container::CreateTable(m_db.get()) &&
+      Metadata::CreateTable(m_db.get()) &&
+      MediaFolder::CreateTable(m_db.get()) &&
+      Media::CreateTable(m_db.get()) &&
+      MediaFile::CreateTable(m_db.get()) &&
+      Stream::CreateTable(m_db.get()) &&
+      Label::CreateTable(m_db.get()) &&
+      Playlist::CreateTable(m_db.get()) &&
+      Genre::CreateTable(m_db.get()) &&
+      VideoTrack::CreateTable(m_db.get()) &&
+      AudioTrack::CreateTable(m_db.get()) &&
+      Media::CreateTriggers(m_db.get()) &&
+      Playlist::CreateTriggers(m_db.get()) &&
+      History::CreateTable(m_db.get()) &&
+      Settings::CreateTable(m_db.get());
+
+    if(res == false) {
+      return false;
+    }
+
+    t->Commit();
+  } catch(std::exception& ex) {
+    LOG_ERROR(ex.what());
+  }
+
+  return true;
 }
 
-void mxp::MediaExplorer::SetCallbacks(IMediaExplorerCb* cb) {
-  m_callbacks = cb;
+bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
+  if(prevVersion == 1) {
+    // Way too much differences, introduction of devices, and almost unused in the wild, just drop everything
+    std::string req = "PRAGMA writable_schema = 1;"
+      "delete from sqlite_master;"
+      "PRAGMA writable_schema = 0;";
+    if(sqlite::Tools::ExecuteRequest(GetConnection(), req) == false)
+      return false;
+    if(CreateAllTables() == false)
+      return false;
+    ++prevVersion;
+  }
+  // To be continued in the future!
+
+  // Safety check: ensure we didn't forget a migration along the way
+  assert(prevVersion == DbModelVersion);
+  m_settings.SetDbModelVersion(DbModelVersion);
+  m_settings.Save();
+
+  return true;
 }
 
-mxp::FileSystemPtr mxp::MediaExplorer::GetFileSystem() const {
-  return m_fsFactory;
+void mxp::MediaExplorer::StartAvController() {
+  // Database must be initialized already
+  av::AvController::Initialize(this);
+
+  if(m_pmFactory == nullptr) {
+    m_pmFactory.reset(new factory::ParserMediaFactory(this));
+  }
 }
 
+void mxp::MediaExplorer::StartDiscoverer() {
+  m_discoverer.reset(new DiscovererWorker(this));
+  m_discoverer->AddDiscoverer(std::unique_ptr<IDiscoverer>(std::make_unique<FsDiscoverer>(m_fsFactory, this, m_callbacks)));
+  m_discoverer->reload();
+}
+
+void mxp::MediaExplorer::StartParser() {
+  m_parser.reset(new Parser(this));
+
+  auto formatService = std::make_unique<mxp::FormatService>();
+  auto metadataService = std::make_unique<mxp::MetadataService>();
+  //auto thumbnailerService = std::unique_ptr<VLCThumbnailer>(new VLCThumbnailer);
+  m_parser->AddService(std::move(formatService));
+  m_parser->AddService(std::move(metadataService));
+  //m_parser->AddService(std::move(thumbnailerService));
+
+  m_parser->Start();
+}
+
+void mxp::MediaExplorer::StartDeletionNotifier() {
+  m_modificationNotifier.reset(new mxp::ModificationNotifier(this));
+  m_modificationNotifier->Start();
+}
+
+//********
+// Labels
 mxp::LabelPtr mxp::MediaExplorer::CreateLabel(const std::string& label) {
   return mxp::Label::Create(this, label);
 }
@@ -163,14 +237,8 @@ bool mxp::MediaExplorer::DeleteLabel(mxp::LabelPtr label) {
   return mxp::Label::destroy(this, label->Id());
 }
 
-mxp::DBConnection mxp::MediaExplorer::GetConnection() const {
-  return m_db.get();
-}
-
-mxp::IMediaExplorerCb* mxp::MediaExplorer::GetCallbacks() const {
-  return m_callbacks;
-}
-
+//********
+//Genres
 std::vector<mxp::GenrePtr> mxp::MediaExplorer::GenreList(mxp::SortingCriteria sort, bool desc) const {
   return Genre::ListAll(this, sort, desc);
 }
@@ -179,19 +247,8 @@ mxp::GenrePtr mxp::MediaExplorer::Genre(int64_t id) const {
   return Genre::Fetch(this, id);
 }
 
-bool mxp::MediaExplorer::AddToHistory(const std::string& mrl) {
-  return History::insert(GetConnection(), mrl);
-}
-
-bool mxp::MediaExplorer::DeleteMediaFolder(const mxp::MediaFolder& folder) {
-  if(MediaFolder::destroy(this, folder.Id()) == false)
-    return false;
-
-  Media::clear();
-
-  return true;
-}
-
+//********
+// Media Folders
 bool mxp::MediaExplorer::IgnoreFolder(const std::string& path) {
   return MediaFolder::blacklist(this, path);
 }
@@ -217,33 +274,43 @@ bool mxp::MediaExplorer::UnignoreFolder(const std::string& path) {
   return true;
 }
 
-std::shared_ptr<mxp::MediaDevice> mxp::MediaExplorer::FindMediaDevice(const std::string& uuid) {
-  return mxp::MediaDevice::FindByUuid(this, uuid);
+bool mxp::MediaExplorer::DeleteMediaFolder(const mxp::MediaFolder& folder) {
+  if(MediaFolder::destroy(this, folder.Id()) == false)
+    return false;
+
+  Media::clear();
+
+  return true;
 }
 
+//********
+// Playlists
 mxp::PlaylistPtr mxp::MediaExplorer::CreatePlaylist(const std::string& name) { 
-  return mxp::Playlist::Create(this, name);
+  return Playlist::Create(this, name);
 }
 
 bool mxp::MediaExplorer::DeletePlaylist(int64_t playlistId) { 
-  return mxp::Playlist::destroy(this, playlistId);
+  return Playlist::destroy(this, playlistId);
 }
 
 std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::PlaylistList(mxp::SortingCriteria sort, bool desc) { 
-  return mxp::Playlist::ListAll(this, sort, desc);
+  return Playlist::ListAll(this, sort, desc);
 }
 
 mxp::PlaylistPtr mxp::MediaExplorer::Playlist(int64_t id) const { 
-  return mxp::Playlist::Fetch(this, id);
+  return Playlist::Fetch(this, id);
 }
 
+//********
+// Searching
 mxp::MediaSearchAggregate mxp::MediaExplorer::SearchMedia(const std::string& title) const { 
   if (ValidateSearchPattern(title) == false)
     return{};
-  auto tmp = mxp::Media::Search(this, title);
-  mxp::MediaSearchAggregate res;
+
+  auto tmp = Media::Search(this, title);
+  MediaSearchAggregate res;
   for (auto& m : tmp) {
-    switch (m->GetSubType()) {
+    //switch (m->GetSubType()) {
     //case mxp::IMedia::SubType::AlbumTrack:
     //  res.tracks.emplace_back(std::move(m));
     //  break;
@@ -253,18 +320,19 @@ mxp::MediaSearchAggregate mxp::MediaExplorer::SearchMedia(const std::string& tit
     //case mxp::IMedia::SubType::ShowEpisode:
     //  res.episodes.emplace_back(std::move(m));
     //  break;
-    default:
+   // default:
       res.others.emplace_back(std::move(m));
-      break;
-    }
+    //  break;
+    //}
   }
+
   return res;
 }
 
 std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::SearchPlaylists(const std::string& name) const {
   if (ValidateSearchPattern(name) == false)
     return{};
-  return mxp::Playlist::Search(this, name);
+  return Playlist::Search(this, name);
 }
 
 std::vector<mxp::GenrePtr> mxp::MediaExplorer::SearchGenre(const std::string& genre) const {
@@ -283,9 +351,9 @@ mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) cons
   return res;
 }
 
-
+//********
+// Media
 std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile& fileFs, mxp::MediaFolder& parentFolder, mxp::fs::IDirectory& parentFolderFs) {
-
   const std::vector<std::string> supportedVideoExtensions{
     // Videos
     "avi", "3gp", "amv", "asf", "divx", "dv", "flv", "gxf",
@@ -343,11 +411,11 @@ bool mxp::MediaExplorer::DeleteMedia(int64_t mediaId) const {
 }
 
 std::vector<mxp::MediaPtr> mxp::MediaExplorer::MediaList(mxp::SortingCriteria sort, bool desc) {
-  return mxp::Media::ListAll(this, mxp::IMedia::Type::VideoType, sort, desc);
+  return Media::ListAll(this, mxp::IMedia::Type::VideoType, sort, desc);
 }
 
 mxp::MediaPtr mxp::MediaExplorer::Media(int64_t mediaId) const {
-  return mxp::Media::Fetch(this, mediaId);
+  return Media::Fetch(this, mediaId);
 }
 
 mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const {
@@ -383,6 +451,60 @@ mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const {
   return file->media();
 }
 
+
+
+std::string& mxp::MediaExplorer::GetVersion() const {
+  return s_version;
+}
+
+void mxp::MediaExplorer::SetLogger(ILogger* logger) {
+  m_logger.reset(std::move(logger));
+}
+
+void mxp::MediaExplorer::SetCallbacks(IMediaExplorerCb* cb) {
+  m_callbacks = cb;
+}
+
+mxp::FileSystemPtr mxp::MediaExplorer::GetFileSystem() const {
+  return m_fsFactory;
+}
+
+mxp::DBConnection mxp::MediaExplorer::GetConnection() const {
+  return m_db.get();
+}
+
+mxp::IMediaExplorerCb* mxp::MediaExplorer::GetCallbacks() const {
+  return m_callbacks;
+}
+
+bool mxp::MediaExplorer::AddToHistory(const std::string& mrl) {
+  return History::insert(GetConnection(), mrl);
+}
+
+std::shared_ptr<mxp::MediaDevice> mxp::MediaExplorer::FindMediaDevice(const std::string& uuid) {
+  return MediaDevice::FindByUuid(this, uuid);
+}
+
+mxp::MetadataPtr mxp::MediaExplorer::Metadata(int64_t metadataId) const {
+  return Metadata::Fetch(this, metadataId);
+}
+
+mxp::CodecPtr mxp::MediaExplorer::Codec(int64_t codecId) const {
+  return Codec::Fetch(this, codecId);
+}
+
+std::vector<mxp::CodecPtr> mxp::MediaExplorer::CodecList(mxp::SortingCriteria sort, bool desc) const {
+  return Codec::ListAll(this, sort, desc);
+}
+
+mxp::ContainerPtr mxp::MediaExplorer::Container(int64_t containerId) const {
+  return Container::Fetch(this, containerId);
+}
+
+std::vector<mxp::ContainerPtr> mxp::MediaExplorer::ContainerList(mxp::SortingCriteria sort, bool desc) const {
+  return Container::ListAll(this, sort, desc);
+}
+
 void mxp::MediaExplorer::Discover(const std::string& entryPoint) {
   LOG_INFO("Discovering from: ", entryPoint);
   if (m_discoverer != nullptr)
@@ -399,74 +521,8 @@ void mxp::MediaExplorer::Reload(const std::string& entryPoint) {
     m_discoverer->reload(entryPoint);
 }
 
-bool mxp::MediaExplorer::CreateAllTables() {
-  auto t = m_db->NewTransaction();
-  auto res = MediaDevice::CreateTable(m_db.get()) &&
-    MediaFolder::CreateTable(m_db.get()) &&
-    Media::CreateTable(m_db.get()) &&
-    MediaFile::CreateTable(m_db.get()) &&
-    Label::CreateTable(m_db.get()) &&
-    Playlist::CreateTable(m_db.get()) &&
-    Genre::CreateTable(m_db.get()) &&
-    VideoTrack::CreateTable(m_db.get()) &&
-    AudioTrack::CreateTable(m_db.get()) &&
-    Media::CreateTriggers(m_db.get()) &&
-    Playlist::CreateTriggers(m_db.get()) &&
-    History::CreateTable(m_db.get()) &&
-    Settings::CreateTable(m_db.get());
-
-  if (res == false) {
-    return false;
-  }
-
-  t->Commit();
-
-  return true;
-}
-
 bool mxp::MediaExplorer::ValidateSearchPattern(const std::string& pattern) const {
   return pattern.size() >= 3;
-}
-
-bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
-  if (prevVersion == 1) {
-    // Way too much differences, introduction of devices, and almost unused in the wild, just drop everything
-    std::string req = "PRAGMA writable_schema = 1;"
-        "delete from sqlite_master;"
-        "PRAGMA writable_schema = 0;";
-    if (sqlite::Tools::ExecuteRequest(GetConnection(), req) == false)
-      return false;
-    if (CreateAllTables() == false)
-      return false;
-    ++prevVersion;
-  }
-  // To be continued in the future!
-
-  // Safety check: ensure we didn't forget a migration along the way
-  assert(prevVersion == DbModelVersion);
-  m_settings.SetDbModelVersion(DbModelVersion);
-  m_settings.Save();
-
-  return true;
-}
-
-void mxp::MediaExplorer::StartDiscoverer() {
-  m_discoverer.reset(new DiscovererWorker(this));
-  m_discoverer->AddDiscoverer(std::unique_ptr<IDiscoverer>(std::make_unique<FsDiscoverer>(m_fsFactory, this, m_callbacks)));
-  m_discoverer->reload();
-}
-
-void mxp::MediaExplorer::StartParser() {
-  m_parser.reset(new Parser(this));
-
-  auto formatService = std::make_unique<mxp::FormatService>();
-  auto metadataService = std::make_unique<mxp::MetadataService>();
-  //auto thumbnailerService = std::unique_ptr<VLCThumbnailer>(new VLCThumbnailer);
-  m_parser->AddService(std::move(formatService));
-  m_parser->AddService(std::move(metadataService));
-  //m_parser->AddService(std::move(thumbnailerService));
-
-  m_parser->Start();
 }
 
 void mxp::MediaExplorer::PauseBackgroundOperations() {
@@ -479,11 +535,6 @@ void mxp::MediaExplorer::ResumeBackgroundOperations() {
   if(m_parser != nullptr) {
     m_parser->resume();
   }
-}
-
-void mxp::MediaExplorer::StartDeletionNotifier() {
-  m_modificationNotifier.reset(new mxp::ModificationNotifier(this));
-  m_modificationNotifier->Start();
 }
 
 std::shared_ptr<mxp::ModificationNotifier> mxp::MediaExplorer::GetNotifier() const {

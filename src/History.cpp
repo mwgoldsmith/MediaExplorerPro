@@ -43,18 +43,17 @@ mxp::History::History(MediaExplorerPtr ml, sqlite::Row& row)
 }
 
 bool mxp::History::CreateTable(DBConnection dbConnection) {
-  static const std::string req = "CREATE TABLE IF NOT EXISTS " + HistoryTable::Name +
-    "("
-    "id_record INTEGER PRIMARY KEY AUTOINCREMENT,"
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + HistoryTable::Name + "(" +
+    HistoryTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     "mrl TEXT UNIQUE ON CONFLICT FAIL,"
     "insertion_date UNSIGNED INT NOT NULL DEFAULT (strftime('%s', 'now')),"
     "favorite BOOLEAN NOT NULL DEFAULT 0"
     ")";
-  static const std::string triggerReq = "CREATE TRIGGER IF NOT EXISTS limit_nb_records AFTER INSERT ON "
+  static const auto triggerReq = "CREATE TRIGGER IF NOT EXISTS limit_nb_records AFTER INSERT ON "
     + HistoryTable::Name +
     " BEGIN "
     "DELETE FROM " + HistoryTable::Name + " WHERE id_record in "
-    "(SELECT id_record FROM " + HistoryTable::Name +
+    "(SELECT " + HistoryTable::PrimaryKeyColumn + " FROM " + HistoryTable::Name +
     " ORDER BY insertion_date DESC LIMIT -1 OFFSET " + std::to_string(MaxEntries) + ");"
     " END";
   return sqlite::Tools::ExecuteRequest(dbConnection, req) &&
@@ -63,12 +62,12 @@ bool mxp::History::CreateTable(DBConnection dbConnection) {
 
 bool mxp::History::insert(DBConnection dbConn, const std::string& mrl) {
   History::clear();
-  static const std::string req = "INSERT OR REPLACE INTO " + HistoryTable::Name +
-    "(id_record, mrl, insertion_date, favorite)"
-    " SELECT id_record, mrl, strftime('%s', 'now'), favorite FROM " +
+  static const auto req = "INSERT OR REPLACE INTO " + HistoryTable::Name +
+    "(" + HistoryTable::PrimaryKeyColumn + ", mrl, insertion_date, favorite)"
+    " SELECT " + HistoryTable::PrimaryKeyColumn + ", mrl, strftime('%s', 'now'), favorite FROM " +
     HistoryTable::Name + " WHERE mrl = ?"
     " UNION SELECT NULL, ?, NULL, NULL"
-    " ORDER BY id_record DESC"
+    " ORDER BY " + HistoryTable::PrimaryKeyColumn + " DESC"
     " LIMIT 1";
   return sqlite::Tools::ExecuteInsert(dbConn, req, mrl, mrl) != 0;
 }
@@ -105,7 +104,7 @@ bool mxp::History::SetFavorite(bool isFavorite) {
   if (isFavorite == m_favorite)
     return true;
 
-  static const auto req = "UPDATE " + HistoryTable::Name + " SET favorite = ? WHERE id_record = ?";
+  static const auto req = "UPDATE " + HistoryTable::Name + " SET favorite = ? WHERE " + HistoryTable::PrimaryKeyColumn + " = ?";
   if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, isFavorite, m_id) == false)
     return false;
   m_favorite = isFavorite;

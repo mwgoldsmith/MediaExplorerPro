@@ -39,7 +39,13 @@ public:
 
   virtual SubType GetSubType() const = 0;
 
-  virtual const std::string& GetTitle() const = 0;
+  virtual void SetDuration(int64_t duration) = 0;
+
+  virtual ContainerPtr GetContainer() const = 0;
+
+  virtual void SetContainer(ContainerPtr container) = 0;
+
+  virtual const mstring& GetTitle() const = 0;
 
   //virtual AlbumTrackPtr albumTrack() const = 0;
 
@@ -88,16 +94,36 @@ public:
   virtual std::vector<VideoTrackPtr> VideoTracks() = 0;
 
   virtual std::vector<AudioTrackPtr> AudioTracks() = 0;
+
   /**
    *  @brief thumbnail Returns the path of a thumbnail for this media
    *  @return A path, relative to the thumbnailPath configured when initializing
    *   The media library
    */
-  virtual const std::string& Thumbnail() = 0;
+  virtual const mstring& Thumbnail() = 0;
 
   virtual time_t InsertionDate() const = 0;
 
   virtual time_t ReleaseDate() const = 0;
+
+  /**
+  * @param metadataId
+  *
+  * @return
+  */
+  virtual bool AddMetadata(int64_t metadataId) = 0;
+
+  /**
+  * @param metadataId
+  *
+  * @return
+  */
+  virtual bool RemoveMetadata(int64_t metadataId) = 0;
+
+  /**
+  * @return
+  */
+  virtual std::vector<MetadataPtr> GetMetadata() const = 0;
 };
 
 } /* namespace mxp */
