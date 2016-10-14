@@ -4,9 +4,6 @@
 
 #pragma once
 
-#include <atomic>
-#include <queue>
-
 #include "Task.h"
 #include "mediaexplorer/Types.h"
 #include "compat/ConditionVariable.h"
@@ -25,8 +22,8 @@ public:
   virtual ~ParserService() = default;
 
   void Start();
-  void pause();
-  void resume();
+  void Pause();
+  void Resume();
   /**
    *  @brief signalStop Will trigger the threads for termination.
    *  This doesn't wait for the threads to be done, but ensure they won't
@@ -34,19 +31,19 @@ public:
    *  This is useful to ask all the threads to terminate asynchronously, before
    *  waiting for them to actually stop in the stop() method.
    */
-  void signalStop();
+  void SignalStop();
   /**
    *  @brief stop Effectively wait the underlying threads to join.
    */
-  void stop();
+  void Stop();
   void Parse(std::unique_ptr<parser::Task> t);
-  void initialize(MediaExplorer* mediaLibrary, IParserCb* parserCb);
+  void Initialize(MediaExplorer* mediaLibrary, IParserCb* parserCb);
 
 protected:
   uint8_t nbNativeThreads() const;
   // Can be overridden to run service dependent initializations
-  virtual bool initialize();
-  virtual parser::Task::Status run(parser::Task& task) = 0;
+  virtual bool Initialize();
+  virtual parser::Task::Status Run(parser::Task& task) = 0;
   virtual const char* Name() const = 0;
   virtual uint8_t nbThreads() const = 0;
 

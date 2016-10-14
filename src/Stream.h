@@ -49,6 +49,8 @@ public:
 
   static bool CreateTable(DBConnection dbConnection) noexcept;
 
+  static std::vector<mxp::StreamPtr> FindByMedia(MediaExplorerPtr ml, int64_t mediaId);
+
 private:
   static bool Create(DBConnection connection, const mstring& sql, const mstring& name) noexcept;
 

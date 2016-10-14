@@ -14,6 +14,12 @@
 #include <sys/stat.h>
 #endif
 #include "AudioTrack.h"
+#include "Artist.h"
+#include "Album.h"
+#include "AlbumTrack.h"
+#include "Movie.h"
+#include "Show.h"
+#include "ShowEpisode.h"
 #include "Codec.h"
 #include "Container.h"
 #include "Genre.h"
@@ -126,6 +132,12 @@ void mxp::MediaExplorer::Destruct() {
   MediaFile::clear();
   MediaDevice::clear();
   Label::clear();
+  Artist::clear();
+  Album::clear();
+  AlbumTrack::clear();
+  Show::clear();
+  ShowEpisode::clear();
+  Movie::clear();
   Playlist::clear();
   VideoTrack::clear();
   AudioTrack::clear();
@@ -153,8 +165,17 @@ bool mxp::MediaExplorer::CreateAllTables() {
       Label::CreateTable(m_db.get()) &&
       Playlist::CreateTable(m_db.get()) &&
       Genre::CreateTable(m_db.get()) &&
+      Album::CreateTable(m_db.get()) &&
+      AlbumTrack::createTable(m_db.get()) &&
+      Album::CreateTriggers(m_db.get()) &&
+      Show::createTable(m_db.get()) &&
+      ShowEpisode::createTable(m_db.get()) &&
+      Movie::CreateTable(m_db.get()) &&
       VideoTrack::CreateTable(m_db.get()) &&
       AudioTrack::CreateTable(m_db.get()) &&
+      Artist::createTable(m_db.get()) &&
+      Artist::createDefaultArtists(m_db.get()) &&
+      Artist::createTriggers(m_db.get()) &&
       Media::CreateTriggers(m_db.get()) &&
       Playlist::CreateTriggers(m_db.get()) &&
       History::CreateTable(m_db.get()) &&
@@ -227,6 +248,62 @@ void mxp::MediaExplorer::StartDeletionNotifier() {
   m_modificationNotifier->Start();
 }
 
+
+mxp::ShowPtr mxp::MediaExplorer::GetShow(const std::string& name) const {
+  static const std::string req = "SELECT * FROM " + policy::ShowTable::Name
+    + " WHERE name = ?";
+  return Show::Fetch(this, req, name);
+}
+std::shared_ptr<mxp::Show> mxp::MediaExplorer::CreateShow(const std::string& name) {
+  return Show::create(this, name);
+}
+
+mxp::MoviePtr mxp::MediaExplorer::GetMovie(const std::string& title) const {
+  static const std::string req = "SELECT * FROM " + policy::MovieTable::Name
+    + " WHERE title = ?";
+  return Movie::Fetch(this, req, title);
+}
+std::shared_ptr<mxp::Movie> mxp::MediaExplorer::CreateMovie(Media& media, const std::string& title) {
+  auto movie = Movie::create(this, media.Id(), title);
+  media.SetMovie(movie);
+  media.Save();
+  return movie;
+}
+
+mxp::ArtistPtr mxp::MediaExplorer::GetArtist(int64_t id) const {
+  return Artist::Fetch(this, id);
+}
+mxp::ArtistPtr mxp::MediaExplorer::GetArtist(const std::string& name) {
+  static const std::string req = "SELECT * FROM " + policy::ArtistTable::Name
+    + " WHERE name = ? AND is_present = 1";
+  return Artist::Fetch(this, req, name);
+}
+std::shared_ptr<mxp::Artist> mxp::MediaExplorer::CreateArtist(const std::string& name) {
+  try {
+    return Artist::create(this, name);
+  } catch(sqlite::errors::ConstraintViolation &ex) {
+    LOG_WARN("ContraintViolation while creating an artist (", ex.what(), ") attempting to fetch it instead");
+    return std::static_pointer_cast<Artist>(GetArtist(name));
+  }
+}
+
+std::vector<mxp::ArtistPtr> mxp::MediaExplorer::ArtistList(SortingCriteria sort, bool desc) const {
+  return Artist::listAll(this, sort, desc);
+}
+//********
+// Albums
+mxp::AlbumPtr mxp::MediaExplorer::GetAlbum(int64_t id) const {
+  return Album::Fetch(this, id);
+}
+
+std::shared_ptr<mxp::Album> mxp::MediaExplorer::CreateAlbum(const std::string& title) {
+  return Album::create(this, title);
+}
+
+std::vector<mxp::AlbumPtr> mxp::MediaExplorer::AlbumList(SortingCriteria sort, bool desc) const {
+  return Album::ListAll(this, sort, desc);
+}
+
 //********
 // Labels
 mxp::LabelPtr mxp::MediaExplorer::CreateLabel(const std::string& label) {
@@ -243,7 +320,7 @@ std::vector<mxp::GenrePtr> mxp::MediaExplorer::GenreList(mxp::SortingCriteria so
   return Genre::ListAll(this, sort, desc);
 }
 
-mxp::GenrePtr mxp::MediaExplorer::Genre(int64_t id) const {
+mxp::GenrePtr mxp::MediaExplorer::GetGenre(int64_t id) const {
   return Genre::Fetch(this, id);
 }
 
@@ -297,7 +374,7 @@ std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::PlaylistList(mxp::SortingCrite
   return Playlist::ListAll(this, sort, desc);
 }
 
-mxp::PlaylistPtr mxp::MediaExplorer::Playlist(int64_t id) const { 
+mxp::PlaylistPtr mxp::MediaExplorer::GetPlaylist(int64_t id) const { 
   return Playlist::Fetch(this, id);
 }
 
@@ -310,20 +387,20 @@ mxp::MediaSearchAggregate mxp::MediaExplorer::SearchMedia(const std::string& tit
   auto tmp = Media::Search(this, title);
   MediaSearchAggregate res;
   for (auto& m : tmp) {
-    //switch (m->GetSubType()) {
-    //case mxp::IMedia::SubType::AlbumTrack:
-    //  res.tracks.emplace_back(std::move(m));
-    //  break;
-    //case mxp::IMedia::SubType::Movie:
-    //  res.movies.emplace_back(std::move(m));
-    //  break;
-    //case mxp::IMedia::SubType::ShowEpisode:
-    //  res.episodes.emplace_back(std::move(m));
-    //  break;
-   // default:
+    switch (m->GetSubType()) {
+    case mxp::IMedia::SubType::AlbumTrack:
+      res.tracks.emplace_back(std::move(m));
+      break;
+    case mxp::IMedia::SubType::Movie:
+      res.movies.emplace_back(std::move(m));
+      break;
+    case mxp::IMedia::SubType::ShowEpisode:
+      res.episodes.emplace_back(std::move(m));
+      break;
+    default:
       res.others.emplace_back(std::move(m));
-    //  break;
-    //}
+      break;
+    }
   }
 
   return res;
@@ -341,10 +418,22 @@ std::vector<mxp::GenrePtr> mxp::MediaExplorer::SearchGenre(const std::string& ge
   return Genre::Search(this, genre);
 }
 
+std::vector<mxp::AlbumPtr> mxp::MediaExplorer::SearchAlbums(const std::string& pattern) const {
+  if(ValidateSearchPattern(pattern) == false)
+    return{};
+  return Album::Search(this, pattern);
+}
+
+std::vector<mxp::ArtistPtr> mxp::MediaExplorer::SearchArtists(const std::string& name) const {
+  if(ValidateSearchPattern(name) == false)
+    return{};
+  return Artist::search(this, name);
+}
+
 mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) const { 
   SearchAggregate res;
-  //res.albums = searchAlbums(pattern);
-  //res.artists = searchArtists(pattern);
+  res.albums = SearchAlbums(pattern);
+  res.artists = SearchArtists(pattern);
   res.genres = SearchGenre(pattern);
   res.media = SearchMedia(pattern);
   res.playlists = SearchPlaylists(pattern);
@@ -378,6 +467,9 @@ std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile
   //  type = mxp::IMedia::Type::AudioType;
   }
 
+  if (ext.compare("mp3") == 0) {
+    type = mxp::IMedia::Type::AudioType;
+  }
   if (type == mxp::IMedia::Type::UnknownType) {
     LOG_TRACE("Unknown type for file ", fileFs.Name());
     return nullptr;
@@ -414,11 +506,11 @@ std::vector<mxp::MediaPtr> mxp::MediaExplorer::MediaList(mxp::SortingCriteria so
   return Media::ListAll(this, mxp::IMedia::Type::VideoType, sort, desc);
 }
 
-mxp::MediaPtr mxp::MediaExplorer::Media(int64_t mediaId) const {
+mxp::MediaPtr mxp::MediaExplorer::GetMedia(int64_t mediaId) const {
   return Media::Fetch(this, mediaId);
 }
 
-mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const {
+mxp::MediaPtr mxp::MediaExplorer::GetMedia(const std::string& mrl) const {
   auto device = m_fsFactory->CreateDeviceFromPath(mrl);
   if(device == nullptr) {
     LOG_WARN("Failed to create a device associated with mrl ", mrl);

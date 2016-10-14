@@ -45,21 +45,21 @@ public:
   void NotifyMediaModification(MediaPtr media);
   void NotifyMediaRemoval(int64_t media);
 
-  //void notifyArtistCreation(ArtistPtr artist);
-  //void notifyArtistModification(ArtistPtr artist);
-  //void notifyArtistRemoval(int64_t artist);
+  void NotifyArtistCreation(ArtistPtr artist);
+  void NotifyArtistModification(ArtistPtr artist);
+  void NotifyArtistRemoval(int64_t artist);
 
-  //void notifyAlbumCreation(AlbumPtr album);
-  //void notifyAlbumModification(AlbumPtr album);
-  //void notifyAlbumRemoval(int64_t albumId);
+  void NotifyAlbumCreation(AlbumPtr album);
+  void NotifyAlbumModification(AlbumPtr album);
+  void NotifyAlbumRemoval(int64_t albumId);
 
-  //void notifyAlbumTrackCreation(AlbumTrackPtr track);
-  //void notifyAlbumTrackModification(AlbumTrackPtr track);
-  //void notifyAlbumTrackRemoval(int64_t trackId);
+  void NotifyAlbumTrackCreation(AlbumTrackPtr track);
+  void NotifyAlbumTrackModification(AlbumTrackPtr track);
+  void NotifyAlbumTrackRemoval(int64_t trackId);
 
 private:
   void run();
-  //void notify();
+  void Notify();
 
 private:
   template<typename T>
@@ -71,7 +71,7 @@ private:
   };
 
   template<typename T, typename AddedCb, typename ModifiedCb, typename RemovedCb>
-  void notify(Queue<T>&& queue, AddedCb addedCb, ModifiedCb modifiedCb, RemovedCb removedCb) {
+  void Notify(Queue<T>&& queue, AddedCb addedCb, ModifiedCb modifiedCb, RemovedCb removedCb) {
     if (m_cb  != nullptr && queue.added.size() > 0)
       (*m_cb .* addedCb)(std::move(queue.added));
     if (m_cb  != nullptr && queue.modified.size() > 0)
@@ -81,21 +81,21 @@ private:
   }
 
   template<typename T>
-  void notifyCreation(std::shared_ptr<T> entity, Queue<T>& queue) {
+  void NotifyCreation(std::shared_ptr<T> entity, Queue<T>& queue) {
     std::lock_guard<compat::Mutex> lock(m_lock);
     queue.added.push_back(std::move(entity));
     updateTimeout(queue);
   }
 
   template<typename T>
-  void notifyModification(std::shared_ptr<T> entity, Queue<T>& queue) {
+  void NotifyModification(std::shared_ptr<T> entity, Queue<T>& queue) {
     std::lock_guard<compat::Mutex> lock(m_lock);
     queue.modified.push_back(std::move(entity));
     updateTimeout(queue);
   }
 
   template<typename T>
-  void notifyRemoval(int64_t rowId, Queue<T>& queue) {
+  void NotifyRemoval(int64_t rowId, Queue<T>& queue) {
     std::lock_guard<compat::Mutex> lock(m_lock);
     queue.removed.push_back(rowId);
     updateTimeout(m_media);
@@ -136,9 +136,9 @@ private:
 
   // Queues
   Queue<IMedia> m_media;
-  //Queue<IArtist> m_artists;
-  //Queue<IAlbum> m_albums;
-  //Queue<IAlbumTrack> m_tracks;
+  Queue<IArtist> m_artists;
+  Queue<IAlbum> m_albums;
+  Queue<IAlbumTrack> m_tracks;
 
   // Notifier thread
   compat::Mutex m_lock;

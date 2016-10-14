@@ -7,9 +7,9 @@
 #endif
 
 #include "Genre.h"
-//#include "Album.h"
-//#include "AlbumTrack.h"
-//#include "Artist.h"
+#include "Album.h"
+#include "AlbumTrack.h"
+#include "Artist.h"
 
 using mxp::policy::GenreTable;
 const std::string GenreTable::Name = "Genre";
@@ -34,25 +34,25 @@ int64_t mxp::Genre::Id() const {
 const std::string& mxp::Genre::Name() const {
   return m_name;
 }
-/*
-std::vector<ArtistPtr> Genre::artists(SortingCriteria, bool desc) const {
+
+std::vector<mxp::ArtistPtr> mxp::Genre::Artists(SortingCriteria, bool desc) const {
   std::string req = "SELECT a.* FROM " + policy::ArtistTable::Name + " a "
                                          "INNER JOIN " + policy::AlbumTrackTable::Name + " att ON att.artist_id = a.id_artist "
                                          "WHERE att.genre_id = ? GROUP BY att.artist_id"
                                          " ORDER BY a.name";
   if (desc == true)
     req += " DESC";
-  return Artist::fetchAll<IArtist>(m_ml, req, m_id);
+  return Artist::FetchAll<IArtist>(m_ml, req, m_id);
 }
 
-std::vector<MediaPtr> Genre::tracks(SortingCriteria sort, bool desc) const {
+std::vector<mxp::MediaPtr> mxp::Genre::Tracks(SortingCriteria sort, bool desc) const {
   return AlbumTrack::fromGenre(m_ml, m_id, sort, desc);
 }
 
-std::vector<AlbumPtr> Genre::albums(SortingCriteria sort, bool desc) const {
+std::vector<mxp::AlbumPtr> mxp::Genre::Albums(SortingCriteria sort, bool desc) const {
   return Album::fromGenre(m_ml, m_id, sort, desc);
 }
-*/
+
 bool mxp::Genre::CreateTable(DBConnection dbConn) {
   static const auto req = "CREATE TABLE IF NOT EXISTS " + GenreTable::Name + "(" +
     GenreTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"

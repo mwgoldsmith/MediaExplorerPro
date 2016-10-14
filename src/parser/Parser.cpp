@@ -25,7 +25,7 @@ mxp::Parser::~Parser() {
 }
 
 void mxp::Parser::AddService(ServicePtr service) {
-  service->initialize(m_ml, this);
+  service->Initialize(m_ml, this);
   m_services.push_back(std::move(service));
 }
 
@@ -45,20 +45,20 @@ void mxp::Parser::Start() {
 
 void mxp::Parser::pause() {
   for (auto& s : m_services)
-    s->pause();
+    s->Pause();
 }
 
 void mxp::Parser::resume() {
   for (auto& s : m_services)
-    s->resume();
+    s->Resume();
 }
 
 void mxp::Parser::stop() {
   for (auto& s : m_services) {
-    s->signalStop();
+    s->SignalStop();
   }
   for (auto& s : m_services) {
-    s->stop();
+    s->Stop();
   }
 }
 
@@ -89,7 +89,7 @@ void mxp::Parser::UpdateStats() {
 void mxp::Parser::done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::Status status) {
   ++m_opDone;
 
-  auto serviceIdx = ++t->currentService;
+  auto serviceIdx = ++t->CurrentService;
 
   if (status == parser::Task::Status::TemporaryUnavailable ||
     status == parser::Task::Status::Fatal) {
@@ -103,11 +103,11 @@ void mxp::Parser::done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::
   UpdateStats();
 
   if (status == parser::Task::Status::Success) {
-    m_notifier->NotifyMediaModification(t->media);
+    m_notifier->NotifyMediaModification(t->Media);
   }
 
   if (serviceIdx == m_services.size()) {
-    t->file->markParsed();
+    t->MediaFile->markParsed();
     return;
   }
   m_services[serviceIdx]->Parse(std::move(t));

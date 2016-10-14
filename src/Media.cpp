@@ -9,9 +9,9 @@
 #include <algorithm>
 #include <ctime>
 
-//#include "Album.h"
-//#include "AlbumTrack.h"
-//#include "Artist.h"
+#include "Album.h"
+#include "AlbumTrack.h"
+#include "Artist.h"
 #include "AudioTrack.h"
 #include "Container.h"
 #include "Label.h"
@@ -22,8 +22,8 @@
 #include "VideoTrack.h"
 #include "database/SqliteTools.h"
 #include "logging/Logger.h"
-//#include "Movie.h"
-//#include "ShowEpisode.h"
+#include "Movie.h"
+#include "ShowEpisode.h"
 #include "filesystem/IDevice.h"
 #include "filesystem/IDirectory.h"
 #include "filesystem/IFile.h"
@@ -85,60 +85,59 @@ void mxp::Media::SetDuration(int64_t duration) {
   m_duration = duration;
   m_changed = true;
 }
-/*
-AlbumTrackPtr Media::albumTrack() const {
+
+mxp::AlbumTrackPtr mxp::Media::AlbumTrack() const {
   if (m_subType != SubType::AlbumTrack)
     return nullptr;
-  auto lock = m_albumTrack.lock();
+  auto lock = m_albumTrack.Lock();
 
   if (m_albumTrack.IsCached() == false)
     m_albumTrack = AlbumTrack::fromMedia(m_ml, m_id);
-  return m_albumTrack.get();
-}*/
-/*
-void Media::setAlbumTrack(AlbumTrackPtr albumTrack) {
-  auto lock = m_albumTrack.lock();
+  return m_albumTrack.Get();
+}
+
+void mxp::Media::SetAlbumTrack(AlbumTrackPtr albumTrack) {
+  auto lock = m_albumTrack.Lock();
   m_albumTrack = albumTrack;
   m_subType = SubType::AlbumTrack;
   m_changed = true;
 }
-*//*
-ShowEpisodePtr Media::showEpisode() const {
+
+mxp::ShowEpisodePtr mxp::Media::ShowEpisode() const {
   if (m_subType != SubType::ShowEpisode)
     return nullptr;
 
-  auto lock = m_showEpisode.lock();
+  auto lock = m_showEpisode.Lock();
   if (m_showEpisode.IsCached() == false)
     m_showEpisode = ShowEpisode::fromMedia(m_ml, m_id);
-  return m_showEpisode.get();
+  return m_showEpisode.Get();
 }
-*//*
-void Media::setShowEpisode(ShowEpisodePtr episode) {
-  auto lock = m_showEpisode.lock();
+
+void mxp::Media::SetShowEpisode(ShowEpisodePtr episode) {
+  auto lock = m_showEpisode.Lock();
   m_showEpisode = episode;
   m_subType = SubType::ShowEpisode;
   m_changed = true;
-}*/
+}
 
-/*
-MoviePtr Media::movie() const {
+mxp::MoviePtr mxp::Media::Movie() const {
   if (m_subType != SubType::Movie)
     return nullptr;
 
-  auto lock = m_movie.lock();
+  auto lock = m_movie.Lock();
 
   if (m_movie.IsCached() == false)
-    m_movie = Movie::fromMedia(m_ml, m_id);
-  return m_movie.get();
+    m_movie = Movie::FromMedia(m_ml, m_id);
+  return m_movie.Get();
 }
-*//*
-void Media::setMovie(MoviePtr movie) {
-  auto lock = m_movie.lock();
+
+void mxp::Media::SetMovie(MoviePtr movie) {
+  auto lock = m_movie.Lock();
   m_movie = movie;
   m_subType = SubType::Movie;
   m_changed = true;
 }
-*/
+
 int mxp::Media::GetPlayCount() const {
   return m_playCount;
 }

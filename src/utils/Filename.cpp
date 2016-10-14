@@ -3,7 +3,7 @@
 *****************************************************************************/
 
 #if HAVE_CONFIG_H
-# include "config.h"
+#  include "config.h"
 #endif
 
 #include "utils/Filename.h"
@@ -13,11 +13,6 @@
 #include "utils/Charsets.h"
 #else
 #define DIR_SEPARATOR '/'
-#include <dirent.h>
-#include <limits.h>
-#include <sys/stat.h>
-#include <system_error>
-#include <unistd.h>
 #endif
 
 std::string mxp::utils::file::extension(const std::string& fileName) {

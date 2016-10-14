@@ -66,15 +66,15 @@ void mxp::DiscovererWorker::enqueue(const std::string& entryPoint, bool reload) 
 
 void mxp::DiscovererWorker::run() {
   LOG_INFO("Entering DiscovererWorker thread");
-  while (m_run == true) {
-    Task task; 
+  while(m_run == true) {
+    Task task;
     {
       std::unique_lock<mxp::compat::Mutex> lock(m_mutex);
-      if (m_tasks.size() == 0) {
+      if(m_tasks.size() == 0) {
         m_cond.wait(lock, [this]() {
           return m_tasks.size() > 0 || m_run == false;
         });
-        if (m_run == false) {
+        if(m_run == false) {
           break;
         }
       }
@@ -82,45 +82,45 @@ void mxp::DiscovererWorker::run() {
       task = m_tasks.front();
       m_tasks.pop();
     }
-    
-    if (m_cb != nullptr) {
+
+    if(m_cb != nullptr) {
       m_cb->onDiscoveryStarted(task.entryPoint);
     }
 
-    if (task.reload == false) {
-      for (auto& d : m_discoverers) {
+    if(task.reload == false) {
+      for(auto& d : m_discoverers) {
         // Assume only one discoverer can handle an entrypoint.
         try {
-          if (d->Discover(task.entryPoint) == true) {
+          if(d->Discover(task.entryPoint) == true) {
             break;
           }
-        } catch (std::exception& ex) {
+        } catch(std::exception& ex) {
           LOG_ERROR("Fatal error while discovering ", task.entryPoint, ": ", ex.what());
         }
 
-        if (m_run == false) {
+        if(m_run == false) {
           break;
         }
       }
     } else {
-      for (auto& d : m_discoverers) {
+      for(auto& d : m_discoverers) {
         try {
-          if (task.entryPoint.empty() == true) {
+          if(task.entryPoint.empty() == true) {
             d->reload();
           } else {
             d->reload(task.entryPoint);
           }
-        } catch (std::exception& ex) {
+        } catch(std::exception& ex) {
           LOG_ERROR("Fatal error while reloading: ", ex.what());
         }
 
-        if (m_run == false) {
+        if(m_run == false) {
           break;
         }
       }
     }
 
-    if (m_cb != nullptr) {
+    if(m_cb != nullptr) {
       m_cb->onDiscoveryCompleted(task.entryPoint);
     }
   }

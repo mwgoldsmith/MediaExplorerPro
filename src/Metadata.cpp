@@ -42,18 +42,38 @@ const mstring& mxp::Metadata::GetValue() const {
   return m_value;
 }
 
-mxp::MetadataPtr mxp::Metadata::Create(MediaExplorerPtr ml, const mstring& name, const mstring& value) {
-  auto self = std::make_shared<Metadata>(ml, name, value);
-  auto req = "INSERT INTO " + MetadataTable::Name + "(name, value, creation_date) VALUES(?, ?, ?)";
+bool mxp::Metadata::SetValue(const mstring& value) {
+  static const auto req = "UPDATE " + MetadataTable::Name + " SET value=? WHERE " + MetadataTable::PrimaryKeyColumn + "=?";
 
-  if(insert(ml, self, req, self->m_name, self->m_value, self->m_creationDate) == false) {
-    return nullptr;
+  if(value != m_value) {
+    if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, value, m_id) == false) {
+      return false;
+    }
+
+    m_value = value;
+  }
+
+  return true;
+}
+
+mxp::MetadataPtr mxp::Metadata::Create(MediaExplorerPtr ml, const mstring& name, const mstring& value) noexcept {
+  auto req = "INSERT INTO " + MetadataTable::Name + "(name, value, creation_date) VALUES(?, ?, ?)";
+  std::shared_ptr<Metadata> self;
+
+  try {
+    self = std::make_shared<Metadata>(ml, name, value);
+    if(insert(ml, self, req, self->m_name, self->m_value, self->m_creationDate) == false) {
+      self = nullptr;
+    }
+  } catch(std::exception& ex) {
+    LOG_ERROR(MTEXT("Failed to create Metadata: "), ex.what());
+    self = nullptr;
   }
 
   return self;
 }
 
-bool mxp::Metadata::CreateTable(DBConnection dbConnection) {
+bool mxp::Metadata::CreateTable(DBConnection connection) noexcept {
   static const auto req = "CREATE TABLE IF NOT EXISTS " + MetadataTable::Name + "(" +
     MetadataTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     "name TEXT,"
@@ -61,5 +81,14 @@ bool mxp::Metadata::CreateTable(DBConnection dbConnection) {
     "creation_date UNSIGNED INT NOT NULL"
     ")";
 
-  return sqlite::Tools::ExecuteRequest(dbConnection, req);
+  bool result;
+
+  try {
+    result = sqlite::Tools::ExecuteRequest(connection, req);
+  } catch(std::exception& ex) {
+    LOG_ERROR(MTEXT("Failed to create Metadata: "), ex.what());
+    result = false;
+  }
+
+  return result;
 }

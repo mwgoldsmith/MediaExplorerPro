@@ -23,18 +23,18 @@ void mxp::ParserService::Start() {
     m_threads.emplace_back(&ParserService::mainloop, this);
 }
 
-void mxp::ParserService::pause() {
+void mxp::ParserService::Pause() {
   std::lock_guard<compat::Mutex> lock(m_lock);
   m_paused = true;
 }
 
-void mxp::ParserService::resume() {
+void mxp::ParserService::Resume() {
   std::lock_guard<compat::Mutex> lock(m_lock);
   m_paused = false;
   m_cond.notify_all();
 }
 
-void mxp::ParserService::signalStop() {
+void mxp::ParserService::SignalStop() {
   for(auto& t : m_threads) {
     if(t.joinable()) {
       {
@@ -46,7 +46,7 @@ void mxp::ParserService::signalStop() {
   }
 }
 
-void mxp::ParserService::stop() {
+void mxp::ParserService::Stop() {
   for (auto& t : m_threads) {
     if (t.joinable())
       t.join();
@@ -59,13 +59,13 @@ void mxp::ParserService::Parse(std::unique_ptr<mxp::parser::Task> t) {
   m_cond.notify_all();
 }
 
-void mxp::ParserService::initialize(mxp::MediaExplorer* ml, mxp::IParserCb* parserCb) {
+void mxp::ParserService::Initialize(mxp::MediaExplorer* ml, mxp::IParserCb* parserCb) {
   m_ml = ml;
   m_cb = ml->GetCallbacks();
   m_notifier = ml->GetNotifier();
   m_parserCb = parserCb;
   // Run the service specific initializer
-  initialize();
+  Initialize();
 }
 
 uint8_t mxp::ParserService::nbNativeThreads() const {
@@ -75,7 +75,7 @@ uint8_t mxp::ParserService::nbNativeThreads() const {
   return nbProcs;
 }
 
-bool mxp::ParserService::initialize() {
+bool mxp::ParserService::Initialize() {
   return true;
 }
 
@@ -110,11 +110,11 @@ void mxp::ParserService::mainloop() {
     parser::Task::Status status;
 
     try {
-      LOG_INFO("Executing ", serviceName, " task on ", task->file->mrl());
-      status = run(*task);
-      LOG_INFO("Done executing ", serviceName, " task on ", task->file->mrl());
+      LOG_INFO("Executing ", serviceName, " task on ", task->MediaFile->mrl());
+      status = Run(*task);
+      LOG_INFO("Done executing ", serviceName, " task on ", task->MediaFile->mrl());
     } catch (const std::exception& ex) {
-      LOG_ERROR("Caught an exception during ", task->file->mrl(), " ", serviceName, " parsing: ", ex.what());
+      LOG_ERROR("Caught an exception during ", task->MediaFile->mrl(), " ", serviceName, " parsing: ", ex.what());
       status = parser::Task::Status::Fatal;
     }
     m_parserCb->done(std::move(task), status);

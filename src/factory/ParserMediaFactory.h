@@ -1,15 +1,18 @@
+/*****************************************************************************
+* Media Explorer
+*****************************************************************************/
+
 #pragma once
 
-#include <memory>
-#include <string>
 #include "mediaexplorer/Types.h"
 #include "Types.h"
 
 namespace mxp {
+
 class Media;
-namespace parser {
-class ParserMedia;
-}
+
+namespace parser { class ParserMedia; }
+
 namespace factory {
 
 class ParserMediaFactory {

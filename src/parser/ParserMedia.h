@@ -2,34 +2,28 @@
 * Media Explorer
 *****************************************************************************/
 
-#ifndef PERSERMEDIA_H
-#define PERSERMEDIA_H
+#ifndef PARSERMEDIA_H
+#define PARSERMEDIA_H
 
-#include <memory>
 #include "filesystem/IFile.h"
 #include "mediaexplorer/Types.h"
-#include <Types.h>
+#include "Types.h"
 
 namespace mxp {
 class Media;
-namespace parser {
 
-class Context;
+namespace parser {
+struct Task;
 
 class ParserMedia {
-
 public:
-  ParserMedia(MediaExplorerPtr ml, std::shared_ptr<Media> media, const std::shared_ptr<mxp::fs::IFile> file);
-  ~ParserMedia();
-
-  ContainerPtr GetMediaContainer();
-
+  ParserMedia(MediaExplorerPtr ml, parser::Task &task);
+  ~ParserMedia() = default;
 private:
-  const std::shared_ptr<mxp::fs::IFile> m_file;
-  std::unique_ptr<Context>              m_context;
+  const MediaExplorerPtr                m_ml;
 };
 
 } /* namespace parser */
 } /* namespace mxp */
 
-#endif /* PERSERMEDIA_H */
+#endif /* PARSERMEDIA_H */

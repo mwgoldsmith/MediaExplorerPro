@@ -69,7 +69,7 @@ mxp::MediaType mxp::Stream::GetType() const {
 mxp::MediaPtr mxp::Stream::GetMedia() const {
   auto lock = m_media.Lock();
   if(m_media.IsCached() == false) {
-    m_media = m_ml->Media(m_mediaId);
+    m_media = m_ml->GetMedia(m_mediaId);
   }
 
   return m_media.Get();
@@ -155,4 +155,10 @@ bool mxp::Stream::Create(DBConnection connection, const mstring& sql, const mstr
   }
 
   return result;
+}
+
+std::vector<mxp::StreamPtr> mxp::Stream::FindByMedia(MediaExplorerPtr ml, int64_t mediaId) {
+  static const auto req = "SELECT * FROM " + StreamTable::Name + " WHERE media_id=?";
+
+  return FetchAll<IStream>(ml, req, mediaId);;
 }

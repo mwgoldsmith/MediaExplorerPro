@@ -17,11 +17,11 @@ int64_t mxp::Codec::* const CodecTable::PrimaryKey = &mxp::Codec::m_id;
 mxp::Codec::Codec(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
-      >> m_name
-      >> m_longName
-      >> m_type
-      >> m_isSupported
-      >> m_creationDate;
+    >> m_name
+    >> m_longName
+    >> m_type
+    >> m_isSupported
+    >> m_creationDate;
 }
 
 mxp::Codec::Codec(MediaExplorerPtr ml, const mstring& name, const mstring& longName, MediaType type)
@@ -85,7 +85,7 @@ mxp::CodecPtr mxp::Codec::Create(MediaExplorerPtr ml, const mstring& name, const
     if(insert(ml, self, req, self->m_name, self->m_longName, self->m_type, self->m_isSupported, self->m_creationDate) == false) {
       self = nullptr;
     }
-  } catch (std::exception& ex) {
+  } catch(std::exception& ex) {
     LOG_ERROR(MTEXT("Failed to create Codec: "), ex.what());
     self = nullptr;
   }

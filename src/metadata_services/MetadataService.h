@@ -31,21 +31,21 @@ class AlbumTrack;
 
 class MetadataService : public ParserService {
 protected:
-  virtual bool initialize() override;
-  virtual parser::Task::Status run(parser::Task& task) override;
+  virtual bool Initialize() override;
+  virtual parser::Task::Status Run(parser::Task& task) override;
   virtual const char* Name() const override;
   virtual uint8_t nbThreads() const override;
 
- // std::shared_ptr<Album> findAlbum(parser::Task& task, Artist* albumArtist) const;
-  bool parseAudioFile(parser::Task& task) const;
-  bool parseVideoFile(parser::Task& task) const;
- // std::pair<std::shared_ptr<Artist>, std::shared_ptr<Artist>> handleArtists(parser::Task& vlcMedia) const;
- // std::shared_ptr<AlbumTrack> handleTrack(std::shared_ptr<Album> album, parser::Task& task, std::shared_ptr<Artist> artist) const;
- // bool link(Media& media, std::shared_ptr<Album> album, std::shared_ptr<Artist> albumArtist, std::shared_ptr<Artist> artist) const;
-  //std::shared_ptr<Album> handleAlbum(parser::Task& task, std::shared_ptr<Artist> albumArtist, std::shared_ptr<Artist> artist) const;
+  std::shared_ptr<Album> FindAlbum(parser::Task& task, Artist* albumArtist) const;
+  bool ParseAudioFile(parser::Task& task) const;
+  bool ParseVideoFile(parser::Task& task) const;
+  std::pair<std::shared_ptr<Artist>, std::shared_ptr<Artist>> HandleArtists(parser::Task& vlcMedia) const;
+  std::shared_ptr<AlbumTrack> HandleTrack(std::shared_ptr<Album> album, parser::Task& task, std::shared_ptr<Artist> artist) const;
+  bool Link(Media& media, std::shared_ptr<Album> album, std::shared_ptr<Artist> albumArtist, std::shared_ptr<Artist> artist) const;
+  std::shared_ptr<Album> HandleAlbum(parser::Task& task, std::shared_ptr<Artist> albumArtist, std::shared_ptr<Artist> artist) const;
 
-//private:
-  //std::shared_ptr<Artist> m_unknownArtist;
+private:
+  std::shared_ptr<Artist> m_unknownArtist;
 };
 
 }

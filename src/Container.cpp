@@ -17,16 +17,16 @@ int64_t mxp::Container::* const ContainerTable::PrimaryKey = &mxp::Container::m_
 mxp::Container::Container(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
-      >> m_extensions
-      >> m_name
-      >> m_longName
-      >> m_mimeType
-      >> m_type
-      >> m_isSupported
-      >> m_creationDate;
+    >> m_extensions
+    >> m_name
+    >> m_longName
+    >> m_mimeType
+    >> m_type
+    >> m_isSupported
+    >> m_creationDate;
 }
 
-mxp::Container::Container(MediaExplorerPtr ml, const mstring& name, const mstring& longName, const mstring& extensions, const mstring& mimeType, MediaType type) 
+mxp::Container::Container(MediaExplorerPtr ml, const mstring& name, const mstring& longName, const mstring& extensions, const mstring& mimeType, MediaType type)
   : m_ml(ml)
   , m_extensions(extensions)
   , m_name(name)
@@ -105,7 +105,7 @@ mxp::ContainerPtr mxp::Container::Create(MediaExplorerPtr ml, const mstring& nam
 }
 
 bool mxp::Container::CreateTable(DBConnection connection) noexcept {
-  static const auto req = "CREATE TABLE IF NOT EXISTS " + ContainerTable::Name + "(" + 
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + ContainerTable::Name + "(" +
     ContainerTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     "extensions TEXT,"
     "name TEXT UNIQUE ON CONFLICT FAIL,"

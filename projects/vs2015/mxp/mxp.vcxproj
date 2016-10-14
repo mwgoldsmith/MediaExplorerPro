@@ -374,6 +374,9 @@
     <ClInclude Include="..\..\..\include\filesystem\IDirectory.h" />
     <ClInclude Include="..\..\..\include\filesystem\IFile.h" />
     <ClInclude Include="..\..\..\include\Fixup.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IAlbum.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IAlbumTrack.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IArtist.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IAudioTrack.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\ICodec.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IContainer.h" />
@@ -388,8 +391,11 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorer.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorerCb.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IMetadata.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IMovie.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IPlaylist.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\ISettings.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IShow.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\IShowEpisode.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IStream.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IVideoTrack.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\LogLevel.h" />
@@ -399,6 +405,9 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\Types.h" />
     <ClInclude Include="..\..\..\include\Types.h" />
+    <ClInclude Include="..\..\..\src\Album.h" />
+    <ClInclude Include="..\..\..\src\AlbumTrack.h" />
+    <ClInclude Include="..\..\..\src\Artist.h" />
     <ClInclude Include="..\..\..\src\AudioTrack.h" />
     <ClInclude Include="..\..\..\src\av\AvCodec.h" />
     <ClInclude Include="..\..\..\src\av\AvContainer.h" />
@@ -495,6 +504,7 @@
     <ClInclude Include="..\..\..\src\Metadata.h" />
     <ClInclude Include="..\..\..\src\metadata_services\FormatService.h" />
     <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h" />
+    <ClInclude Include="..\..\..\src\Movie.h" />
     <ClInclude Include="..\..\..\src\parser\MediaTrack.h" />
     <ClInclude Include="..\..\..\src\parser\ParserMedia.h" />
     <ClInclude Include="..\..\..\src\parser\Parser.h" />
@@ -502,6 +512,8 @@
     <ClInclude Include="..\..\..\src\parser\Task.h" />
     <ClInclude Include="..\..\..\src\Playlist.h" />
     <ClInclude Include="..\..\..\src\Settings.h" />
+    <ClInclude Include="..\..\..\src\Show.h" />
+    <ClInclude Include="..\..\..\src\ShowEpisode.h" />
     <ClInclude Include="..\..\..\src\Stream.h" />
     <ClInclude Include="..\..\..\src\utils\Cache.h" />
     <ClInclude Include="..\..\..\src\utils\Charsets.h" />
@@ -514,6 +526,9 @@
     <ClInclude Include="config.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\Album.cpp" />
+    <ClCompile Include="..\..\..\src\AlbumTrack.cpp" />
+    <ClCompile Include="..\..\..\src\Artist.cpp" />
     <ClCompile Include="..\..\..\src\AudioTrack.cpp" />
     <ClCompile Include="..\..\..\src\av\AvController.cpp" />
     <ClCompile Include="..\..\..\src\Codec.cpp" />
@@ -608,11 +623,14 @@
     <ClCompile Include="..\..\..\src\Metadata.cpp" />
     <ClCompile Include="..\..\..\src\metadata_services\FormatService.cpp" />
     <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp" />
+    <ClCompile Include="..\..\..\src\Movie.cpp" />
     <ClCompile Include="..\..\..\src\parser\Parser.cpp" />
     <ClCompile Include="..\..\..\src\parser\ParserMedia.cpp" />
     <ClCompile Include="..\..\..\src\parser\ParserService.cpp" />
     <ClCompile Include="..\..\..\src\Playlist.cpp" />
     <ClCompile Include="..\..\..\src\Settings.cpp" />
+    <ClCompile Include="..\..\..\src\Show.cpp" />
+    <ClCompile Include="..\..\..\src\ShowEpisode.cpp" />
     <ClCompile Include="..\..\..\src\Stream.cpp" />
     <ClCompile Include="..\..\..\src\utils\Filename.cpp" />
     <ClCompile Include="..\..\..\src\utils\ModificationsNotifier.cpp" />

@@ -45,60 +45,60 @@ ModificationNotifier::~ModificationNotifier() {
   }
 }
 
-void ModificationNotifier::Start() {
+void mxp::ModificationNotifier::Start() {
   assert(m_notifierThread.get_id() == compat::Thread::id{});
   m_notifierThread = compat::Thread{ &ModificationNotifier::run, this };
 }
 
-void ModificationNotifier::NotifyMediaCreation(MediaPtr media) {
-  notifyCreation(std::move(media), m_media);
+void mxp::ModificationNotifier::NotifyMediaCreation(MediaPtr media) {
+  NotifyCreation(std::move(media), m_media);
 }
 
-void ModificationNotifier::NotifyMediaModification(MediaPtr media) {
-  notifyModification(std::move(media), m_media);
+void mxp::ModificationNotifier::NotifyMediaModification(MediaPtr media) {
+  NotifyModification(std::move(media), m_media);
 }
 
-void ModificationNotifier::NotifyMediaRemoval(int64_t mediaId) {
-  notifyRemoval(mediaId, m_media);
-}
-/*
-void ModificationNotifier::notifyArtistCreation(ArtistPtr artist) {
-  notifyCreation(std::move(artist), m_artists);
+void mxp::ModificationNotifier::NotifyMediaRemoval(int64_t mediaId) {
+  NotifyRemoval(mediaId, m_media);
 }
 
-void ModificationNotifier::notifyArtistModification(ArtistPtr artist) {
-  notifyModification(std::move(artist), m_artists);
+void mxp::ModificationNotifier::NotifyArtistCreation(ArtistPtr artist) {
+  NotifyCreation(std::move(artist), m_artists);
 }
 
-void ModificationNotifier::notifyArtistRemoval(int64_t artist) {
-  notifyRemoval(std::move(artist), m_artists);
+void mxp::ModificationNotifier::NotifyArtistModification(ArtistPtr artist) {
+  NotifyModification(std::move(artist), m_artists);
 }
 
-void ModificationNotifier::notifyAlbumCreation(AlbumPtr album) {
-  notifyCreation(std::move(album), m_albums);
+void mxp::ModificationNotifier::NotifyArtistRemoval(int64_t artist) {
+  NotifyRemoval(std::move(artist), m_artists);
 }
 
-void ModificationNotifier::notifyAlbumModification(AlbumPtr album) {
-  notifyModification(std::move(album), m_albums);
+void mxp::ModificationNotifier::NotifyAlbumCreation(AlbumPtr album) {
+  NotifyCreation(std::move(album), m_albums);
 }
 
-void ModificationNotifier::notifyAlbumRemoval(int64_t albumId) {
-  notifyRemoval(albumId, m_albums);
+void mxp::ModificationNotifier::NotifyAlbumModification(AlbumPtr album) {
+  NotifyModification(std::move(album), m_albums);
 }
 
-void ModificationNotifier::notifyAlbumTrackCreation(AlbumTrackPtr track) {
-  notifyCreation(std::move(track), m_tracks);
+void mxp::ModificationNotifier::NotifyAlbumRemoval(int64_t albumId) {
+  NotifyRemoval(albumId, m_albums);
 }
 
-void ModificationNotifier::notifyAlbumTrackModification(AlbumTrackPtr track) {
-  notifyModification(std::move(track), m_tracks);
+void mxp::ModificationNotifier::NotifyAlbumTrackCreation(AlbumTrackPtr track) {
+  NotifyCreation(std::move(track), m_tracks);
 }
 
-void ModificationNotifier::notifyAlbumTrackRemoval(int64_t trackId) {
-  notifyRemoval(trackId, m_tracks);
-}*/
+void mxp::ModificationNotifier::NotifyAlbumTrackModification(AlbumTrackPtr track) {
+  NotifyModification(std::move(track), m_tracks);
+}
 
-void ModificationNotifier::run() {
+void mxp::ModificationNotifier::NotifyAlbumTrackRemoval(int64_t trackId) {
+  NotifyRemoval(trackId, m_tracks);
+}
+
+void mxp::ModificationNotifier::run() {
 #if !defined(_LIBCPP_STD_VER) || (_LIBCPP_STD_VER > 11 && !defined(_LIBCPP_HAS_NO_CXX14_CONSTEXPR))
   constexpr auto ZeroTimeout = std::chrono::time_point<std::chrono::steady_clock>{};
 #else
@@ -109,9 +109,9 @@ void ModificationNotifier::run() {
   // by other threads. That way we can release those early and allow
   // more insertions to proceed
   Queue<IMedia> media;
-  //Queue<IArtist> artists;
-  //Queue<IAlbum> albums;
-  //Queue<IAlbumTrack> tracks;
+  Queue<IArtist> artists;
+  Queue<IAlbum> albums;
+  Queue<IAlbumTrack> tracks;
 
   while(m_stop == false) {
     {
@@ -128,17 +128,17 @@ void ModificationNotifier::run() {
       auto now = std::chrono::steady_clock::now();
       auto nextTimeout = ZeroTimeout;
       checkQueue(m_media, media, nextTimeout, now);
-      //checkQueue(m_artists, artists, nextTimeout, now);
-      //checkQueue(m_albums, albums, nextTimeout, now);
-      //checkQueue(m_tracks, tracks, nextTimeout, now);
+      checkQueue(m_artists, artists, nextTimeout, now);
+      checkQueue(m_albums, albums, nextTimeout, now);
+      checkQueue(m_tracks, tracks, nextTimeout, now);
       m_timeout = nextTimeout;
     }
-    notify(std::move(media), &IMediaExplorerCb::onMediaAdded, &IMediaExplorerCb::onMediaUpdated, &IMediaExplorerCb::onMediaDeleted);
-    //notify(std::move(artists), &IMediaExplorerCb::onArtistsAdded, &IMediaExplorerCb::onArtistsModified, &IMediaExplorerCb::onArtistsDeleted);
-    //notify(std::move(albums), &IMediaExplorerCb::onAlbumsAdded, &IMediaExplorerCb::onAlbumsModified, &IMediaExplorerCb::onAlbumsDeleted);
+    Notify(std::move(media), &IMediaExplorerCb::onMediaAdded, &IMediaExplorerCb::onMediaUpdated, &IMediaExplorerCb::onMediaDeleted);
+    Notify(std::move(artists), &IMediaExplorerCb::onArtistsAdded, &IMediaExplorerCb::onArtistsModified, &IMediaExplorerCb::onArtistsDeleted);
+    Notify(std::move(albums), &IMediaExplorerCb::onAlbumsAdded, &IMediaExplorerCb::onAlbumsModified, &IMediaExplorerCb::onAlbumsDeleted);
     // We pass the onTrackAdded callback twice, to avoid having to do some nifty templates specialization
-    // for nullptr callbacks. There is no onTracksModified callback, as tracks are never modified.
-    //notify(std::move(tracks), &IMediaExplorerCb::onTracksAdded, &IMediaExplorerCb::onTracksAdded, &IMediaExplorerCb::onTracksDeleted);
+     //for nullptr callbacks. There is no onTracksModified callback, as tracks are never modified.
+    Notify(std::move(tracks), &IMediaExplorerCb::onTracksAdded, &IMediaExplorerCb::onTracksAdded, &IMediaExplorerCb::onTracksDeleted);
   }
 }
 

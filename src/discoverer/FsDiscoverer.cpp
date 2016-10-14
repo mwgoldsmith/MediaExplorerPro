@@ -16,6 +16,7 @@
 #include "Media.h"
 #include "MediaExplorer.h"
 #include "filesystem/IDevice.h"
+#include "filesystem/IDirectory.h"
 #include "logging/Logger.h"
 
 mxp::FsDiscoverer::FsDiscoverer(FileSystemPtr fsFactory, mxp::MediaExplorer* ml, mxp::IMediaExplorerCb* cb)
@@ -29,7 +30,7 @@ bool mxp::FsDiscoverer::Discover(const std::string& entryPoint) {
   if (entryPoint.find("://") != std::string::npos)
     return false;
 
-  std::shared_ptr<mxp::fs::IDirectory> fsDir = m_fsFactory->CreateDirectoryFromPath(entryPoint);
+  auto fsDir = m_fsFactory->CreateDirectoryFromPath(entryPoint);
   // Otherwise, create a directory and check it for modifications
   if (fsDir == nullptr) {
     LOG_ERROR("Failed to create an IDirectory for ", entryPoint);

@@ -19,11 +19,11 @@ mxp::factory::ParserMediaFactory::ParserMediaFactory(MediaExplorerPtr ml)
 
 std::shared_ptr<mxp::parser::ParserMedia> mxp::factory::ParserMediaFactory::CreateParserMedia(std::shared_ptr<Media> media, const std::shared_ptr<mxp::fs::IFile> file) {
   LOG_INFO("Creating ParserMedia for ", file->Name());
-  return std::make_shared<parser::ParserMedia>(m_ml, media, file);
+  return  nullptr;// std::make_shared<parser::ParserMedia>(m_ml, {});
 }
 
 std::shared_ptr<mxp::parser::ParserMedia> mxp::factory::ParserMediaFactory::CreateParserMedia(std::shared_ptr<Media> media, const std::string & file) {
   auto ifile = m_ml->GetFileSystem()->CreateFileFromPath(file);
   LOG_INFO("Creating ParserMedia for ", ifile->Name());
-  return std::make_shared<parser::ParserMedia>(m_ml, media, ifile);
+  return  nullptr;// std::make_shared<parser::ParserMedia>(m_ml, media, ifile);
 }

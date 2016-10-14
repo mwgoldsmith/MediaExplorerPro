@@ -45,7 +45,7 @@ static void AvLogCallback(void* avcl, int level, const char* format, va_list vl)
 
   char buffer[512];
   vsnprintf(buffer, sizeof(buffer) / sizeof(char), format, vl);
-  auto msg = mxp::ConvertFromNarrow(std::string(buffer));
+  auto msg =std::string( buffer);
 
   if(level  == AV_LOG_ERROR) {
     LOG_ERROR(msg);
@@ -172,6 +172,59 @@ std::string mxp::av::GetMediaTypeString(MediaType type) {
   return{};
 }
 
+bool mxp::av::AvController::Initialize(MediaExplorerPtr ml) {
+  LOG_DEBUG("Initializing the AvController");
+
+  av_log_set_callback(AvLogCallback);
+  av_log_set_level(AV_LOG_WARNING);
+  av_register_all();
+
+  s_ml = ml;
+
+ 
+  std::function<void(const ContainerPtr &)> cbMarkContainer = [](const ContainerPtr& c) { c->SetSupported(false); };
+  std::function<void(const AvContainer &)> cbNewContainer = [ml](const AvContainer& c) {
+    auto type = MediaType::None;
+    for(auto const& t : s_containerTypes) {
+      if(t.Name.compare(c.GetName()) == 0) {
+        type = t.Type;
+        break;
+      }
+    }
+
+    auto container = Container::Create(ml, c.GetName(), c.GetLongName(), c.GetExtensions(), c.GetMimeType(), type);
+    s_containers->push_back(container);
+  };
+
+
+  // Get existing containers
+  auto avContainers = GetAvContainers();
+  auto containers = ml->ContainerList(SortingCriteria::Default, false);
+  s_containers = std::unique_ptr<ContainerVector>(std::make_unique<ContainerVector>(containers));
+
+  // Get changes to supported containers
+  GetSupportDiff(containers, avContainers, "Container", cbMarkContainer);
+  GetSupportDiff(avContainers, containers, "container", cbNewContainer);
+
+
+  std::function<void(const CodecPtr &)> cbMarkCodec = [](const CodecPtr& c) { c->SetSupported(false); };
+  std::function<void(const AvCodec &)> cbNewCodec = [ml](const AvCodec& c) {
+    auto codec = Codec::Create(ml, c.GetName(), c.GetLongName(), c.GetType());
+    s_codecs->push_back(codec);
+  };
+
+  // Get existing codecs
+  auto avCodecs = GetAvCodecs();
+  auto codecs = ml->CodecList(SortingCriteria::Default, false);
+  s_codecs = std::unique_ptr<CodecVector>(std::make_unique<CodecVector>(codecs));
+
+  // Get changes to supported codecs
+  GetSupportDiff(codecs, avCodecs, "Codec", cbMarkCodec);
+  GetSupportDiff(avCodecs, codecs, "codec", cbNewCodec);
+
+  return true;
+}
+
 std::vector<mxp::av::AvContainer> mxp::av::AvController::GetAvContainers() {
   std::vector<AvContainer> avContainers;
 
@@ -184,7 +237,7 @@ std::vector<mxp::av::AvContainer> mxp::av::AvController::GetAvContainers() {
     auto mimeType = fmt->mime_type != nullptr ? fmt->mime_type : "";
 
     LOG_DEBUG("Format: ", fmt->name, "; ", longName, "; ", extensions, "; ", mimeType);
-    avContainers.emplace_back(AvContainer(fmt->name, longName, extensions, mimeType));
+    avContainers.emplace_back(fmt->name, longName, extensions, mimeType);
 
     fmt = av_iformat_next(fmt);
   }
@@ -199,13 +252,13 @@ std::vector<mxp::av::AvCodec> mxp::av::AvController::GetAvCodecs() {
 
   auto codec = av_codec_next(nullptr);
   auto prevType = MediaType::None;
-  mstring prevName ="";
+  mstring prevName = "";
 
   while(codec != nullptr) {
     auto curType = GetMediaType(codec->type);
-    auto curName = ConvertFromNarrow(codec->name);
+    auto curName = to_mstring(codec->name);
 
-    if ((prevName.compare(curName) != 0)|| (prevType != curType)) {
+    if((prevName.compare(curName) != 0) || (prevType != curType)) {
       auto longName = codec->long_name != nullptr ? codec->long_name : "";
 
       LOG_DEBUG("Codec: ", GetMediaTypeString(curType), "; ", curName, "; ", longName);
@@ -221,59 +274,9 @@ std::vector<mxp::av::AvCodec> mxp::av::AvController::GetAvCodecs() {
   return avCodecs;
 }
 
-bool mxp::av::AvController::Initialize(MediaExplorerPtr ml) {
-  LOG_DEBUG("Initializing the AvController");
-
-  av_log_set_callback(AvLogCallback);
-  av_log_set_level(AV_LOG_WARNING);
-  av_register_all();
-
-  s_ml = ml;
-
-  std::function<void(const ContainerPtr &)> cbMarkContainer = [](const ContainerPtr& c) { c->SetSupported(true); };
-  std::function<void(const AvContainer &)> cbNewContainer = [ml](const AvContainer& c) {
-    auto type = MediaType::None;
-    for (auto const& t : s_containerTypes) {
-      if (t.Name.compare(c.GetName()) == 0) {
-        type = t.Type;
-        break;
-      }
-    }
-
-    auto container = Container::Create(ml, c.GetName(), c.GetLongName(), c.GetExtensions(), c.GetMimeType(), type);
-    s_containers->push_back(container);
-  };
-
-  // Get existing containers
-  auto avContainers = GetAvContainers();
-  auto containers = ml->ContainerList(SortingCriteria::Default, false);
-  s_containers = std::unique_ptr<ContainerVector>(std::make_unique<ContainerVector>(containers));
-  MarkUnsupported(avContainers, containers, "Container", cbMarkContainer);
-
-  // Get supported containers
-  GetNewSupport(avContainers, containers, "container", cbNewContainer);
-
-  std::function<void(const CodecPtr &)> cbMarkCodec = [](const CodecPtr& c) { c->SetSupported(true); };
-  std::function<void(const AvCodec &)> cbNewCodec = [ml](const AvCodec& c) {
-    auto codec = Codec::Create(ml, c.GetName(), c.GetLongName(),c.GetType());
-    s_codecs->push_back(codec);
-  };
-
-  // Get existing codecs
-  auto avCodecs = GetAvCodecs();
-  auto codecs = ml->CodecList(SortingCriteria::Default, false);
-  s_codecs = std::unique_ptr<CodecVector>(std::make_unique<CodecVector>(codecs));
-  MarkUnsupported(avCodecs, codecs, "Codec", cbMarkCodec);
-
-  // Get supported codecs
-  GetNewSupport(avCodecs, codecs, "codec", cbNewCodec);
-
-  return true;
-}
-
-mxp::ContainerPtr mxp::av::AvController::FindContainer(const char* name) {
+mxp::ContainerPtr mxp::av::AvController::FindContainer(const mstring name) {
   ContainerPtr result = nullptr;
-  ContainerVector* containers = s_containers.get();
+  auto containers = s_containers.get();
 
   for(auto const& t : *containers) {
     if(t->GetName().compare(name) == 0) {
@@ -285,9 +288,9 @@ mxp::ContainerPtr mxp::av::AvController::FindContainer(const char* name) {
   return result;
 }
 
-mxp::CodecPtr mxp::av::AvController::FindCodec(const char* name, MediaType type) {
+mxp::CodecPtr mxp::av::AvController::FindCodec(const mstring name, MediaType type) {
   CodecPtr result = nullptr;
-  CodecVector* codecs = s_codecs.get();
+  auto codecs = s_codecs.get();
 
   for(auto const& t : *codecs) {
     if((t->GetName().compare(name) == 0) && (t->GetType() == type)) {
