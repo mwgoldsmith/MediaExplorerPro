@@ -47,14 +47,14 @@ public:
 
   virtual const mstring& GetTitle() const = 0;
 
-  //virtual AlbumTrackPtr albumTrack() const = 0;
+  virtual AlbumTrackPtr AlbumTrack() const = 0;
 
   /**
    * @brief duration Returns the media duration in ms
    */
   virtual int64_t GetDuration() const = 0;
 
-  //virtual ShowEpisodePtr showEpisode() const = 0;
+  virtual ShowEpisodePtr ShowEpisode() const = 0;
 
   virtual int GetPlayCount() const = 0;
 
@@ -89,7 +89,7 @@ public:
 
   virtual std::vector<LabelPtr> GetLabels() = 0;
 
-  //virtual MoviePtr movie() const = 0;
+  virtual MoviePtr Movie() const = 0;
 
   virtual std::vector<VideoTrackPtr> VideoTracks() = 0;
 

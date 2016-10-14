@@ -4,9 +4,15 @@
 
 #pragma once
 
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
 #include <string>
 #include <memory>
 #include <vector>
+#include "mediaexplorer/Types.h"
+#include <mediaexplorer/MediaType.h>
 
 namespace mxp {
 
@@ -32,64 +38,139 @@ struct Task {
     Fatal
   };
 
-  Task(std::shared_ptr<Media> media, std::shared_ptr<MediaFile> file)
-    : media(media)
-      , file(file)
-      , currentService(0)
-      , trackNumber(0)
-      , discNumber(0)
-      , discTotal(0)
-      , episode(0)
-      , duration(0) { }
+  /**
+  * @param name  The key name of the metadata entry
+  * @param value The value of the metadata entry
+  */
+  struct MetadataInfo {
+    MetadataInfo(const mstring& name, const mstring& value)
+      : Name(name)
+      , Value(value) { }
 
+    const mstring Name;
+    const mstring Value;
+  };
+
+  /**
+  * @param index     The index of the stream.
+  * @param type      The MediaType of the stream.
+  * @param codecName The name of the codec used by the stream.
+  *
+  * The codec name is assumed to be populated from the AVCodec
+  * structure. As such, the member "name" is of type 'char',
+  * regardless of the type of mchar and mstring for the current
+  * build. Therefor, it will always be narrow and should be
+  * converted to an mstring value.
+  */
+  struct StreamInfo {
+    StreamInfo(unsigned int index, MediaType type, const char* codecName)
+      : Metadata{}
+      , CodecName(to_mstring(codecName))
+      , Index(index)
+      , Type(type) { }
+
+    std::vector<MetadataInfo> Metadata;
+    const mstring             CodecName;
+    unsigned int              Index;
+    MediaType                 Type;
+  };
+
+  /**
+  * @param index     
+  * @param fcc
+  * @param fps
+  * @param width
+  * @param height
+  */
   struct VideoTrackInfo {
-    VideoTrackInfo(const std::string& fcc, float fps, unsigned int width, unsigned int height,
-                   const std::string& language, const std::string& description)
-      : fcc(fcc), fps(fps), width(width), height(height)
-        , language(language), description(description) { }
-
-    std::string fcc;
-    float fps;
-    unsigned int width;
-    unsigned int height;
-    std::string language;
-    std::string description;
+    VideoTrackInfo(unsigned int index, const mstring& fcc, float fps, unsigned int width, unsigned int height)
+      : Fcc(fcc)
+      , Language{}
+      , Description{}
+      , Index(index)
+      , Width(width)
+      , Height(height)
+      , Fps(fps) { }
+     
+    const mstring Fcc;
+    const mstring Language;
+    const mstring Description;
+    unsigned int  Index;
+    unsigned int  Width;
+    unsigned int  Height;
+    float         Fps;
   };
 
+  /**
+  * @param index
+  * @param fcc
+  * @param bitrate
+  * @param samplerate
+  * @param numChannels
+  */
   struct AudioTrackInfo {
-    AudioTrackInfo(const std::string& fcc, unsigned int bitrate, unsigned int samplerate,
-                   unsigned int numChannels, const std::string& language, const std::string& description)
-      : fcc(fcc), bitrate(bitrate), samplerate(samplerate), numChannels(numChannels),
-        language(language), description(description) { }
+    AudioTrackInfo(unsigned int index, const mstring& fcc, unsigned int bitrate, unsigned int samplerate, unsigned int numChannels)
+      : Fcc(fcc)
+      , Language({})
+      , Description({})
+      , Index(index)
+      , Bitrate(bitrate)
+      , Samplerate(samplerate)
+      , NumChannels(numChannels) { }
 
-    std::string fcc;
-    unsigned int bitrate;
-    unsigned int samplerate;
-    unsigned int numChannels;
-    std::string language;
-    std::string description;
+    mstring      Fcc;
+    mstring      Language;
+    mstring      Description;
+    unsigned int Index;
+    unsigned int Bitrate;
+    unsigned int Samplerate;
+    unsigned int NumChannels;
   };
 
-  std::shared_ptr<Media> media;
-  std::shared_ptr<MediaFile> file;
-  unsigned int currentService;
+  struct ChapterInfo {
+    ChapterInfo(int64_t start, int64_t end)
+      : Start(start)
+      , End(end) {
+    }
 
+    int64_t Start;
+    int64_t End;
+  };
+
+  Task(std::shared_ptr<Media> media, std::shared_ptr<MediaFile> mediaFile)
+    : Media(media)
+    , MediaFile(mediaFile)
+    , Duration(0)
+    , Episode(0)
+    , TrackNumber(0)
+    , CurrentService(0)
+    , artworkMrl{}
+    , releaseDate{}
+    , discNumber(0)
+    , discTotal(0) { }
+
+  std::vector<MetadataInfo>   Metadata;
+  std::vector<StreamInfo>     Streams;
   std::vector<VideoTrackInfo> VideoTracks;
   std::vector<AudioTrackInfo> AudioTracks;
+  std::shared_ptr<Media>      Media;
+  std::shared_ptr<MediaFile>  MediaFile;
+  mstring                     ContainerName;
+  mstring                     Title;
+  mstring                     Genre;
+  mstring                     ShowName;
+  mstring                     Artist;
+  mstring                     AlbumArtist;
+  mstring                     AlbumName;
+  int64_t                     Duration;
+  int                         Episode;
+  int                         TrackNumber;
+  unsigned int                CurrentService;
 
-  std::string albumArtist;
-  std::string artist;
-  std::string albumName;
-  std::string title;
-  std::string artworkMrl;
-  std::string genre;
-  std::string ReleaseDate;
-  std::string showName;
-  int trackNumber;
+  mstring artworkMrl;
+  mstring releaseDate;
   int discNumber;
   int discTotal;
-  int episode;
-  int64_t duration;
 };
 
 }}

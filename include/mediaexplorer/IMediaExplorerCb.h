@@ -69,6 +69,22 @@ public:
    *        when the initial reload of the mediaexplorer has completed.
    */
   virtual void onDiscoveryCompleted(const std::string& entryPoint) = 0;
+
+
+  virtual void onArtistsAdded(std::vector<ArtistPtr> artists) = 0;
+  virtual void onArtistsModified(std::vector<ArtistPtr> artist) = 0;
+  virtual void onArtistsDeleted(std::vector<int64_t> ids) = 0;
+  virtual void onAlbumsAdded(std::vector<AlbumPtr> albums) = 0;
+  virtual void onAlbumsModified(std::vector<AlbumPtr> albums) = 0;
+  virtual void onAlbumsDeleted(std::vector<int64_t> ids) = 0;
+  /**
+  * @brief onTrackAdded Called when a media gets detected as an album track
+  * and after it has been added to the album representation
+  */
+  virtual void onTracksAdded(std::vector<AlbumTrackPtr> tracks) = 0;
+  // Tracks are never modified after their creation, so there is no tracksModified event
+  virtual void onTracksDeleted(std::vector<int64_t> trackIds) = 0;
+
 };
 
 } /* namespace mxp */

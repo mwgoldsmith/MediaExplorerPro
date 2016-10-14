@@ -14,10 +14,10 @@
 
 namespace mxp {
 
-//class Album;
+class Album;
 class MediaFolder;
-//class ShowEpisode;
-//class AlbumTrack;
+class ShowEpisode;
+class AlbumTrack;
 class Media;
 class MediaFile;
 
@@ -47,15 +47,15 @@ public:
 
   virtual const mstring& GetTitle() const override;
 
-  //virtual AlbumTrackPtr albumTrack() const override;
+  virtual AlbumTrackPtr AlbumTrack() const override;
 
-  //void setAlbumTrack(AlbumTrackPtr albumTrack);
+  void SetAlbumTrack(AlbumTrackPtr albumTrack);
 
   virtual int64_t GetDuration() const override;
 
-  //virtual ShowEpisodePtr showEpisode() const override;
+  virtual ShowEpisodePtr ShowEpisode() const override;
 
-  //void setShowEpisode(ShowEpisodePtr episode);
+  void SetShowEpisode(ShowEpisodePtr episode);
 
   virtual bool AddLabel(LabelPtr label) override;
 
@@ -81,9 +81,9 @@ public:
 
   virtual const std::vector<MediaFilePtr>& Files() const override;
 
-  //virtual MoviePtr movie() const override;
+  virtual MoviePtr Movie() const override;
 
-  //void setMovie(MoviePtr movie);
+  void SetMovie(MoviePtr movie);
 
   virtual std::vector<VideoTrackPtr> VideoTracks() override;
 
@@ -166,9 +166,9 @@ private:
   bool         m_changed;
 
   // Auto fetched related properties
-  //mutable Cache<AlbumTrackPtr> m_albumTrack;
-  //mutable Cache<ShowEpisodePtr> m_showEpisode;
-  //mutable Cache<MoviePtr> m_movie;
+  mutable Cache<AlbumTrackPtr> m_albumTrack;
+  mutable Cache<ShowEpisodePtr> m_showEpisode;
+  mutable Cache<MoviePtr> m_movie;
   mutable Cache<ContainerPtr> m_container;
   mutable Cache<std::vector<MediaFilePtr>> m_files;
 

@@ -5,11 +5,10 @@
 #ifndef MXP_ICONTAINER_H
 #define MXP_ICONTAINER_H
 
-#include <cinttypes>
-#include <string>
 #include "mediaexplorer/Types.h"
 
 namespace mxp {
+
 enum class MediaType;
 
 class IContainer {

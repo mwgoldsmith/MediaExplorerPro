@@ -5,8 +5,6 @@
 #ifndef MXP_ISTREAM_H
 #define MXP_ISTREAM_H
 
-#include <cinttypes>
-#include <vector>
 #include "mediaexplorer/Types.h"
 
 namespace mxp {

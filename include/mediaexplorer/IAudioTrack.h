@@ -5,8 +5,7 @@
 #ifndef MXP_IAUDIOTRACK_H
 #define MXP_IAUDIOTRACK_H
 
-#include <cinttypes>
-#include <string>
+#include "mediaexplorer/Types.h"
 
 namespace mxp {
 

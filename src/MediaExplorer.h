@@ -18,14 +18,18 @@
 
 namespace mxp {
 
-class MediaDevice;
+class Album;
+class Artist;
 class DiscovererWorker;
-class MediaFolder;
 class Genre;
 class Media;
+class MediaDevice;
+class MediaFolder;
 class ModificationNotifier;
+class Movie;
 class Parser;
 class ParserService;
+class Show;
 class SqliteConnection;
 
 namespace factory {
@@ -50,27 +54,48 @@ public:
   virtual void SetLogger(ILogger* logger) override;
   virtual void SetCallbacks(IMediaExplorerCb* cb) override;
 
+  virtual ArtistPtr GetArtist(int64_t id) const override;
+  ArtistPtr GetArtist(const std::string& name);
+  std::shared_ptr<Artist> CreateArtist(const std::string& name);
+  virtual std::vector<ArtistPtr> ArtistList(SortingCriteria sort, bool desc) const override;
+
+  // Shows
+  virtual ShowPtr GetShow(const std::string& name) const override;
+  std::shared_ptr<Show> CreateShow(const std::string& name);
+
+  // Movies
+  virtual MoviePtr GetMovie(const std::string& title) const override;
+  std::shared_ptr<Movie> CreateMovie(Media& media, const std::string& title);
+
+  // Albums
+  virtual AlbumPtr GetAlbum(int64_t id) const override;
+  std::shared_ptr<mxp::Album> CreateAlbum(const std::string& title);
+  virtual std::vector<AlbumPtr> AlbumList(SortingCriteria sort, bool desc) const override;
+
   // Labels
   virtual LabelPtr CreateLabel(const std::string& label) override;
   virtual bool DeleteLabel(LabelPtr label) override;
   
   // Genres
   virtual std::vector<GenrePtr> GenreList(SortingCriteria sort, bool desc) const override;
-  virtual GenrePtr Genre(int64_t id) const override;
+  virtual GenrePtr GetGenre(int64_t id) const override;
 
   // Playlists
   virtual PlaylistPtr CreatePlaylist(const std::string& name) override;
   virtual bool DeletePlaylist(int64_t playlistId) override;
   virtual std::vector<PlaylistPtr> PlaylistList(SortingCriteria sort, bool desc) override;
-  virtual PlaylistPtr Playlist(int64_t id) const override;
+  virtual PlaylistPtr GetPlaylist(int64_t id) const override;
 
   // Media
   virtual bool DeleteMedia(int64_t mediaId) const override;
   virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) override;
-  virtual MediaPtr Media(int64_t mediaId) const override;
-  mxp::MediaPtr mxp::MediaExplorer::Media(const std::string& mrl) const;
+  virtual MediaPtr GetMedia(int64_t mediaId) const override;
+  MediaPtr GetMedia(const std::string& mrl) const;
   virtual MediaSearchAggregate SearchMedia(const std::string& title) const override;
   virtual std::vector<PlaylistPtr> SearchPlaylists(const std::string& name) const override;
+
+  virtual std::vector<AlbumPtr> SearchAlbums(const std::string& pattern) const override;
+  virtual std::vector<ArtistPtr> SearchArtists(const std::string& name) const override;
   virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const override;
   virtual SearchAggregate Search(const std::string& pattern) const override;
 

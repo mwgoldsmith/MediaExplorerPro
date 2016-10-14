@@ -46,37 +46,37 @@ public:
   virtual bool SetSupported(bool value) noexcept override;
 
   /**
-   * @brief
-   *
-   * @param ml         Pointer to the MediaExplorer instance.
-   * @param name       A comma separated list of short names for the format.
-   * @param longName   Descriptive name for the format, meant to be more human-readable than name.
-   * @param extensions Comma-separated list of file extensions for the container.
-   * @param mimeType   Comma-separated list of mime types.
-   * @param type       The most applicable MediaType for the container. 
-   *
-   * @return If successful, std::shared_ptr to the created object; otherwise nullptr.
-   */
+  * @brief
+  *
+  * @param ml         Pointer to the MediaExplorer instance.
+  * @param name       A comma separated list of short names for the format.
+  * @param longName   Descriptive name for the format, meant to be more human-readable than name.
+  * @param extensions Comma-separated list of file extensions for the container.
+  * @param mimeType   Comma-separated list of mime types.
+  * @param type       The most applicable MediaType for the container.
+  *
+  * @return If successful, std::shared_ptr to the created object; otherwise nullptr.
+  */
   static ContainerPtr Create(MediaExplorerPtr ml, const mstring& name, const mstring& longName, const mstring& extensions, const mstring& mimeType, MediaType type) noexcept;
 
   /**
-   * @brief
-   *
-   * @param connection
-   *
-   * @return If successful, true; otherwise false.
-   */
+  * @brief
+  *
+  * @param connection
+  *
+  * @return If successful, true; otherwise false.
+  */
   static bool CreateTable(DBConnection connection) noexcept;
 
   /**
-   * @brief
-   *
-   * @param ml         Pointer to the MediaExplorer instance.
-   * @param sort
-   * @param desc
-   *
-   * @return
-   */
+  * @brief
+  *
+  * @param ml         Pointer to the MediaExplorer instance.
+  * @param sort
+  * @param desc
+  *
+  * @return
+  */
   static std::vector<ContainerPtr> ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
 
 private:

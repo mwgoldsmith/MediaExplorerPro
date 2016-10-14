@@ -24,11 +24,11 @@ public:
    */
   virtual const std::string& Name() const = 0;
 
-  //virtual std::vector<ArtistPtr> artists(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
+  virtual std::vector<ArtistPtr> Artists(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
 
-  //virtual std::vector<MediaPtr> tracks(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
+  virtual std::vector<MediaPtr> Tracks(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
 
-  //virtual std::vector<AlbumPtr> albums(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
+  virtual std::vector<AlbumPtr> Albums(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
 };
 
 }

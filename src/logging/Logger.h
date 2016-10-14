@@ -5,18 +5,12 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include <atomic>
-#include <memory>
-#include <sstream>
-#include <ctime>
-#include <chrono>
-#include <time.h>
+#include "mediaexplorer/Types.h"
 
 #include "compat/Thread.h"
 #include "compat/Mutex.h"
 #include "mediaexplorer/ILogger.h"
 #include "mediaexplorer/LogLevel.h"
-#include "mediaexplorer/Types.h"
 
 namespace mxp {
 

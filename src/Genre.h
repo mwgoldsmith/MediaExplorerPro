@@ -32,11 +32,11 @@ public:
 
   virtual const std::string& Name() const override;
 
-  //virtual std::vector<ArtistPtr> artists(SortingCriteria sort, bool desc) const override;
+  virtual std::vector<ArtistPtr> Artists(SortingCriteria sort, bool desc) const override;
 
-  //virtual std::vector<MediaPtr> tracks(SortingCriteria sort, bool desc) const override;
+  virtual std::vector<MediaPtr> Tracks(SortingCriteria sort, bool desc) const override;
 
-  //virtual std::vector<AlbumPtr> albums(SortingCriteria sort, bool desc) const override;
+  virtual std::vector<AlbumPtr> Albums(SortingCriteria sort, bool desc) const override;
 
   static bool CreateTable(DBConnection dbConn);
 

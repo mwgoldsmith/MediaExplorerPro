@@ -23,12 +23,17 @@ public:
   /**
    * @return The name of the metadata entry.
    */
-  virtual const std::string& GetName() const = 0;
+  virtual const mstring& GetName() const = 0;
 
   /**
-   * @return The value of the metadata entry.
-   */
-  virtual const std::string& GetValue() const = 0;
+  * @return The value of the metadata entry.
+  */
+  virtual const mstring& GetValue() const = 0;
+
+  /**
+  * @param value The value of the metadata entry.
+  */
+  virtual bool SetValue(const mstring& value) = 0;
 };
 
 } /* namespace mxp */
