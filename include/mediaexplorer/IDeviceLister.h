@@ -5,9 +5,7 @@
 #ifndef MXP_IDEVICELISTER_H
 #define MXP_IDEVICELISTER_H
 
-#include <string>
-#include <tuple>
-#include <vector>
+
 
 namespace mxp {
 

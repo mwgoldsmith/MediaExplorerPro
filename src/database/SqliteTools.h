@@ -5,13 +5,6 @@
 #ifndef SQLITETOOLS_H
 #define SQLITETOOLS_H
 
-#include <cassert>
-#include <chrono>
-#include <cstring>
-#include <memory>
-#include <string>
-#include <unordered_map>
-#include <vector>
 #include <sqlite3.h>
 
 #include "compat/Mutex.h"

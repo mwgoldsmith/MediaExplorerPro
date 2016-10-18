@@ -1,25 +1,8 @@
 /*****************************************************************************
- * Media Library
- *****************************************************************************
- * Copyright (C) 2015 Hugo Beauzée-Luyssen, Videolabs
- *
- * Authors: Hugo Beauzée-Luyssen<hugo@beauzee.fr>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -27,10 +10,9 @@
 #include "Album.h"
 #include "AlbumTrack.h"
 #include "Artist.h"
-#include "mediaexplorer/IGenre.h"
 #include "Media.h"
-
 #include "database/SqliteTools.h"
+#include "mediaexplorer/IGenre.h"
 
 const std::string mxp::policy::AlbumTable::Name = "Album";
 const std::string mxp::policy::AlbumTable::PrimaryKeyColumn = "id_album";
@@ -74,7 +56,7 @@ int64_t mxp::Album::Id() const {
   return m_id;
 }
 
-const std::string& mxp::Album::Title() const {
+const std::string& mxp::Album::GetTitle() const {
   return m_title;
 }
 
@@ -116,11 +98,11 @@ bool mxp::Album::SetShortSummary(const std::string& summary) {
   return true;
 }
 
-const std::string& mxp::Album::artworkMrl() const {
+const std::string& mxp::Album::GetArtworkMrl() const {
   return m_artworkMrl;
 }
 
-bool mxp::Album::setArtworkMrl(const std::string& artworkMrl) {
+bool mxp::Album::SetArtworkMrl(const std::string& artworkMrl) {
   static const auto req = "UPDATE " + policy::AlbumTable::Name
     + " SET artwork_mrl = ? WHERE " + policy::AlbumTable::PrimaryKeyColumn + " = ?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, artworkMrl, m_id) == false)
@@ -208,7 +190,7 @@ std::vector<mxp::MediaPtr>mxp::Album::CachedTracks() const {
 std::shared_ptr<mxp::AlbumTrack> mxp::Album::AddTrack(std::shared_ptr<Media> media, unsigned int trackNb, unsigned int discNumber) {
   auto t = m_ml->GetConnection()->NewTransaction();
 
-  auto track = AlbumTrack::create(m_ml, m_id, media, trackNb, discNumber);
+  auto track = AlbumTrack::Create(m_ml, m_id, media, trackNb, discNumber);
   if(track == nullptr)
     return nullptr;
   media->SetAlbumTrack(track);
@@ -229,7 +211,7 @@ std::shared_ptr<mxp::AlbumTrack> mxp::Album::AddTrack(std::shared_ptr<Media> med
   return track;
 }
 
-unsigned int mxp::Album::nbTracks() const {
+unsigned int mxp::Album::GetNumTracks() const {
   return m_nbTracks;
 }
 
@@ -265,7 +247,7 @@ bool mxp::Album::SetAlbumArtist(std::shared_ptr<Artist> artist) {
   artist->updateNbAlbum(1);
   static const std::string ftsReq = "UPDATE " + policy::AlbumTable::Name + "Fts SET "
     " artist = ? WHERE rowid = ?";
-  sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), ftsReq, artist->name(), m_id);
+  sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), ftsReq, artist->GetName(), m_id);
   return true;
 }
 
@@ -367,7 +349,7 @@ bool mxp::Album::CreateTriggers(DBConnection connection) {
     sqlite::Tools::ExecuteRequest(connection, vtriggerDelete);
 }
 
-std::shared_ptr<mxp::Album> mxp::Album::create(MediaExplorerPtr ml, const std::string& title) {
+std::shared_ptr<mxp::Album> mxp::Album::Create(MediaExplorerPtr ml, const std::string& title) {
   auto album = std::make_shared<Album>(ml, title);
   static const auto req = "INSERT INTO " + policy::AlbumTable::Name +
     "(" + policy::AlbumTable::PrimaryKeyColumn + ", title) VALUES(NULL, ?)";
@@ -376,7 +358,7 @@ std::shared_ptr<mxp::Album> mxp::Album::create(MediaExplorerPtr ml, const std::s
   return album;
 }
 
-std::shared_ptr<mxp::Album> mxp::Album::createUnknownAlbum(MediaExplorerPtr ml, const Artist* artist) {
+std::shared_ptr<mxp::Album> mxp::Album::CreateUnknownAlbum(MediaExplorerPtr ml, const Artist* artist) {
   auto album = std::make_shared<Album>(ml, artist);
   static const auto req = "INSERT INTO " + policy::AlbumTable::Name +
     "(" + policy::AlbumTable::PrimaryKeyColumn + ", artist_id) VALUES(NULL, ?)";
@@ -393,7 +375,7 @@ std::vector<mxp::AlbumPtr> mxp::Album::Search(MediaExplorerPtr ml, const std::st
   return FetchAll<IAlbum>(ml, req, pattern + "*");
 }
 
-std::vector<mxp::AlbumPtr> mxp::Album::fromArtist(MediaExplorerPtr ml, int64_t artistId, SortingCriteria sort, bool desc) {
+std::vector<mxp::AlbumPtr> mxp::Album::FromArtist(MediaExplorerPtr ml, int64_t artistId, SortingCriteria sort, bool desc) {
   auto req = "SELECT * FROM " + policy::AlbumTable::Name + " alb "
     "WHERE artist_id = ? AND is_present=1 ORDER BY ";
   switch(sort) {
@@ -416,7 +398,7 @@ std::vector<mxp::AlbumPtr> mxp::Album::fromArtist(MediaExplorerPtr ml, int64_t a
   return FetchAll<IAlbum>(ml, req, artistId);
 }
 
-std::vector<mxp::AlbumPtr> mxp::Album::fromGenre(MediaExplorerPtr ml, int64_t genreId, SortingCriteria sort, bool desc) {
+std::vector<mxp::AlbumPtr> mxp::Album::FindByGenre(MediaExplorerPtr ml, int64_t genreId, SortingCriteria sort, bool desc) {
  static const auto req = "SELECT a.* FROM " + policy::AlbumTable::Name + " a "
     "INNER JOIN " + policy::AlbumTrackTable::Name + " att ON att.album_id = a." + policy::AlbumTable::PrimaryKeyColumn + " "
     "WHERE att.genre_id = ? GROUP BY att.album_id";

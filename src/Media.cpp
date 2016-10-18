@@ -2,12 +2,10 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
-
-#include <algorithm>
-#include <ctime>
 
 #include "Album.h"
 #include "AlbumTrack.h"
@@ -19,11 +17,11 @@
 #include "MediaFile.h"
 #include "MediaFolder.h"
 #include "Metadata.h"
+#include "Movie.h"
+#include "ShowEpisode.h"
 #include "VideoTrack.h"
 #include "database/SqliteTools.h"
 #include "logging/Logger.h"
-#include "Movie.h"
-#include "ShowEpisode.h"
 #include "filesystem/IDevice.h"
 #include "filesystem/IDirectory.h"
 #include "filesystem/IFile.h"
@@ -37,21 +35,21 @@ mxp::Media::Media(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml)
   , m_changed(false) {
   row >> m_id
-    >> m_type
-    >> m_subType
-    >> m_containerId
-    >> m_duration
-    >> m_playCount
-    >> m_lastPlayedDate
-    >> m_progress
-    >> m_rating
-    >> m_insertionDate
-    >> m_releaseDate
-    >> m_thumbnail
-    >> m_title
-    >> m_filename
-    >> m_isFavorite
-    >> m_isPresent;
+      >> m_type
+      >> m_subType
+      >> m_containerId
+      >> m_duration
+      >> m_playCount
+      >> m_lastPlayedDate
+      >> m_progress
+      >> m_rating
+      >> m_insertionDate
+      >> m_releaseDate
+      >> m_thumbnail
+      >> m_title
+      >> m_filename
+      >> m_isFavorite
+      >> m_isPresent;
 }
 
 mxp::Media::Media(MediaExplorerPtr ml, const mstring& title, Type type)
@@ -92,7 +90,7 @@ mxp::AlbumTrackPtr mxp::Media::AlbumTrack() const {
   auto lock = m_albumTrack.Lock();
 
   if (m_albumTrack.IsCached() == false)
-    m_albumTrack = AlbumTrack::fromMedia(m_ml, m_id);
+    m_albumTrack = AlbumTrack::FindByMedia(m_ml, m_id);
   return m_albumTrack.Get();
 }
 
@@ -109,7 +107,7 @@ mxp::ShowEpisodePtr mxp::Media::ShowEpisode() const {
 
   auto lock = m_showEpisode.Lock();
   if (m_showEpisode.IsCached() == false)
-    m_showEpisode = ShowEpisode::fromMedia(m_ml, m_id);
+    m_showEpisode = ShowEpisode::FindByMedia(m_ml, m_id);
   return m_showEpisode.Get();
 }
 

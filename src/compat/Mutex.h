@@ -23,6 +23,7 @@
 #ifndef MUTEX_H
 #define MUTEX_H
 
+#include "stdafx.h"
 // Include mutex unconditionnaly for lock_gard & unique_lock
 #include <mutex>
 

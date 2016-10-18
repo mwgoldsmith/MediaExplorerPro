@@ -1,33 +1,16 @@
 /*****************************************************************************
- * Media Library
- *****************************************************************************
- * Copyright (C) 2015 Hugo Beauzée-Luyssen, Videolabs
- *
- * Authors: Hugo Beauzée-Luyssen<hugo@beauzee.fr>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
+#include "Media.h"
+#include "Show.h"
 #include "ShowEpisode.h"
 #include "database/SqliteTools.h"
-#include "Show.h"
-#include "Media.h"
 
 namespace mxp {
 
@@ -62,11 +45,11 @@ int64_t ShowEpisode::Id() const {
   return m_id;
 }
 
-const std::string& ShowEpisode::artworkMrl() const {
+const std::string& ShowEpisode::GetArtworkMrl() const {
   return m_artworkMrl;
 }
 
-bool ShowEpisode::setArtworkMrl(const std::string& artworkMrl) {
+bool ShowEpisode::SetArtworkMrl(const std::string& artworkMrl) {
   static const std::string req = "UPDATE " + policy::ShowEpisodeTable::Name
     + " SET artwork_mrl = ? WHERE id_episode = ?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, artworkMrl, m_id) == false)
@@ -79,7 +62,7 @@ unsigned int ShowEpisode::episodeNumber() const {
   return m_episodeNumber;
 }
 
-const std::string& ShowEpisode::name() const {
+const std::string& ShowEpisode::GetName() const {
   return m_name;
 }
 
@@ -96,11 +79,11 @@ bool ShowEpisode::setSeasonNumber(unsigned int seasonNumber) {
   return true;
 }
 
-const std::string& ShowEpisode::shortSummary() const {
+const std::string& ShowEpisode::GetShortSummary() const {
   return m_shortSummary;
 }
 
-bool ShowEpisode::setShortSummary(const std::string& summary) {
+bool ShowEpisode::SetShortSummary(const std::string& summary) {
   static const std::string req = "UPDATE " + policy::ShowEpisodeTable::Name
     + " SET episode_summary = ? WHERE id_episode = ?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, summary, m_id) == false)
@@ -109,11 +92,11 @@ bool ShowEpisode::setShortSummary(const std::string& summary) {
   return true;
 }
 
-const std::string& ShowEpisode::tvdbId() const {
+const std::string& ShowEpisode::GetTvdbId() const {
   return m_tvdbId;
 }
 
-bool ShowEpisode::setTvdbId(const std::string& tvdbId) {
+bool ShowEpisode::SetTvdbId(const std::string& tvdbId) {
   static const std::string req = "UPDATE " + policy::ShowEpisodeTable::Name
     + " SET tvdb_id = ? WHERE id_episode = ?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, tvdbId, m_id) == false)
@@ -135,7 +118,7 @@ std::vector<MediaPtr> ShowEpisode::files() {
   return Media::FetchAll<IMedia>(m_ml, req, m_id);
 }
 
-bool ShowEpisode::createTable(DBConnection dbConnection) {
+bool ShowEpisode::CreateTable(DBConnection dbConnection) {
   const std::string req = "CREATE TABLE IF NOT EXISTS " + policy::ShowEpisodeTable::Name
     + "("
     "id_episode INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -154,7 +137,7 @@ bool ShowEpisode::createTable(DBConnection dbConnection) {
   return sqlite::Tools::ExecuteRequest(dbConnection, req);
 }
 
-std::shared_ptr<ShowEpisode> ShowEpisode::create(MediaExplorerPtr ml, int64_t mediaId, const std::string& title, unsigned int episodeNumber, int64_t showId) {
+std::shared_ptr<ShowEpisode> ShowEpisode::Create(MediaExplorerPtr ml, int64_t mediaId, const std::string& title, unsigned int episodeNumber, int64_t showId) {
   auto episode = std::make_shared<ShowEpisode>(ml, mediaId, title, episodeNumber, showId);
   static const std::string req = "INSERT INTO " + policy::ShowEpisodeTable::Name
     + "(media_id, episode_number, title, show_id) VALUES(?, ? , ?, ?)";
@@ -163,7 +146,7 @@ std::shared_ptr<ShowEpisode> ShowEpisode::create(MediaExplorerPtr ml, int64_t me
   return episode;
 }
 
-ShowEpisodePtr ShowEpisode::fromMedia(MediaExplorerPtr ml, int64_t mediaId) {
+ShowEpisodePtr ShowEpisode::FindByMedia(MediaExplorerPtr ml, int64_t mediaId) {
   static const std::string req = "SELECT * FROM " + policy::ShowEpisodeTable::Name + " WHERE media_id = ?";
   return Fetch(ml, req, mediaId);
 }

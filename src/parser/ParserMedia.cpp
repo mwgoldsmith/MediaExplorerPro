@@ -1,7 +1,11 @@
-
 /*****************************************************************************
 * Media Explorer
 *****************************************************************************/
+
+#include "stdafx.h"
+#if HAVE_CONFIG_H
+#  include "config.h"
+#endif
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -9,7 +13,7 @@ extern "C" {
 #include <libavutil/avutil.h>
 }
 
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 
 #include <assert.h>
 #include "Metadata.h"
@@ -34,7 +38,7 @@ void print_error(const char *msg, int err) {
 
 mxp::parser::ParserMedia::ParserMedia(MediaExplorerPtr ml, parser::Task& task)
   : m_ml(ml) {
-  AVFormatContext*   fmtCtx=nullptr;
+  AVFormatContext* fmtCtx = nullptr;
 
   auto file = m_ml->GetFileSystem()->CreateFileFromPath(task.MediaFile->mrl());
   auto filename = file->FullPath().c_str();
@@ -71,7 +75,6 @@ mxp::parser::ParserMedia::ParserMedia(MediaExplorerPtr ml, parser::Task& task)
           task.AlbumArtist = value;
         }
       }
-
 
       for(unsigned int i = 0; i < fmtCtx->nb_streams; i++) {
         auto context = fmtCtx->streams[i]->codec;

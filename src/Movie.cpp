@@ -1,31 +1,14 @@
 /*****************************************************************************
- * Media Library
- *****************************************************************************
- * Copyright (C) 2015 Hugo Beauzée-Luyssen, Videolabs
- *
- * Authors: Hugo Beauzée-Luyssen<hugo@beauzee.fr>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
-#include "Movie.h"
 #include "Media.h"
+#include "Movie.h"
 #include "database/SqliteTools.h"
 
 namespace mxp {
@@ -36,12 +19,12 @@ int64_t Movie::* const policy::MovieTable::PrimaryKey = &Movie::m_id;
 
 Movie::Movie(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
-  row >> m_id
-    >> m_mediaId
-    >> m_title
-    >> m_summary
-    >> m_artworkMrl
-    >> m_imdbId;
+    row >> m_id
+      >> m_mediaId
+      >> m_title
+      >> m_summary
+      >> m_artworkMrl
+      >> m_imdbId;
 }
 
 Movie::Movie(MediaExplorerPtr ml, int64_t mediaId, const std::string& title)
@@ -55,7 +38,7 @@ int64_t Movie::Id() const {
   return m_id;
 }
 
-const std::string&Movie::Title() const {
+const std::string&Movie::GetTitle() const {
   return m_title;
 }
 
@@ -72,11 +55,11 @@ bool Movie::SetShortSummary(const std::string& summary) {
   return true;
 }
 
-const std::string&Movie::artworkMrl() const {
+const std::string&Movie::GetArtworkMrl() const {
   return m_artworkMrl;
 }
 
-bool Movie::setArtworkMrl(const std::string& artworkMrl) {
+bool Movie::SetArtworkMrl(const std::string& artworkMrl) {
   static const std::string req = "UPDATE " + policy::MovieTable::Name
     + " SET artwork_mrl = ? WHERE id_movie = ?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, artworkMrl, m_id) == false)
@@ -119,7 +102,7 @@ bool Movie::CreateTable(DBConnection dbConnection) {
   return sqlite::Tools::ExecuteRequest(dbConnection, req);
 }
 
-std::shared_ptr<Movie> Movie::create(MediaExplorerPtr ml, int64_t mediaId, const std::string& title) {
+std::shared_ptr<Movie> Movie::Create(MediaExplorerPtr ml, int64_t mediaId, const std::string& title) {
   auto movie = std::make_shared<Movie>(ml, mediaId, title);
   static const std::string req = "INSERT INTO " + policy::MovieTable::Name
     + "(media_id, title) VALUES(?, ?)";

@@ -2,19 +2,18 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
-
-#include <unordered_map>
 
 #include "Media.h"
 #include "MediaDevice.h"
 #include "MediaFile.h"
 #include "MediaFolder.h"
 #include "database/SqliteTools.h"
-#include "filesystem/IDirectory.h"
 #include "filesystem/IDevice.h"
+#include "filesystem/IDirectory.h"
 #include "utils/Filename.h"
 
 using mxp::policy::MediaFolderTable;
@@ -25,12 +24,12 @@ int64_t mxp::MediaFolder::* const MediaFolderTable::PrimaryKey = &mxp::MediaFold
 mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml) {
   row >> m_id
-    >> m_path
-    >> m_parent
-    >> m_isBlacklisted
-    >> m_deviceId
-    >> m_isPresent
-    >> m_isRemovable;
+      >> m_path
+      >> m_parent
+      >> m_isBlacklisted
+      >> m_deviceId
+      >> m_isPresent
+      >> m_isRemovable;
 }
 
 mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, const std::string& path, int64_t parent, int64_t deviceId, bool isRemovable)

@@ -5,7 +5,7 @@
 #ifndef AVCONTAINER_H
 #define AVCONTAINER_H
 
-#include <string>
+#include "stdafx.h"
 
 namespace mxp {
 namespace av {

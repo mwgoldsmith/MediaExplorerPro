@@ -5,8 +5,6 @@
 #ifndef FS_DISCOVERER_H
 #define FS_DISCOVERER_H
 
-#include <memory>
-
 #include "discoverer/IDiscoverer.h"
 #include "factory/IFileSystem.h"
 

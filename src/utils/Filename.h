@@ -4,8 +4,6 @@
 
 #pragma once
 
-#include <string>
-
 namespace mxp {
 namespace utils {
 namespace file {

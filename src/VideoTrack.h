@@ -5,18 +5,12 @@
 #ifndef VIDEOTRACK_H
 #define VIDEOTRACK_H
 
-#if HAVE_CONFIG_H
-# include "config.h"
-#endif
-
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IVideoTrack.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {
-
-class VideoTrack;
 
 namespace policy {
 struct VideoTrackTable {
@@ -44,7 +38,7 @@ public:
 
   virtual const std::string& Language() const override;
 
-  virtual const std::string& Description() const override;
+  virtual const std::string& GetDescription() const override;
 
   static bool CreateTable(DBConnection dbConnection);
 
@@ -65,5 +59,4 @@ private:
 
 } /* namespace mxp */
 
-#endif // VIDEOTRACK_H
-
+#endif /* VIDEOTRACK_H */

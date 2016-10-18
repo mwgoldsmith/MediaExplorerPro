@@ -9,41 +9,28 @@
 # include "config.h"
 #endif
 
-#include <algorithm>
-#include <atomic>
-#include <cassert>
-#include <cerrno>
-#include <chrono>
-#include <cinttypes>
-#include <codecvt>
-#include <condition_variable>
-#include <cstdint>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <ctime>
-#include <exception>
-#include <functional>
-#include <iostream>
-#include <locale>
-#include <memory>
-#include <mutex>
-#include <queue>
-#include <sstream>
-#include <stdexcept>
-#include <string>
-#include <thread>
-#include <tuple>
-#include <unordered_map>
-#include <vector>
-#include <time.h>
+#ifdef _MSC_VER
+#  define strcasecmp _stricmp
+#endif
 
-#ifndef _WIN32
-#include <dirent.h>
-#include <limits.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <system_error>
+#if defined(_MSC_VER) && ! defined(MXP_STATIC)
+#  ifdef MXP_EXPORTS 
+#    define MXPAPI __declspec(dllexport)
+#  else
+#    define MXPAPI __declspec(dllimport)
+#  endif
+#else
+#  define MXPAPI
+#endif
+
+#ifdef _MSC_VER
+#  define THREAD_LOCAL __declspec(thread)
+#else
+#  ifndef HAVE_THREAD_LOCAL
+#    define THREAD_LOCAL __thread
+#  else
+#    define THREAD_LOCAL thread_local
+#  endif
 #endif
 
 //########

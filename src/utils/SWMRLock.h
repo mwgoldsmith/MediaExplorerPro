@@ -5,6 +5,7 @@
 #ifndef SWMRLOCK_H
 #define SWMRLOCK_H
 
+#include "stdafx.h"
 #include "compat/ConditionVariable.h"
 #include "compat/Mutex.h"
 

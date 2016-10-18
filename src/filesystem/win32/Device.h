@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "stdafx.h"
 #include "filesystem/common/CommonDevice.h"
 
 namespace mxp {

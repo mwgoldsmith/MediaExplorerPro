@@ -5,8 +5,6 @@
 #ifndef MXP_IMEDIA_H
 #define MXP_IMEDIA_H
 
-#include <string>
-#include <vector>
 
 #include "mediaexplorer/IMediaExplorer.h"
 

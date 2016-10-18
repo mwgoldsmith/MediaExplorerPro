@@ -22,10 +22,6 @@
 
 #pragma once
 
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
-
 #if !defined(_WIN32)
 
 #include "mediaexplorer/IDeviceLister.h"

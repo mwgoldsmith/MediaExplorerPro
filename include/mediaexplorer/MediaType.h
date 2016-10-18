@@ -5,6 +5,8 @@
 #ifndef MXP_MEDIATYPE_H
 #define MXP_MEDIATYPE_H
 
+
+
 namespace mxp {
 
 enum class MediaType {

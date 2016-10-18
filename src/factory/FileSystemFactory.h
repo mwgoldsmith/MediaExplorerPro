@@ -4,12 +4,9 @@
 
 #pragma once
 
-#include <string>
-#include <unordered_map>
-
 #include "compat/Mutex.h"
 #include "factory/IFileSystem.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "utils/Cache.h"
 
 namespace mxp {

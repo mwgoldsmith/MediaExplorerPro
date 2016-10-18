@@ -206,6 +206,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -249,6 +250,7 @@
       <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -373,7 +375,6 @@
     <ClInclude Include="..\..\..\include\filesystem\IDevice.h" />
     <ClInclude Include="..\..\..\include\filesystem\IDirectory.h" />
     <ClInclude Include="..\..\..\include\filesystem\IFile.h" />
-    <ClInclude Include="..\..\..\include\Fixup.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IAlbum.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IAlbumTrack.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\IArtist.h" />
@@ -403,7 +404,7 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\MediaType.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\SearchAggregate.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\Types.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\Common.h" />
     <ClInclude Include="..\..\..\include\Types.h" />
     <ClInclude Include="..\..\..\src\Album.h" />
     <ClInclude Include="..\..\..\src\AlbumTrack.h" />
@@ -428,6 +429,7 @@
     <ClInclude Include="..\..\..\src\factory\ParserMediaFactory.h" />
     <ClInclude Include="..\..\..\src\Genre.h" />
     <ClInclude Include="..\..\..\src\History.h" />
+    <ClInclude Include="..\..\..\src\logging\FileLogger.h" />
     <ClInclude Include="..\..\..\src\MediaDevice.h" />
     <ClInclude Include="..\..\..\src\discoverer\DiscovererWorker.h" />
     <ClInclude Include="..\..\..\src\discoverer\FsDiscoverer.h" />
@@ -524,6 +526,7 @@
     <ClInclude Include="..\..\..\src\utils\WriteLocker.h" />
     <ClInclude Include="..\..\..\src\VideoTrack.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Album.cpp" />
@@ -635,6 +638,12 @@
     <ClCompile Include="..\..\..\src\utils\Filename.cpp" />
     <ClCompile Include="..\..\..\src\utils\ModificationsNotifier.cpp" />
     <ClCompile Include="..\..\..\src\VideoTrack.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">stdafx.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">Create</PrecompiledHeader>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\..\src\filesystem\darwin\DeviceLister.mm" />

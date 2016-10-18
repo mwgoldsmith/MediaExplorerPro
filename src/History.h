@@ -5,10 +5,9 @@
 #ifndef HISTORY_H
 #define HISTORY_H
 
-#include <vector>
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IHistoryEntry.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {

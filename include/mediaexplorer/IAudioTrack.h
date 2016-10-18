@@ -5,7 +5,8 @@
 #ifndef MXP_IAUDIOTRACK_H
 #define MXP_IAUDIOTRACK_H
 
-#include "mediaexplorer/Types.h"
+
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 
@@ -23,15 +24,15 @@ public:
   /**
    * @return The bitrate in bits per second
    */
-  virtual unsigned int Bitrate() const = 0;
+  virtual unsigned int GetBitrate() const = 0;
 
-  virtual unsigned int SampleRate() const = 0;
+  virtual unsigned int GetSampleRate() const = 0;
 
-  virtual unsigned int NumChannels() const = 0;
+  virtual unsigned int GetNumChannels() const = 0;
 
   virtual const std::string& Language() const = 0;
 
-  virtual const std::string& Description() const = 0;
+  virtual const std::string& GetDescription() const = 0;
 };
 
 } /* namespace mxp */

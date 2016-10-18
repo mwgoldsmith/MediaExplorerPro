@@ -5,7 +5,6 @@
 #ifndef SETTINGS_H
 #define SETTINGS_H
 
-#include <cstdint>
 #include "Types.h"
 
 namespace mxp {

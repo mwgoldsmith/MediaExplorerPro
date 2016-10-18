@@ -7,7 +7,7 @@
 
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IGenre.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {
@@ -38,9 +38,9 @@ public:
 
   virtual std::vector<AlbumPtr> Albums(SortingCriteria sort, bool desc) const override;
 
-  static bool CreateTable(DBConnection dbConn);
+  static bool CreateTable(DBConnection connection) noexcept;
 
-  static std::shared_ptr<Genre> Create(MediaExplorerPtr ml, const std::string& name);
+  static std::shared_ptr<Genre> Create(MediaExplorerPtr ml, const std::string& name) noexcept;
 
   static std::vector<GenrePtr> Search(MediaExplorerPtr ml, const std::string& name);
 

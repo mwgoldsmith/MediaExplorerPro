@@ -5,9 +5,6 @@
 #ifndef MEDIAEXPLORER_H
 #define MEDIAEXPLORER_H
 
-#include <string>
-#include <memory>
-
 #include "mediaexplorer/IDeviceListerCb.h"
 #include "mediaexplorer/ILogger.h"
 #include "mediaexplorer/IMediaExplorer.h"

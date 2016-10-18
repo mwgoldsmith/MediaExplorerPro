@@ -6,10 +6,8 @@
 #ifndef MXP_IMEDIAEXPLORER_H
 #define MXP_IMEDIAEXPLORER_H
 
-#include <string>
 
-#include "Fixup.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "factory/IFileSystem.h"
 #include "mediaexplorer/ILogger.h"
 #include "mediaexplorer/ISettings.h"

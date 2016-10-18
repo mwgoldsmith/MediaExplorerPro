@@ -24,7 +24,7 @@
 
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IArtist.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 
@@ -48,29 +48,45 @@ struct ArtistTable
 class Artist : public IArtist, public DatabaseHelpers<Artist, policy::ArtistTable>
 {
 public:
-    Artist( MediaExplorerPtr ml, sqlite::Row& row );
-    Artist( MediaExplorerPtr ml, const std::string& name );
+    Artist(MediaExplorerPtr ml, sqlite::Row& row);
+    Artist(MediaExplorerPtr ml, const std::string& name);
 
     virtual int64_t Id() const override;
-    virtual const std::string &name() const override;
-    virtual const std::string& shortBio() const override;
-    bool setShortBio( const std::string& shortBio );
-    virtual std::vector<AlbumPtr> albums( SortingCriteria sort, bool desc ) const override;
-    virtual std::vector<MediaPtr> media(SortingCriteria sort, bool desc) const override;
-    bool addMedia( Media& media );
-    virtual const std::string& artworkMrl() const override;
-    bool setArtworkMrl( const std::string& artworkMrl );
-    bool updateNbAlbum( int increment );
-    std::shared_ptr<Album> unknownAlbum();
-    virtual const std::string& musicBrainzId() const override;
-    bool setMusicBrainzId( const std::string& musicBrainzId );
 
-    static bool createTable( DBConnection dbConnection );
-    static bool createTriggers( DBConnection dbConnection );
-    static bool createDefaultArtists( DBConnection dbConnection );
-    static std::shared_ptr<Artist> create( MediaExplorerPtr ml, const std::string& name );
-    static std::vector<ArtistPtr> search( MediaExplorerPtr ml, const std::string& name );
-    static std::vector<ArtistPtr> listAll( MediaExplorerPtr ml, SortingCriteria sort, bool desc );
+    virtual const std::string& GetName() const override;
+
+    virtual const std::string& GetShortBio() const override;
+
+    virtual std::vector<AlbumPtr> albums(SortingCriteria sort, bool desc) const override;
+
+    virtual std::vector<MediaPtr> media(SortingCriteria sort, bool desc) const override;
+    virtual const std::string& GetArtworkMrl() const override;
+
+    virtual const std::string& musicBrainzId() const override;
+
+    bool SetShortBio(const std::string& shortBio);
+
+    bool AddMedia(Media& media);
+
+    bool SetArtworkMrl(const std::string& artworkMrl);
+
+    bool updateNbAlbum(int increment);
+
+    std::shared_ptr<Album> unknownAlbum();
+
+    bool setMusicBrainzId(const std::string& musicBrainzId);
+
+    static bool CreateTable(DBConnection connection) noexcept;
+
+    static bool CreateTriggers(DBConnection connection) noexcept;
+
+    static bool createDefaultArtists(DBConnection connection);
+
+    static std::shared_ptr<Artist> Create(MediaExplorerPtr ml, const std::string& name);
+
+    static std::vector<ArtistPtr> Search(MediaExplorerPtr ml, const std::string& name);
+
+    static std::vector<ArtistPtr> ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
 
 private:
     MediaExplorerPtr m_ml;

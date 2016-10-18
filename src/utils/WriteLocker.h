@@ -5,6 +5,7 @@
 #ifndef WRITELOCKER_H
 #define WRITELOCKER_H
 
+#include "stdafx.h"
 #include "utils/SWMRLock.h"
 
 namespace mxp {

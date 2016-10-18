@@ -5,6 +5,8 @@
 #ifndef STATEMENT_H
 #define STATEMENT_H
 
+#include "stdafx.h"
+
 namespace mxp {
 namespace sqlite {
 

@@ -22,9 +22,9 @@
 
 #pragma once
 
+#include "stdafx.h"
 #ifdef _WIN32
 
-#include <windows.h>
 #include <memory>
 
 namespace mxp {

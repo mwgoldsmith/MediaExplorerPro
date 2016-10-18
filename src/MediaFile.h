@@ -48,9 +48,9 @@ public:
 
   bool destroy();
 
-  static bool CreateTable(DBConnection dbConnection);
+  static bool CreateTable(DBConnection dbConnection) noexcept;
 
-  static std::shared_ptr<MediaFile> Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
+  static std::shared_ptr<MediaFile> Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable) noexcept;
 
   /**
   * @brief fromPath  Attempts to fetch a file using its full path

@@ -5,10 +5,8 @@
 #ifndef MXP_ILABEL_H
 #define MXP_ILABEL_H
 
-#include <cinttypes>
-#include <string>
-#include <vector>
-#include "mediaexplorer/Types.h"
+
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

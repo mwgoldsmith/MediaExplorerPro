@@ -2,6 +2,7 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -9,6 +10,7 @@
 #include "Media.h"
 #include "MediaFile.h"
 #include "MediaFolder.h"
+#include "database/SqliteTools.h"
 
 using mxp::policy::MediaFileTable;
 const std::string MediaFileTable::Name = "MediaFile";
@@ -97,8 +99,8 @@ void mxp::MediaFile::markParsed() {
   m_isParsed = true;
 }
 
-bool mxp::MediaFile::CreateTable(DBConnection dbConnection) {
-  auto req = "CREATE TABLE IF NOT EXISTS " + MediaFileTable::Name + "(" + 
+bool mxp::MediaFile::CreateTable(DBConnection connection) noexcept {
+  static const auto req = "CREATE TABLE IF NOT EXISTS " + MediaFileTable::Name + "(" +
     MediaFileTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     "media_id INT NOT NULL,"
     "mrl TEXT,"
@@ -112,29 +114,45 @@ bool mxp::MediaFile::CreateTable(DBConnection dbConnection) {
     "FOREIGN KEY (folder_id) REFERENCES " + policy::MediaFolderTable::Name + "(" + policy::MediaFolderTable::PrimaryKeyColumn +  ") ON DELETE CASCADE,"
     "UNIQUE(mrl, folder_id) ON CONFLICT FAIL"
     ")";
-  auto triggerReq = "CREATE TRIGGER IF NOT EXISTS is_folder_present AFTER UPDATE OF is_present ON "
+  static const auto triggerReq = "CREATE TRIGGER IF NOT EXISTS is_folder_present AFTER UPDATE OF is_present ON "
     + policy::MediaFolderTable::Name +
     " BEGIN"
     " UPDATE " + MediaFileTable::Name + " SET is_present = new.is_present WHERE folder_id = new.id_folder;"
     " END";
-  auto indexReq = "CREATE INDEX IF NOT EXISTS file_media_id_index ON " +
+  static const auto indexReq = "CREATE INDEX IF NOT EXISTS file_media_id_index ON " +
     MediaFileTable::Name + "(media_id)";
-  return sqlite::Tools::ExecuteRequest(dbConnection, req) &&
-      sqlite::Tools::ExecuteRequest(dbConnection, triggerReq) &&
-      sqlite::Tools::ExecuteRequest(dbConnection, indexReq);
-}
 
-std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) {
-  auto self = std::make_shared<MediaFile>(ml, mediaId, type, fileFs, folderId, isRemovable);
-  static const auto req = "INSERT INTO " + MediaFileTable::Name +
-    "(media_id, mrl, type, folder_id, last_modification_date, is_removable) VALUES(?, ?, ?, ?, ?, ?)";
-
-#pragma warning( suppress : 4244 )
-  if(insert(ml, self, req, mediaId, self->m_mrl, type, sqlite::ForeignKey(folderId), self->m_lastModificationDate, isRemovable) == false) {
-    return nullptr;
+  auto success = false;
+  try {
+    success = sqlite::Tools::ExecuteRequest(connection, req) &&
+      sqlite::Tools::ExecuteRequest(connection, triggerReq) &&
+      sqlite::Tools::ExecuteRequest(connection, indexReq);
+  } catch (std::exception& ex) {
+    LOG_ERROR("Failed to create table for ", policy::MediaTable::Name, ": ", ex.what());
+    success = false;
   }
 
-  self->m_fullPath = fileFs.FullPath();
+  return success;
+}
+
+std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) noexcept {
+  std::shared_ptr<MediaFile> self;
+  static const auto req = "INSERT INTO " + MediaFileTable::Name + "(media_id, mrl, type, folder_id, last_modification_date, is_removable) VALUES(?, ?, ?, ?, ?, ?)";
+
+  try {
+    self = std::make_shared<MediaFile>(ml, mediaId, type, fileFs, folderId, isRemovable);
+
+#pragma warning( suppress : 4244 )
+    if(insert(ml, self, req, mediaId, self->m_mrl, type, sqlite::ForeignKey(folderId), self->m_lastModificationDate, isRemovable) == false) {
+      self = nullptr;
+    } else {
+      self->m_fullPath = fileFs.FullPath();
+    }
+  } catch (std::exception& ex) {
+    LOG_ERROR("Failed to create MediaFile: ", ex.what());
+    self = nullptr;
+  }
+
   return self;
 }
 

@@ -2,12 +2,14 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
 #include "AudioTrack.h"
 #include "Media.h"
+#include "database/SqliteTools.h"
 
 using mxp::policy::AudioTrackTable;
 const std::string AudioTrackTable::Name = "AudioTrack";
@@ -45,15 +47,15 @@ const std::string& mxp::AudioTrack::Codec() const {
   return m_codec;
 }
 
-unsigned int mxp::AudioTrack::Bitrate() const {
+unsigned int mxp::AudioTrack::GetBitrate() const {
   return m_bitrate;
 }
 
-unsigned int mxp::AudioTrack::SampleRate() const {
+unsigned int mxp::AudioTrack::GetSampleRate() const {
   return m_sampleRate;
 }
 
-unsigned int mxp::AudioTrack::NumChannels() const {
+unsigned int mxp::AudioTrack::GetNumChannels() const {
   return m_nbChannels;
 }
 
@@ -61,7 +63,7 @@ const std::string& mxp::AudioTrack::Language() const {
   return m_language;
 }
 
-const std::string& mxp::AudioTrack::Description() const {
+const std::string& mxp::AudioTrack::GetDescription() const {
   return m_description;
 }
 

@@ -2,11 +2,13 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
 #include "MediaDevice.h"
+#include "database/SqliteTools.h"
 
 using mxp::policy::MediaDeviceTable;
 const std::string MediaDeviceTable::Name = "MediaDevice";

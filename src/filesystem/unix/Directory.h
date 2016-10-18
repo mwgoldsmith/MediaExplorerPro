@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "stdafx.h"
 #ifndef _WIN32
 
 #include "filesystem/common/CommonDirectory.h"

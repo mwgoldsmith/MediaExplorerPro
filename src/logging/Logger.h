@@ -5,8 +5,7 @@
 #ifndef LOGGER_H
 #define LOGGER_H
 
-#include "mediaexplorer/Types.h"
-
+#include "mediaexplorer/Common.h"
 #include "compat/Thread.h"
 #include "compat/Mutex.h"
 #include "mediaexplorer/ILogger.h"

@@ -22,15 +22,10 @@
 
 #pragma once
 
-#include <atomic>
-#include <functional>
-#include <vector>
-#include <chrono>
-
 #include "compat/ConditionVariable.h"
 #include "compat/Mutex.h"
 #include "compat/Thread.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {

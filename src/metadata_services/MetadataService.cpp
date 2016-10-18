@@ -2,6 +2,7 @@
 * Media Explorer
 *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -82,7 +83,7 @@ bool mxp::MetadataService::ParseVideoFile(mxp::parser::Task& task) const {
 
     if (task.Episode != 0) {
       std::shared_ptr<Show> s = std::static_pointer_cast<Show>(show);
-      s->addEpisode(*media, task.Title, task.Episode);
+      s->AddEpisode(*media, task.Title, task.Episode);
     }
   } else {
     // How do we know if it's a movie or a random video?
@@ -154,7 +155,7 @@ std::shared_ptr<mxp::Album> mxp::MetadataService::FindAlbum(parser::Task& task, 
     for (auto& t : tracks) {
       auto at = t->AlbumTrack();
       assert(at != nullptr);
-      if (at != nullptr && at->DiscNumber() > 1) {
+      if (at != nullptr && at->GetDiscNumber() > 1) {
         multiDisc = true;
         break;
       }
@@ -214,7 +215,7 @@ std::shared_ptr<mxp::Album> mxp::MetadataService::HandleAlbum(parser::Task& task
       album = m_ml->CreateAlbum(task.AlbumName);
       if (album != nullptr) {
         if(task.artworkMrl.length() != 0) {
-          album->setArtworkMrl(task.artworkMrl);
+          album->SetArtworkMrl(task.artworkMrl);
         }
       }
       m_notifier->NotifyAlbumCreation(album);
@@ -295,7 +296,7 @@ std::shared_ptr<mxp::AlbumTrack> mxp::MetadataService::HandleTrack(std::shared_p
     return nullptr;
   }
   if(artist != nullptr) {
-    track->setArtist(artist);
+    track->SetArtist(artist);
   }
 
   if (task.Genre.length() != 0) {
@@ -307,7 +308,7 @@ std::shared_ptr<mxp::AlbumTrack> mxp::MetadataService::HandleTrack(std::shared_p
         return nullptr;
       }
     }
-    track->setGenre(genre);
+    track->SetGenre(genre);
   }
   if (task.releaseDate.empty() == false) {
     auto releaseYear = atoi(task.releaseDate.c_str());
@@ -338,16 +339,16 @@ bool mxp::MetadataService::Link(Media& media, std::shared_ptr<Album> album,
   // If we have an albumArtist (meaning the track was properly tagged, we
   // can assume this artist is a correct match. We can use the thumbnail from
   // the current album for the albumArtist, if none has been set before.
-  if(albumArtist != nullptr && albumArtist->artworkMrl().empty() == true &&
-    album != nullptr && album->artworkMrl().empty() == false) {
-    albumArtist->setArtworkMrl(album->artworkMrl());
+  if(albumArtist != nullptr && albumArtist->GetArtworkMrl().empty() == true &&
+    album != nullptr && album->GetArtworkMrl().empty() == false) {
+    albumArtist->SetArtworkMrl(album->GetArtworkMrl());
   }
 
   if(albumArtist != nullptr) {
-    albumArtist->addMedia(media);
+    albumArtist->AddMedia(media);
   }
   if(artist != nullptr && (albumArtist == nullptr || albumArtist->Id() != artist->Id())) {
-    artist->addMedia(media);
+    artist->AddMedia(media);
   }
 
   auto currentAlbumArtist = album->AlbumArtist();

@@ -5,8 +5,7 @@
 #ifndef MXP_IMEDIAFILE_H
 #define MXP_IMEDIAFILE_H
 
-#include <string>
-#include <stdint.h>
+
 
 namespace mxp {
 

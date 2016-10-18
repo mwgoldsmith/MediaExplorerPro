@@ -1,34 +1,16 @@
 /*****************************************************************************
- * Media Library
- *****************************************************************************
- * Copyright (C) 2015 Hugo Beauzée-Luyssen, Videolabs
- *
- * Authors: Hugo Beauzée-Luyssen<hugo@beauzee.fr>
- *
- * This program is free software; you can redistribute it and/or modify it
- * under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation; either version 2.1 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
- * GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
+ * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
-#include "Artist.h"
 #include "Album.h"
 #include "AlbumTrack.h"
+#include "Artist.h"
 #include "Media.h"
-
 #include "database/SqliteTools.h"
 
 namespace mxp {
@@ -60,16 +42,16 @@ int64_t Artist::Id() const {
   return m_id;
 }
 
-const std::string &Artist::name() const {
+const std::string &Artist::GetName() const {
   return m_name;
 }
 
-const std::string &Artist::shortBio() const {
+const std::string &Artist::GetShortBio() const {
   return m_shortBio;
 }
 
-bool Artist::setShortBio(const std::string &shortBio) {
-  static const std::string req = "UPDATE " + policy::ArtistTable::Name
+bool Artist::SetShortBio(const std::string &shortBio) {
+  static const auto req = "UPDATE " + policy::ArtistTable::Name
     + " SET shortbio = ? WHERE id_artist = ?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, shortBio, m_id) == false)
     return false;
@@ -78,7 +60,7 @@ bool Artist::setShortBio(const std::string &shortBio) {
 }
 
 std::vector<AlbumPtr> Artist::albums(SortingCriteria sort, bool desc) const {
-  return Album::fromArtist(m_ml, m_id, sort, desc);
+  return Album::FromArtist(m_ml, m_id, sort, desc);
 }
 
 std::vector<MediaPtr> Artist::media(SortingCriteria sort, bool desc) const {
@@ -105,18 +87,18 @@ std::vector<MediaPtr> Artist::media(SortingCriteria sort, bool desc) const {
   return Media::FetchAll<IMedia>(m_ml, req, m_id);
 }
 
-bool Artist::addMedia(Media& media) {
+bool Artist::AddMedia(Media& media) {
   static const std::string req = "INSERT INTO MediaArtistRelation VALUES(?, ?)";
   // If track's ID is 0, the request will fail due to table constraints
   sqlite::ForeignKey artistForeignKey(m_id);
   return sqlite::Tools::ExecuteInsert(m_ml->GetConnection(), req, media.Id(), artistForeignKey) != 0;
 }
 
-const std::string& Artist::artworkMrl() const {
+const std::string& Artist::GetArtworkMrl() const {
   return m_artworkMrl;
 }
 
-bool Artist::setArtworkMrl(const std::string& artworkMrl) {
+bool Artist::SetArtworkMrl(const std::string& artworkMrl) {
   if(m_artworkMrl == artworkMrl)
     return true;
   static const std::string req = "UPDATE " + policy::ArtistTable::Name +
@@ -144,7 +126,7 @@ std::shared_ptr<Album> Artist::unknownAlbum() {
     " WHERE artist_id = ? AND title IS NULL";
   auto album = Album::Fetch(m_ml, req, m_id);
   if(album == nullptr) {
-    album = Album::createUnknownAlbum(m_ml, this);
+    album = Album::CreateUnknownAlbum(m_ml, this);
     if(album == nullptr)
       return nullptr;
     if(updateNbAlbum(1) == false) {
@@ -170,8 +152,8 @@ bool Artist::setMusicBrainzId(const std::string& mbId) {
   return true;
 }
 
-bool Artist::createTable(DBConnection dbConnection) {
-  static const std::string req = "CREATE TABLE IF NOT EXISTS " +
+bool Artist::CreateTable(DBConnection connection) noexcept {
+  static const auto req = "CREATE TABLE IF NOT EXISTS " +
     policy::ArtistTable::Name +
     "("
     "id_artist INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -182,76 +164,111 @@ bool Artist::createTable(DBConnection dbConnection) {
     "mb_id TEXT,"
     "is_present BOOLEAN NOT NULL DEFAULT 1"
     ")";
-  static const std::string reqRel = "CREATE TABLE IF NOT EXISTS MediaArtistRelation("
+  static const auto reqRel = "CREATE TABLE IF NOT EXISTS MediaArtistRelation("
     "media_id INTEGER NOT NULL,"
     "artist_id INTEGER,"
     "PRIMARY KEY (media_id, artist_id),"
-    "FOREIGN KEY(media_id) REFERENCES " + policy::MediaTable::Name +
-    "(id_media) ON DELETE CASCADE,"
-    "FOREIGN KEY(artist_id) REFERENCES " + policy::ArtistTable::Name + "("
-    + policy::ArtistTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
+    "FOREIGN KEY(media_id) REFERENCES " + policy::MediaTable::Name + "(" + policy::MediaTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
+    "FOREIGN KEY(artist_id) REFERENCES " + policy::ArtistTable::Name + "("+ policy::ArtistTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
     ")";
-  static const std::string reqFts = "CREATE VIRTUAL TABLE IF NOT EXISTS " +
+#ifdef USE_FTS
+  static const auto reqFts = "CREATE VIRTUAL TABLE IF NOT EXISTS " +
     policy::ArtistTable::Name + "Fts USING FTS3("
     "name"
     ")";
-  return sqlite::Tools::ExecuteRequest(dbConnection, req) &&
-    sqlite::Tools::ExecuteRequest(dbConnection, reqRel) &&
-    sqlite::Tools::ExecuteRequest(dbConnection, reqFts);
+#endif
+
+  bool success;
+  try {
+    success = sqlite::Tools::ExecuteRequest(connection, req) &&
+      sqlite::Tools::ExecuteRequest(connection, reqRel);
+#ifdef USE_FTS
+    if(success == true) {
+      success = sqlite::Tools::ExecuteRequest(connection, reqFts);
+    }
+#endif
+  } catch(std::exception& ex) {
+    LOG_ERROR("Failed to create table for Artist: ", ex.what());
+    success = false;
+  }
+
+  return success;
 }
 
-bool Artist::createTriggers(DBConnection dbConnection) {
-  static const std::string triggerReq = "CREATE TRIGGER IF NOT EXISTS has_album_present AFTER UPDATE OF "
+bool Artist::CreateTriggers(DBConnection connection) noexcept {
+  static const auto triggerReq = "CREATE TRIGGER IF NOT EXISTS has_album_present AFTER UPDATE OF "
     "is_present ON " + policy::AlbumTable::Name +
     " BEGIN "
     " UPDATE " + policy::ArtistTable::Name + " SET is_present="
     "(SELECT COUNT(id_album) FROM " + policy::AlbumTable::Name + " WHERE artist_id=new.artist_id AND is_present=1) "
     "WHERE id_artist=new.artist_id;"
     " END";
-  static const std::string ftsInsertTrigger = "CREATE TRIGGER IF NOT EXISTS insert_artist_fts"
+#ifdef USE_FTS
+  static const auto ftsInsertTrigger = "CREATE TRIGGER IF NOT EXISTS insert_artist_fts"
     " AFTER INSERT ON " + policy::ArtistTable::Name +
     " BEGIN"
     " INSERT INTO " + policy::ArtistTable::Name + "Fts(rowid,name) VALUES(new.id_artist, new.name);"
     " END";
-  static const std::string ftsDeleteTrigger = "CREATE TRIGGER IF NOT EXISTS delete_artist_fts"
+  static const auto ftsDeleteTrigger = "CREATE TRIGGER IF NOT EXISTS delete_artist_fts"
     " BEFORE DELETE ON " + policy::ArtistTable::Name +
     " BEGIN"
     " DELETE FROM " + policy::ArtistTable::Name + "Fts WHERE rowid=old.id_artist;"
     " END";
-  return sqlite::Tools::ExecuteRequest(dbConnection, triggerReq) &&
-    sqlite::Tools::ExecuteRequest(dbConnection, ftsInsertTrigger) &&
-    sqlite::Tools::ExecuteRequest(dbConnection, ftsDeleteTrigger);
+#endif
+
+  bool success;
+  try {
+    success = sqlite::Tools::ExecuteRequest(connection, triggerReq);
+#ifdef USE_FTS
+    if(success == true) {
+      success = sqlite::Tools::ExecuteRequest(connection, ftsInsertTrigger) &&
+        sqlite::Tools::ExecuteRequest(connection, ftsDeleteTrigger);
+    }
+#endif
+  } catch (std::exception& ex) {
+    LOG_ERROR("Failed to create triggers for Artist: ", ex.what());
+    success = false;
+  }
+
+  return success;
 }
 
 bool Artist::createDefaultArtists(DBConnection dbConnection) {
   // Don't rely on Artist::create, since we want to insert or do nothing here.
   // This will skip the cache for those new entities, but they will be inserted soon enough anyway.
-  static const std::string req = "INSERT OR IGNORE INTO " + policy::ArtistTable::Name +
+  static const auto req = "INSERT OR IGNORE INTO " + policy::ArtistTable::Name +
     "(id_artist) VALUES(?),(?)";
-  sqlite::Tools::ExecuteInsert(dbConnection, req, UnknownArtistID,
-    VariousArtistID);
+  sqlite::Tools::ExecuteInsert(dbConnection, req, UnknownArtistID, VariousArtistID);
   // Always return true. The insertion might succeed, but we consider it a failure when 0 row
   // gets inserted, while we are explicitely specifying "OR IGNORE" here.
   return true;
 }
 
-std::shared_ptr<Artist> Artist::create(MediaExplorerPtr ml, const std::string &name) {
+std::shared_ptr<Artist> Artist::Create(MediaExplorerPtr ml, const std::string &name) {
   auto artist = std::make_shared<Artist>(ml, name);
-  static const std::string req = "INSERT INTO " + policy::ArtistTable::Name +
+  static const auto req = "INSERT INTO " + policy::ArtistTable::Name +
     "(id_artist, name) VALUES(NULL, ?)";
   if(insert(ml, artist, req, name) == false)
     return nullptr;
   return artist;
 }
 
-std::vector<ArtistPtr> Artist::search(MediaExplorerPtr ml, const std::string& name) {
-  static const auto req = "SELECT * FROM " + policy::ArtistTable::Name + " WHERE id_artist IN "
-    "(SELECT rowid FROM " + policy::ArtistTable::Name + "Fts WHERE name MATCH ?)"
+std::vector<ArtistPtr> Artist::Search(MediaExplorerPtr ml, const std::string& name) {
+  static const auto req = "SELECT * FROM " + policy::ArtistTable::Name + " WHERE "
+#ifdef USE_FTS
+    "id_artist IN (SELECT rowid FROM " + policy::ArtistTable::Name + "Fts WHERE name MATCH ?)"
+#else
+    "name LIKE '%?%' "
+#endif
     "AND is_present != 0";
-  return FetchAll<IArtist>(ml, req, name + "*");
+  auto value = name;
+#ifdef USE_FTS
+  value = value + "*";
+#endif
+  return FetchAll<IArtist>(ml, req, value);
 }
 
-std::vector<ArtistPtr> Artist::listAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc) {
+std::vector<ArtistPtr> Artist::ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc) {
   auto req = "SELECT * FROM " + policy::ArtistTable::Name +
     " WHERE nb_albums > 0 AND is_present = 1 ORDER BY ";
     req += "name";

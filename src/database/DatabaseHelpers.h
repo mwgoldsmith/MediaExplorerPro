@@ -4,11 +4,7 @@
 
 #pragma once
 
-#include <cinttypes>
-#include <memory>
-#include <unordered_map>
-#include <vector>
-
+#include "stdafx.h"
 #include "compat/Mutex.h"
 #include "SqliteTools.h"
 #include "MediaExplorer.h"

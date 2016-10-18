@@ -22,6 +22,7 @@
 
 #pragma once
 
+#include "stdafx.h"
 // Unconditionaly include <mutex> for std::unique_lock
 #include <mutex>
 #include "compat/Mutex.h"
@@ -37,8 +38,6 @@ namespace compat {
 }
 
 #else
-
-#include <windows.h>
 
 namespace mxp {
 namespace compat {

@@ -5,7 +5,7 @@
 #ifndef MXP_IDEVICELISTERCB_H
 #define MXP_IDEVICELISTERCB_H
 
-#include <string>
+
 
 namespace mxp {
 

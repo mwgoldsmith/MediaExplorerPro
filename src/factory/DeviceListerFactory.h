@@ -4,7 +4,8 @@
 
 #pragma once
 
-#include "mediaexplorer/Types.h"
+#include "stdafx.h"
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 namespace factory {

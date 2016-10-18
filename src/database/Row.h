@@ -5,6 +5,8 @@
 #ifndef ROW_H
 #define ROW_H
 
+#include "stdafx.h"
+
 namespace mxp {
 namespace sqlite {
 

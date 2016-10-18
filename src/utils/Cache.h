@@ -5,6 +5,7 @@
 #ifndef CACHE_H
 #define CACHE_H
 
+#include "stdafx.h"
 #include <cassert>
 
 #include "compat/Mutex.h"

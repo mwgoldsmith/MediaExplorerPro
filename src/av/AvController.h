@@ -5,12 +5,9 @@
 #ifndef AVCONTROLLER_H
 #define AVCONTROLLER_H
 
-#include <memory>
-#include <vector>
-#include <functional>
 #include "av/AvContainer.h"
 #include "av/AvCodec.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {

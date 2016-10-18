@@ -4,6 +4,8 @@
 
 #pragma once
 
+#include "stdafx.h"
+
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
@@ -21,12 +23,8 @@ namespace this_thread = std::this_thread;
 
 #else
 
-#include <functional>
-#include <memory>
 #include <system_error>
-#ifdef _WIN32
-#  include <windows.h>
-#else
+#ifndef _WIN32
 #  include <unistd.h>
 #  include <pthread.h>
 #endif

@@ -1,9 +1,10 @@
 /*****************************************************************************
- * Media Explorer
- *****************************************************************************/
+* Media Explorer
+*****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
-# include "config.h"
+#  include "config.h"
 #endif
 
 #include "av/AvController.h"
@@ -11,7 +12,7 @@
 #include "parser/ParserMedia.h"
 #include "logging/Logger.h"
 #include "MediaExplorer.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 
 mxp::factory::ParserMediaFactory::ParserMediaFactory(MediaExplorerPtr ml)
   : m_ml(ml) {

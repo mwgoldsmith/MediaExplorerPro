@@ -7,6 +7,17 @@
 
 namespace mxp {
 
+class Album;
+class AlbumTrack;
+class Artist;
+class Genre;
+
+class Media;
+class Show;
+class ShowEpisode;
+class Stream;
+class VideoTrack;
+
 class SqliteConnection;
 class MediaExplorer;
 

@@ -2,12 +2,12 @@
 * Media Explorer
 *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
 #include <sys/stat.h>
-#include <windows.h>
 #include "Directory.h"
 #include "utils/Charsets.h"
 #include "utils/Filename.h"

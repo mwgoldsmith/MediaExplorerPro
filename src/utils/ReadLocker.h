@@ -5,6 +5,7 @@
 #ifndef READLOCKER_H
 #define READLOCKER_H
 
+#include "stdafx.h"
 #include "utils/SWMRLock.h"
 
 namespace mxp {

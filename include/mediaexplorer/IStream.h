@@ -5,7 +5,8 @@
 #ifndef MXP_ISTREAM_H
 #define MXP_ISTREAM_H
 
-#include "mediaexplorer/Types.h"
+
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

@@ -5,7 +5,8 @@
 #ifndef MXP_ICONTAINER_H
 #define MXP_ICONTAINER_H
 
-#include "mediaexplorer/Types.h"
+
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

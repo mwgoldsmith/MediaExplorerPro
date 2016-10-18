@@ -2,12 +2,14 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
 #include "Media.h"
 #include "VideoTrack.h"
+#include "database/SqliteTools.h"
 
 using mxp::policy::VideoTrackTable;
 const std::string VideoTrackTable::Name = "VideoTrack";
@@ -60,7 +62,7 @@ const std::string& mxp::VideoTrack::Language() const {
   return m_language;
 }
 
-const std::string& mxp::VideoTrack::Description() const {
+const std::string& mxp::VideoTrack::GetDescription() const {
   return m_description;
 }
 

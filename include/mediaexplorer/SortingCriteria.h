@@ -5,6 +5,8 @@
 #ifndef MXP_SORTINGCRITERIA_H
 #define MXP_SORTINGCRITERIA_H
 
+
+
 namespace mxp {
 
 enum class SortingCriteria {

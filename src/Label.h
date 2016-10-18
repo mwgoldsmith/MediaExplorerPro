@@ -7,7 +7,7 @@
 
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/ILabel.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {

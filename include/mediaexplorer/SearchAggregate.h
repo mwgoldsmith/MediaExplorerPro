@@ -5,8 +5,9 @@
 #ifndef MXP_SEARCHAGGREGATE_H
 #define MXP_SEARCHAGGREGATE_H
 
+
 #include "mediaexplorer/MediaSearchAggregate.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

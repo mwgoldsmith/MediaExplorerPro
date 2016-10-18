@@ -5,7 +5,7 @@
 #pragma once
 
 #include "Task.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "compat/ConditionVariable.h"
 #include "compat/Mutex.h"
 #include "compat/Thread.h"

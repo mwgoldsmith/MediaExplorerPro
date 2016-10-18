@@ -2,24 +2,15 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
-#include <algorithm>
-#include <functional>
-#if defined(_WIN32)
-#include "Fixup.h"
-#else
-#include <sys/stat.h>
-#endif
-#include "AudioTrack.h"
-#include "Artist.h"
 #include "Album.h"
 #include "AlbumTrack.h"
-#include "Movie.h"
-#include "Show.h"
-#include "ShowEpisode.h"
+#include "Artist.h"
+#include "AudioTrack.h"
 #include "Codec.h"
 #include "Container.h"
 #include "Genre.h"
@@ -31,10 +22,14 @@
 #include "MediaFile.h"
 #include "MediaFolder.h"
 #include "Metadata.h"
+#include "Movie.h"
 #include "Playlist.h"
+#include "Show.h"
+#include "ShowEpisode.h"
 #include "Stream.h"
 #include "Types.h"
 #include "VideoTrack.h"
+#include "av/AvController.h"
 #include "database/SqliteConnection.h"
 #include "discoverer/DiscovererWorker.h"
 #include "discoverer/FsDiscoverer.h"
@@ -49,7 +44,6 @@
 #include "parser/Parser.h"
 #include "utils/Filename.h"
 #include "utils/ModificationsNotifier.h"
-#include "av/AvController.h"
 
 std::string mxp::MediaExplorer::s_version = PACKAGE_STRING;
 
@@ -166,16 +160,16 @@ bool mxp::MediaExplorer::CreateAllTables() {
       Playlist::CreateTable(m_db.get()) &&
       Genre::CreateTable(m_db.get()) &&
       Album::CreateTable(m_db.get()) &&
-      AlbumTrack::createTable(m_db.get()) &&
+      AlbumTrack::CreateTable(m_db.get()) &&
       Album::CreateTriggers(m_db.get()) &&
-      Show::createTable(m_db.get()) &&
-      ShowEpisode::createTable(m_db.get()) &&
+      Show::CreateTable(m_db.get()) &&
+      ShowEpisode::CreateTable(m_db.get()) &&
       Movie::CreateTable(m_db.get()) &&
       VideoTrack::CreateTable(m_db.get()) &&
       AudioTrack::CreateTable(m_db.get()) &&
-      Artist::createTable(m_db.get()) &&
+      Artist::CreateTable(m_db.get()) &&
       Artist::createDefaultArtists(m_db.get()) &&
-      Artist::createTriggers(m_db.get()) &&
+      Artist::CreateTriggers(m_db.get()) &&
       Media::CreateTriggers(m_db.get()) &&
       Playlist::CreateTriggers(m_db.get()) &&
       History::CreateTable(m_db.get()) &&
@@ -255,7 +249,7 @@ mxp::ShowPtr mxp::MediaExplorer::GetShow(const std::string& name) const {
   return Show::Fetch(this, req, name);
 }
 std::shared_ptr<mxp::Show> mxp::MediaExplorer::CreateShow(const std::string& name) {
-  return Show::create(this, name);
+  return Show::Create(this, name);
 }
 
 mxp::MoviePtr mxp::MediaExplorer::GetMovie(const std::string& title) const {
@@ -264,7 +258,7 @@ mxp::MoviePtr mxp::MediaExplorer::GetMovie(const std::string& title) const {
   return Movie::Fetch(this, req, title);
 }
 std::shared_ptr<mxp::Movie> mxp::MediaExplorer::CreateMovie(Media& media, const std::string& title) {
-  auto movie = Movie::create(this, media.Id(), title);
+  auto movie = Movie::Create(this, media.Id(), title);
   media.SetMovie(movie);
   media.Save();
   return movie;
@@ -280,7 +274,7 @@ mxp::ArtistPtr mxp::MediaExplorer::GetArtist(const std::string& name) {
 }
 std::shared_ptr<mxp::Artist> mxp::MediaExplorer::CreateArtist(const std::string& name) {
   try {
-    return Artist::create(this, name);
+    return Artist::Create(this, name);
   } catch(sqlite::errors::ConstraintViolation &ex) {
     LOG_WARN("ContraintViolation while creating an artist (", ex.what(), ") attempting to fetch it instead");
     return std::static_pointer_cast<Artist>(GetArtist(name));
@@ -288,7 +282,7 @@ std::shared_ptr<mxp::Artist> mxp::MediaExplorer::CreateArtist(const std::string&
 }
 
 std::vector<mxp::ArtistPtr> mxp::MediaExplorer::ArtistList(SortingCriteria sort, bool desc) const {
-  return Artist::listAll(this, sort, desc);
+  return Artist::ListAll(this, sort, desc);
 }
 //********
 // Albums
@@ -297,7 +291,7 @@ mxp::AlbumPtr mxp::MediaExplorer::GetAlbum(int64_t id) const {
 }
 
 std::shared_ptr<mxp::Album> mxp::MediaExplorer::CreateAlbum(const std::string& title) {
-  return Album::create(this, title);
+  return Album::Create(this, title);
 }
 
 std::vector<mxp::AlbumPtr> mxp::MediaExplorer::AlbumList(SortingCriteria sort, bool desc) const {
@@ -427,7 +421,7 @@ std::vector<mxp::AlbumPtr> mxp::MediaExplorer::SearchAlbums(const std::string& p
 std::vector<mxp::ArtistPtr> mxp::MediaExplorer::SearchArtists(const std::string& name) const {
   if(ValidateSearchPattern(name) == false)
     return{};
-  return Artist::search(this, name);
+  return Artist::Search(this, name);
 }
 
 mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) const { 
@@ -443,59 +437,59 @@ mxp::SearchAggregate mxp::MediaExplorer::Search(const std::string& pattern) cons
 //********
 // Media
 std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile& fileFs, mxp::MediaFolder& parentFolder, mxp::fs::IDirectory& parentFolderFs) {
-  const std::vector<std::string> supportedVideoExtensions{
-    // Videos
-    "avi", "3gp", "amv", "asf", "divx", "dv", "flv", "gxf",
-    "iso", "m1v", "m2v", "m2t", "m2ts", "m4v", "mkv", "mov",
-    "mp2", "mp4", "mpeg", "mpeg1", "mpeg2", "mpeg4", "mpg",
-    "mts", "mxf", "nsv", "nuv", "ogm", "ogv", "ogx", "ps",
-    "rec", "rm", "rmvb", "tod", "ts", "vob", "vro", "webm", "wmv"
-  };
+  //const std::vector<std::string> supportedVideoExtensions{
+  //  // Videos
+  //  "avi", "3gp", "amv", "asf", "divx", "dv", "flv", "gxf",
+  //  "iso", "m1v", "m2v", "m2t", "m2ts", "m4v", "mkv", "mov",
+  //  "mp2", "mp4", "mpeg", "mpeg1", "mpeg2", "mpeg4", "mpg",
+  //  "mts", "mxf", "nsv", "nuv", "ogm", "ogv", "ogx", "ps",
+  //  "rec", "rm", "rmvb", "tod", "ts", "vob", "vro", "webm", "wmv"
+  //};
 
-  LOG_TRACE("Creating media for ", fileFs.FullPath());
-  // TODO: Get container type
+  //LOG_TRACE("Creating media for ", fileFs.FullPath());
+  //// TODO: Get container type
 
-  auto type = mxp::IMedia::Type::UnknownType;
-  auto ext = fileFs.Extension();
-  auto predicate = [ext](const std::string& v) {
-    return strcasecmp(v.c_str(), ext.c_str()) == 0;
-  };
+  //auto type = mxp::IMedia::Type::UnknownType;
+  //auto ext = fileFs.Extension();
+  //auto predicate = [ext](const std::string& v) {
+  //  return strcasecmp(v.c_str(), ext.c_str()) == 0;
+  //};
 
-  if (std::find_if(begin(supportedVideoExtensions), end(supportedVideoExtensions), predicate) != end(supportedVideoExtensions)) {
-    type = mxp::IMedia::Type::VideoType;
-  //} else if (std::find_if(begin(supportedAudioExtensions), end(supportedAudioExtensions), predicate) != end(supportedAudioExtensions)) {
+  //if (std::find_if(begin(supportedVideoExtensions), end(supportedVideoExtensions), predicate) != end(supportedVideoExtensions)) {
+  //  type = mxp::IMedia::Type::VideoType;
+  ////} else if (std::find_if(begin(supportedAudioExtensions), end(supportedAudioExtensions), predicate) != end(supportedAudioExtensions)) {
+  ////  type = mxp::IMedia::Type::AudioType;
+  //}
+
+  //if (ext.compare("mp3") == 0) {
   //  type = mxp::IMedia::Type::AudioType;
-  }
-
-  if (ext.compare("mp3") == 0) {
-    type = mxp::IMedia::Type::AudioType;
-  }
-  if (type == mxp::IMedia::Type::UnknownType) {
-    LOG_TRACE("Unknown type for file ", fileFs.Name());
-    return nullptr;
-  }
+  //}
+  //if (type == mxp::IMedia::Type::UnknownType) {
+  //  LOG_TRACE("Unknown type for file ", fileFs.Name());
+  //  return nullptr;
+  //}
 
   LOG_INFO("Adding ", fileFs.FullPath());
-  auto mptr = mxp::Media::Create(this, type, fileFs);
-  if (mptr == nullptr) {
+  auto media = mxp::Media::Create(this, mxp::IMedia::Type::UnknownType, fileFs);
+  if (media == nullptr) {
     LOG_ERROR("Failed to add media ", fileFs.FullPath(), " to the media library");
     return nullptr;
   }
 
   // For now, assume all media are made of a single file
-  auto file = mptr->AddFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
+  auto file = media->AddFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
   if (file == nullptr) {
-    LOG_ERROR("Failed to add file ", fileFs.FullPath(), " to media #", mptr->Id());
-    mxp::Media::destroy(this, mptr->Id());
+    LOG_ERROR("Failed to add file ", fileFs.FullPath(), " to media #", media->Id());
+    mxp::Media::destroy(this, media->Id());
     return nullptr;
   }
 
-  m_modificationNotifier->NotifyMediaCreation(mptr);
+  m_modificationNotifier->NotifyMediaCreation(media);
   if (m_parser != nullptr) {
-    m_parser->Parse(mptr, file);
+    m_parser->Parse(media, file);
   }
 
-  return mptr;
+  return media;
 }
 
 bool mxp::MediaExplorer::DeleteMedia(int64_t mediaId) const {

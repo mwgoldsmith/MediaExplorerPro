@@ -8,7 +8,7 @@
 #include "compat/Mutex.h"
 #include "compat/Thread.h"
 #include "discoverer/IDiscoverer.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {

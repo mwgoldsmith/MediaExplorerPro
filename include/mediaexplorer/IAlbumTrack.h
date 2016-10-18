@@ -23,7 +23,7 @@
 #ifndef IALBUMTRACK_H
 #define IALBUMTRACK_H
 
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 
@@ -45,7 +45,7 @@ public:
 
   virtual GenrePtr GetGenre() = 0;
 
-  virtual unsigned int TrackNumber() = 0;
+  virtual unsigned int GetTrackNumber() = 0;
 
   virtual AlbumPtr GetAlbum() = 0;
 
@@ -54,9 +54,9 @@ public:
   /**
    * @return Which disc this tracks appears on (or 0 if unspecified)
    */
-  virtual unsigned int DiscNumber() const = 0;
+  virtual unsigned int GetDiscNumber() const = 0;
 };
 
-}
+} /* namespace mxp */
 
-#endif // IALBUMTRACK_H
+#endif /* IALBUMTRACK_H */

@@ -5,7 +5,7 @@
 #ifndef MXP_ILOGGER_H
 #define MXP_ILOGGER_H
 
-#include <string>
+
 
 namespace mxp {
 

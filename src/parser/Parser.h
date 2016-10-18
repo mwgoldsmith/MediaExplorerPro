@@ -4,9 +4,6 @@
 
 #pragma once
 
-#include <memory>
-#include <queue>
-
 #include "ParserService.h"
 #include "MediaFile.h"
 

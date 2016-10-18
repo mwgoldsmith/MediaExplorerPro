@@ -2,12 +2,14 @@
  * Media Explorer
  *****************************************************************************/
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
-#include "Playlist.h"
 #include "Media.h"
+#include "Playlist.h"
+#include "database/SqliteTools.h"
 
 using mxp::policy::PlaylistTable;
 const std::string PlaylistTable::Name = "Playlist";

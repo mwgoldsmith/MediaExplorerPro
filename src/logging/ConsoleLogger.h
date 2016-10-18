@@ -5,8 +5,7 @@
 #ifndef CONSOLELOGGER_H
 #define CONSOLELOGGER_H
 
-#include <iostream>
-#include <string>
+#include "stdafx.h"
 #include "compat/Mutex.h"
 #include "mediaexplorer/ILogger.h"
 

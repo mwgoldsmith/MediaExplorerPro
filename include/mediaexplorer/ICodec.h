@@ -5,9 +5,8 @@
 #ifndef MXP_ICODEC_H
 #define MXP_ICODEC_H
 
-#include <cinttypes>
-#include <string>
-#include "mediaexplorer/Types.h"
+
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

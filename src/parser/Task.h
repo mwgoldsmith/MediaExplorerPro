@@ -4,14 +4,12 @@
 
 #pragma once
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
-#include <string>
-#include <memory>
-#include <vector>
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include <mediaexplorer/MediaType.h>
 
 namespace mxp {

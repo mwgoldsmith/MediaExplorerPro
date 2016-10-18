@@ -1,5 +1,7 @@
 #pragma once
 
+#include "stdafx.h"
+
 #define PACKAGE_STRING     ""
 
 #define MEDIALIB_MAJOR     0    
@@ -35,5 +37,7 @@
 #undef HAVE_PTHREAD
 
 #define USE_CHAR           1
+
+#define USE_FTS            1
 
 #undef USE_WCHAR

@@ -8,12 +8,10 @@
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IStream.h"
 #include "mediaexplorer/MediaType.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {
-
-class Stream;
 
 namespace policy {
 struct StreamTable {
@@ -49,7 +47,7 @@ public:
 
   static bool CreateTable(DBConnection dbConnection) noexcept;
 
-  static std::vector<mxp::StreamPtr> FindByMedia(MediaExplorerPtr ml, int64_t mediaId);
+  static std::vector<StreamPtr> FindByMedia(MediaExplorerPtr ml, int64_t mediaId);
 
 private:
   static bool Create(DBConnection connection, const mstring& sql, const mstring& name) noexcept;

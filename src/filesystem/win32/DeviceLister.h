@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "stdafx.h"
 #include "mediaexplorer/IDeviceLister.h"
 
 namespace mxp {

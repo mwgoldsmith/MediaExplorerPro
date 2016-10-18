@@ -5,8 +5,7 @@
 #ifndef MXP_IMEDIAEXPLORERCB_H
 #define MXP_IMEDIAEXPLORERCB_H
 
-#include <vector>
-#include <string>
+
 
 namespace mxp {
 

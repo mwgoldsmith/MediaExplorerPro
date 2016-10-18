@@ -25,7 +25,7 @@
 
 #include "mediaexplorer/IMovie.h"
 #include "database/DatabaseHelpers.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {
@@ -46,17 +46,17 @@ public:
   Movie(MediaExplorerPtr ml, int64_t mediaId, const std::string& title);
 
   virtual int64_t Id() const override;
-  virtual const std::string& Title() const override;
+  virtual const std::string& GetTitle() const override;
   virtual const std::string& ShortSummary() const override;
   bool SetShortSummary(const std::string& summary);
-  virtual const std::string& artworkMrl() const override;
-  bool setArtworkMrl(const std::string& artworkMrl);
+  virtual const std::string& GetArtworkMrl() const override;
+  bool SetArtworkMrl(const std::string& artworkMrl);
   virtual const std::string& imdbId() const override;
   bool setImdbId(const std::string& imdbId);
   virtual std::vector<MediaPtr> Files() override;
 
   static bool CreateTable(DBConnection dbConnection);
-  static std::shared_ptr<Movie> create(MediaExplorerPtr ml, int64_t mediaId, const std::string& title);
+  static std::shared_ptr<Movie> Create(MediaExplorerPtr ml, int64_t mediaId, const std::string& title);
   static MoviePtr FromMedia(MediaExplorerPtr ml, int64_t mediaId);
 
 private:

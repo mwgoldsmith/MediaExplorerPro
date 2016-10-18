@@ -6,7 +6,7 @@
 #define PARSERMEDIA_H
 
 #include "filesystem/IFile.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {

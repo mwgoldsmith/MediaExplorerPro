@@ -5,8 +5,7 @@
 #ifndef IDISCOVERER_H
 #define IDISCOVERER_H
 
-#include "Fixup.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

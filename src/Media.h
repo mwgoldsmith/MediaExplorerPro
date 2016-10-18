@@ -8,7 +8,7 @@
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IMedia.h"
 #include "mediaexplorer/IMediaFile.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "utils/Cache.h"
 #include "Types.h"
 

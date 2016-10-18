@@ -7,7 +7,7 @@
 
 #include "database/DatabaseHelpers.h"
 #include "mediaexplorer/IAudioTrack.h"
-#include "mediaexplorer/Types.h"
+#include "mediaexplorer/Common.h"
 #include "Types.h"
 
 namespace mxp {
@@ -31,11 +31,11 @@ public:
 
   virtual int64_t Id() const override;
   virtual const std::string& Codec() const override;
-  virtual unsigned int Bitrate() const override;
-  virtual unsigned int SampleRate() const override;
-  virtual unsigned int NumChannels() const override;
+  virtual unsigned int GetBitrate() const override;
+  virtual unsigned int GetSampleRate() const override;
+  virtual unsigned int GetNumChannels() const override;
   virtual const std::string& Language() const override;
-  virtual const std::string& Description() const override;
+  virtual const std::string& GetDescription() const override;
 
   static bool CreateTable(DBConnection dbConnection);
   static std::shared_ptr<AudioTrack> Create(MediaExplorerPtr ml, const std::string& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int numChannels, const std::string& language, const std::string& desc, int64_t mediaId);
