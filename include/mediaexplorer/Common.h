@@ -5,6 +5,7 @@
 #ifndef MXP_TYPES_H
 #define MXP_TYPES_H
 
+#include "stdafx.h"
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif

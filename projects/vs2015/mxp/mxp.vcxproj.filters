@@ -381,11 +381,14 @@
     <ClInclude Include="..\..\..\src\logging\FileLogger.h">
       <Filter>Source Files\logging</Filter>
     </ClInclude>
-    <ClInclude Include="stdafx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\include\mediaexplorer\Common.h">
       <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\Precomp.h">
+      <Filter>Header Files\mediaexplorer</Filter>
+    </ClInclude>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

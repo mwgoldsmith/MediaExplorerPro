@@ -1,7 +1,5 @@
 #pragma once
 
-#include "stdafx.h"
-
 #define PACKAGE_STRING     ""
 
 #define MEDIALIB_MAJOR     0    
@@ -22,22 +20,16 @@
 
 #undef HAVE_TVOS
 
-//#define CXX11_THREADS      1
-
-//#define CXX11_MUTEX        1
-
 #define HAVE_THREAD_LOCAL  1
-
-#undef HAVE_ANDROID
-
-#undef HAVE_LIBJPEG
 
 #define HAVE_TESTS         1
 
 #undef HAVE_PTHREAD
 
+//#define CXX11_THREADS      1
+
+//#define CXX11_MUTEX        1
+
 #undef USE_WCHAR
 
 #define USE_FTS            1
-
-#undef USE_WCHAR
