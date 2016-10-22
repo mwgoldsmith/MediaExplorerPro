@@ -5,7 +5,6 @@
 #ifndef MXP_SEARCHAGGREGATE_H
 #define MXP_SEARCHAGGREGATE_H
 
-
 #include "mediaexplorer/MediaSearchAggregate.h"
 #include "mediaexplorer/Common.h"
 
@@ -13,9 +12,13 @@ namespace mxp {
 
 struct SearchAggregate {
   std::vector<AlbumPtr> albums;
+
   std::vector<ArtistPtr> artists;
+
   std::vector<GenrePtr> genres;
+
   MediaSearchAggregate media;
+
   std::vector<PlaylistPtr> playlists;
 };
 

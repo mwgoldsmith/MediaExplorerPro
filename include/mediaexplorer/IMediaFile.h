@@ -5,7 +5,7 @@
 #ifndef MXP_IMEDIAFILE_H
 #define MXP_IMEDIAFILE_H
 
-
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

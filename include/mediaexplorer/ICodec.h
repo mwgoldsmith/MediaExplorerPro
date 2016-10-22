@@ -5,7 +5,6 @@
 #ifndef MXP_ICODEC_H
 #define MXP_ICODEC_H
 
-
 #include "mediaexplorer/Common.h"
 
 namespace mxp {

@@ -2,8 +2,8 @@
 * Media Explorer
 *****************************************************************************/
 
-#ifndef IDISCOVERER_H
-#define IDISCOVERER_H
+#ifndef DISC_IDISCOVERER_H
+#define DISC_IDISCOVERER_H
 
 #include "mediaexplorer/Common.h"
 
@@ -25,4 +25,4 @@ public:
 
 } /* namespace mxp */
 
-#endif /* IDISCOVERER_H */
+#endif /* DISC_IDISCOVERER_H */

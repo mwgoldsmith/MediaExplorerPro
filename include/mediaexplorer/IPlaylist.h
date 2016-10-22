@@ -5,9 +5,7 @@
 #ifndef MXP_IPLAYLIST_H
 #define MXP_IPLAYLIST_H
 
-
 #include "mediaexplorer/Common.h"
-#include "Types.h"
 
 namespace mxp {
 

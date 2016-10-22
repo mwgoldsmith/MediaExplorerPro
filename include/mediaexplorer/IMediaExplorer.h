@@ -1,4 +1,3 @@
-
 /*****************************************************************************
  * Media Explorer
  *****************************************************************************/
@@ -6,9 +5,8 @@
 #ifndef MXP_IMEDIAEXPLORER_H
 #define MXP_IMEDIAEXPLORER_H
 
-
-#include "mediaexplorer/Common.h"
 #include "factory/IFileSystem.h"
+#include "mediaexplorer/Common.h"
 #include "mediaexplorer/ILogger.h"
 #include "mediaexplorer/ISettings.h"
 #include "mediaexplorer/IMediaExplorerCb.h"
@@ -21,7 +19,6 @@ namespace mxp {
 static constexpr auto UnknownArtistID = 1u;
 static constexpr auto VariousArtistID = 2u;
 
-
 class IMediaExplorer {
 public:
   virtual ~IMediaExplorer() = default;
@@ -30,20 +27,22 @@ public:
 
   virtual bool Shutdown() = 0;
 
+  virtual FileSystemPtr GetFileSystem() const = 0;
+
   virtual std::string& GetVersion() const = 0;
 
   virtual void SetLogger(ILogger* logger) = 0;
 
   virtual void SetCallbacks(IMediaExplorerCb* cb) = 0;
 
-  virtual FileSystemPtr GetFileSystem() const = 0;
-
   // Codecs
   virtual CodecPtr Codec(int64_t codecId) const = 0;
+
   virtual std::vector<CodecPtr> CodecList(mxp::SortingCriteria sort, bool desc) const = 0;
 
   // Containers
   virtual ContainerPtr Container(int64_t containerId) const = 0;
+
   virtual std::vector<ContainerPtr> ContainerList(mxp::SortingCriteria sort, bool desc) const = 0;
 
   // Shows
@@ -65,37 +64,52 @@ public:
   virtual std::vector<ArtistPtr> ArtistList(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
 
   // Albums
-  virtual AlbumPtr GetAlbum(int64_t id) const =0;
-  virtual std::vector<AlbumPtr> AlbumList(SortingCriteria sort, bool desc) const =0;
+  virtual AlbumPtr GetAlbum(int64_t id) const = 0;
+
+  virtual std::vector<AlbumPtr> AlbumList(SortingCriteria sort, bool desc) const = 0;
 
   // Labels
   virtual LabelPtr CreateLabel(const std::string& label) = 0;
+
   virtual bool DeleteLabel(LabelPtr label) = 0;
 
   // Genres
   virtual std::vector<GenrePtr> GenreList(SortingCriteria sort, bool desc) const = 0;
+
   virtual GenrePtr GetGenre(int64_t id) const = 0;
 
   // Playlists
   virtual PlaylistPtr CreatePlaylist(const std::string& name) = 0;
+
   virtual bool DeletePlaylist(int64_t playlistId) = 0;
+
   virtual std::vector<PlaylistPtr> PlaylistList(SortingCriteria sort, bool desc) = 0;
+
   virtual PlaylistPtr GetPlaylist(int64_t id) const = 0;
 
   // Searching
   virtual MediaSearchAggregate SearchMedia(const std::string& title) const = 0;
+
   virtual std::vector<PlaylistPtr> SearchPlaylists(const std::string& name) const = 0;
+
   virtual std::vector<AlbumPtr> SearchAlbums(const std::string& pattern) const = 0;
+
   virtual std::vector<ArtistPtr> SearchArtists(const std::string& name) const = 0;
+
   virtual std::vector<GenrePtr> SearchGenre(const std::string& genre) const = 0;
+
   virtual SearchAggregate Search(const std::string& pattern) const = 0;
 
   // Media
   virtual bool DeleteMedia(int64_t mediaId) const = 0;
+
   virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) = 0;
+
   virtual MediaPtr GetMedia(int64_t mediaId) const = 0;
 
+
   virtual void Reload() = 0;
+
   virtual void Reload(const std::string& entryPoint) = 0;
   
   virtual MetadataPtr Metadata(int64_t metadataId) const = 0;

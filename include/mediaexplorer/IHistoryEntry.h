@@ -5,7 +5,6 @@
 #ifndef MXP_HISTORYENTRY_H
 #define MXP_HISTORYENTRY_H
 
-
 #include "mediaexplorer/Common.h"
 
 namespace mxp {

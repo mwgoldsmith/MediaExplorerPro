@@ -2,9 +2,8 @@
 * Media Explorer
 *****************************************************************************/
 
-#ifndef ISHOWEPISODE_H
-#define ISHOWEPISODE_H
-
+#ifndef MXP_ISHOWEPISODE_H
+#define MXP_ISHOWEPISODE_H
 
 #include "mediaexplorer/Common.h"
 
@@ -33,6 +32,6 @@ public:
   virtual std::vector<MediaPtr> files() = 0;
 };
 
-}
+} /* namespace mxp */
 
-#endif // ISHOWEPISODE_H
+#endif /* MXP_ISHOWEPISODE_H */

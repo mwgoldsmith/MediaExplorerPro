@@ -5,7 +5,6 @@
 #ifndef MXP_IAUDIOTRACK_H
 #define MXP_IAUDIOTRACK_H
 
-
 #include "mediaexplorer/Common.h"
 
 namespace mxp {

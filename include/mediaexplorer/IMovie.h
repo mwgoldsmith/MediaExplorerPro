@@ -2,9 +2,8 @@
 * Media Explorer
 *****************************************************************************/
 
-#ifndef IMOVIE_H
-#define IMOVIE_H
-
+#ifndef MXP_IMOVIE_H
+#define MXP_IMOVIE_H
 
 #include "mediaexplorer/Common.h"
 
@@ -27,6 +26,6 @@ public:
   virtual std::vector<MediaPtr> Files() = 0;
 };
 
-}
+} /* namespace mxp */
 
-#endif // IMOVIE_H
+#endif /* MXP_IMOVIE_H */

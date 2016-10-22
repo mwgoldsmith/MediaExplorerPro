@@ -36,7 +36,7 @@
 
 #undef HAVE_PTHREAD
 
-#define USE_CHAR           1
+#undef USE_WCHAR
 
 #define USE_FTS            1
 

@@ -35,7 +35,7 @@
 
 //########
 // Definition of portable char and string types
-#ifdef USE_CHAR
+#ifndef USE_WCHAR
 #define __MTEXT(x) x
 using mstring = std::string;
 using mchar = char;
@@ -54,7 +54,7 @@ namespace mxp {
 template<class T>
 inline mstring to_mstring(const T);
 
-#ifdef USE_CHAR
+#ifndef USE_WCHAR
 
 template<>
 inline mstring to_mstring(const std::wstring& wstr) {
@@ -73,7 +73,7 @@ inline mstring to_mstring(char* str) { return mstring(str); }
 template<>
 inline mstring to_mstring(wchar_t* wstr) { return to_mstring(wstr); }
 
-#else /* USE_CHAR */
+#else /* USE_WCHAR */
 
 template<>
 inline mstring to_mstring(const std::string& str) {
@@ -92,7 +92,7 @@ inline mstring to_mstring(char* str) { return to_mstring(str); }
 template<>
 inline mstring to_mstring(wchar_t* wstr) { return mstring(wstr); }
 
-#endif /* USE_CHAR */
+#endif /* USE_WCHAR */
 
 //########
 // Forward references
@@ -122,6 +122,7 @@ class IShow;
 class IShowEpisode;
 class IStream;
 class IVideoTrack;
+enum class MediaType;
 
 namespace factory {
 

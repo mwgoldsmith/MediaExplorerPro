@@ -5,7 +5,7 @@
 #ifndef MXP_IDEVICELISTER_H
 #define MXP_IDEVICELISTER_H
 
-
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 

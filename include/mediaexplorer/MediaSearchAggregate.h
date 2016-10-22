@@ -5,15 +5,17 @@
 #ifndef MXP_MEDIASEARCHAGGREGATE_H
 #define MXP_MEDIASEARCHAGGREGATE_H
 
-
 #include "mediaexplorer/Common.h"
 
 namespace mxp {
 
 struct MediaSearchAggregate {
   std::vector<MediaPtr> movies;
+
   std::vector<MediaPtr> others;
+
   std::vector<MediaPtr> tracks;
+
   std::vector<MediaPtr> episodes;
 };
 

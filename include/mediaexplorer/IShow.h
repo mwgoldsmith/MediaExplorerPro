@@ -2,9 +2,8 @@
 * Media Explorer
 *****************************************************************************/
 
-#ifndef ISHOW_H
-#define ISHOW_H
-
+#ifndef MXP_ISHOW_H
+#define MXP_ISHOW_H
 
 #include "mediaexplorer/Common.h"
 
@@ -29,6 +28,6 @@ public:
   virtual std::vector<ShowEpisodePtr> GetEpisodes() = 0;
 };
 
-}
+} /* namespace mxp */
 
-#endif // ISHOW_H
+#endif /* MXP_ISHOW_H */

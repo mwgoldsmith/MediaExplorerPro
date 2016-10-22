@@ -5,8 +5,6 @@
 #ifndef MXP_SORTINGCRITERIA_H
 #define MXP_SORTINGCRITERIA_H
 
-
-
 namespace mxp {
 
 enum class SortingCriteria {
@@ -16,13 +14,18 @@ enum class SortingCriteria {
    * - Alphabetical order for others
    */
   Default,
+
   Alpha,
+
   Duration,
+
   InsertionDate,
+
   LastModificationDate,
-  ReleaseDate,
+
+  ReleaseDate
 };
 
-}
+} /* namespace mxp */
 
 #endif /* MXP_SORTINGCRITERIA_H */

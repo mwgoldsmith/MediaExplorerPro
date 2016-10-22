@@ -5,7 +5,6 @@
 #ifndef MXP_ILABEL_H
 #define MXP_ILABEL_H
 
-
 #include "mediaexplorer/Common.h"
 
 namespace mxp {

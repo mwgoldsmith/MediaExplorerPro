@@ -5,7 +5,7 @@
 #ifndef MXP_IVIDEOTRACK_H
 #define MXP_IVIDEOTRACK_H
 
-
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 
@@ -31,6 +31,6 @@ public:
   virtual const std::string& Language() const = 0;
 };
 
-}
+} /* namespace mxp */
 
 #endif /* MXP_IVIDEOTRACK_H */

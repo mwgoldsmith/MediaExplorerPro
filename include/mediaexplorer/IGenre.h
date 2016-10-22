@@ -5,7 +5,7 @@
 #ifndef MXP_IGENRE_H
 #define MXP_IGENRE_H
 
-
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 
@@ -30,6 +30,6 @@ public:
   virtual std::vector<AlbumPtr> Albums(SortingCriteria sort = SortingCriteria::Default, bool desc = false) const = 0;
 };
 
-}
+} /* namespace mxp */
 
 #endif /* MXP_IGENRE_H */

@@ -9,9 +9,13 @@ namespace mxp {
 
 enum class LogLevel {
   Trace,
+
   Debug,
+
   Info,
+
   Warning,
+
   Error
 };
 

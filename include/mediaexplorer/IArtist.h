@@ -2,8 +2,8 @@
 * Media Explorer
 *****************************************************************************/
 
-#pragma once
-
+#ifndef MXP_IARTIST_H
+#define MXP_IARTIST_H
 
 #include "mediaexplorer/Common.h"
 #include "mediaexplorer/SortingCriteria.h"
@@ -29,4 +29,6 @@ public:
   virtual const std::string& musicBrainzId() const = 0;
 };
 
-}
+} /* namespace mxp */
+
+#endif /* MXP_IARTIST_H */

@@ -5,14 +5,9 @@
 #ifndef MXP_IMEDIA_H
 #define MXP_IMEDIA_H
 
-
-#include "mediaexplorer/IMediaExplorer.h"
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
-
-class IAlbumTrack;
-class IShowEpisode;
-class ITrackInformation;
 
 class IMedia {
 public:
@@ -69,6 +64,7 @@ public:
 
   /**
    *  @brief rating The media rating, or -1 if unset.
+   *
    *  It is up to the application to determine the values it wishes to use.
    *  No value is enforced, and any positive value (less or equal to INT32_MAX)
    *  will be accepted.
@@ -94,9 +90,9 @@ public:
   virtual std::vector<AudioTrackPtr> AudioTracks() = 0;
 
   /**
-   *  @brief thumbnail Returns the path of a thumbnail for this media
-   *  @return A path, relative to the thumbnailPath configured when initializing
-   *   The media library
+   * @brief  Returns the path of a thumbnail for this media
+   * @return A path, relative to the thumbnailPath configured when initializing
+   *         The media library
    */
   virtual const mstring& Thumbnail() = 0;
 

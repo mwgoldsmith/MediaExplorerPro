@@ -5,7 +5,7 @@
 #ifndef MXP_IMEDIAEXPLORERCB_H
 #define MXP_IMEDIAEXPLORERCB_H
 
-
+#include "mediaexplorer/Common.h"
 
 namespace mxp {
 
@@ -28,8 +28,9 @@ public:
   virtual void onMediaUpdated(std::vector<MediaPtr> media) = 0;
 
   virtual void onMediaDeleted(std::vector<int64_t> ids) = 0;
+
   /**
-   * @brief onParsingStatsUpdated Called when the parser statistics are updated
+   * @brief Called when the parser statistics are updated
    *
    * @param percent The progress percentage [0,100]
    *
@@ -50,7 +51,7 @@ public:
   virtual void onDiscoveryStarted(const std::string& entryPoint) = 0;
 
   /**
-   * @brief onDiscoveryProgress will be invoked each time the discoverer enters a new entry point.
+   * @brief invoked each time the discoverer enters a new entry point.
    *        Typically, every time it enters a new folder.
    *
    * @param entryPoint The entry point being discovered
@@ -69,21 +70,25 @@ public:
    */
   virtual void onDiscoveryCompleted(const std::string& entryPoint) = 0;
 
-
   virtual void onArtistsAdded(std::vector<ArtistPtr> artists) = 0;
+
   virtual void onArtistsModified(std::vector<ArtistPtr> artist) = 0;
+
   virtual void onArtistsDeleted(std::vector<int64_t> ids) = 0;
+
   virtual void onAlbumsAdded(std::vector<AlbumPtr> albums) = 0;
+
   virtual void onAlbumsModified(std::vector<AlbumPtr> albums) = 0;
+
   virtual void onAlbumsDeleted(std::vector<int64_t> ids) = 0;
+
   /**
-  * @brief onTrackAdded Called when a media gets detected as an album track
-  * and after it has been added to the album representation
+  * @brief Called when a media gets detected as an album track
+  *        and after it has been added to the album representation
   */
   virtual void onTracksAdded(std::vector<AlbumTrackPtr> tracks) = 0;
-  // Tracks are never modified after their creation, so there is no tracksModified event
-  virtual void onTracksDeleted(std::vector<int64_t> trackIds) = 0;
 
+  virtual void onTracksDeleted(std::vector<int64_t> trackIds) = 0;
 };
 
 } /* namespace mxp */
