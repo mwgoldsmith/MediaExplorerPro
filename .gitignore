@@ -7,6 +7,7 @@
 # Precompiled Headers
 *.gch
 *.pch
+*.ipch
 
 # Compiled Dynamic libraries
 *.so
@@ -70,6 +71,8 @@ external*/*.tar.gz
 external*/*.tar.bz2
 *.VC.db
 .suo
+*.db
+
 external/ass/
 external/bzip2/
 external/cdio/
