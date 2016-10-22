@@ -21,35 +21,49 @@ public:
   /**
    * @return Name of the playlist
    */
-  virtual const std::string& Name() const = 0;
+  virtual const mstring& GetName() const = 0;
 
   /**
    * @brief Sets the name of the playlist
+   *
    * @param name Name of the playlist
    */
-  virtual bool SetName(const std::string& name) = 0;
+  virtual bool SetName(const mstring& name) = 0;
 
-  virtual time_t CreationDate() const = 0;
+  /**
+   * @brief Gets the creation date of the playlist
+   */
+  virtual time_t GetCreationDate() const = 0;
 
-  virtual std::vector<MediaPtr> media() const = 0;
+  /**
+   * @brief Gets the media in the playlist
+   *
+   * @return A list of pointers to the Media objects in the playlist
+   */
+  virtual std::vector<MediaPtr> GetMedia() const = 0;
 
   /**
    *  @brief Appends a media to a playlist
+   *
+   *  @param media The media to add
+   *
+   *  @return true on success, false on failure.
+   *
    *  The media will be the last element of a subsequent call to media()
    *  This is equivalent to calling add( media, 0 )
-   *  @param media The media to add
-   *  @return true on success, false on failure.
    */
-  virtual bool append(int64_t mediaId) = 0;
+  virtual bool Append(int64_t mediaId) = 0;
 
   /**
    *  @brief Add a media to the playlist at the given position.
-   *  Valid positions start at 1. 0 means appending.
-   *  @param media The media to add
-   *  @param position The position of this new media
+   *
+   *  @param media    The media to add
+   *  @param position The position of this new media. Valid positions start
+   *                  at 1. 0 means appending.
+   *
    *  @return true on success, false on failure
    */
-  virtual bool add(int64_t mediaId, unsigned int position) = 0;
+  virtual bool Add(int64_t mediaId, unsigned int position) = 0;
 
   /**
    *  @brief Change the position of a media
@@ -63,14 +77,14 @@ public:
    *  [<1,2>, <2,3>, <3,4>]
    *  @return true on success, false on failure
    */
-  virtual bool move(int64_t mediaId, unsigned int position) = 0;
+  virtual bool Move(int64_t mediaId, unsigned int position) = 0;
 
   /**
    *  @brief Removes a media from the playlist
    *  @param mediaId The media to remove.
    *  @return true on success, false on failure
    */
-  virtual bool remove(int64_t mediaId) = 0;
+  virtual bool Remove(int64_t mediaId) = 0;
 };
 
 } /* namespace mxp */

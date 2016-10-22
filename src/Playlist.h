@@ -16,8 +16,8 @@ class Playlist;
 
 namespace policy {
 struct PlaylistTable {
-  static const std::string Name;
-  static const std::string PrimaryKeyColumn;
+  static const mstring Name;
+  static const mstring PrimaryKeyColumn;
   static int64_t Playlist::*const PrimaryKey;
 };
 }
@@ -26,42 +26,42 @@ class Playlist : public IPlaylist, public DatabaseHelpers<Playlist, policy::Play
 public:
   Playlist(MediaExplorerPtr ml, sqlite::Row& row);
 
-  Playlist(MediaExplorerPtr ml, const std::string& name);
+  Playlist(MediaExplorerPtr ml, const mstring& name);
 
   virtual int64_t Id() const override;
 
-  virtual const std::string& Name() const override;
+  virtual const mstring& GetName() const override;
 
-  virtual bool SetName(const std::string& name) override;
+  virtual bool SetName(const mstring& name) override;
 
-  virtual time_t CreationDate() const override;
+  virtual time_t GetCreationDate() const override;
 
-  virtual std::vector<MediaPtr> media() const override;
+  virtual std::vector<MediaPtr> GetMedia() const override;
 
-  virtual bool append(int64_t mediaId) override;
+  virtual bool Append(int64_t mediaId) override;
 
-  virtual bool add(int64_t mediaId, unsigned int position) override;
+  virtual bool Add(int64_t mediaId, unsigned int position) override;
 
-  virtual bool move(int64_t mediaId, unsigned int position) override;
+  virtual bool Move(int64_t mediaId, unsigned int position) override;
 
-  virtual bool remove(int64_t mediaId) override;
+  virtual bool Remove(int64_t mediaId) override;
 
 
-  static bool CreateTable(DBConnection dbConn);
+  static bool CreateTable(DBConnection connection);
 
-  static std::shared_ptr<Playlist> Create(MediaExplorerPtr ml, const std::string& name);
+  static bool CreateTriggers(DBConnection connection);
 
-  static bool CreateTriggers(DBConnection dbConn);
+  static std::shared_ptr<Playlist> Create(MediaExplorerPtr ml, const mstring& name) noexcept;
 
-  static std::vector<PlaylistPtr> Search(MediaExplorerPtr ml, const std::string& name);
+  static std::vector<PlaylistPtr> Search(MediaExplorerPtr ml, const mstring& name);
 
   static std::vector<PlaylistPtr> ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
 
 private:
   MediaExplorerPtr m_ml;
-  int64_t         m_id;
-  std::string     m_name;
-  time_t          m_creationDate;
+  int64_t          m_id;
+  mstring          m_name;
+  time_t           m_creationDate;
 
   friend policy::PlaylistTable;
 };
