@@ -67,6 +67,9 @@
     <Filter Include="Source Files\av">
       <UniqueIdentifier>{717e20c4-b68c-4e57-a4e9-ecb56faad164}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\image">
+      <UniqueIdentifier>{24c33286-10a0-49ba-884e-f77119bf9b14}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\include\Types.h">
@@ -300,9 +303,6 @@
     <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h">
       <Filter>Source Files\metadata_services</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\parser\MediaTrack.h">
-      <Filter>Source Files\parser</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\logging\ConsoleLogger.h">
       <Filter>Source Files\logging</Filter>
     </ClInclude>
@@ -310,9 +310,6 @@
       <Filter>Source Files\av</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\av\AvCodec.h">
-      <Filter>Source Files\av</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\av\AvController.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Metadata.h">
@@ -389,6 +386,27 @@
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\metadata_services\ThumbnailService.h">
+      <Filter>Source Files\metadata_services</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\image\JpegImage.h">
+      <Filter>Source Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\image\IImageContainer.h">
+      <Filter>Source Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\image\Image.h">
+      <Filter>Source Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\StreamType.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\MediaContext.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\MediaController.h">
+      <Filter>Source Files\av</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -506,9 +524,6 @@
     <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp">
       <Filter>Source Files\metadata_services</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\av\AvController.cpp">
-      <Filter>Source Files\av</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Metadata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -541,6 +556,21 @@
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\metadata_services\ThumbnailService.cpp">
+      <Filter>Source Files\metadata_services</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\image\JpegImage.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\image\Image.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\av\MediaContext.cpp">
+      <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\av\MediaController.cpp">
+      <Filter>Source Files\av</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

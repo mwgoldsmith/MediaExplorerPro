@@ -7,6 +7,7 @@
 
 #include "av/AvContainer.h"
 #include "av/AvCodec.h"
+#include "av/StreamType.h"
 #include "mediaexplorer/Common.h"
 #include "Types.h"
 
@@ -23,7 +24,7 @@ MediaType GetMediaType(int libAvType);
  */
 std::string GetMediaTypeString(MediaType type);
 
-class AvController {
+class MediaController {
   using ContainerVector = std::vector<ContainerPtr>;
   using CodecVector     = std::vector<CodecPtr>;
 
@@ -32,14 +33,26 @@ class AvController {
     MediaType Type;
   };
   
+
 public:
-  AvController() = default;
+  MediaController() = default;
 
   static bool Initialize(MediaExplorerPtr ml);
 
   static ContainerPtr FindContainer(const mstring name);
 
   static CodecPtr FindCodec(const mstring name, MediaType type);
+
+  static MediaContextPtr CreateContext(const mstring name);
+
+  static bool OpenStream(MediaContextPtr context, StreamType type, int index);
+
+  static bool Seek(MediaContextPtr context, double position);
+
+  static ImagePtr ReadFrame(MediaContextPtr context);
+
+  static void CloseStream(MediaContextPtr context);
+
 
 private:
   /**

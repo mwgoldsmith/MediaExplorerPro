@@ -13,10 +13,10 @@ namespace fs {
 class CommonFile : public IFile {
 public:
   explicit CommonFile(const std::string& filePath);
-  virtual const std::string& Name() const override;
-  virtual const std::string& path() const override;
-  virtual const std::string& FullPath() const override;
-  virtual const std::string& Extension() const override;
+  virtual const std::string& GetName() const override;
+  virtual const std::string& GetPath() const override;
+  virtual const std::string& GetFullPath() const override;
+  virtual const std::string& GetExtension() const override;
 
 protected:
   const std::string m_path;

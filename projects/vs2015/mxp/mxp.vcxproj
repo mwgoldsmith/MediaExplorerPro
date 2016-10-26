@@ -176,7 +176,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -210,7 +210,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -227,7 +227,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscaled.lib;avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;jpegd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -242,7 +242,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -271,7 +271,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -287,7 +287,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscaled.lib;avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;jpegd.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -303,7 +303,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -343,7 +343,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -362,7 +362,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscale.lib;avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -377,7 +377,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -412,7 +412,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -430,7 +430,7 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscale.lib;avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -481,7 +481,9 @@
     <ClInclude Include="..\..\..\src\AudioTrack.h" />
     <ClInclude Include="..\..\..\src\av\AvCodec.h" />
     <ClInclude Include="..\..\..\src\av\AvContainer.h" />
-    <ClInclude Include="..\..\..\src\av\AvController.h" />
+    <ClInclude Include="..\..\..\src\av\MediaController.h" />
+    <ClInclude Include="..\..\..\src\av\MediaContext.h" />
+    <ClInclude Include="..\..\..\src\av\StreamType.h" />
     <ClInclude Include="..\..\..\src\Codec.h" />
     <ClInclude Include="..\..\..\src\compat\ConditionVariable.h" />
     <ClInclude Include="..\..\..\src\compat\Mutex.h" />
@@ -498,6 +500,9 @@
     <ClInclude Include="..\..\..\src\factory\ParserMediaFactory.h" />
     <ClInclude Include="..\..\..\src\Genre.h" />
     <ClInclude Include="..\..\..\src\History.h" />
+    <ClInclude Include="..\..\..\src\image\IImageContainer.h" />
+    <ClInclude Include="..\..\..\src\image\Image.h" />
+    <ClInclude Include="..\..\..\src\image\JpegImage.h" />
     <ClInclude Include="..\..\..\src\logging\FileLogger.h" />
     <ClInclude Include="..\..\..\src\MediaDevice.h" />
     <ClInclude Include="..\..\..\src\discoverer\DiscovererWorker.h" />
@@ -575,8 +580,8 @@
     <ClInclude Include="..\..\..\src\Metadata.h" />
     <ClInclude Include="..\..\..\src\metadata_services\FormatService.h" />
     <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h" />
+    <ClInclude Include="..\..\..\src\metadata_services\ThumbnailService.h" />
     <ClInclude Include="..\..\..\src\Movie.h" />
-    <ClInclude Include="..\..\..\src\parser\MediaTrack.h" />
     <ClInclude Include="..\..\..\src\parser\ParserMedia.h" />
     <ClInclude Include="..\..\..\src\parser\Parser.h" />
     <ClInclude Include="..\..\..\src\parser\ParserService.h" />
@@ -602,7 +607,8 @@
     <ClCompile Include="..\..\..\src\AlbumTrack.cpp" />
     <ClCompile Include="..\..\..\src\Artist.cpp" />
     <ClCompile Include="..\..\..\src\AudioTrack.cpp" />
-    <ClCompile Include="..\..\..\src\av\AvController.cpp" />
+    <ClCompile Include="..\..\..\src\av\MediaController.cpp" />
+    <ClCompile Include="..\..\..\src\av\MediaContext.cpp" />
     <ClCompile Include="..\..\..\src\Codec.cpp" />
     <ClCompile Include="..\..\..\src\Container.cpp" />
     <ClCompile Include="..\..\..\src\database\SqliteConnection.cpp" />
@@ -611,6 +617,8 @@
     <ClCompile Include="..\..\..\src\factory\ParserMediaFactory.cpp" />
     <ClCompile Include="..\..\..\src\Genre.cpp" />
     <ClCompile Include="..\..\..\src\History.cpp" />
+    <ClCompile Include="..\..\..\src\image\Image.cpp" />
+    <ClCompile Include="..\..\..\src\image\JpegImage.cpp" />
     <ClCompile Include="..\..\..\src\MediaDevice.cpp" />
     <ClCompile Include="..\..\..\src\discoverer\DiscovererWorker.cpp" />
     <ClCompile Include="..\..\..\src\discoverer\FsDiscoverer.cpp" />
@@ -695,6 +703,7 @@
     <ClCompile Include="..\..\..\src\Metadata.cpp" />
     <ClCompile Include="..\..\..\src\metadata_services\FormatService.cpp" />
     <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp" />
+    <ClCompile Include="..\..\..\src\metadata_services\ThumbnailService.cpp" />
     <ClCompile Include="..\..\..\src\Movie.cpp" />
     <ClCompile Include="..\..\..\src\parser\Parser.cpp" />
     <ClCompile Include="..\..\..\src\parser\ParserMedia.cpp" />

@@ -15,7 +15,7 @@ mxp::fs::File::File(const std::string &filePath)
   : CommonFile(filePath) {
 }
 
-time_t mxp::fs::File::LastModificationDate() const {
+time_t mxp::fs::File::GetLastModificationDate() const {
   if (m_lastModificationDate == 0) {
 #ifdef _WIN32
     struct _stat s;

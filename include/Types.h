@@ -11,13 +11,19 @@ class Album;
 class AlbumTrack;
 class Artist;
 class Genre;
+class Image;
 class Media;
+class MediaContext;
 class MediaExplorer;
+class Movie;
 class Show;
 class ShowEpisode;
 class SqliteConnection;
 class Stream;
 class VideoTrack;
+
+using MediaContextPtr = std::shared_ptr<MediaContext>;
+using ImagePtr        = std::shared_ptr<Image>;
 
 typedef SqliteConnection* DBConnection;
 using MediaExplorerPtr = const MediaExplorer*;

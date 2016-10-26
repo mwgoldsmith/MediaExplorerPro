@@ -11,15 +11,12 @@
 #include "Media.h"
 #include "MediaFile.h"
 #include "Metadata.h"
-#include "parser/ParserMedia.h"
+#include "Stream.h"
+#include "av/MediaController.h"
 #include "mediaexplorer/ILogger.h"
-#include <av/AvController.h>
-#include <Stream.h>
+#include "parser/ParserMedia.h"
 
 bool mxp::FormatService::Initialize() {
-  //m_unknownArtist = Artist::Fetch(m_ml, UnknownArtistID);
-  //if (m_unknownArtist == nullptr)
-  // return m_unknownArtist != nullptr;
   return true;
 }
 
@@ -65,16 +62,25 @@ mxp::parser::Task::Status mxp::FormatService::Run(parser::Task & task) {
   auto parserMedia = parser::ParserMedia(m_ml, task);
 
   // Set the media container
-  auto container = av::AvController::FindContainer(task.ContainerName);
+  auto container = av::MediaController::FindContainer(task.ContainerName);
   media->SetContainer(container);
 
   // Create or update all metadata
   auto metadata = media->GetMetadata();
   UpdateMetadata(media, metadata, task.Metadata);
 
+  // FIXME: Find a way to determine the type of media
+  auto type = IMedia::Type::UnknownType;
+
   auto streams = Stream::FindByMedia(m_ml, media->Id());
   for(const auto& tag : task.Streams) {
-    auto codec = av::AvController::FindCodec(tag.CodecName, tag.Type);
+    if (tag.Type == MediaType::Video) {
+      type = IMedia::Type::VideoType;
+    } else if (type != IMedia::Type::VideoType && tag.Type == MediaType::Audio) {
+      type = IMedia::Type::AudioType;
+    }
+
+    auto codec = av::MediaController::FindCodec(tag.CodecName, tag.Type);
     StreamPtr stream = nullptr;
 
     for(const auto& s : streams) {
@@ -91,6 +97,9 @@ mxp::parser::Task::Status mxp::FormatService::Run(parser::Task & task) {
     metadata = stream->GetMetadata();
     UpdateMetadata(stream, metadata, tag.Metadata);
   }
+
+  task.Type = type;
+  media->Save();
 
   auto duration = std::chrono::steady_clock::now() - chrono;
   LOG_DEBUG("Parsing done in ", std::chrono::duration_cast<std::chrono::microseconds>(duration).count(), "µs");

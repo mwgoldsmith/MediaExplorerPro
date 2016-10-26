@@ -17,7 +17,7 @@ protected:
   bool UpsertMetadata(mxp::MetadataPtr m, const mxp::parser::Task::MetadataInfo& tag);
 
   template<class T, class U>
-  void  UpdateMetadata(std::shared_ptr<T>& inst, const std::vector<mxp::MetadataPtr>& orig, const std::vector<U>& cur) {
+  void UpdateMetadata(std::shared_ptr<T>& inst, const std::vector<mxp::MetadataPtr>& orig, const std::vector<U>& cur) {
     for(const auto &tag : cur) {
       LOG_TRACE("Metadata: ", tag.Name, "=", tag.Value);
 
@@ -34,12 +34,8 @@ protected:
     }
   }
 
-  //void storeMeta(parser::Task& task, VLC::Media& vlcMedia);
-  //int toInt(VLC::Media& vlcMedia, libvlc_meta_t meta, const char* name);
-
 private:
-  //VLC::Instance m_instance;
-  compat::Mutex m_mutex;
+  compat::Mutex             m_mutex;
   compat::ConditionVariable m_cond;
 };
 

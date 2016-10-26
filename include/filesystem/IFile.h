@@ -17,21 +17,21 @@ public:
   /**
    * @return The filename, including extension
    */
-  virtual const std::string& Name() const = 0;
+  virtual const std::string& GetName() const = 0;
 
   /**
    * @return The path containing the file
    */
-  virtual const std::string& path() const = 0;
+  virtual const std::string& GetPath() const = 0;
 
   /**
    * @return The entire path, plus filename
    */
-  virtual const std::string& FullPath() const = 0;
+  virtual const std::string& GetFullPath() const = 0;
 
-  virtual const std::string& Extension() const = 0;
+  virtual const std::string& GetExtension() const = 0;
 
-  virtual time_t LastModificationDate() const = 0;
+  virtual time_t GetLastModificationDate() const = 0;
 };
 
 } /* namespace fs */

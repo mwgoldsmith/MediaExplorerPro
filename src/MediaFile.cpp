@@ -34,9 +34,9 @@ mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const
   : m_ml(ml)
   , m_id(0)
   , m_mediaId(mediaId)
-  , m_mrl(isRemovable == true ? file.Name() : file.FullPath())
+  , m_mrl(isRemovable == true ? file.GetName() : file.GetFullPath())
   , m_type(type)
-  , m_lastModificationDate(file.LastModificationDate())
+  , m_lastModificationDate(file.GetLastModificationDate())
   , m_isParsed(false)
   , m_folderId(folderId)
   , m_isPresent(true)
@@ -146,7 +146,7 @@ std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int6
     if(insert(ml, self, req, mediaId, self->m_mrl, type, sqlite::ForeignKey(folderId), self->m_lastModificationDate, isRemovable) == false) {
       self = nullptr;
     } else {
-      self->m_fullPath = fileFs.FullPath();
+      self->m_fullPath = fileFs.GetFullPath();
     }
   } catch (std::exception& ex) {
     LOG_ERROR("Failed to create MediaFile: ", ex.what());

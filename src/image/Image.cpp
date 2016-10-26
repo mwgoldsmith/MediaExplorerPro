@@ -11,15 +11,15 @@
 #include "logging/Logger.h"
 
 mxp::Image::Image(uint32_t x, uint32_t y, uint32_t z) noexcept
-  : m_data{}
+  : m_data{ nullptr }
   , m_x{ x }
   , m_y{ y }
   , m_z{ z }
   , m_size{ 0 }  {
 }
 
-mxp::Image::Image(uint32_t x, uint32_t y, uint32_t z, value_type* data, size_type c) noexcept
-  : m_data{}
+mxp::Image::Image(uint32_t x, uint32_t y, uint32_t z, uint8_t* data, size_t c) noexcept
+  : m_data{ nullptr }
   , m_x{ x }
   , m_y{ y }
   , m_z{ z }
@@ -27,10 +27,17 @@ mxp::Image::Image(uint32_t x, uint32_t y, uint32_t z, value_type* data, size_typ
   Assign(data, c);
 }
 
-mxp::Image::value_type mxp::Image::operator[](size_type index) {
-  return (*m_data.get())[index];
+mxp::Image::~Image() {
+  if (m_data != nullptr) {
+    free(m_data);
+  }
 }
-std::shared_ptr<mxp::Image::buffer_type> mxp::Image::GetData() const noexcept {
+
+uint8_t mxp::Image::operator[](size_t index) {
+  return m_data[index];
+}
+
+const uint8_t* mxp::Image::GetData() const noexcept {
   return m_data;
 }
 
@@ -46,17 +53,17 @@ uint32_t mxp::Image::GetZ() const noexcept {
   return m_z;
 }
 
-mxp::Image::size_type mxp::Image::GetSize() const noexcept {
+size_t mxp::Image::GetSize() const noexcept {
   return m_size;
 }
 
-bool mxp::Image::Assign(value_type* data, size_type c) noexcept {
+bool mxp::Image::Assign(const uint8_t* data, size_t c) noexcept {
   auto success = true;
 
   try {
-    m_data = std::make_shared<buffer_type>(c);
+    m_data = static_cast<uint8_t*>(malloc(c * sizeof(uint8_t)));
     m_size = c;
-    memcpy(m_data.get(), data, c * sizeof(value_type));
+    memcpy(m_data, data, c * sizeof(uint8_t));
   } catch(std::exception& ex) {
     LOG_ERROR("failed to assign Image: ", ex.what());
     m_data = {};

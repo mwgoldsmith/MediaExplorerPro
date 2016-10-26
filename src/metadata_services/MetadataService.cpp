@@ -7,13 +7,12 @@
 # include "config.h"
 #endif
 
-#include <cstdlib>
 #include "Album.h"
 #include "AlbumTrack.h"
 #include "Artist.h"
-#include "MediaFile.h"
 #include "Genre.h"
 #include "Media.h"
+#include "MediaFile.h"
 #include "MetadataService.h"
 #include "Show.h"
 #include "utils/Filename.h"
@@ -21,8 +20,10 @@
 
 bool mxp::MetadataService::Initialize() {
   m_unknownArtist = Artist::Fetch(m_ml, UnknownArtistID);
-  if (m_unknownArtist == nullptr)
-  LOG_ERROR("Failed to cache unknown artist");
+  if(m_unknownArtist == nullptr) {
+    LOG_ERROR("Failed to cache unknown artist");
+  }
+
   return m_unknownArtist != nullptr;
 }
 
@@ -41,27 +42,35 @@ uint8_t mxp::MetadataService::nbThreads() const {
 
 mxp::parser::Task::Status mxp::MetadataService::Run(mxp::parser::Task& task) {
   auto& media = task.Media;
-
   auto t = m_ml->GetConnection()->NewTransaction();
+
   auto isAudio = task.VideoTracks.empty();
   for (const auto& track : task.VideoTracks) {
     media->AddVideoTrack(track.Fcc, track.Width, track.Height, track.Fps, track.Language, track.Description);
   }
+
   for (const auto& track : task.AudioTracks) {
     media->AddAudioTrack(track.Fcc, track.Bitrate, track.Samplerate, track.NumChannels, track.Language, track.Description);
   }
+
   t->Commit();
+
   if (isAudio == true) {
-    if (ParseAudioFile(task) == false)
+    if(ParseAudioFile(task) == false) {
       return parser::Task::Status::Fatal;
+    }
   } else {
-    if (ParseVideoFile(task) == false)
+    if(ParseVideoFile(task) == false) {
       return parser::Task::Status::Fatal;
+    }
   }
-  auto duration = task.Duration;
-  media->SetDuration(duration);
-  if (media->Save() == false)
+
+  media->SetType(task.Type);
+  media->SetDuration(task.Duration);
+  if(media->Save() == false) {
     return parser::Task::Status::Error;
+  }
+
   return parser::Task::Status::Success;
 }
 
@@ -70,24 +79,27 @@ mxp::parser::Task::Status mxp::MetadataService::Run(mxp::parser::Task& task) {
 bool mxp::MetadataService::ParseVideoFile(mxp::parser::Task& task) const {
   auto media = task.Media.get();
   media->SetType(IMedia::Type::VideoType);
-  if (task.Title.length() == 0)
+  if(task.Title.length() == 0) {
     return true;
+  }
 
   if (task.ShowName.length() == 0) {
     auto show = m_ml->GetShow(task.ShowName);
     if (show == nullptr) {
       show = m_ml->CreateShow(task.ShowName);
-      if (show == nullptr)
+      if(show == nullptr) {
         return false;
+      }
     }
 
     if (task.Episode != 0) {
-      std::shared_ptr<Show> s = std::static_pointer_cast<Show>(show);
+      auto s = std::static_pointer_cast<Show>(show);
       s->AddEpisode(*media, task.Title, task.Episode);
     }
   } else {
     // How do we know if it's a movie or a random video?
   }
+
   return true;
 }
 
@@ -95,106 +107,25 @@ bool mxp::MetadataService::ParseVideoFile(mxp::parser::Task& task) const {
 
 bool mxp::MetadataService::ParseAudioFile(mxp::parser::Task& task) const {
   task.Media->SetType(IMedia::Type::AudioType);
-
   if(task.artworkMrl.empty() == false) {
     task.Media->SetThumbnail(task.artworkMrl);
   }
+
   auto artists = HandleArtists(task);
   auto album = HandleAlbum(task, artists.first, artists.second);
   if (album == nullptr) {
     LOG_WARN("Failed to get/create associated album");
     return false;
   }
+
   auto t = m_ml->GetConnection()->NewTransaction();
   auto res = Link(*task.Media, album, artists.first, artists.second);
   t->Commit();
+
   return res;
 }
 
 /* Album handling */
-std::shared_ptr<mxp::Album> mxp::MetadataService::FindAlbum(parser::Task& task, Artist* albumArtist) const {
-  static const auto req = "SELECT * FROM " + policy::AlbumTable::Name + " WHERE title = ?";
-
-  auto albums = Album::FetchAll<Album>(m_ml, req, task.AlbumName);
-  if(albums.size() == 0) {
-    return nullptr;
-  }
-
-  // Even if we get only 1 album, we need to filter out invalid matches.
-  // For instance, if we have already inserted an album "A" by an artist "john"
-  // but we are now trying to Handle an album "A" by an artist "doe", not filtering
-  // candidates would yield the only "A" album we know, while we should return
-  // nullptr, so HandleAlbum can create a new one.
-  for (auto it = begin(albums); it != end(albums);) {
-    auto a = (*it).get();
-    if (albumArtist != nullptr) {
-      // We assume that an album without album artist is a positive match.
-      // At the end of the day, without proper tags, there's only so much we can do.
-      auto candidateAlbumArtist = a->AlbumArtist();
-      if (candidateAlbumArtist != nullptr && candidateAlbumArtist->Id() != albumArtist->Id()) {
-        it = albums.erase(it);
-        continue;
-      }
-    }
-
-    // If this is a multidisc album, assume it could be in a multiple amount of folders.
-    // Since folders can come in any order, we can't assume the first album will be the
-    // first media we see. If the discTotal or discNumber meta are provided, that's easy. If not,
-    // we assume that another CD with the same name & artists, and a disc number > 1
-    // denotes a multi disc album
-    // Check the first case early to avoid fetching tracks if unrequired.
-    if (task.discTotal > 1 || task.discNumber > 1) {
-      ++it;
-      continue;
-    }
-
-    const auto tracks = a->CachedTracks();
-    assert(tracks.size() > 0);
-
-    auto multiDisc = false;
-    for (auto& t : tracks) {
-      auto at = t->AlbumTrack();
-      assert(at != nullptr);
-      if (at != nullptr && at->GetDiscNumber() > 1) {
-        multiDisc = true;
-        break;
-      }
-    }
-    if (multiDisc) {
-      ++it;
-      continue;
-    }
-
-    // Assume album files will be in the same folder.
-    auto newFileFolder = utils::file::directory(task.MediaFile->mrl());
-    auto trackFiles = tracks[0]->Files();
-    auto excluded = false;
-    for (auto& f : trackFiles) {
-      auto candidateFolder = utils::file::directory(f->mrl());
-      if (candidateFolder != newFileFolder) {
-        excluded = true;
-        break;
-      }
-    }
-
-    if (excluded == true) {
-      it = albums.erase(it);
-      continue;
-    }
-
-    ++it;
-  }
-
-  if(albums.size() == 0) {
-    return nullptr;
-  }
-  if (albums.size() > 1) {
-    LOG_WARN("Multiple candidates for album ", task.AlbumName, ". Selecting first one out of luck");
-  }
-
-  return std::static_pointer_cast<Album>(albums[0]);
-}
-
 std::shared_ptr<mxp::Album> mxp::MetadataService::HandleAlbum(parser::Task& task, std::shared_ptr<Artist> albumArtist, std::shared_ptr<Artist> trackArtist) const {
   auto artist = albumArtist;
   if (artist == nullptr) {
@@ -231,6 +162,89 @@ std::shared_ptr<mxp::Album> mxp::MetadataService::HandleAlbum(parser::Task& task
   // If we know a track artist, specify it, otherwise, fallback to the album/unknown artist
   auto track = HandleTrack(album, task, trackArtist ? trackArtist : artist);
   return album;
+}
+
+std::shared_ptr<mxp::Album> mxp::MetadataService::FindAlbum(parser::Task& task, Artist* albumArtist) const {
+  static const auto req = "SELECT * FROM " + policy::AlbumTable::Name + " WHERE title = ?";
+
+  auto albums = Album::FetchAll<Album>(m_ml, req, task.AlbumName);
+  if(albums.size() == 0) {
+    return nullptr;
+  }
+
+  // Even if we get only 1 album, we need to filter out invalid matches.
+  // For instance, if we have already inserted an album "A" by an artist "john"
+  // but we are now trying to Handle an album "A" by an artist "doe", not filtering
+  // candidates would yield the only "A" album we know, while we should return
+  // nullptr, so HandleAlbum can create a new one.
+  for(auto it = begin(albums); it != end(albums);) {
+    auto a = (*it).get();
+    if(albumArtist != nullptr) {
+      // We assume that an album without album artist is a positive match.
+      // At the end of the day, without proper tags, there's only so much we can do.
+      auto candidateAlbumArtist = a->AlbumArtist();
+      if(candidateAlbumArtist != nullptr && candidateAlbumArtist->Id() != albumArtist->Id()) {
+        it = albums.erase(it);
+        continue;
+      }
+    }
+
+    // If this is a multidisc album, assume it could be in a multiple amount of folders.
+    // Since folders can come in any order, we can't assume the first album will be the
+    // first media we see. If the discTotal or discNumber meta are provided, that's easy. If not,
+    // we assume that another CD with the same name & artists, and a disc number > 1
+    // denotes a multi disc album
+    // Check the first case early to avoid fetching tracks if unrequired.
+    if(task.discTotal > 1 || task.discNumber > 1) {
+      ++it;
+      continue;
+    }
+
+    const auto tracks = a->CachedTracks();
+    assert(tracks.size() > 0);
+
+    auto multiDisc = false;
+    for(auto& t : tracks) {
+      auto at = t->AlbumTrack();
+      assert(at != nullptr);
+      if(at != nullptr && at->GetDiscNumber() > 1) {
+        multiDisc = true;
+        break;
+      }
+    }
+    if(multiDisc) {
+      ++it;
+      continue;
+    }
+
+    // Assume album files will be in the same folder.
+    auto newFileFolder = utils::file::directory(task.MediaFile->mrl());
+    auto trackFiles = tracks[0]->Files();
+    auto excluded = false;
+    for(auto& f : trackFiles) {
+      auto candidateFolder = utils::file::directory(f->mrl());
+      if(candidateFolder != newFileFolder) {
+        excluded = true;
+        break;
+      }
+    }
+
+    if(excluded == true) {
+      it = albums.erase(it);
+      continue;
+    }
+
+    ++it;
+  }
+
+  if(albums.size() == 0) {
+    return nullptr;
+  }
+  if(albums.size() > 1) {
+    LOG_WARN("Multiple candidates for album ", task.AlbumName, ". Selecting first one out of luck");
+  }
+
+  return std::static_pointer_cast<Album>(albums[0]);
 }
 
 /**

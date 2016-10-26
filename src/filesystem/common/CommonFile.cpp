@@ -17,18 +17,18 @@ mxp::fs::CommonFile::CommonFile(const std::string& filePath)
   , m_extension(utils::file::extension(filePath)) {
 }
 
-const std::string& mxp::fs::CommonFile::Name() const {
+const std::string& mxp::fs::CommonFile::GetName() const {
   return m_name;
 }
 
-const std::string& mxp::fs::CommonFile::path() const {
+const std::string& mxp::fs::CommonFile::GetPath() const {
   return m_path;
 }
 
-const std::string& mxp::fs::CommonFile::FullPath() const {
+const std::string& mxp::fs::CommonFile::GetFullPath() const {
   return m_fullPath;
 }
 
-const std::string& mxp::fs::CommonFile::Extension() const {
+const std::string& mxp::fs::CommonFile::GetExtension() const {
   return m_extension;
 }

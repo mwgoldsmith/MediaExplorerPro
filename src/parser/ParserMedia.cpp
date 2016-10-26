@@ -23,7 +23,7 @@ extern "C" {
 #include "logging/Logger.h"
 #include "parser/ParserMedia.h"
 #include "parser/Task.h"
-#include <av/AvController.h>
+#include <av/MediaController.h>
 
 void print_error(const char *msg, int err) {
   char errbuf[128];
@@ -41,10 +41,11 @@ mxp::parser::ParserMedia::ParserMedia(MediaExplorerPtr ml, parser::Task& task)
   AVFormatContext* fmtCtx = nullptr;
 
   auto file = m_ml->GetFileSystem()->CreateFileFromPath(task.MediaFile->mrl());
-  auto filename = file->FullPath().c_str();
+  auto filename = file->GetFullPath().c_str();
   LOG_DEBUG("Parsing media for file '", filename, "'");
 
   try {
+
     int err;
     if((err = avformat_open_input(&fmtCtx, filename, nullptr, nullptr)) < 0) {
       print_error("Failed to create media container: ", err);
@@ -143,7 +144,7 @@ print_error("Failed to create media container: ", err);
 print_error("Cannot find stream information: ", err);
 } else {
 auto fmt = fmtCtx->iformat;
-m_context->m_container = av::AvController::FindContainer(fmt->name);
+m_context->m_container = av::MediaController::FindContainer(fmt->name);
 m_context->m_numStreams = fmtCtx->nb_streams;
 
 LOG_INFO("Media file '", filename, "' contains ", m_context->m_numStreams, " streams.");
@@ -233,7 +234,7 @@ void mxp::parser::ParserMedia::UpdateStreams(MediaExplorerPtr ml, std::shared_pt
     LOG_DEBUG("Stream[", i, "] = { '", filename, "', ", av_get_media_type_string(context->codec_type), ", ", avcodec_get_name(context->codec_id), " }");
 
     //auto type = mxp::av::GetMediaType(decoder->type);
-    auto codec = av::AvController::FindCodec(decoder->name, type);
+    auto codec = av::MediaController::FindCodec(decoder->name, type);
     auto stream = mxp::Stream::Create(ml, codec, i, media, type);
 
     UpdateMetadata(i, stream);

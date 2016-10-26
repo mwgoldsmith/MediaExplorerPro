@@ -6,10 +6,14 @@
 #if HAVE_CONFIG_H
 #  include "config.h"
 #endif
+#include <image/JpegImage.h>
+#include <image/Image.h>
+#include "StreamType.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libswscale/swscale.h>
 #include <libavutil/log.h>
 }
 
@@ -18,7 +22,8 @@ extern "C" {
 #include "MediaExplorer.h"
 #include "av/AvCodec.h"
 #include "av/AvContainer.h"
-#include "av/AvController.h"
+#include "av/MediaController.h"
+#include "av/MediaContext.h"
 #include "compat/Mutex.h"
 #include "logging/Logger.h"
 
@@ -68,10 +73,11 @@ static void AvLogCallback(void* avcl, int level, const char* format, va_list vl)
 using AvContainerVector = std::vector<mxp::av::AvContainer>;
 using AvCodecVector = std::vector<mxp::av::AvCodec>;
 
-mxp::MediaExplorerPtr mxp::av::AvController::s_ml = nullptr;
-std::unique_ptr< mxp::av::AvController::ContainerVector> mxp::av::AvController::s_containers = {};
-std::unique_ptr< mxp::av::AvController::CodecVector> mxp::av::AvController::s_codecs = {};
-mxp::av::AvController::ContainerType mxp::av::AvController::s_containerTypes[] = {
+mxp::MediaExplorerPtr mxp::av::MediaController::s_ml = nullptr;
+std::unique_ptr< mxp::av::MediaController::ContainerVector> mxp::av::MediaController::s_containers = {};
+std::unique_ptr< mxp::av::MediaController::CodecVector> mxp::av::MediaController::s_codecs = {};
+
+mxp::av::MediaController::ContainerType mxp::av::MediaController::s_containerTypes[] = {
   { "avi", MediaType::Video },
   { "cdxl", MediaType::Video },
   { "dv", MediaType::Video },
@@ -173,8 +179,8 @@ std::string mxp::av::GetMediaTypeString(MediaType type) {
   return{};
 }
 
-bool mxp::av::AvController::Initialize(MediaExplorerPtr ml) {
-  LOG_DEBUG("Initializing the AvController");
+bool mxp::av::MediaController::Initialize(MediaExplorerPtr ml) {
+  LOG_DEBUG("Initializing the MediaController");
 
   av_log_set_callback(AvLogCallback);
   av_log_set_level(AV_LOG_WARNING);
@@ -182,7 +188,6 @@ bool mxp::av::AvController::Initialize(MediaExplorerPtr ml) {
 
   s_ml = ml;
 
- 
   std::function<void(const ContainerPtr &)> cbMarkContainer = [](const ContainerPtr& c) { c->SetSupported(false); };
   std::function<void(const AvContainer &)> cbNewContainer = [ml](const AvContainer& c) {
     auto type = MediaType::None;
@@ -226,7 +231,7 @@ bool mxp::av::AvController::Initialize(MediaExplorerPtr ml) {
   return true;
 }
 
-std::vector<mxp::av::AvContainer> mxp::av::AvController::GetAvContainers() {
+std::vector<mxp::av::AvContainer> mxp::av::MediaController::GetAvContainers() {
   std::vector<AvContainer> avContainers;
 
   LOG_DEBUG("Enumerating input formats");
@@ -246,7 +251,7 @@ std::vector<mxp::av::AvContainer> mxp::av::AvController::GetAvContainers() {
   return avContainers;
 }
 
-std::vector<mxp::av::AvCodec> mxp::av::AvController::GetAvCodecs() {
+std::vector<mxp::av::AvCodec> mxp::av::MediaController::GetAvCodecs() {
   std::vector<AvCodec> avCodecs;
 
   LOG_DEBUG("Enumerating codecs");
@@ -275,21 +280,21 @@ std::vector<mxp::av::AvCodec> mxp::av::AvController::GetAvCodecs() {
   return avCodecs;
 }
 
-mxp::ContainerPtr mxp::av::AvController::FindContainer(const mstring name) {
+mxp::ContainerPtr mxp::av::MediaController::FindContainer(const mstring name) {
   ContainerPtr result = nullptr;
   auto containers = s_containers.get();
 
   for(auto const& t : *containers) {
     if(t->GetName().compare(name) == 0) {
-      result = t;
-      break;
+result = t;
+break;
     }
   }
 
   return result;
 }
 
-mxp::CodecPtr mxp::av::AvController::FindCodec(const mstring name, MediaType type) {
+mxp::CodecPtr mxp::av::MediaController::FindCodec(const mstring name, MediaType type) {
   CodecPtr result = nullptr;
   auto codecs = s_codecs.get();
 
@@ -301,4 +306,128 @@ mxp::CodecPtr mxp::av::AvController::FindCodec(const mstring name, MediaType typ
   }
 
   return result;
+}
+
+class PictureBuffer {
+public:
+  PictureBuffer()
+    : m_frame{ nullptr }
+    , m_buffer{ nullptr } {
+  }
+
+  ~PictureBuffer() {
+    if(m_frame != nullptr)
+      av_free(m_frame);
+    if(m_buffer != nullptr)
+      av_free(m_buffer);
+  }
+
+  AVFrame* GetFrame() const {
+    return m_frame;
+  }
+
+  int GetSize() const {
+    return m_size;
+  }
+
+  static std::unique_ptr<PictureBuffer> Create(int width, int height) {
+    auto self = std::make_unique<PictureBuffer>();
+    self->m_frame = av_frame_alloc();
+    if(self->m_frame == nullptr)
+      return nullptr;
+
+    self->m_size = avpicture_get_size(PIX_FMT_RGB24, width, height);
+    self->m_buffer = static_cast<uint8_t *>(av_malloc(self->m_size * sizeof(uint8_t)));
+    if(self->m_buffer == nullptr) {
+      return nullptr;
+    }
+
+    avpicture_fill(reinterpret_cast<AVPicture *>(self->m_frame), self->m_buffer, PIX_FMT_RGB24, width, height);
+    return self;
+  }
+
+private:
+  AVFrame* m_frame;
+  uint8_t* m_buffer;
+  int      m_size;
+};
+
+mxp::MediaContextPtr mxp::av::MediaController::CreateContext(const mstring name) {
+  auto context = std::make_shared<MediaContext>(name);
+  if(context->Open() == true)
+    return context;
+
+  return context;
+}
+
+bool mxp::av::MediaController::OpenStream(MediaContextPtr context, StreamType type, int index) {
+  return context->OpenStream(type, index);
+}
+
+bool mxp::av::MediaController::Seek(MediaContextPtr context, double ts) {
+  auto stream = context->GetStream();
+  int64_t target = av_rescale_q((int64_t)(ts * AV_TIME_BASE), AV_TIME_BASE_Q, stream->time_base);
+  if(av_seek_frame(context->GetFormatContext(), context->GetIndex(), target, AVSEEK_FLAG_FRAME) < 0)
+    return false;
+
+  context->SetTimestamp(target);
+
+  return true;
+}
+
+mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
+  auto pCodecCtx = context->GetCodecContext();
+  if(pCodecCtx->pix_fmt == AV_PIX_FMT_NONE) {
+    LOG_WARN("Failed to read from; pixel format unknown.");
+    return nullptr;
+  }
+
+  auto height = pCodecCtx->height;
+  auto width = pCodecCtx->width;
+
+  auto pConvertedFrame = PictureBuffer::Create(width, height);
+  if(pConvertedFrame == nullptr)
+    return nullptr;
+
+  auto swc = sws_getContext(width, height, pCodecCtx->pix_fmt, width, height, PIX_FMT_RGB24, SWS_BILINEAR, NULL, NULL, NULL);
+  auto pFrame = av_frame_alloc();
+  if(pFrame == nullptr)
+    return nullptr;
+
+  AVPacket packet;
+  ImagePtr image = nullptr;
+
+  while(av_read_frame(context->GetFormatContext(), &packet) >= 0) {
+    int finished = 0;
+    if(packet.stream_index == context->GetIndex()) {
+      avcodec_decode_video2(pCodecCtx, pFrame, &finished, &packet);
+
+      if(finished) {
+        if(packet.pts == 0) {
+          context->SetTimestamp(packet.dts);
+        } else {
+          context->SetTimestamp(packet.pts);
+        }
+
+        auto frame = pConvertedFrame->GetFrame();
+        sws_scale(swc, pFrame->data, pFrame->linesize, 0, height, frame->data, frame->linesize);
+        image = std::make_shared<Image>(width, height, 3, frame->data[0], pConvertedFrame->GetSize());
+      }
+    }
+
+    av_free_packet(&packet);
+
+    if(finished)
+      break;
+  }
+
+  av_free(pFrame);
+  sws_freeContext(swc);
+
+  return image;
+}
+
+
+void mxp::av::MediaController::CloseStream(MediaContextPtr context) {
+  context->CloseStream();
 }

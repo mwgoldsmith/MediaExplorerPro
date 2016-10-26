@@ -387,7 +387,7 @@ std::shared_ptr<mxp::Media> mxp::Media::Create(MediaExplorerPtr ml, Type type, c
   std::shared_ptr<Media> self;
 
   try {
-    self = std::make_shared<Media>(ml, file.Name(), type);
+    self = std::make_shared<Media>(ml, file.GetName(), type);
     if(insert(ml, self, req, type, self->m_insertionDate, self->m_title, self->m_filename) == false) {
       self = nullptr;
     }

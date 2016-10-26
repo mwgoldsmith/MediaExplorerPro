@@ -29,7 +29,7 @@
 #include "Stream.h"
 #include "Types.h"
 #include "VideoTrack.h"
-#include "av/AvController.h"
+#include "av/MediaController.h"
 #include "database/SqliteConnection.h"
 #include "discoverer/DiscovererWorker.h"
 #include "discoverer/FsDiscoverer.h"
@@ -41,6 +41,7 @@
 #include "mediaexplorer/ILogger.h"
 #include "metadata_services/FormatService.h"
 #include "metadata_services/MetadataService.h"
+#include "metadata_services/ThumbnailService.h"
 #include "parser/Parser.h"
 #include "utils/Filename.h"
 #include "utils/ModificationsNotifier.h"
@@ -211,7 +212,7 @@ bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
 
 void mxp::MediaExplorer::StartAvController() {
   // Database must be initialized already
-  av::AvController::Initialize(this);
+  av::MediaController::Initialize(this);
 
   if(m_pmFactory == nullptr) {
     m_pmFactory.reset(new factory::ParserMediaFactory(this));
@@ -227,12 +228,12 @@ void mxp::MediaExplorer::StartDiscoverer() {
 void mxp::MediaExplorer::StartParser() {
   m_parser.reset(new Parser(this));
 
-  auto formatService = std::make_unique<mxp::FormatService>();
-  auto metadataService = std::make_unique<mxp::MetadataService>();
-  //auto thumbnailerService = std::unique_ptr<VLCThumbnailer>(new VLCThumbnailer);
+  auto formatService = std::make_unique<FormatService>();
+  auto metadataService = std::make_unique<MetadataService>();
+  auto thumbnailerService = std::make_unique<ThumbnailService>();
   m_parser->AddService(std::move(formatService));
   m_parser->AddService(std::move(metadataService));
-  //m_parser->AddService(std::move(thumbnailerService));
+  m_parser->AddService(std::move(thumbnailerService));
 
   m_parser->Start();
 }
@@ -244,19 +245,19 @@ void mxp::MediaExplorer::StartDeletionNotifier() {
 
 
 mxp::ShowPtr mxp::MediaExplorer::GetShow(const std::string& name) const {
-  static const std::string req = "SELECT * FROM " + policy::ShowTable::Name
-    + " WHERE name = ?";
+  static const auto req = "SELECT * FROM " + policy::ShowTable::Name + " WHERE name = ?";
   return Show::Fetch(this, req, name);
 }
+
 std::shared_ptr<mxp::Show> mxp::MediaExplorer::CreateShow(const std::string& name) {
   return Show::Create(this, name);
 }
 
 mxp::MoviePtr mxp::MediaExplorer::GetMovie(const std::string& title) const {
-  static const std::string req = "SELECT * FROM " + policy::MovieTable::Name
-    + " WHERE title = ?";
+  static const auto req = "SELECT * FROM " + policy::MovieTable::Name + " WHERE title = ?";
   return Movie::Fetch(this, req, title);
 }
+
 std::shared_ptr<mxp::Movie> mxp::MediaExplorer::CreateMovie(Media& media, const std::string& title) {
   auto movie = Movie::Create(this, media.Id(), title);
   media.SetMovie(movie);
@@ -267,11 +268,12 @@ std::shared_ptr<mxp::Movie> mxp::MediaExplorer::CreateMovie(Media& media, const 
 mxp::ArtistPtr mxp::MediaExplorer::GetArtist(int64_t id) const {
   return Artist::Fetch(this, id);
 }
+
 mxp::ArtistPtr mxp::MediaExplorer::GetArtist(const std::string& name) {
-  static const std::string req = "SELECT * FROM " + policy::ArtistTable::Name
-    + " WHERE name = ? AND is_present = 1";
+  static const auto req = "SELECT * FROM " + policy::ArtistTable::Name + " WHERE name = ? AND is_present = 1";
   return Artist::Fetch(this, req, name);
 }
+
 std::shared_ptr<mxp::Artist> mxp::MediaExplorer::CreateArtist(const std::string& name) {
   try {
     return Artist::Create(this, name);
@@ -284,6 +286,7 @@ std::shared_ptr<mxp::Artist> mxp::MediaExplorer::CreateArtist(const std::string&
 std::vector<mxp::ArtistPtr> mxp::MediaExplorer::ArtistList(SortingCriteria sort, bool desc) const {
   return Artist::ListAll(this, sort, desc);
 }
+
 //********
 // Albums
 mxp::AlbumPtr mxp::MediaExplorer::GetAlbum(int64_t id) const {
@@ -469,17 +472,17 @@ std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile
   //  return nullptr;
   //}
 
-  LOG_INFO("Adding ", fileFs.FullPath());
+  LOG_INFO("Adding ", fileFs.GetFullPath());
   auto media = mxp::Media::Create(this, mxp::IMedia::Type::UnknownType, fileFs);
   if (media == nullptr) {
-    LOG_ERROR("Failed to add media ", fileFs.FullPath(), " to the media library");
+    LOG_ERROR("Failed to add media ", fileFs.GetFullPath(), " to the media library");
     return nullptr;
   }
 
   // For now, assume all media are made of a single file
   auto file = media->AddFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
   if (file == nullptr) {
-    LOG_ERROR("Failed to add file ", fileFs.FullPath(), " to media #", media->Id());
+    LOG_ERROR("Failed to add file ", fileFs.GetFullPath(), " to media #", media->Id());
     mxp::Media::destroy(this, media->Id());
     return nullptr;
   }

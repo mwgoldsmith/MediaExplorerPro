@@ -155,19 +155,19 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
   std::vector<std::shared_ptr<mxp::MediaFile>> filesToRemove;
   for (const auto& fileFs: parentFolderFs.Files()) {
     auto it = std::find_if(begin(files), end(files), [fileFs](const std::shared_ptr<mxp::MediaFile>& f) {
-      return f->mrl() == fileFs->FullPath();
+      return f->mrl() == fileFs->GetFullPath();
     });
     if (it == end(files)) {
       filesToAdd.push_back(fileFs);
       continue;
     }
-    if (fileFs->LastModificationDate() == (*it)->LastModificationDate()) {
+    if (fileFs->GetLastModificationDate() == (*it)->LastModificationDate()) {
       // Unchanged file
       files.erase(it);
       continue;
     }
     auto& file = (*it);
-    LOG_INFO("Forcing file refresh ", fileFs->FullPath());
+    LOG_INFO("Forcing file refresh ", fileFs->GetFullPath());
     // Pre-cache the file's media, since we need it to remove. However, better doing it
     // out of a write context, since that way, other threads can also read the database.
     file->media();
@@ -196,7 +196,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
 bool mxp::FsDiscoverer::hasDotNoMediaFile(const mxp::fs::IDirectory& directory) {
   const auto& files = directory.Files();
   return std::find_if(begin(files), end(files), [](const std::shared_ptr<mxp::fs::IFile>& file) {
-    return file->Name() == ".nomedia";
+    return file->GetName() == ".nomedia";
   }) != end(files);
 }
 

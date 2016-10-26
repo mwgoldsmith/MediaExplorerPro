@@ -6,7 +6,7 @@
 #define AVCODEC_H
 
 #include "stdafx.h"
-#include <mediaexplorer/MediaType.h>
+#include "mediaexplorer/MediaType.h"
 
 namespace mxp {
 namespace av {
