@@ -15,15 +15,15 @@ public:
 
   virtual int64_t Id() const = 0;
 
-  virtual const std::string& GetTitle() const = 0;
+  virtual const mstring& GetTitle() const = 0;
 
-  virtual const std::string& ShortSummary() const = 0;
+  virtual const mstring& GetShortSummary() const = 0;
 
-  virtual const std::string& GetArtworkMrl() const = 0;
+  virtual const mstring& GetArtworkMrl() const = 0;
 
-  virtual const std::string& imdbId() const = 0;
+  virtual const mstring& GetImdbId() const = 0;
 
-  virtual std::vector<MediaPtr> Files() = 0;
+  virtual std::vector<MediaPtr> GetMedia() = 0;
 };
 
 } /* namespace mxp */
