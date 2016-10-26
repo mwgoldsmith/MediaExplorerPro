@@ -14,6 +14,7 @@
 mxp::Settings::Settings()
   : m_dbConn(nullptr)
   , m_dbModelVersion(0)
+  , m_thumbnailPath("")
   , m_changed(false) {}
 
 bool mxp::Settings::Load(DBConnection dbConn) {
@@ -24,12 +25,17 @@ bool mxp::Settings::Load(DBConnection dbConn) {
   if (row == nullptr) {
     if (sqlite::Tools::ExecuteInsert(m_dbConn, "INSERT INTO Settings VALUES(?)", MediaExplorer::DbModelVersion) == false)
       return false;
+
     m_dbModelVersion = MediaExplorer::DbModelVersion;
+    m_thumbnailPath = {};
   } else {
-    row >> m_dbModelVersion;
+    row >> m_dbModelVersion
+        >> m_thumbnailPath;
+
     // safety check: there sould only be one row
     assert( s.Row() == nullptr );
   }
+
   return true;
 }
 
@@ -53,9 +59,14 @@ void mxp::Settings::SetDbModelVersion(uint32_t DbModelVersion) {
   m_changed = true;
 }
 
+std::string mxp::Settings::GetThumbnailPath() const {
+  return m_thumbnailPath;
+}
+
 bool mxp::Settings::CreateTable(DBConnection dbConn) {
   const std::string req = "CREATE TABLE IF NOT EXISTS Settings("
-      "db_model_version UNSIGNED INTEGER NOT NULL DEFAULT 1"
+      "db_model_version UNSIGNED INTEGER NOT NULL DEFAULT 1,"
+      "thumbnail_path TEXT"
       ")";
   return sqlite::Tools::ExecuteRequest(dbConn, req);
 }
