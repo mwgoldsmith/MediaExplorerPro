@@ -10,16 +10,24 @@
 
 namespace mxp {
 
-class JpegImage : public IImageContainer {
+class JpegImageContainer : public IImageContainer {
 public:
+  JpegImageContainer();
+
   virtual const char* GetExtension() const override;
+
   virtual const char* GetFourCC() const override;
-  virtual uint32_t bpp() const override;
-  bool save(ImagePtr image, const std::string & outputFile);
-  virtual bool compress(const uint8_t* buffer, const std::string& output,
-    uint32_t inputWidth, uint32_t inputHeight,
-    uint32_t outputWidth, uint32_t outputHeight,
-    uint32_t hOffset, uint32_t vOffset) override;
+
+  virtual uint32_t GetBpp() const override;
+
+  virtual size_t GetSize() const noexcept override;
+
+  virtual bool Compress(ImagePtr image) override;
+
+  virtual bool Save(const mstring& filename) const override;
+
+private:
+  ImagePtr m_image;
 };
 
 } /* namespace mxp */

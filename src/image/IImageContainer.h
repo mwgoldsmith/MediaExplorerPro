@@ -6,6 +6,7 @@
 #define IIMAGECONTAINER_H
 
 #include "mediaexplorer/Common.h"
+#include "Types.h"
 
 namespace mxp {
 
@@ -14,24 +15,35 @@ public:
   virtual ~IImageContainer() = default;
 
   /**
-   * @return 
+   * @return The file name extension to use for the image container
    */
   virtual const mchar* GetExtension() const = 0;
 
   /**
-   * @return Returns the desired input fourcc for this compressor
+   * @return The desired input fourcc for the image compressor
    */
   virtual const char* GetFourCC() const = 0;
 
   /**
-   * @return
+   * @return The number of bits per pixel
    */
-  virtual uint32_t bpp() const = 0;
+  virtual uint32_t GetBpp() const = 0;
 
-  virtual bool compress(const uint8_t* buffer, const std::string& output,
-    uint32_t inputWidth, uint32_t inputHeight,
-    uint32_t outputWidth, uint32_t outputHeight,
-    uint32_t hOffset, uint32_t vOffset) = 0;
+  /**
+   * @return The number of elements in the image data buffer.
+   */
+  virtual size_t GetSize() const = 0;
+
+  /**
+   * @brief Compresses the specified image and stores the data in memory 
+   *
+   * @param image The war image data to compress.
+   *
+   * @return If successful, true; otherwise, false.
+   */
+  virtual bool Compress(ImagePtr image) = 0;
+
+  virtual bool Save(const mstring& filename) const = 0;
 };
 
 } /* namespace mxp */
