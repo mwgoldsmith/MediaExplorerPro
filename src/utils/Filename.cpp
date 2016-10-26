@@ -105,7 +105,7 @@ std::string mxp::utils::file::removePath(const std::string& fullPath, const std:
 }
 
 std::string& mxp::utils::file::toFolderPath(std::string& path) {
-  if (*path.crbegin() != DIR_SEPARATOR
+  if (path.size()>0 &&*path.crbegin() != DIR_SEPARATOR
 #ifdef _WIN32
       && *path.crbegin() != '/'
 #endif
@@ -116,7 +116,7 @@ std::string& mxp::utils::file::toFolderPath(std::string& path) {
 
 std::string mxp::utils::file::toFolderPath(const std::string& path) {
   auto p = path;
-  if (*p.crbegin() != DIR_SEPARATOR
+  if (p.size() > 0 && *p.crbegin() != DIR_SEPARATOR
 #ifdef _WIN32
       && *p.crbegin() != '/'
 #endif
@@ -143,4 +143,8 @@ std::string mxp::utils::file::toAbsolutePath(const std::string& path) {
 #endif
 
   return std::string{ res };
+}
+
+std::string mxp::utils::file::ConcatPath(const mstring& a, const mstring& b) {
+  return toFolderPath(a) + b;
 }

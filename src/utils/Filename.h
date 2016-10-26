@@ -3,6 +3,7 @@
 *****************************************************************************/
 
 #pragma once
+#include <mediaexplorer/Common.h>
 
 namespace mxp {
 namespace utils {
@@ -22,6 +23,7 @@ namespace file {
   std::string  toFolderPath(const std::string& path);
   std::string  toAbsolutePath(const std::string& path);
 
+std::string ConcatPath(const mstring& a, const mstring& b);
 }
 }
 }
