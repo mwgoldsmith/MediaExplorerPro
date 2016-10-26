@@ -554,6 +554,10 @@ void mxp::MediaExplorer::SetCallbacks(IMediaExplorerCb* cb) {
   m_callbacks = cb;
 }
 
+const mxp::Settings& mxp::MediaExplorer::GetSettings() const {
+  return m_settings;
+}
+
 mxp::FileSystemPtr mxp::MediaExplorer::GetFileSystem() const {
   return m_fsFactory;
 }

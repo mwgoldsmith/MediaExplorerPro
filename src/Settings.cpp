@@ -23,7 +23,7 @@ bool mxp::Settings::Load(DBConnection dbConn) {
   auto row = s.Row();
   // First launch: no settings
   if (row == nullptr) {
-    if (sqlite::Tools::ExecuteInsert(m_dbConn, "INSERT INTO Settings VALUES(?)", MediaExplorer::DbModelVersion) == false)
+    if (sqlite::Tools::ExecuteInsert(m_dbConn, "INSERT INTO Settings VALUES(?, ?)", MediaExplorer::DbModelVersion, NULL) == false)
       return false;
 
     m_dbModelVersion = MediaExplorer::DbModelVersion;
