@@ -40,7 +40,7 @@ public:
   // Explicitely mark a media as fully parsed, meaning no metadata service needs to run anymore.
   //FIXME: This lacks granularity as we don't have a straight forward way to know which service
   //needs to run or not.
-  void markParsed();
+  void MarkParsed();
 
   bool isParsed() const;
 

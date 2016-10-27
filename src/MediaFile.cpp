@@ -86,7 +86,7 @@ bool mxp::MediaFile::destroy() {
   return DatabaseHelpers::destroy(m_ml, m_id);
 }
 
-void mxp::MediaFile::markParsed() {
+void mxp::MediaFile::MarkParsed() {
   if(m_isParsed == true) {
     return;
   }

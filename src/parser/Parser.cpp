@@ -108,7 +108,7 @@ void mxp::Parser::done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::
   }
 
   if (serviceIdx == m_services.size()) {
-    t->MediaFile->markParsed();
+    t->MediaFile->MarkParsed();
     return;
   }
   m_services[serviceIdx]->Parse(std::move(t));
