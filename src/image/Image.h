@@ -5,9 +5,12 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
+#include "av/Histogram.h"
 #include "mediaexplorer/Common.h"
+#include "Types.h"
 
 namespace mxp {
+
 class Image {
 public:
   // Constructors / destructors
@@ -31,6 +34,10 @@ public:
 
   // Functions:
   bool Assign(const uint8_t* data, size_t c) noexcept;
+
+  bool Scale(uint32_t x, uint32_t y, bool preserveRatio);
+
+  HistogramPtr CreateHistogram();
 
 private:
   uint8_t*        m_data;
