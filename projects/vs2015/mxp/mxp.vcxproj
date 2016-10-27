@@ -472,6 +472,7 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\MediaType.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\Precomp.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\SearchAggregate.h" />
+    <ClInclude Include="..\..\..\include\mediaexplorer\SettingsKey.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\Common.h" />
     <ClInclude Include="..\..\..\include\Types.h" />
@@ -481,6 +482,8 @@
     <ClInclude Include="..\..\..\src\AudioTrack.h" />
     <ClInclude Include="..\..\..\src\av\AvCodec.h" />
     <ClInclude Include="..\..\..\src\av\AvContainer.h" />
+    <ClInclude Include="..\..\..\src\av\FrameBuffer.h" />
+    <ClInclude Include="..\..\..\src\av\Histogram.h" />
     <ClInclude Include="..\..\..\src\av\MediaController.h" />
     <ClInclude Include="..\..\..\src\av\MediaContext.h" />
     <ClInclude Include="..\..\..\src\av\StreamType.h" />
@@ -502,7 +505,7 @@
     <ClInclude Include="..\..\..\src\History.h" />
     <ClInclude Include="..\..\..\src\image\IImageContainer.h" />
     <ClInclude Include="..\..\..\src\image\Image.h" />
-    <ClInclude Include="..\..\..\src\image\JpegImage.h" />
+    <ClInclude Include="..\..\..\src\image\JpegImageContainer.h" />
     <ClInclude Include="..\..\..\src\logging\FileLogger.h" />
     <ClInclude Include="..\..\..\src\MediaDevice.h" />
     <ClInclude Include="..\..\..\src\discoverer\DiscovererWorker.h" />
@@ -607,6 +610,7 @@
     <ClCompile Include="..\..\..\src\AlbumTrack.cpp" />
     <ClCompile Include="..\..\..\src\Artist.cpp" />
     <ClCompile Include="..\..\..\src\AudioTrack.cpp" />
+    <ClCompile Include="..\..\..\src\av\FrameBuffer.cpp" />
     <ClCompile Include="..\..\..\src\av\MediaController.cpp" />
     <ClCompile Include="..\..\..\src\av\MediaContext.cpp" />
     <ClCompile Include="..\..\..\src\Codec.cpp" />
@@ -618,7 +622,7 @@
     <ClCompile Include="..\..\..\src\Genre.cpp" />
     <ClCompile Include="..\..\..\src\History.cpp" />
     <ClCompile Include="..\..\..\src\image\Image.cpp" />
-    <ClCompile Include="..\..\..\src\image\JpegImage.cpp" />
+    <ClCompile Include="..\..\..\src\image\JpegImageContainer.cpp" />
     <ClCompile Include="..\..\..\src\MediaDevice.cpp" />
     <ClCompile Include="..\..\..\src\discoverer\DiscovererWorker.cpp" />
     <ClCompile Include="..\..\..\src\discoverer\FsDiscoverer.cpp" />

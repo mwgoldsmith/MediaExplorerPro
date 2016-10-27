@@ -390,9 +390,6 @@
     <ClInclude Include="..\..\..\src\metadata_services\ThumbnailService.h">
       <Filter>Source Files\metadata_services</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\image\JpegImage.h">
-      <Filter>Source Files\image</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\image\IImageContainer.h">
       <Filter>Source Files\image</Filter>
     </ClInclude>
@@ -407,6 +404,18 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\av\MediaController.h">
       <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\image\JpegImageContainer.h">
+      <Filter>Source Files\image</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\FrameBuffer.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\av\Histogram.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\mediaexplorer\SettingsKey.h">
+      <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -560,9 +569,6 @@
     <ClCompile Include="..\..\..\src\metadata_services\ThumbnailService.cpp">
       <Filter>Source Files\metadata_services</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\image\JpegImage.cpp">
-      <Filter>Source Files\image</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\image\Image.cpp">
       <Filter>Source Files\image</Filter>
     </ClCompile>
@@ -570,6 +576,12 @@
       <Filter>Source Files\av</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\av\MediaController.cpp">
+      <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\image\JpegImageContainer.cpp">
+      <Filter>Source Files\image</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\av\FrameBuffer.cpp">
       <Filter>Source Files\av</Filter>
     </ClCompile>
   </ItemGroup>
