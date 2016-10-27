@@ -39,6 +39,7 @@
 #include "filesystem/IDevice.h"
 #include "logging/Logger.h"
 #include "mediaexplorer/ILogger.h"
+#include "mediaexplorer/ISettings.h"
 #include "metadata_services/FormatService.h"
 #include "metadata_services/MetadataService.h"
 #include "metadata_services/ThumbnailService.h"
@@ -91,8 +92,8 @@ bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb*
 
   if (m_settings.Load(m_db.get()) == false) {
     return false;
-  } else if (m_settings.DbModelVersion() != DbModelVersion) {
-    if (UpdateDatabaseModel(m_settings.DbModelVersion()) == false) {
+  } else if (m_settings.GetDbModelVersion() != DbModelVersion) {
+    if (UpdateDatabaseModel(m_settings.GetDbModelVersion()) == false) {
       return false;
     }
   }
@@ -243,7 +244,8 @@ void mxp::MediaExplorer::StartDeletionNotifier() {
   m_modificationNotifier->Start();
 }
 
-
+//********
+// Shows
 mxp::ShowPtr mxp::MediaExplorer::GetShow(const std::string& name) const {
   static const auto req = "SELECT * FROM " + policy::ShowTable::Name + " WHERE name = ?";
   return Show::Fetch(this, req, name);
@@ -253,6 +255,8 @@ std::shared_ptr<mxp::Show> mxp::MediaExplorer::CreateShow(const std::string& nam
   return Show::Create(this, name);
 }
 
+//********
+// Movies
 mxp::MoviePtr mxp::MediaExplorer::GetMovie(const std::string& title) const {
   static const auto req = "SELECT * FROM " + policy::MovieTable::Name + " WHERE title = ?";
   return Movie::Fetch(this, req, title);
@@ -265,6 +269,8 @@ std::shared_ptr<mxp::Movie> mxp::MediaExplorer::CreateMovie(Media& media, const 
   return movie;
 }
 
+//********
+// Artists
 mxp::ArtistPtr mxp::MediaExplorer::GetArtist(int64_t id) const {
   return Artist::Fetch(this, id);
 }
@@ -554,8 +560,56 @@ void mxp::MediaExplorer::SetCallbacks(IMediaExplorerCb* cb) {
   m_callbacks = cb;
 }
 
-const mxp::Settings& mxp::MediaExplorer::GetSettings() const {
-  return m_settings;
+bool mxp::MediaExplorer::GetSettingString(SettingsKey key, mstring& value) const {
+  if(key == SettingsKey::ThumbnailPath) {
+    value = m_settings.GetThumbnailPath();
+  } else {
+    return false;
+  }
+
+  return true;
+}
+
+bool mxp::MediaExplorer::GetSettingInt(SettingsKey key, uint32_t& value) const {
+  if(key == SettingsKey::ThumbnailWidth) {
+    value = m_settings.GetThumbnailWidth();
+  } else if(key == SettingsKey::ThumbnailHeight) {
+    value = m_settings.GetThumbnailHeight();
+  } else {
+    return false;
+  }
+
+  return true;
+}
+
+bool mxp::MediaExplorer::GetSettingBool(SettingsKey key, bool& value) const {
+  return true;
+}
+
+bool mxp::MediaExplorer::SetSettingString(SettingsKey key, const mstring& value) const {
+  if(key == SettingsKey::ThumbnailPath) {
+    m_settings.SetThumbnailPath(value);
+  } else {
+    return false;
+  }
+
+  return true;
+}
+
+bool mxp::MediaExplorer::SetSettingInt(SettingsKey key, const uint32_t value) const {
+  if(key == SettingsKey::ThumbnailWidth) {
+    m_settings.SetThumbnailWidth(value);
+  } else if(key == SettingsKey::ThumbnailHeight) {
+    m_settings.SetThumbnailHeight(value);
+  } else {
+    return false;
+  }
+
+  return true;
+}
+
+bool mxp::MediaExplorer::SetSettingBool(SettingsKey key, const bool value) const {
+  return true;
 }
 
 mxp::FileSystemPtr mxp::MediaExplorer::GetFileSystem() const {

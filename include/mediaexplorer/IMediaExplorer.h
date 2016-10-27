@@ -8,7 +8,6 @@
 #include "factory/IFileSystem.h"
 #include "mediaexplorer/Common.h"
 #include "mediaexplorer/ILogger.h"
-#include "mediaexplorer/ISettings.h"
 #include "mediaexplorer/IMediaExplorerCb.h"
 #include "mediaexplorer/MediaSearchAggregate.h"
 #include "mediaexplorer/SearchAggregate.h"
@@ -34,6 +33,19 @@ public:
   virtual void SetLogger(ILogger* logger) = 0;
 
   virtual void SetCallbacks(IMediaExplorerCb* cb) = 0;
+
+  // Settings
+  virtual bool GetSettingString(SettingsKey key, mstring& value) const = 0;
+
+  virtual bool GetSettingInt(SettingsKey key, uint32_t& value) const = 0;
+
+  virtual bool GetSettingBool(SettingsKey key, bool& value) const = 0;
+
+  virtual bool SetSettingString(SettingsKey key, const mstring& value) const = 0;
+
+  virtual bool SetSettingInt(SettingsKey key, const uint32_t value) const = 0;
+
+  virtual bool SetSettingBool(SettingsKey key, const bool value) const = 0;
 
   // Codecs
   virtual CodecPtr Codec(int64_t codecId) const = 0;
