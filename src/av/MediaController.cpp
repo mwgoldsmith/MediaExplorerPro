@@ -6,7 +6,7 @@
 #if HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include <image/JpegImage.h>
+#include <image/JpegImageContainer.h>
 #include <image/Image.h>
 #include "StreamType.h"
 
@@ -14,6 +14,7 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
+#include <libavutil/imgutils.h>
 #include <libavutil/log.h>
 }
 
@@ -24,6 +25,7 @@ extern "C" {
 #include "av/AvContainer.h"
 #include "av/MediaController.h"
 #include "av/MediaContext.h"
+#include "av/FrameBuffer.h"
 #include "compat/Mutex.h"
 #include "logging/Logger.h"
 
@@ -286,8 +288,8 @@ mxp::ContainerPtr mxp::av::MediaController::FindContainer(const mstring name) {
 
   for(auto const& t : *containers) {
     if(t->GetName().compare(name) == 0) {
-result = t;
-break;
+      result = t;
+      break;
     }
   }
 
@@ -308,50 +310,6 @@ mxp::CodecPtr mxp::av::MediaController::FindCodec(const mstring name, MediaType 
   return result;
 }
 
-class PictureBuffer {
-public:
-  PictureBuffer()
-    : m_frame{ nullptr }
-    , m_buffer{ nullptr } {
-  }
-
-  ~PictureBuffer() {
-    if(m_frame != nullptr)
-      av_free(m_frame);
-    if(m_buffer != nullptr)
-      av_free(m_buffer);
-  }
-
-  AVFrame* GetFrame() const {
-    return m_frame;
-  }
-
-  int GetSize() const {
-    return m_size;
-  }
-
-  static std::unique_ptr<PictureBuffer> Create(int width, int height) {
-    auto self = std::make_unique<PictureBuffer>();
-    self->m_frame = av_frame_alloc();
-    if(self->m_frame == nullptr)
-      return nullptr;
-
-    self->m_size = avpicture_get_size(PIX_FMT_RGB24, width, height);
-    self->m_buffer = static_cast<uint8_t *>(av_malloc(self->m_size * sizeof(uint8_t)));
-    if(self->m_buffer == nullptr) {
-      return nullptr;
-    }
-
-    avpicture_fill(reinterpret_cast<AVPicture *>(self->m_frame), self->m_buffer, PIX_FMT_RGB24, width, height);
-    return self;
-  }
-
-private:
-  AVFrame* m_frame;
-  uint8_t* m_buffer;
-  int      m_size;
-};
-
 mxp::MediaContextPtr mxp::av::MediaController::CreateContext(const mstring name) {
   auto context = std::make_shared<MediaContext>(name);
   if(context->Open() == true)
@@ -365,14 +323,34 @@ bool mxp::av::MediaController::OpenStream(MediaContextPtr context, StreamType ty
 }
 
 bool mxp::av::MediaController::Seek(MediaContextPtr context, double ts) {
+  LOG_DEBUG("Seeking to position ", ts);
   auto stream = context->GetStream();
   int64_t target = av_rescale_q((int64_t)(ts * AV_TIME_BASE), AV_TIME_BASE_Q, stream->time_base);
-  if(av_seek_frame(context->GetFormatContext(), context->GetIndex(), target, AVSEEK_FLAG_FRAME) < 0)
+  if(av_seek_frame(context->GetFormatContext(), context->GetIndex(), target, AVSEEK_FLAG_FRAME) < 0) {
+    LOG_ERROR("Seek failed")
     return false;
+  }
 
   context->SetTimestamp(target);
 
   return true;
+}
+
+
+long GetNumberVideoFrames(mxp::MediaContextPtr context) {
+  long nb_frames = 0L;
+  auto pFormatCtx = context->GetFormatContext();
+
+  auto str = context->GetStream();
+
+  nb_frames = str->nb_frames;
+  if(nb_frames <= 0) {
+    nb_frames = av_index_search_timestamp(str, str->duration, AVSEEK_FLAG_ANY | AVSEEK_FLAG_BACKWARD);
+    if(nb_frames <= 0)
+      nb_frames = str->duration / (str->time_base.den / str->time_base.num);
+  }
+
+  return nb_frames;
 }
 
 mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
@@ -385,7 +363,7 @@ mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
   auto height = pCodecCtx->height;
   auto width = pCodecCtx->width;
 
-  auto pConvertedFrame = PictureBuffer::Create(width, height);
+  auto pConvertedFrame = FrameBuffer::Create(width, height);
   if(pConvertedFrame == nullptr)
     return nullptr;
 
@@ -411,7 +389,10 @@ mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
 
         auto frame = pConvertedFrame->GetFrame();
         sws_scale(swc, pFrame->data, pFrame->linesize, 0, height, frame->data, frame->linesize);
-        image = std::make_shared<Image>(width, height, 3, frame->data[0], pConvertedFrame->GetSize());
+        image = std::make_shared<Image>(width, height, 3);
+        if(image->Assign(frame->data[0], pConvertedFrame->GetSize()) == false) {
+          image = nullptr;
+        }
       }
     }
 
@@ -426,7 +407,6 @@ mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
 
   return image;
 }
-
 
 void mxp::av::MediaController::CloseStream(MediaContextPtr context) {
   context->CloseStream();
