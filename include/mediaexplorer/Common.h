@@ -73,6 +73,18 @@ template<>
 inline mstring to_mstring(char* str) { return mstring(str); }
 template<>
 inline mstring to_mstring(wchar_t* wstr) { return to_mstring(wstr); }
+template<>
+inline mstring to_mstring(int value) { return std::to_string(value); }
+template<>
+inline mstring to_mstring(long value) { return std::to_string(value); }
+template<>
+inline mstring to_mstring(long long value) { return std::to_string(value); }
+template<>
+inline mstring to_mstring(unsigned int value) { return std::to_string(value); }
+template<>
+inline mstring to_mstring(unsigned long value) { return std::to_string(value); }
+template<>
+inline mstring to_mstring(unsigned long long value) { return std::to_string(value); }
 
 #else /* USE_WCHAR */
 
@@ -92,6 +104,18 @@ template<>
 inline mstring to_mstring(char* str) { return to_mstring(str); }
 template<>
 inline mstring to_mstring(wchar_t* wstr) { return mstring(wstr); }
+template<>
+inline mstring to_mstring(int value) { return std::to_wstring(value); }
+template<>
+inline mstring to_mstring(long value) { return std::to_wstring(value); }
+template<>
+inline mstring to_mstring(long long value) { return std::to_wstring(value); }
+template<>
+inline mstring to_mstring(unsigned int value) { return std::to_wstring(value); }
+template<>
+inline mstring to_mstring(unsigned long value) { return std::to_wstring(value); }
+template<>
+inline mstring to_mstring(unsigned long long value) { return std::to_wstring(value); }
 
 #endif /* USE_WCHAR */
 
@@ -119,6 +143,7 @@ class IMediaFile;
 class IMediaFolder;
 class IMetadata;
 class IPlaylist;
+class ISettings;
 class IShow;
 class IShowEpisode;
 class IStream;
@@ -160,6 +185,7 @@ using MediaFolderPtr  = std::shared_ptr<IMediaFolder>;
 using MediaFilePtr    = std::shared_ptr<IMediaFile>;
 using MetadataPtr     = std::shared_ptr<IMetadata>;
 using PlaylistPtr     = std::shared_ptr<IPlaylist>;
+using SettingsPtr     = std::shared_ptr<ISettings>;
 using ShowPtr         = std::shared_ptr<IShow>; 
 using ShowEpisodePtr  = std::shared_ptr<IShowEpisode>;
 using StreamPtr       = std::shared_ptr<IStream>;
