@@ -49,15 +49,14 @@ public:
   virtual std::string& GetVersion() const override;
   virtual FileSystemPtr GetFileSystem() const override;
   virtual void SetLogger(ILogger* logger) override;
-  virtual void SetCallbacks(IMediaExplorerCb* cb) override;
 
   // Settings
   virtual bool GetSettingString(SettingsKey key, mstring& value) const override;
   virtual bool GetSettingInt(SettingsKey key, uint32_t& value) const override;
   virtual bool GetSettingBool(SettingsKey key, bool& value) const override;
-  virtual bool SetSettingString(SettingsKey key, const mstring& value) const override;
-  virtual bool SetSettingInt(SettingsKey key, const uint32_t value) const override;
-  virtual bool SetSettingBool(SettingsKey key, const bool value) const override;
+  virtual bool SetSettingString(SettingsKey key, const mstring& value) override;
+  virtual bool SetSettingInt(SettingsKey key, const uint32_t value) override;
+  virtual bool SetSettingBool(SettingsKey key, const bool value) override;
 
   // Artists
   virtual ArtistPtr GetArtist(int64_t id) const override;

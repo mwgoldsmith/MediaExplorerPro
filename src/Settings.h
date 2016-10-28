@@ -12,23 +12,23 @@
 
 namespace mxp {
 
-class Settings : public ISettings {
+class Settings {
 public:
   Settings();
 
-  virtual uint32_t GetDbModelVersion() const;
+  uint32_t GetDbModelVersion() const;
 
-  virtual mstring GetThumbnailPath() const;
+  mstring GetThumbnailPath() const;
 
-  virtual uint32_t GetThumbnailWidth() const;
+  uint32_t GetThumbnailWidth() const;
 
-  virtual uint32_t GetThumbnailHeight() const;
+  uint32_t GetThumbnailHeight() const;
 
-  virtual void SetThumbnailPath(const mstring& path);
+  void SetThumbnailPath(const mstring& path);
 
-  virtual void SetThumbnailWidth(uint32_t value);
+  void SetThumbnailWidth(uint32_t value);
 
-  virtual void SetThumbnailHeight(uint32_t value);
+  void SetThumbnailHeight(uint32_t value);
 
   bool Load(DBConnection dbConn);
 

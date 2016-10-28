@@ -12,6 +12,7 @@
 #include "mediaexplorer/MediaSearchAggregate.h"
 #include "mediaexplorer/SearchAggregate.h"
 #include "mediaexplorer/SortingCriteria.h"
+#include "mediaexplorer/SettingsKey.h"
 
 namespace mxp {
 
@@ -32,8 +33,6 @@ public:
 
   virtual void SetLogger(ILogger* logger) = 0;
 
-  virtual void SetCallbacks(IMediaExplorerCb* cb) = 0;
-
   // Settings
   virtual bool GetSettingString(SettingsKey key, mstring& value) const = 0;
 
@@ -41,11 +40,11 @@ public:
 
   virtual bool GetSettingBool(SettingsKey key, bool& value) const = 0;
 
-  virtual bool SetSettingString(SettingsKey key, const mstring& value) const = 0;
+  virtual bool SetSettingString(SettingsKey key, const mstring& value) = 0;
 
-  virtual bool SetSettingInt(SettingsKey key, const uint32_t value) const = 0;
+  virtual bool SetSettingInt(SettingsKey key, const uint32_t value) = 0;
 
-  virtual bool SetSettingBool(SettingsKey key, const bool value) const = 0;
+  virtual bool SetSettingBool(SettingsKey key, const bool value) = 0;
 
   // Codecs
   virtual CodecPtr Codec(int64_t codecId) const = 0;

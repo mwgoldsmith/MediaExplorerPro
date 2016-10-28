@@ -556,10 +556,6 @@ void mxp::MediaExplorer::SetLogger(ILogger* logger) {
   m_logger.reset(std::move(logger));
 }
 
-void mxp::MediaExplorer::SetCallbacks(IMediaExplorerCb* cb) {
-  m_callbacks = cb;
-}
-
 bool mxp::MediaExplorer::GetSettingString(SettingsKey key, mstring& value) const {
   if(key == SettingsKey::ThumbnailPath) {
     value = m_settings.GetThumbnailPath();
@@ -586,7 +582,7 @@ bool mxp::MediaExplorer::GetSettingBool(SettingsKey key, bool& value) const {
   return true;
 }
 
-bool mxp::MediaExplorer::SetSettingString(SettingsKey key, const mstring& value) const {
+bool mxp::MediaExplorer::SetSettingString(SettingsKey key, const mstring& value) {
   if(key == SettingsKey::ThumbnailPath) {
     m_settings.SetThumbnailPath(value);
   } else {
@@ -596,7 +592,7 @@ bool mxp::MediaExplorer::SetSettingString(SettingsKey key, const mstring& value)
   return true;
 }
 
-bool mxp::MediaExplorer::SetSettingInt(SettingsKey key, const uint32_t value) const {
+bool mxp::MediaExplorer::SetSettingInt(SettingsKey key, const uint32_t value) {
   if(key == SettingsKey::ThumbnailWidth) {
     m_settings.SetThumbnailWidth(value);
   } else if(key == SettingsKey::ThumbnailHeight) {
@@ -608,7 +604,7 @@ bool mxp::MediaExplorer::SetSettingInt(SettingsKey key, const uint32_t value) co
   return true;
 }
 
-bool mxp::MediaExplorer::SetSettingBool(SettingsKey key, const bool value) const {
+bool mxp::MediaExplorer::SetSettingBool(SettingsKey key, const bool value)  {
   return true;
 }
 

@@ -327,7 +327,7 @@ bool mxp::av::MediaController::Seek(MediaContextPtr context, double ts) {
   auto stream = context->GetStream();
   int64_t target = av_rescale_q((int64_t)(ts * AV_TIME_BASE), AV_TIME_BASE_Q, stream->time_base);
   if(av_seek_frame(context->GetFormatContext(), context->GetIndex(), target, AVSEEK_FLAG_FRAME) < 0) {
-    LOG_ERROR("Seek failed")
+    LOG_ERROR("Seek failed");
     return false;
   }
 
