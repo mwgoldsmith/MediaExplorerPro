@@ -338,19 +338,27 @@ bool mxp::av::MediaController::Seek(MediaContextPtr context, double ts) {
 
 
 long GetNumberVideoFrames(mxp::MediaContextPtr context) {
-  long nb_frames = 0L;
   auto pFormatCtx = context->GetFormatContext();
+  auto pStream = context->GetStream();
+  int64_t result;
 
-  auto str = context->GetStream();
-
-  nb_frames = str->nb_frames;
-  if(nb_frames <= 0) {
-    nb_frames = av_index_search_timestamp(str, str->duration, AVSEEK_FLAG_ANY | AVSEEK_FLAG_BACKWARD);
-    if(nb_frames <= 0)
-      nb_frames = str->duration / (str->time_base.den / str->time_base.num);
+  if(pStream->nb_frames > 0) {
+    result = pStream->nb_frames;
+  } else {
+    result = static_cast<int64_t>(av_index_search_timestamp(pStream, pStream->duration, AVSEEK_FLAG_ANY | AVSEEK_FLAG_BACKWARD));
+    if(result <= 0) {
+      if(pStream->duration != AV_NOPTS_VALUE) {
+        auto timebase = pStream->time_base.den / pStream->time_base.num;
+        result = pStream->duration / timebase;
+      } else {
+        auto duration = pFormatCtx->duration + 5000;
+        auto secs = static_cast<double>(duration) / AV_TIME_BASE;
+        result = static_cast<int64_t>(av_q2d(pStream->avg_frame_rate) * secs);
+      }
+    }
   }
 
-  return nb_frames;
+  return static_cast<long>(result);
 }
 
 mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
