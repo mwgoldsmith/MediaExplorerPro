@@ -15,15 +15,17 @@ class Image;
 class Media;
 class MediaContext;
 class MediaExplorer;
+class MediaFile;
 class Movie;
 class Show;
 class ShowEpisode;
 class SqliteConnection;
 class Stream;
 class VideoTrack;
+enum class SettingsKey;
 
-using MediaContextPtr = std::shared_ptr<MediaContext>;
-using ImagePtr        = std::shared_ptr<Image>;
+using MediaContextPtr  = std::shared_ptr<MediaContext>;
+using ImagePtr         = std::shared_ptr<Image>;
 
 typedef SqliteConnection* DBConnection;
 using MediaExplorerPtr = const MediaExplorer*;

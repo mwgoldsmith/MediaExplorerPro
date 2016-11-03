@@ -18,13 +18,22 @@ const std::string MediaFileTable::PrimaryKeyColumn = "id_file";
 int64_t mxp::MediaFile::* const MediaFileTable::PrimaryKey = &mxp::MediaFile::m_id;
 
 mxp::MediaFile::MediaFile(MediaExplorerPtr ml, sqlite::Row& row)
-  : m_ml(ml) {
+  : m_ml(ml)
+  , m_id{}
+  , m_mediaId{}
+  , m_mrl{}
+  , m_type{}
+  , m_lastModificationDate{}
+  , m_numServicesParsed{}
+  , m_folderId{}
+  , m_isPresent{}
+  , m_isRemovable{} {
   row >> m_id
       >> m_mediaId
       >> m_mrl
       >> m_type
       >> m_lastModificationDate
-      >> m_isParsed
+      >> m_numServicesParsed
       >> m_folderId
       >> m_isPresent
       >> m_isRemovable;
@@ -37,7 +46,7 @@ mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const
   , m_mrl(isRemovable == true ? file.GetName() : file.GetFullPath())
   , m_type(type)
   , m_lastModificationDate(file.GetLastModificationDate())
-  , m_isParsed(false)
+  , m_numServicesParsed(0)
   , m_folderId(folderId)
   , m_isPresent(true)
   , m_isRemovable(isRemovable) {
@@ -47,17 +56,20 @@ int64_t mxp::MediaFile::Id() const {
   return m_id;
 }
 
-const std::string& mxp::MediaFile::mrl() const {
+const std::string& mxp::MediaFile::GetMrl() const {
   if (m_isRemovable == false)
     return m_mrl;
 
   auto lock = m_fullPath.Lock();
   if (m_fullPath.IsCached())
     return m_fullPath;
+
   auto folder = MediaFolder::Fetch(m_ml, m_folderId);
   if (folder == nullptr)
     return m_mrl;
+
   m_fullPath = folder->path() + m_mrl;
+
   return m_fullPath;
 }
 
@@ -69,11 +81,24 @@ time_t mxp::MediaFile::LastModificationDate() const {
   return m_lastModificationDate;
 }
 
-bool mxp::MediaFile::isParsed() const {
-  return m_isParsed;
+void mxp::MediaFile::SetServicesParsedCount(unsigned int value) {
+  if(m_numServicesParsed == value) {
+    return;
+  }
+
+  static const auto req = "UPDATE " + MediaFileTable::Name + " SET services_parsed_count=? WHERE " + MediaFileTable::PrimaryKeyColumn + "=?";
+  if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, value, m_id) == false) {
+    return;
+  }
+
+  m_numServicesParsed = value;
 }
 
-std::shared_ptr<mxp::Media> mxp::MediaFile::media() const {
+unsigned int mxp::MediaFile::GetServicesParsedCount() const {
+  return m_numServicesParsed;
+}
+
+std::shared_ptr<mxp::Media> mxp::MediaFile::GetMedia() const {
   auto lock = m_media.Lock();
   if (m_media.IsCached() == false) {
     m_media = Media::Fetch(m_ml, m_mediaId);
@@ -82,21 +107,8 @@ std::shared_ptr<mxp::Media> mxp::MediaFile::media() const {
   return m_media.Get().lock();
 }
 
-bool mxp::MediaFile::destroy() {
+bool mxp::MediaFile::Destroy() const {
   return DatabaseHelpers::destroy(m_ml, m_id);
-}
-
-void mxp::MediaFile::MarkParsed() {
-  if(m_isParsed == true) {
-    return;
-  }
-
-  static const auto req = "UPDATE " + MediaFileTable::Name + " SET parsed = 1 WHERE " + MediaFileTable::PrimaryKeyColumn + " = ?";
-  if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, m_id) == false) {
-    return;
-  }
-
-  m_isParsed = true;
 }
 
 bool mxp::MediaFile::CreateTable(DBConnection connection) noexcept {
@@ -106,7 +118,7 @@ bool mxp::MediaFile::CreateTable(DBConnection connection) noexcept {
     "mrl TEXT,"
     "type UNSIGNED INTEGER,"
     "last_modification_date UNSIGNED INT,"
-    "parsed BOOLEAN NOT NULL DEFAULT 0,"
+    "services_parsed_count UNSIGNED INT NOT NULL DEFAULT 0,"
     "folder_id UNSIGNED INTEGER,"
     "is_present BOOLEAN NOT NULL DEFAULT 1,"
     "is_removable BOOLEAN NOT NULL,"
@@ -122,7 +134,7 @@ bool mxp::MediaFile::CreateTable(DBConnection connection) noexcept {
   static const auto indexReq = "CREATE INDEX IF NOT EXISTS file_media_id_index ON " +
     MediaFileTable::Name + "(media_id)";
 
-  auto success = false;
+  bool success;
   try {
     success = sqlite::Tools::ExecuteRequest(connection, req) &&
       sqlite::Tools::ExecuteRequest(connection, triggerReq) &&

@@ -32,11 +32,12 @@ public:
   /**
    * @brief Called when the parser statistics are updated
    *
-   * @param percent The progress percentage [0,100]
+   * @param done The number of parsed tasks.
+   * @param todo The number of tasks to parse.
    *
    * There is no warranty about how often this will be called.
    */
-  virtual void onParsingStatsUpdated(uint32_t percent) = 0;
+  virtual void OnParsingStatsUpdated(size_t done, size_t todo) = 0;
 
   /**
    * @brief onDiscoveryStarted will be invoked when a folder queued for discovery (by calling 

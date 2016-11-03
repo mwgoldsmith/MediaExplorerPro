@@ -155,7 +155,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
   std::vector<std::shared_ptr<mxp::MediaFile>> filesToRemove;
   for (const auto& fileFs: parentFolderFs.Files()) {
     auto it = std::find_if(begin(files), end(files), [fileFs](const std::shared_ptr<mxp::MediaFile>& f) {
-      return f->mrl() == fileFs->GetFullPath();
+      return f->GetMrl() == fileFs->GetFullPath();
     });
     if (it == end(files)) {
       filesToAdd.push_back(fileFs);
@@ -170,7 +170,7 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
     LOG_INFO("Forcing file refresh ", fileFs->GetFullPath());
     // Pre-cache the file's media, since we need it to remove. However, better doing it
     // out of a write context, since that way, other threads can also read the database.
-    file->media();
+    file->GetMedia();
     filesToRemove.push_back(file);
     filesToAdd.push_back(fileFs);
     files.erase(it);
@@ -178,12 +178,12 @@ void mxp::FsDiscoverer::checkFiles(mxp::fs::IDirectory& parentFolderFs, mxp::Med
 
   auto t = m_ml->GetConnection()->NewTransaction();
   for (auto file : files) {
-    LOG_INFO("MediaFile ", file->mrl(), " not found on filesystem, deleting it");
-    file->media()->RemoveFile(*file);
+    LOG_INFO("MediaFile ", file->GetMrl(), " not found on filesystem, deleting it");
+    file->GetMedia()->RemoveFile(*file);
   }
 
   for (auto& f : filesToRemove)
-    f->media()->RemoveFile(*f);
+    f->GetMedia()->RemoveFile(*f);
 
   // Insert all files at once to avoid SQL write contention
   for (auto& p : filesToAdd)

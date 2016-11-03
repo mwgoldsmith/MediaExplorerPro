@@ -23,8 +23,8 @@ inline std::vector<std::tuple<float, size_t>> FindRMSD(const std::vector<Histogr
   Histogram<float> avgHistogram;
   auto maxIndex = Histogram<uint8_t>::max_index;
 
-  for(auto i = 0; i < histograms.size(); ++i) {
-    for(auto j = 0; j < maxIndex - 1; ++j) {
+  for(size_t i = 0; i < histograms.size(); ++i) {
+    for(size_t j = 0; j < maxIndex - 1; ++j) {
       avgHistogram.r[j] += static_cast<float>(histograms[i]->r[j]) / histograms.size();
       avgHistogram.g[j] += static_cast<float>(histograms[i]->g[j]) / histograms.size();
       avgHistogram.b[j] += static_cast<float>(histograms[i]->b[j]) / histograms.size();
@@ -32,11 +32,11 @@ inline std::vector<std::tuple<float, size_t>> FindRMSD(const std::vector<Histogr
   }
 
   std::vector<std::tuple<float, size_t>> result;
-  for(auto i = 0; i < histograms.size(); ++i) {
+  for(size_t i = 0; i < histograms.size(); ++i) {
     float rmse = 0.0;
 
     // Calculate root mean squared error
-    for(auto j = 0; j < maxIndex - 1; ++j) {
+    for(size_t j = 0; j < maxIndex - 1; ++j) {
       auto error = fabsf(avgHistogram.r[j] - histograms[i]->r[j])
         + fabsf(avgHistogram.g[j] - histograms[i]->g[j])
         + fabsf(avgHistogram.b[j] - histograms[i]->b[j]);

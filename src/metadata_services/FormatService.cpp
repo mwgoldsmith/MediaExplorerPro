@@ -51,14 +51,14 @@ mxp::parser::Task::Status mxp::FormatService::Run(parser::Task & task) {
 
   // FIXME: This is now becoming an invalid predicate
   if(media->GetDuration() != -1) {
-    LOG_INFO(file->mrl(), " was already parsed");
+    LOG_INFO(file->GetMrl(), " was already parsed");
     return parser::Task::Status::Success;
   }
 
-  LOG_INFO("Parsing ", file->mrl());
+  LOG_INFO("Parsing ", file->GetMrl());
   auto chrono = std::chrono::steady_clock::now();
 
-  auto ifile = m_ml->GetFileSystem()->CreateFileFromPath(file->mrl());
+  auto ifile = m_ml->GetFileSystem()->CreateFileFromPath(file->GetMrl());
   auto parserMedia = parser::ParserMedia(m_ml, task);
 
   // Set the media container

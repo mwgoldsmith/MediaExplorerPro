@@ -64,7 +64,7 @@ mxp::parser::Task::Status mxp::ThumbnailService::Run(parser::Task & task) {
     return parser::Task::Status::Success;
   }
 
-  auto filename = file->mrl();
+  auto filename = file->GetMrl();
   LOG_INFO( "Generating thumbnail for: ", filename);
 
   ImagePtr image = nullptr;

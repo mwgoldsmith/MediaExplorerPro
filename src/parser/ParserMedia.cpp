@@ -40,10 +40,15 @@ mxp::parser::ParserMedia::ParserMedia(MediaExplorerPtr ml, parser::Task& task)
   : m_ml(ml) {
   AVFormatContext* fmtCtx = nullptr;
 
-  auto file = m_ml->GetFileSystem()->CreateFileFromPath(task.MediaFile->mrl());
+  auto file = m_ml->GetFileSystem()->CreateFileFromPath(task.MediaFile->GetMrl());
   auto filename = file->GetFullPath().c_str();
   LOG_DEBUG("Parsing media for file '", filename, "'");
 
+  auto ctx = av::MediaController::CreateContext(filename);
+  if(ctx != nullptr) {
+    if(av::MediaController::OpenStream(ctx, StreamType::Video, 0)) {
+    }
+  }
   try {
 
     int err;

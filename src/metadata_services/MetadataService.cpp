@@ -218,11 +218,11 @@ std::shared_ptr<mxp::Album> mxp::MetadataService::FindAlbum(parser::Task& task, 
     }
 
     // Assume album files will be in the same folder.
-    auto newFileFolder = utils::file::directory(task.MediaFile->mrl());
+    auto newFileFolder = utils::file::directory(task.MediaFile->GetMrl());
     auto trackFiles = tracks[0]->Files();
     auto excluded = false;
     for(auto& f : trackFiles) {
-      auto candidateFolder = utils::file::directory(f->mrl());
+      auto candidateFolder = utils::file::directory(f->GetMrl());
       if(candidateFolder != newFileFolder) {
         excluded = true;
         break;

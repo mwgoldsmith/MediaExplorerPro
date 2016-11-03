@@ -9,12 +9,23 @@
 
 #include "av/MediaContext.h"
 #include "av/StreamType.h"
+#include "logging/Logger.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavutil/avutil.h>
 }
 
+static void print_error(const char *msg, int err) {
+  char errbuf[128];
+  const char *errbuf_ptr = errbuf;
+
+  if(av_strerror(err, errbuf, sizeof(errbuf)) < 0)
+    errbuf_ptr = strerror(AVUNERROR(err));
+
+  LOG_ERROR(msg, errbuf_ptr);
+}
 
 mxp::MediaContext::MediaContext(const mstring& filename)
   : m_filename{ filename }
@@ -31,12 +42,35 @@ mxp::MediaContext::~MediaContext() {
 }
 
 bool mxp::MediaContext::Open() {
-  if(avformat_open_input(&m_formatCtx, m_filename.c_str(), nullptr, nullptr) != 0)
-    return false;
-  if(avformat_find_stream_info(m_formatCtx, nullptr) < 0)
-    return false;
+  int err;
 
-  return true;
+  if((err = avformat_open_input(&m_formatCtx, m_filename.c_str(), nullptr, nullptr)) < 0) {
+    print_error("Failed to open input media: ", err);
+  } else if((err = avformat_find_stream_info(m_formatCtx, nullptr)) < 0) {
+    print_error("Failed to find stream info: ", err);
+  }
+
+  return err >= 0;
+}
+
+
+std::vector<AVDictionaryEntry*> GetDictionaryEntries(AVDictionary* dict) {
+  std::vector<AVDictionaryEntry*> result;
+
+  AVDictionaryEntry *tag = nullptr;
+  while((tag = av_dict_get(dict, "", tag, AV_DICT_IGNORE_SUFFIX))) {
+    result.push_back(tag);
+  }
+
+  return result;
+}
+
+std::vector<AVDictionaryEntry*> mxp::MediaContext::GetMetadata() const {
+  return GetDictionaryEntries(m_formatCtx->metadata);
+}
+
+std::vector<AVDictionaryEntry*> mxp::MediaContext::GetStreamMetadata() const {
+  return GetDictionaryEntries(m_formatCtx->streams[m_index]->metadata);
 }
 
 void mxp::MediaContext::Close() {
@@ -49,21 +83,22 @@ void mxp::MediaContext::Close() {
 }
 
 static bool IsStreamType(StreamType type, AVMediaType n) {
+  auto result = false;
   if(type == StreamType::Video) {
-    return n == AVMEDIA_TYPE_VIDEO;
+    result = n == AVMEDIA_TYPE_VIDEO;
   } else if(type == StreamType::Audio) {
-    return n == AVMEDIA_TYPE_AUDIO;
+    result = n == AVMEDIA_TYPE_AUDIO;
   } else if(type == StreamType::Data) {
-    return n == AVMEDIA_TYPE_DATA;
+    result = n == AVMEDIA_TYPE_DATA;
   } else if(type == StreamType::Unknown) {
-    return n == AVMEDIA_TYPE_UNKNOWN;
+    result = n == AVMEDIA_TYPE_UNKNOWN;
   } else if(type == StreamType::Subtitle) {
-    return n == AVMEDIA_TYPE_SUBTITLE;
+    result = n == AVMEDIA_TYPE_SUBTITLE;
   } else if(type == StreamType::NB) {
-    return n == AVMEDIA_TYPE_NB;
+    result = n == AVMEDIA_TYPE_NB;
   }
 
-  return false;
+  return result;
 }
 
 bool mxp::MediaContext::OpenStream(StreamType type, int index) {
@@ -76,7 +111,7 @@ bool mxp::MediaContext::OpenStream(StreamType type, int index) {
 
   // Find index of stream
   auto count = 0;
-  for(auto i = 0; i < m_formatCtx->nb_streams; i++) {
+  for(unsigned int i = 0; i < m_formatCtx->nb_streams; i++) {
     auto codec = m_formatCtx->streams[i]->codec;
     if(IsStreamType(type, codec->codec_type)) {
       if(count != index) {
@@ -94,14 +129,22 @@ bool mxp::MediaContext::OpenStream(StreamType type, int index) {
 
   m_stream = m_formatCtx->streams[m_index];
   m_codec = avcodec_find_decoder(m_stream->codec->codec_id);
-  if(m_codec != nullptr) {
+  if(m_codec == nullptr) {
+    LOG_ERROR("Unsupported codec: ", avcodec_get_name(m_stream->codec->codec_id));
+  } else {
     m_codecCtx = avcodec_alloc_context3(m_codec);
 
     // Copy the codec context and open the codec
-    if(m_codecCtx != nullptr) {
-      if(avcodec_copy_context(m_codecCtx, m_stream->codec) < 0) {
+    if(m_codecCtx == nullptr) {
+      LOG_ERROR("Failed to allocate codec context");
+      m_codec = nullptr;
+    } else {
+      int err;
+      if((err = avcodec_copy_context(m_codecCtx, m_stream->codec)) < 0) {
+        print_error("Failed to copy codec context: ", err);
         m_codec = nullptr;
       } else if(avcodec_open2(m_codecCtx, m_codec, nullptr) < 0) {
+        LOG_ERROR("Failed to open codec");
         m_codec = nullptr;
       }
 
@@ -110,9 +153,7 @@ bool mxp::MediaContext::OpenStream(StreamType type, int index) {
         avcodec_free_context(&m_codecCtx);
         m_codecCtx = nullptr;
       }
-    } else {
-      m_codec = nullptr;
-    }
+    } 
   }
 
   if(m_codec == nullptr) {
@@ -138,14 +179,13 @@ bool mxp::MediaContext::CloseStream() {
   return true;
 }
 
-int mxp::MediaContext::GetStreamCount(StreamType type) {
+int mxp::MediaContext::GetStreamCount(StreamType type) const {
   if(m_formatCtx == nullptr) {
     return -1;
   }
 
   auto count = 0;
-
-  for(auto i = 0; i < m_formatCtx->nb_streams; i++) {
+  for(unsigned int i = 0; i < m_formatCtx->nb_streams; i++) {
     auto codec = m_formatCtx->streams[i]->codec;
     if(IsStreamType(type, codec->codec_type)) {
       count++;

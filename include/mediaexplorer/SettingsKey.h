@@ -10,11 +10,51 @@ namespace mxp {
 enum class SettingsKey {
   DbModelVersion,
 
+  /**
+  * @brief
+  */
   ThumbnailPath,
 
+  /**
+  * @brief
+  */
   ThumbnailWidth,
 
-  ThumbnailHeight
+  /**
+  * @brief
+  */
+  ThumbnailHeight,
+
+  /**
+  * @brief
+  */
+  ThumbnailTimestamp,
+
+  /**
+  * @brief
+  */
+  ThumbnailPreserveAspectRatio,
+
+  /**
+  * @brief
+  */
+  SmartThumbnailBegin,
+
+  /**
+  * @brief
+  */
+  SmartThumbnailEnd,
+
+  /**
+  * @brief
+  */
+  SmartThumbnailSamples,
+
+  /**
+   * @brief
+   */
+  CreateSmartThumbnails
+
 };
 
 } /* namespace mxp */

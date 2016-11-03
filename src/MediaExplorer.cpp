@@ -120,7 +120,7 @@ void mxp::MediaExplorer::Destruct() {
   }
 
   if(m_parser != nullptr) {
-    m_parser->stop();
+    m_parser->Stop();
   }
 
   Media::clear();
@@ -543,7 +543,7 @@ mxp::MediaPtr mxp::MediaExplorer::GetMedia(const std::string& mrl) const {
     return nullptr;
   }
 
-  return file->media();
+  return file->GetMedia();
 }
 
 
@@ -670,13 +670,13 @@ bool mxp::MediaExplorer::ValidateSearchPattern(const std::string& pattern) const
 
 void mxp::MediaExplorer::PauseBackgroundOperations() {
   if(m_parser != nullptr) {
-    m_parser->pause();
+    m_parser->Pause();
   }
 }
 
 void mxp::MediaExplorer::ResumeBackgroundOperations() {
   if(m_parser != nullptr) {
-    m_parser->resume();
+    m_parser->Resume();
   }
 }
 

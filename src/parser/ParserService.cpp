@@ -111,14 +111,14 @@ void mxp::ParserService::mainloop() {
     parser::Task::Status status;
 
     try {
-      LOG_INFO("Executing ", serviceName, " task on ", task->MediaFile->mrl());
+      LOG_INFO("Executing ", serviceName, " task on ", task->MediaFile->GetMrl());
       status = Run(*task);
-      LOG_INFO("Done executing ", serviceName, " task on ", task->MediaFile->mrl());
+      LOG_INFO("Done executing ", serviceName, " task on ", task->MediaFile->GetMrl());
     } catch (const std::exception& ex) {
-      LOG_ERROR("Caught an exception during ", task->MediaFile->mrl(), " ", serviceName, " parsing: ", ex.what());
+      LOG_ERROR("Caught an exception during ", task->MediaFile->GetMrl(), " ", serviceName, " parsing: ", ex.what());
       status = parser::Task::Status::Fatal;
     }
-    m_parserCb->done(std::move(task), status);
+    m_parserCb->Done(std::move(task), status);
   }
 
   LOG_INFO("Exiting ParserService [", serviceName, "] thread");

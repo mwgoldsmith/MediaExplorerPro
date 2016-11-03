@@ -34,7 +34,7 @@ public:
 
   virtual int64_t Id() const = 0;
 
-  virtual const std::string& mrl() const = 0;
+  virtual const std::string& GetMrl() const = 0;
 
   virtual Type GetType() const = 0;
 

@@ -8,6 +8,7 @@ struct AVStream;
 struct AVCodec;
 struct AVFormatContext;
 struct AVCodecContext;
+struct AVDictionaryEntry;
 
 namespace mxp {
 class MediaContext {
@@ -21,7 +22,7 @@ public:
 
   bool CloseStream();
 
-  int GetStreamCount(StreamType type);
+  int GetStreamCount(StreamType type) const;
 
   unsigned int GetIndex() const {
     return m_index;
@@ -35,13 +36,17 @@ public:
     return m_codec;
   }
 
-  AVFormatContext* GetFormatContext() {
+  AVFormatContext* GetFormatContext() const {
     return m_formatCtx;
   }
 
   AVCodecContext* GetCodecContext() const {
     return m_codecCtx;
   }
+
+  std::vector<AVDictionaryEntry*> GetMetadata() const;
+
+  std::vector<AVDictionaryEntry*> GetStreamMetadata() const;
 
   void SetTimestamp(int64_t value) {
     m_pts = value;

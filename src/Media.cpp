@@ -123,9 +123,9 @@ mxp::MoviePtr mxp::Media::Movie() const {
     return nullptr;
 
   auto lock = m_movie.Lock();
-
   if (m_movie.IsCached() == false)
     m_movie = Movie::FromMedia(m_ml, m_id);
+
   return m_movie.Get();
 }
 
@@ -141,8 +141,7 @@ int mxp::Media::GetPlayCount() const {
 }
 
 bool mxp::Media::IncreasePlayCount() {
-  static const auto req = "UPDATE " + MediaTable::Name + " SET "
-      "play_count = ?, last_played_date = ? WHERE " + MediaTable::PrimaryKeyColumn + " = ?";
+  static const auto req = "UPDATE " + MediaTable::Name + " SET play_count = ?, last_played_date = ? WHERE " + MediaTable::PrimaryKeyColumn + " = ?";
   auto lastPlayedDate = time(nullptr);
   if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, m_playCount + 1, lastPlayedDate, m_id) == false)
     return false;
@@ -196,8 +195,7 @@ bool mxp::Media::SetFavorite(bool favorite) {
 const std::vector<mxp::MediaFilePtr>& mxp::Media::Files() const {
   auto lock = m_files.Lock();
   if (m_files.IsCached() == false) {
-    static const auto req = "SELECT * FROM " + policy::MediaFileTable::Name
-        + " WHERE media_id = ?";
+    static const auto req = "SELECT * FROM " + policy::MediaFileTable::Name + " WHERE media_id = ?";
     m_files = MediaFile::FetchAll<IMediaFile>(m_ml, req, m_id);
   }
   return m_files;
@@ -273,7 +271,7 @@ std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, Med
 }
 
 void mxp::Media::RemoveFile(MediaFile& file) {
-  file.destroy();
+  file.Destroy();
   auto lock = m_files.Lock();
   if (m_files.IsCached() == false)
     return;

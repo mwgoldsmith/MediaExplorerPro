@@ -10,7 +10,6 @@
 #include "MediaFile.h"
 #include "Media.h"
 #include "Parser.h"
-#include "mediaexplorer/IMediaExplorer.h"
 #include "utils/ModificationsNotifier.h"
 
 mxp::Parser::Parser(mxp::MediaExplorer* ml)
@@ -22,7 +21,7 @@ mxp::Parser::Parser(mxp::MediaExplorer* ml)
   , m_percent(0) {}
 
 mxp::Parser::~Parser() {
-  stop();
+  Stop();
 }
 
 void mxp::Parser::AddService(ServicePtr service) {
@@ -39,22 +38,22 @@ void mxp::Parser::Parse(std::shared_ptr<Media> media, std::shared_ptr<MediaFile>
 }
 
 void mxp::Parser::Start() {
-  restore();
+  Restore();
   for (auto& s : m_services)
     s->Start();
 }
 
-void mxp::Parser::pause() {
+void mxp::Parser::Pause() {
   for (auto& s : m_services)
     s->Pause();
 }
 
-void mxp::Parser::resume() {
+void mxp::Parser::Resume() {
   for (auto& s : m_services)
     s->Resume();
 }
 
-void mxp::Parser::stop() {
+void mxp::Parser::Stop() {
   for (auto& s : m_services) {
     s->SignalStop();
   }
@@ -63,37 +62,37 @@ void mxp::Parser::stop() {
   }
 }
 
-void mxp::Parser::restore() {
+void mxp::Parser::Restore() {
   if (m_services.empty() == true)
     return;
 
-  static const std::string req = "SELECT * FROM " + policy::MediaFileTable::Name
-      + " WHERE parsed = 0 AND is_present = 1";
+  static const auto req = "SELECT * FROM " + policy::MediaFileTable::Name + " WHERE services_parsed_count!=" + std::to_string(m_services.size()) + " AND is_present = 1";
   auto files = MediaFile::FetchAll<MediaFile>(m_ml, req);
 
   for (auto& f : files) {
-    auto m = f->media();
+    auto m = f->GetMedia();
     Parse(m, f);
   }
 }
 
 void mxp::Parser::UpdateStats() {
-  unsigned int percent = m_opToDo > 0 ? static_cast<unsigned int>(m_opDone * 100 / m_opToDo) : 0;
+  auto percent = m_opToDo > 0 ? static_cast<unsigned int>(m_opDone * 100 / m_opToDo) : 0;
   if (percent != m_percent) {
     m_percent = percent;
     if (m_callback != nullptr) {
-      m_callback->onParsingStatsUpdated(m_percent);
+      size_t done = m_opDone;
+      size_t todo = m_opToDo;
+      m_callback->OnParsingStatsUpdated(done, todo);
     }
   }
 }
 
-void mxp::Parser::done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::Status status) {
+void mxp::Parser::Done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::Status status) {
   ++m_opDone;
 
   auto serviceIdx = ++t->CurrentService;
 
-  if (status == parser::Task::Status::TemporaryUnavailable ||
-    status == parser::Task::Status::Fatal) {
+  if (status == parser::Task::Status::TemporaryUnavailable || status == parser::Task::Status::Fatal) {
     if (serviceIdx < m_services.size()) {
       // We won't process the next tasks, so we need to keep the number of "todo" operations coherent:
       m_opToDo -= m_services.size() - static_cast<size_t>(serviceIdx);;
@@ -101,15 +100,17 @@ void mxp::Parser::done(std::unique_ptr<mxp::parser::Task> t, mxp::parser::Task::
     }
     return;
   }
+
   UpdateStats();
 
   if (status == parser::Task::Status::Success) {
     m_notifier->NotifyMediaModification(t->Media);
   }
 
+  t->MediaFile->SetServicesParsedCount(serviceIdx);
   if (serviceIdx == m_services.size()) {
-    t->MediaFile->MarkParsed();
     return;
   }
+
   m_services[serviceIdx]->Parse(std::move(t));
 }
