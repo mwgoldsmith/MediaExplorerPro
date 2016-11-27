@@ -176,7 +176,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -201,7 +201,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -233,7 +233,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -258,7 +258,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -290,7 +290,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -317,7 +317,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -351,7 +351,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -378,7 +378,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include;$(ProjectDir)..\..\..\src;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\Build\msvc\include\\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -404,44 +404,44 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\discoverer\IDiscoverer.h" />
-    <ClInclude Include="..\..\..\include\factory\IFileSystem.h" />
-    <ClInclude Include="..\..\..\include\filesystem\IDevice.h" />
-    <ClInclude Include="..\..\..\include\filesystem\IDirectory.h" />
-    <ClInclude Include="..\..\..\include\filesystem\IFile.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IAlbum.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IAlbumTrack.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IArtist.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IAudioTrack.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\ICodec.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IContainer.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceLister.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceListerCb.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IGenre.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IHistoryEntry.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaFile.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\ILabel.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\ILogger.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMedia.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorer.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorerCb.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMetadata.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMovie.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IPlaylist.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\ISettings.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IShow.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IShowEpisode.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IStream.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\IVideoTrack.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\LogLevel.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\MediaSearchAggregate.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\MediaType.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\Precomp.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\SearchAggregate.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\SettingsKey.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h" />
-    <ClInclude Include="..\..\..\include\mediaexplorer\Common.h" />
-    <ClInclude Include="..\..\..\include\Types.h" />
+    <ClInclude Include="..\..\..\include\lib\discoverer\IDiscoverer.h" />
+    <ClInclude Include="..\..\..\include\lib\factory\IFileSystem.h" />
+    <ClInclude Include="..\..\..\include\lib\filesystem\IDevice.h" />
+    <ClInclude Include="..\..\..\include\lib\filesystem\IDirectory.h" />
+    <ClInclude Include="..\..\..\include\lib\filesystem\IFile.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IAlbum.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IAlbumTrack.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IArtist.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IAudioTrack.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ICodec.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IContainer.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IDeviceLister.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IDeviceListerCb.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IGenre.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IHistoryEntry.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMediaFile.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ILabel.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ILogger.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMedia.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMediaExplorer.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMediaExplorerCb.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMetadata.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMovie.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IPlaylist.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ISettings.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IShow.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IShowEpisode.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IStream.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IVideoTrack.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\LogLevel.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\MediaSearchAggregate.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\MediaType.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\Precomp.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\SearchAggregate.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\SettingsKey.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\SortingCriteria.h" />
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\Common.h" />
+    <ClInclude Include="..\..\..\include\lib\Types.h" />
     <ClInclude Include="..\..\..\src\lib\Album.h" />
     <ClInclude Include="..\..\..\src\lib\AlbumTrack.h" />
     <ClInclude Include="..\..\..\src\lib\Artist.h" />
