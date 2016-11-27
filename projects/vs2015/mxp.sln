@@ -8,7 +8,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mxp", "lib\mxp.vcxproj", "{
 		{FE437701-63F4-4B0A-B7D3-6B7A2F03C3D5} = {FE437701-63F4-4B0A-B7D3-6B7A2F03C3D5}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mxpcli", "..\tests\mxpcli.vcxproj", "{EF250FA5-CB9C-49CB-A80A-1EFC2C9F5DD3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mxptests", "tests\mxptests.vcxproj", "{EF250FA5-CB9C-49CB-A80A-1EFC2C9F5DD3}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FEF51024-9388-488D-A6B3-769DFB6A32EB} = {FEF51024-9388-488D-A6B3-769DFB6A32EB}
 	EndProjectSection
