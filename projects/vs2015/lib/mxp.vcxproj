@@ -176,7 +176,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -201,7 +201,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -233,7 +233,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -258,7 +258,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;DEBUG;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <PrecompiledHeader>Use</PrecompiledHeader>
@@ -290,7 +290,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -317,7 +317,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ExceptionHandling>Sync</ExceptionHandling>
@@ -351,7 +351,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_STATIC;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <BrowseInformation>true</BrowseInformation>
@@ -378,7 +378,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>HAVE_CONFIG_H;__STDC_CONSTANT_MACROS;_CRT_SECURE_NO_WARNINGS;MXP_EXPORTS;WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\..\include\lib;$(ProjectDir)..\..\..\src\lib;$(ProjectDir)..\..\..\build\msvc\include\;$(ProjectDir)..\..\..\build\msvc\include\sqlite3\;$(ProjectDir)..\..\..\build\msvc\include\jpeg\;$(ProjectDir)..\..\..\build\msvc\include\SDL\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ProgramDataBaseFileName>$(OutDir)$(TargetName).pdb</ProgramDataBaseFileName>
       <ExceptionHandling>Sync</ExceptionHandling>

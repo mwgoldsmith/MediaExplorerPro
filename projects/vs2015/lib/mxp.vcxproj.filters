@@ -72,521 +72,521 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\include\Types.h">
+    <ClInclude Include="..\..\..\include\lib\Types.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorer.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMediaExplorer.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaExplorerCb.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMediaExplorerCb.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IPlaylist.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IPlaylist.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\ISettings.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ISettings.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IVideoTrack.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IVideoTrack.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\LogLevel.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\LogLevel.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\MediaSearchAggregate.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\MediaSearchAggregate.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\SearchAggregate.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\SearchAggregate.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\SortingCriteria.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IAudioTrack.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IAudioTrack.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceLister.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IDeviceLister.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IDeviceListerCb.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IDeviceListerCb.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\ILabel.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ILabel.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\ILogger.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ILogger.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMedia.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMedia.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\filesystem\IDirectory.h">
+    <ClInclude Include="..\..\..\include\lib\filesystem\IDirectory.h">
       <Filter>Header Files\filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\filesystem\IFile.h">
+    <ClInclude Include="..\..\..\include\lib\filesystem\IFile.h">
       <Filter>Header Files\filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\filesystem\IDevice.h">
+    <ClInclude Include="..\..\..\include\lib\filesystem\IDevice.h">
       <Filter>Header Files\filesystem</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\factory\IFileSystem.h">
+    <ClInclude Include="..\..\..\include\lib\factory\IFileSystem.h">
       <Filter>Header Files\factory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\discoverer\IDiscoverer.h">
+    <ClInclude Include="..\..\..\include\lib\discoverer\IDiscoverer.h">
       <Filter>Header Files\discoverer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Label.h">
+    <ClInclude Include="..\..\..\src\lib\Label.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Media.h">
+    <ClInclude Include="..\..\..\src\lib\Media.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\MediaExplorer.h">
+    <ClInclude Include="..\..\..\src\lib\MediaExplorer.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Playlist.h">
+    <ClInclude Include="..\..\..\src\lib\Playlist.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Settings.h">
+    <ClInclude Include="..\..\..\src\lib\Settings.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\VideoTrack.h">
+    <ClInclude Include="..\..\..\src\lib\VideoTrack.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\AudioTrack.h">
+    <ClInclude Include="..\..\..\src\lib\AudioTrack.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utils\ReadLocker.h">
+    <ClInclude Include="..\..\..\src\lib\utils\ReadLocker.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utils\SWMRLock.h">
+    <ClInclude Include="..\..\..\src\lib\utils\SWMRLock.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utils\WriteLocker.h">
+    <ClInclude Include="..\..\..\src\lib\utils\WriteLocker.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utils\Cache.h">
+    <ClInclude Include="..\..\..\src\lib\utils\Cache.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utils\Charsets.h">
+    <ClInclude Include="..\..\..\src\lib\utils\Charsets.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utils\Filename.h">
+    <ClInclude Include="..\..\..\src\lib\utils\Filename.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\utils\ModificationsNotifier.h">
+    <ClInclude Include="..\..\..\src\lib\utils\ModificationsNotifier.h">
       <Filter>Source Files\utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\parser\ParserService.h">
+    <ClInclude Include="..\..\..\src\lib\parser\ParserService.h">
       <Filter>Source Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\parser\Task.h">
+    <ClInclude Include="..\..\..\src\lib\parser\Task.h">
       <Filter>Source Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\parser\Parser.h">
+    <ClInclude Include="..\..\..\src\lib\parser\Parser.h">
       <Filter>Source Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\logging\Logger.h">
+    <ClInclude Include="..\..\..\src\lib\logging\Logger.h">
       <Filter>Source Files\logging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\compat\ConditionVariable.h">
+    <ClInclude Include="..\..\..\src\lib\compat\ConditionVariable.h">
       <Filter>Source Files\compat</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\compat\Mutex.h">
+    <ClInclude Include="..\..\..\src\lib\compat\Mutex.h">
       <Filter>Source Files\compat</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\compat\Thread.h">
+    <ClInclude Include="..\..\..\src\lib\compat\Thread.h">
       <Filter>Source Files\compat</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\SqliteErrors.h">
+    <ClInclude Include="..\..\..\src\lib\database\SqliteErrors.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\SqliteTools.h">
+    <ClInclude Include="..\..\..\src\lib\database\SqliteTools.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\SqliteTraits.h">
+    <ClInclude Include="..\..\..\src\lib\database\SqliteTraits.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\SqliteTransaction.h">
+    <ClInclude Include="..\..\..\src\lib\database\SqliteTransaction.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\Statement.h">
+    <ClInclude Include="..\..\..\src\lib\database\Statement.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\DatabaseHelpers.h">
+    <ClInclude Include="..\..\..\src\lib\database\DatabaseHelpers.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\Row.h">
+    <ClInclude Include="..\..\..\src\lib\database\Row.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\database\SqliteConnection.h">
+    <ClInclude Include="..\..\..\src\lib\database\SqliteConnection.h">
       <Filter>Source Files\database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\discoverer\FsDiscoverer.h">
+    <ClInclude Include="..\..\..\src\lib\discoverer\FsDiscoverer.h">
       <Filter>Source Files\discoverer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\discoverer\DiscovererWorker.h">
+    <ClInclude Include="..\..\..\src\lib\discoverer\DiscovererWorker.h">
       <Filter>Source Files\discoverer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\factory\DeviceListerFactory.h">
+    <ClInclude Include="..\..\..\src\lib\factory\DeviceListerFactory.h">
       <Filter>Source Files\factory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\factory\FileSystemFactory.h">
+    <ClInclude Include="..\..\..\src\lib\factory\FileSystemFactory.h">
       <Filter>Source Files\factory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\win32\Directory.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\win32\Directory.h">
       <Filter>Source Files\filesystem\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\win32\Device.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\win32\Device.h">
       <Filter>Source Files\filesystem\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\win32\DeviceLister.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\win32\DeviceLister.h">
       <Filter>Source Files\filesystem\win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\unix\DeviceLister.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\unix\DeviceLister.h">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\unix\Directory.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\unix\Directory.h">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\unix\Device.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\unix\Device.h">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\common\CommonFile.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\CommonFile.h">
       <Filter>Source Files\filesystem\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\common\CommonDevice.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\CommonDevice.h">
       <Filter>Source Files\filesystem\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\common\CommonDirectory.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\CommonDirectory.h">
       <Filter>Source Files\filesystem\common</Filter>
     </ClInclude>
     <ClInclude Include="config.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\MediaFile.h">
+    <ClInclude Include="..\..\..\src\lib\MediaFile.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\MediaFolder.h">
+    <ClInclude Include="..\..\..\src\lib\MediaFolder.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\MediaDevice.h">
+    <ClInclude Include="..\..\..\src\lib\MediaDevice.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMediaFile.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMediaFile.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\common\File.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\File.h">
       <Filter>Source Files\filesystem\common</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IHistoryEntry.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IHistoryEntry.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IGenre.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IGenre.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Genre.h">
+    <ClInclude Include="..\..\..\src\lib\Genre.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\History.h">
+    <ClInclude Include="..\..\..\src\lib\History.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\parser\ParserMedia.h">
+    <ClInclude Include="..\..\..\src\lib\parser\ParserMedia.h">
       <Filter>Source Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\factory\ParserMediaFactory.h">
+    <ClInclude Include="..\..\..\src\lib\factory\ParserMediaFactory.h">
       <Filter>Source Files\factory</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\metadata_services\FormatService.h">
+    <ClInclude Include="..\..\..\src\lib\metadata_services\FormatService.h">
       <Filter>Source Files\metadata_services</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h">
+    <ClInclude Include="..\..\..\src\lib\metadata_services\MetadataService.h">
       <Filter>Source Files\metadata_services</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\logging\ConsoleLogger.h">
+    <ClInclude Include="..\..\..\src\lib\logging\ConsoleLogger.h">
       <Filter>Source Files\logging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\AvContainer.h">
+    <ClInclude Include="..\..\..\src\lib\av\AvContainer.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\AvCodec.h">
+    <ClInclude Include="..\..\..\src\lib\av\AvCodec.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Metadata.h">
+    <ClInclude Include="..\..\..\src\lib\Metadata.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Stream.h">
+    <ClInclude Include="..\..\..\src\lib\Stream.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IStream.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IStream.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMetadata.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMetadata.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\ICodec.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\ICodec.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IContainer.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IContainer.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Codec.h">
+    <ClInclude Include="..\..\..\src\lib\Codec.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Container.h">
+    <ClInclude Include="..\..\..\src\lib\Container.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\MediaType.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\MediaType.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IAlbumTrack.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IAlbumTrack.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IArtist.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IArtist.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IMovie.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IMovie.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IShow.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IShow.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IShowEpisode.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IShowEpisode.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\IAlbum.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\IAlbum.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\AlbumTrack.h">
+    <ClInclude Include="..\..\..\src\lib\AlbumTrack.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Artist.h">
+    <ClInclude Include="..\..\..\src\lib\Artist.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Movie.h">
+    <ClInclude Include="..\..\..\src\lib\Movie.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Show.h">
+    <ClInclude Include="..\..\..\src\lib\Show.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\ShowEpisode.h">
+    <ClInclude Include="..\..\..\src\lib\ShowEpisode.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Album.h">
+    <ClInclude Include="..\..\..\src\lib\Album.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\logging\FileLogger.h">
+    <ClInclude Include="..\..\..\src\lib\logging\FileLogger.h">
       <Filter>Source Files\logging</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\Common.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\Common.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\Precomp.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\Precomp.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\metadata_services\ThumbnailService.h">
+    <ClInclude Include="..\..\..\src\lib\metadata_services\ThumbnailService.h">
       <Filter>Source Files\metadata_services</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\image\IImageContainer.h">
+    <ClInclude Include="..\..\..\src\lib\image\IImageContainer.h">
       <Filter>Source Files\image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\image\Image.h">
+    <ClInclude Include="..\..\..\src\lib\image\Image.h">
       <Filter>Source Files\image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\StreamType.h">
+    <ClInclude Include="..\..\..\src\lib\av\StreamType.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\MediaContext.h">
+    <ClInclude Include="..\..\..\src\lib\av\MediaContext.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\MediaController.h">
+    <ClInclude Include="..\..\..\src\lib\av\MediaController.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\image\JpegImageContainer.h">
+    <ClInclude Include="..\..\..\src\lib\image\JpegImageContainer.h">
       <Filter>Source Files\image</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\FrameBuffer.h">
+    <ClInclude Include="..\..\..\src\lib\av\FrameBuffer.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\av\Histogram.h">
+    <ClInclude Include="..\..\..\src\lib\av\Histogram.h">
       <Filter>Source Files\av</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\include\mediaexplorer\SettingsKey.h">
+    <ClInclude Include="..\..\..\include\lib\mediaexplorer\SettingsKey.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\Label.cpp">
+    <ClCompile Include="..\..\..\src\lib\Label.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Media.cpp">
+    <ClCompile Include="..\..\..\src\lib\Media.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\MediaExplorer.cpp">
+    <ClCompile Include="..\..\..\src\lib\MediaExplorer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Playlist.cpp">
+    <ClCompile Include="..\..\..\src\lib\Playlist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Settings.cpp">
+    <ClCompile Include="..\..\..\src\lib\Settings.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\VideoTrack.cpp">
+    <ClCompile Include="..\..\..\src\lib\VideoTrack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\AudioTrack.cpp">
+    <ClCompile Include="..\..\..\src\lib\AudioTrack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\utils\Filename.cpp">
+    <ClCompile Include="..\..\..\src\lib\utils\Filename.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\utils\ModificationsNotifier.cpp">
+    <ClCompile Include="..\..\..\src\lib\utils\ModificationsNotifier.cpp">
       <Filter>Source Files\utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\parser\ParserService.cpp">
+    <ClCompile Include="..\..\..\src\lib\parser\ParserService.cpp">
       <Filter>Source Files\parser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\parser\Parser.cpp">
+    <ClCompile Include="..\..\..\src\lib\parser\Parser.cpp">
       <Filter>Source Files\parser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\logging\Logger.cpp">
+    <ClCompile Include="..\..\..\src\lib\logging\Logger.cpp">
       <Filter>Source Files\logging</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\database\SqliteTools.cpp">
+    <ClCompile Include="..\..\..\src\lib\database\SqliteTools.cpp">
       <Filter>Source Files\database</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\database\SqliteTransaction.cpp">
+    <ClCompile Include="..\..\..\src\lib\database\SqliteTransaction.cpp">
       <Filter>Source Files\database</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\database\SqliteConnection.cpp">
+    <ClCompile Include="..\..\..\src\lib\database\SqliteConnection.cpp">
       <Filter>Source Files\database</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\discoverer\FsDiscoverer.cpp">
+    <ClCompile Include="..\..\..\src\lib\discoverer\FsDiscoverer.cpp">
       <Filter>Source Files\discoverer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\discoverer\DiscovererWorker.cpp">
+    <ClCompile Include="..\..\..\src\lib\discoverer\DiscovererWorker.cpp">
       <Filter>Source Files\discoverer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\factory\FileSystemFactory.cpp">
+    <ClCompile Include="..\..\..\src\lib\factory\FileSystemFactory.cpp">
       <Filter>Source Files\factory</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\factory\DeviceListerFactory.cpp">
+    <ClCompile Include="..\..\..\src\lib\factory\DeviceListerFactory.cpp">
       <Filter>Source Files\factory</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\win32\Directory.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\win32\Directory.cpp">
       <Filter>Source Files\filesystem\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\win32\Device.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\win32\Device.cpp">
       <Filter>Source Files\filesystem\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\win32\DeviceLister.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\win32\DeviceLister.cpp">
       <Filter>Source Files\filesystem\win32</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\unix\DeviceLister.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\unix\DeviceLister.cpp">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\unix\Directory.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\unix\Directory.cpp">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\unix\Device.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\unix\Device.cpp">
       <Filter>Source Files\filesystem\unix</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\common\CommonFile.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\CommonFile.cpp">
       <Filter>Source Files\filesystem\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\common\CommonDevice.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\CommonDevice.cpp">
       <Filter>Source Files\filesystem\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\common\CommonDirectory.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\CommonDirectory.cpp">
       <Filter>Source Files\filesystem\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\MediaFile.cpp">
+    <ClCompile Include="..\..\..\src\lib\MediaFile.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\MediaFolder.cpp">
+    <ClCompile Include="..\..\..\src\lib\MediaFolder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\MediaDevice.cpp">
+    <ClCompile Include="..\..\..\src\lib\MediaDevice.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\common\File.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\File.cpp">
       <Filter>Source Files\filesystem\common</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\History.cpp">
+    <ClCompile Include="..\..\..\src\lib\History.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Genre.cpp">
+    <ClCompile Include="..\..\..\src\lib\Genre.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\factory\ParserMediaFactory.cpp">
+    <ClCompile Include="..\..\..\src\lib\factory\ParserMediaFactory.cpp">
       <Filter>Source Files\factory</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\parser\ParserMedia.cpp">
+    <ClCompile Include="..\..\..\src\lib\parser\ParserMedia.cpp">
       <Filter>Source Files\parser</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\metadata_services\FormatService.cpp">
+    <ClCompile Include="..\..\..\src\lib\metadata_services\FormatService.cpp">
       <Filter>Source Files\metadata_services</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp">
+    <ClCompile Include="..\..\..\src\lib\metadata_services\MetadataService.cpp">
       <Filter>Source Files\metadata_services</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Metadata.cpp">
+    <ClCompile Include="..\..\..\src\lib\Metadata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Stream.cpp">
+    <ClCompile Include="..\..\..\src\lib\Stream.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Codec.cpp">
+    <ClCompile Include="..\..\..\src\lib\Codec.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Container.cpp">
+    <ClCompile Include="..\..\..\src\lib\Container.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Album.cpp">
+    <ClCompile Include="..\..\..\src\lib\Album.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\AlbumTrack.cpp">
+    <ClCompile Include="..\..\..\src\lib\AlbumTrack.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Artist.cpp">
+    <ClCompile Include="..\..\..\src\lib\Artist.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Movie.cpp">
+    <ClCompile Include="..\..\..\src\lib\Movie.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Show.cpp">
+    <ClCompile Include="..\..\..\src\lib\Show.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\ShowEpisode.cpp">
+    <ClCompile Include="..\..\..\src\lib\ShowEpisode.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\metadata_services\ThumbnailService.cpp">
+    <ClCompile Include="..\..\..\src\lib\metadata_services\ThumbnailService.cpp">
       <Filter>Source Files\metadata_services</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\image\Image.cpp">
+    <ClCompile Include="..\..\..\src\lib\image\Image.cpp">
       <Filter>Source Files\image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\av\MediaContext.cpp">
+    <ClCompile Include="..\..\..\src\lib\av\MediaContext.cpp">
       <Filter>Source Files\av</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\av\MediaController.cpp">
+    <ClCompile Include="..\..\..\src\lib\av\MediaController.cpp">
       <Filter>Source Files\av</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\image\JpegImageContainer.cpp">
+    <ClCompile Include="..\..\..\src\lib\image\JpegImageContainer.cpp">
       <Filter>Source Files\image</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\av\FrameBuffer.cpp">
+    <ClCompile Include="..\..\..\src\lib\av\FrameBuffer.cpp">
       <Filter>Source Files\av</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\src\filesystem\darwin\DeviceLister.mm">
+    <None Include="..\..\..\src\lib\filesystem\darwin\DeviceLister.mm">
       <Filter>Source Files\filesystem\darwin</Filter>
     </None>
   </ItemGroup>
