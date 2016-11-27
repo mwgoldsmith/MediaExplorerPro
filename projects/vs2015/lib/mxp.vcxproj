@@ -189,15 +189,6 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\build\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sqlite3d.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <TargetMachine>MachineX86</TargetMachine>
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
-      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
-    </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -255,10 +246,6 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-    </Link>
     <Lib>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -316,21 +303,8 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalLibraryDirectories>$(ProjectDir)..\..\..\build\lib</AdditionalLibraryDirectories>
-      <AdditionalDependencies>sqlite3.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <TargetMachine>MachineX86</TargetMachine>
-      <ImportLibrary>$(OutDir)..\lib\$(TargetName).lib</ImportLibrary>
-      <ProgramDatabaseFile>$(OutDir)$(TargetName).pdb</ProgramDatabaseFile>
-    </Link>
     <Lib>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-    </Lib>
-    <Lib>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -390,16 +364,8 @@
       <BufferSecurityCheck>true</BufferSecurityCheck>
       <FloatingPointModel>Precise</FloatingPointModel>
     </ClCompile>
-    <Link>
-      <SubSystem>Console</SubSystem>
-      <GenerateDebugInformation>true</GenerateDebugInformation>
-      <EnableCOMDATFolding>true</EnableCOMDATFolding>
-      <OptimizeReferences>true</OptimizeReferences>
-    </Link>
     <Lib>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
-    </Lib>
-    <Lib>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <SubSystem>Console</SubSystem>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
@@ -476,47 +442,47 @@
     <ClInclude Include="..\..\..\include\mediaexplorer\SortingCriteria.h" />
     <ClInclude Include="..\..\..\include\mediaexplorer\Common.h" />
     <ClInclude Include="..\..\..\include\Types.h" />
-    <ClInclude Include="..\..\..\src\Album.h" />
-    <ClInclude Include="..\..\..\src\AlbumTrack.h" />
-    <ClInclude Include="..\..\..\src\Artist.h" />
-    <ClInclude Include="..\..\..\src\AudioTrack.h" />
-    <ClInclude Include="..\..\..\src\av\AvCodec.h" />
-    <ClInclude Include="..\..\..\src\av\AvContainer.h" />
-    <ClInclude Include="..\..\..\src\av\FrameBuffer.h" />
-    <ClInclude Include="..\..\..\src\av\Histogram.h" />
-    <ClInclude Include="..\..\..\src\av\MediaController.h" />
-    <ClInclude Include="..\..\..\src\av\MediaContext.h" />
-    <ClInclude Include="..\..\..\src\av\StreamType.h" />
-    <ClInclude Include="..\..\..\src\Codec.h" />
-    <ClInclude Include="..\..\..\src\compat\ConditionVariable.h" />
-    <ClInclude Include="..\..\..\src\compat\Mutex.h" />
-    <ClInclude Include="..\..\..\src\compat\Thread.h" />
-    <ClInclude Include="..\..\..\src\Container.h" />
-    <ClInclude Include="..\..\..\src\database\DatabaseHelpers.h" />
-    <ClInclude Include="..\..\..\src\database\Row.h" />
-    <ClInclude Include="..\..\..\src\database\SqliteConnection.h" />
-    <ClInclude Include="..\..\..\src\database\SqliteErrors.h" />
-    <ClInclude Include="..\..\..\src\database\SqliteTools.h" />
-    <ClInclude Include="..\..\..\src\database\SqliteTraits.h" />
-    <ClInclude Include="..\..\..\src\database\SqliteTransaction.h" />
-    <ClInclude Include="..\..\..\src\database\Statement.h" />
-    <ClInclude Include="..\..\..\src\factory\ParserMediaFactory.h" />
-    <ClInclude Include="..\..\..\src\Genre.h" />
-    <ClInclude Include="..\..\..\src\History.h" />
-    <ClInclude Include="..\..\..\src\image\IImageContainer.h" />
-    <ClInclude Include="..\..\..\src\image\Image.h" />
-    <ClInclude Include="..\..\..\src\image\JpegImageContainer.h" />
-    <ClInclude Include="..\..\..\src\logging\FileLogger.h" />
-    <ClInclude Include="..\..\..\src\MediaDevice.h" />
-    <ClInclude Include="..\..\..\src\discoverer\DiscovererWorker.h" />
-    <ClInclude Include="..\..\..\src\discoverer\FsDiscoverer.h" />
-    <ClInclude Include="..\..\..\src\factory\DeviceListerFactory.h" />
-    <ClInclude Include="..\..\..\src\factory\FileSystemFactory.h" />
-    <ClInclude Include="..\..\..\src\MediaFile.h" />
-    <ClInclude Include="..\..\..\src\filesystem\common\CommonDevice.h" />
-    <ClInclude Include="..\..\..\src\filesystem\common\CommonDirectory.h" />
-    <ClInclude Include="..\..\..\src\filesystem\common\CommonFile.h" />
-    <ClInclude Include="..\..\..\src\filesystem\unix\Device.h">
+    <ClInclude Include="..\..\..\src\lib\Album.h" />
+    <ClInclude Include="..\..\..\src\lib\AlbumTrack.h" />
+    <ClInclude Include="..\..\..\src\lib\Artist.h" />
+    <ClInclude Include="..\..\..\src\lib\AudioTrack.h" />
+    <ClInclude Include="..\..\..\src\lib\av\AvCodec.h" />
+    <ClInclude Include="..\..\..\src\lib\av\AvContainer.h" />
+    <ClInclude Include="..\..\..\src\lib\av\FrameBuffer.h" />
+    <ClInclude Include="..\..\..\src\lib\av\Histogram.h" />
+    <ClInclude Include="..\..\..\src\lib\av\MediaController.h" />
+    <ClInclude Include="..\..\..\src\lib\av\MediaContext.h" />
+    <ClInclude Include="..\..\..\src\lib\av\StreamType.h" />
+    <ClInclude Include="..\..\..\src\lib\Codec.h" />
+    <ClInclude Include="..\..\..\src\lib\compat\ConditionVariable.h" />
+    <ClInclude Include="..\..\..\src\lib\compat\Mutex.h" />
+    <ClInclude Include="..\..\..\src\lib\compat\Thread.h" />
+    <ClInclude Include="..\..\..\src\lib\Container.h" />
+    <ClInclude Include="..\..\..\src\lib\database\DatabaseHelpers.h" />
+    <ClInclude Include="..\..\..\src\lib\database\Row.h" />
+    <ClInclude Include="..\..\..\src\lib\database\SqliteConnection.h" />
+    <ClInclude Include="..\..\..\src\lib\database\SqliteErrors.h" />
+    <ClInclude Include="..\..\..\src\lib\database\SqliteTools.h" />
+    <ClInclude Include="..\..\..\src\lib\database\SqliteTraits.h" />
+    <ClInclude Include="..\..\..\src\lib\database\SqliteTransaction.h" />
+    <ClInclude Include="..\..\..\src\lib\database\Statement.h" />
+    <ClInclude Include="..\..\..\src\lib\factory\ParserMediaFactory.h" />
+    <ClInclude Include="..\..\..\src\lib\Genre.h" />
+    <ClInclude Include="..\..\..\src\lib\History.h" />
+    <ClInclude Include="..\..\..\src\lib\image\IImageContainer.h" />
+    <ClInclude Include="..\..\..\src\lib\image\Image.h" />
+    <ClInclude Include="..\..\..\src\lib\image\JpegImageContainer.h" />
+    <ClInclude Include="..\..\..\src\lib\logging\FileLogger.h" />
+    <ClInclude Include="..\..\..\src\lib\MediaDevice.h" />
+    <ClInclude Include="..\..\..\src\lib\discoverer\DiscovererWorker.h" />
+    <ClInclude Include="..\..\..\src\lib\discoverer\FsDiscoverer.h" />
+    <ClInclude Include="..\..\..\src\lib\factory\DeviceListerFactory.h" />
+    <ClInclude Include="..\..\..\src\lib\factory\FileSystemFactory.h" />
+    <ClInclude Include="..\..\..\src\lib\MediaFile.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\CommonDevice.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\CommonDirectory.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\CommonFile.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\unix\Device.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
@@ -534,7 +500,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">false</DeploymentContent>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\unix\DeviceLister.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\unix\DeviceLister.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
@@ -552,7 +518,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">false</DeploymentContent>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\unix\Directory.h">
+    <ClInclude Include="..\..\..\src\lib\filesystem\unix\Directory.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
@@ -570,69 +536,69 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">false</DeploymentContent>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\filesystem\common\File.h" />
-    <ClInclude Include="..\..\..\src\filesystem\win32\Device.h" />
-    <ClInclude Include="..\..\..\src\filesystem\win32\DeviceLister.h" />
-    <ClInclude Include="..\..\..\src\filesystem\win32\Directory.h" />
-    <ClInclude Include="..\..\..\src\MediaFolder.h" />
-    <ClInclude Include="..\..\..\src\Label.h" />
-    <ClInclude Include="..\..\..\src\logging\ConsoleLogger.h" />
-    <ClInclude Include="..\..\..\src\logging\Logger.h" />
-    <ClInclude Include="..\..\..\src\Media.h" />
-    <ClInclude Include="..\..\..\src\MediaExplorer.h" />
-    <ClInclude Include="..\..\..\src\Metadata.h" />
-    <ClInclude Include="..\..\..\src\metadata_services\FormatService.h" />
-    <ClInclude Include="..\..\..\src\metadata_services\MetadataService.h" />
-    <ClInclude Include="..\..\..\src\metadata_services\ThumbnailService.h" />
-    <ClInclude Include="..\..\..\src\Movie.h" />
-    <ClInclude Include="..\..\..\src\parser\ParserMedia.h" />
-    <ClInclude Include="..\..\..\src\parser\Parser.h" />
-    <ClInclude Include="..\..\..\src\parser\ParserService.h" />
-    <ClInclude Include="..\..\..\src\parser\Task.h" />
-    <ClInclude Include="..\..\..\src\Playlist.h" />
-    <ClInclude Include="..\..\..\src\Settings.h" />
-    <ClInclude Include="..\..\..\src\Show.h" />
-    <ClInclude Include="..\..\..\src\ShowEpisode.h" />
-    <ClInclude Include="..\..\..\src\Stream.h" />
-    <ClInclude Include="..\..\..\src\utils\Cache.h" />
-    <ClInclude Include="..\..\..\src\utils\Charsets.h" />
-    <ClInclude Include="..\..\..\src\utils\Filename.h" />
-    <ClInclude Include="..\..\..\src\utils\ModificationsNotifier.h" />
-    <ClInclude Include="..\..\..\src\utils\ReadLocker.h" />
-    <ClInclude Include="..\..\..\src\utils\SWMRLock.h" />
-    <ClInclude Include="..\..\..\src\utils\WriteLocker.h" />
-    <ClInclude Include="..\..\..\src\VideoTrack.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\common\File.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\win32\Device.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\win32\DeviceLister.h" />
+    <ClInclude Include="..\..\..\src\lib\filesystem\win32\Directory.h" />
+    <ClInclude Include="..\..\..\src\lib\MediaFolder.h" />
+    <ClInclude Include="..\..\..\src\lib\Label.h" />
+    <ClInclude Include="..\..\..\src\lib\logging\ConsoleLogger.h" />
+    <ClInclude Include="..\..\..\src\lib\logging\Logger.h" />
+    <ClInclude Include="..\..\..\src\lib\Media.h" />
+    <ClInclude Include="..\..\..\src\lib\MediaExplorer.h" />
+    <ClInclude Include="..\..\..\src\lib\Metadata.h" />
+    <ClInclude Include="..\..\..\src\lib\metadata_services\FormatService.h" />
+    <ClInclude Include="..\..\..\src\lib\metadata_services\MetadataService.h" />
+    <ClInclude Include="..\..\..\src\lib\metadata_services\ThumbnailService.h" />
+    <ClInclude Include="..\..\..\src\lib\Movie.h" />
+    <ClInclude Include="..\..\..\src\lib\parser\ParserMedia.h" />
+    <ClInclude Include="..\..\..\src\lib\parser\Parser.h" />
+    <ClInclude Include="..\..\..\src\lib\parser\ParserService.h" />
+    <ClInclude Include="..\..\..\src\lib\parser\Task.h" />
+    <ClInclude Include="..\..\..\src\lib\Playlist.h" />
+    <ClInclude Include="..\..\..\src\lib\Settings.h" />
+    <ClInclude Include="..\..\..\src\lib\Show.h" />
+    <ClInclude Include="..\..\..\src\lib\ShowEpisode.h" />
+    <ClInclude Include="..\..\..\src\lib\Stream.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\Cache.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\Charsets.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\Filename.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\ModificationsNotifier.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\ReadLocker.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\SWMRLock.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\WriteLocker.h" />
+    <ClInclude Include="..\..\..\src\lib\VideoTrack.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\Album.cpp" />
-    <ClCompile Include="..\..\..\src\AlbumTrack.cpp" />
-    <ClCompile Include="..\..\..\src\Artist.cpp" />
-    <ClCompile Include="..\..\..\src\AudioTrack.cpp" />
-    <ClCompile Include="..\..\..\src\av\FrameBuffer.cpp" />
-    <ClCompile Include="..\..\..\src\av\MediaController.cpp" />
-    <ClCompile Include="..\..\..\src\av\MediaContext.cpp" />
-    <ClCompile Include="..\..\..\src\Codec.cpp" />
-    <ClCompile Include="..\..\..\src\Container.cpp" />
-    <ClCompile Include="..\..\..\src\database\SqliteConnection.cpp" />
-    <ClCompile Include="..\..\..\src\database\SqliteTools.cpp" />
-    <ClCompile Include="..\..\..\src\database\SqliteTransaction.cpp" />
-    <ClCompile Include="..\..\..\src\factory\ParserMediaFactory.cpp" />
-    <ClCompile Include="..\..\..\src\Genre.cpp" />
-    <ClCompile Include="..\..\..\src\History.cpp" />
-    <ClCompile Include="..\..\..\src\image\Image.cpp" />
-    <ClCompile Include="..\..\..\src\image\JpegImageContainer.cpp" />
-    <ClCompile Include="..\..\..\src\MediaDevice.cpp" />
-    <ClCompile Include="..\..\..\src\discoverer\DiscovererWorker.cpp" />
-    <ClCompile Include="..\..\..\src\discoverer\FsDiscoverer.cpp" />
-    <ClCompile Include="..\..\..\src\factory\DeviceListerFactory.cpp" />
-    <ClCompile Include="..\..\..\src\factory\FileSystemFactory.cpp" />
-    <ClCompile Include="..\..\..\src\MediaFile.cpp" />
-    <ClCompile Include="..\..\..\src\filesystem\common\CommonDevice.cpp" />
-    <ClCompile Include="..\..\..\src\filesystem\common\CommonDirectory.cpp" />
-    <ClCompile Include="..\..\..\src\filesystem\common\CommonFile.cpp" />
-    <ClCompile Include="..\..\..\src\filesystem\unix\Device.cpp">
+    <ClCompile Include="..\..\..\src\lib\Album.cpp" />
+    <ClCompile Include="..\..\..\src\lib\AlbumTrack.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Artist.cpp" />
+    <ClCompile Include="..\..\..\src\lib\AudioTrack.cpp" />
+    <ClCompile Include="..\..\..\src\lib\av\FrameBuffer.cpp" />
+    <ClCompile Include="..\..\..\src\lib\av\MediaController.cpp" />
+    <ClCompile Include="..\..\..\src\lib\av\MediaContext.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Codec.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Container.cpp" />
+    <ClCompile Include="..\..\..\src\lib\database\SqliteConnection.cpp" />
+    <ClCompile Include="..\..\..\src\lib\database\SqliteTools.cpp" />
+    <ClCompile Include="..\..\..\src\lib\database\SqliteTransaction.cpp" />
+    <ClCompile Include="..\..\..\src\lib\factory\ParserMediaFactory.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Genre.cpp" />
+    <ClCompile Include="..\..\..\src\lib\History.cpp" />
+    <ClCompile Include="..\..\..\src\lib\image\Image.cpp" />
+    <ClCompile Include="..\..\..\src\lib\image\JpegImageContainer.cpp" />
+    <ClCompile Include="..\..\..\src\lib\MediaDevice.cpp" />
+    <ClCompile Include="..\..\..\src\lib\discoverer\DiscovererWorker.cpp" />
+    <ClCompile Include="..\..\..\src\lib\discoverer\FsDiscoverer.cpp" />
+    <ClCompile Include="..\..\..\src\lib\factory\DeviceListerFactory.cpp" />
+    <ClCompile Include="..\..\..\src\lib\factory\FileSystemFactory.cpp" />
+    <ClCompile Include="..\..\..\src\lib\MediaFile.cpp" />
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\CommonDevice.cpp" />
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\CommonDirectory.cpp" />
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\CommonFile.cpp" />
+    <ClCompile Include="..\..\..\src\lib\filesystem\unix\Device.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
@@ -650,7 +616,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">false</DeploymentContent>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\unix\DeviceLister.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\unix\DeviceLister.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
@@ -668,7 +634,7 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">false</DeploymentContent>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\unix\Directory.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\unix\Directory.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDLL|Win32'">true</ExcludedFromBuild>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</DeploymentContent>
@@ -686,40 +652,40 @@
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</DeploymentContent>
       <DeploymentContent Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">false</DeploymentContent>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\common\File.cpp" />
-    <ClCompile Include="..\..\..\src\filesystem\win32\Device.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\common\File.cpp" />
+    <ClCompile Include="..\..\..\src\lib\filesystem\win32\Device.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\Device1.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">$(IntDir)\Device1.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\win32\DeviceLister.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\win32\DeviceLister.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\DeviceLister1.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">$(IntDir)\DeviceLister1.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\filesystem\win32\Directory.cpp">
+    <ClCompile Include="..\..\..\src\lib\filesystem\win32\Directory.cpp">
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)\Directory1.obj</ObjectFileName>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">$(IntDir)\Directory1.obj</ObjectFileName>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\MediaFolder.cpp" />
-    <ClCompile Include="..\..\..\src\Label.cpp" />
-    <ClCompile Include="..\..\..\src\logging\Logger.cpp" />
-    <ClCompile Include="..\..\..\src\Media.cpp" />
-    <ClCompile Include="..\..\..\src\MediaExplorer.cpp" />
-    <ClCompile Include="..\..\..\src\Metadata.cpp" />
-    <ClCompile Include="..\..\..\src\metadata_services\FormatService.cpp" />
-    <ClCompile Include="..\..\..\src\metadata_services\MetadataService.cpp" />
-    <ClCompile Include="..\..\..\src\metadata_services\ThumbnailService.cpp" />
-    <ClCompile Include="..\..\..\src\Movie.cpp" />
-    <ClCompile Include="..\..\..\src\parser\Parser.cpp" />
-    <ClCompile Include="..\..\..\src\parser\ParserMedia.cpp" />
-    <ClCompile Include="..\..\..\src\parser\ParserService.cpp" />
-    <ClCompile Include="..\..\..\src\Playlist.cpp" />
-    <ClCompile Include="..\..\..\src\Settings.cpp" />
-    <ClCompile Include="..\..\..\src\Show.cpp" />
-    <ClCompile Include="..\..\..\src\ShowEpisode.cpp" />
-    <ClCompile Include="..\..\..\src\Stream.cpp" />
-    <ClCompile Include="..\..\..\src\utils\Filename.cpp" />
-    <ClCompile Include="..\..\..\src\utils\ModificationsNotifier.cpp" />
-    <ClCompile Include="..\..\..\src\VideoTrack.cpp" />
+    <ClCompile Include="..\..\..\src\lib\MediaFolder.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Label.cpp" />
+    <ClCompile Include="..\..\..\src\lib\logging\Logger.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Media.cpp" />
+    <ClCompile Include="..\..\..\src\lib\MediaExplorer.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Metadata.cpp" />
+    <ClCompile Include="..\..\..\src\lib\metadata_services\FormatService.cpp" />
+    <ClCompile Include="..\..\..\src\lib\metadata_services\MetadataService.cpp" />
+    <ClCompile Include="..\..\..\src\lib\metadata_services\ThumbnailService.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Movie.cpp" />
+    <ClCompile Include="..\..\..\src\lib\parser\Parser.cpp" />
+    <ClCompile Include="..\..\..\src\lib\parser\ParserMedia.cpp" />
+    <ClCompile Include="..\..\..\src\lib\parser\ParserService.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Playlist.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Settings.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Show.cpp" />
+    <ClCompile Include="..\..\..\src\lib\ShowEpisode.cpp" />
+    <ClCompile Include="..\..\..\src\lib\Stream.cpp" />
+    <ClCompile Include="..\..\..\src\lib\utils\Filename.cpp" />
+    <ClCompile Include="..\..\..\src\lib\utils\ModificationsNotifier.cpp" />
+    <ClCompile Include="..\..\..\src\lib\VideoTrack.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugDLL|Win32'">stdafx.h</PrecompiledHeaderFile>
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='DebugDLL|x64'">stdafx.h</PrecompiledHeaderFile>
@@ -748,7 +714,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\src\filesystem\darwin\DeviceLister.mm" />
+    <None Include="..\..\..\src\lib\filesystem\darwin\DeviceLister.mm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

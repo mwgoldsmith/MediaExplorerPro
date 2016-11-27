@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mxp", "mxp.vcxproj", "{FEF51024-9388-488D-A6B3-769DFB6A32EB}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mxp", "lib\mxp.vcxproj", "{FEF51024-9388-488D-A6B3-769DFB6A32EB}"
 	ProjectSection(ProjectDependencies) = postProject
 		{FE437701-63F4-4B0A-B7D3-6B7A2F03C3D5} = {FE437701-63F4-4B0A-B7D3-6B7A2F03C3D5}
 	EndProjectSection
@@ -13,72 +13,139 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mxpcli", "..\tests\mxpcli.v
 		{FEF51024-9388-488D-A6B3-769DFB6A32EB} = {FEF51024-9388-488D-A6B3-769DFB6A32EB}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite3", "..\..\..\external\sqlite3\projects\vs14\sqlite3.vcxproj", "{FE437701-63F4-4B0A-B7D3-6B7A2F03C3D5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "sqlite3", "..\..\external\sqlite3\projects\vs14\sqlite3.vcxproj", "{FE437701-63F4-4B0A-B7D3-6B7A2F03C3D5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avcodec", "..\..\..\external\ffmpeg\projects\vs14\avcodec.vcxproj", "{9F051EBC-8D94-44B1-B9F5-1F00645DC589}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avdevice", "..\..\..\external\ffmpeg\projects\vs14\avdevice.vcxproj", "{8376ACF1-A823-4E1F-B64C-F6589EBDFC18}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avcodec", "..\..\external\ffmpeg\projects\vs14\avcodec.vcxproj", "{9F051EBC-8D94-44B1-B9F5-1F00645DC589}"
 	ProjectSection(ProjectDependencies) = postProject
-		{A8CEAD56-20F1-4AD9-901E-C1D58DDF5D4E} = {A8CEAD56-20F1-4AD9-901E-C1D58DDF5D4E}
+		{22B4FF05-1B94-4DE7-9592-8E3B7184BDA0} = {22B4FF05-1B94-4DE7-9592-8E3B7184BDA0}
+		{8C6ECD26-DC99-4126-93B2-5A7B94AB3FEC} = {8C6ECD26-DC99-4126-93B2-5A7B94AB3FEC}
+		{B0587834-8B11-4AD4-93AA-FB554F50FAF1} = {B0587834-8B11-4AD4-93AA-FB554F50FAF1}
+		{1E931C82-5B09-4B29-A6F6-CD4BD8A992A8} = {1E931C82-5B09-4B29-A6F6-CD4BD8A992A8}
+		{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3} = {6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}
+		{FC88A9EA-A150-4375-9BA2-DCB14D4FE093} = {FC88A9EA-A150-4375-9BA2-DCB14D4FE093}
+		{39626CF0-8867-4737-9559-9D5B005080E3} = {39626CF0-8867-4737-9559-9D5B005080E3}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avformat", "..\..\..\external\ffmpeg\projects\vs14\avformat.vcxproj", "{BC6052AA-8E29-4580-AE34-C0BF2012DF05}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avdevice", "..\..\external\ffmpeg\projects\vs14\avdevice.vcxproj", "{8376ACF1-A823-4E1F-B64C-F6589EBDFC18}"
+	ProjectSection(ProjectDependencies) = postProject
+		{685D4438-4C48-4E8C-8ACE-A7D37E32DFC2} = {685D4438-4C48-4E8C-8ACE-A7D37E32DFC2}
+		{A8CEAD56-20F1-4AD9-901E-C1D58DDF5D4E} = {A8CEAD56-20F1-4AD9-901E-C1D58DDF5D4E}
+		{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3} = {6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}
+		{BC6052AA-8E29-4580-AE34-C0BF2012DF05} = {BC6052AA-8E29-4580-AE34-C0BF2012DF05}
+		{9F051EBC-8D94-44B1-B9F5-1F00645DC589} = {9F051EBC-8D94-44B1-B9F5-1F00645DC589}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "swscale", "..\..\..\external\ffmpeg\projects\vs14\swscale.vcxproj", "{2EB72C9F-BBF8-4740-ADDF-E6291EA6F54F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avformat", "..\..\external\ffmpeg\projects\vs14\avformat.vcxproj", "{BC6052AA-8E29-4580-AE34-C0BF2012DF05}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E931C82-5B09-4B29-A6F6-CD4BD8A992A8} = {1E931C82-5B09-4B29-A6F6-CD4BD8A992A8}
+		{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3} = {6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}
+		{9F051EBC-8D94-44B1-B9F5-1F00645DC589} = {9F051EBC-8D94-44B1-B9F5-1F00645DC589}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "swresample", "..\..\..\external\ffmpeg\projects\vs14\swresample.vcxproj", "{F7F1769C-8238-48E8-BFFD-487D6821FF1C}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "swscale", "..\..\external\ffmpeg\projects\vs14\swscale.vcxproj", "{2EB72C9F-BBF8-4740-ADDF-E6291EA6F54F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3} = {6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avutil", "..\..\..\external\ffmpeg\projects\vs14\avutil.vcxproj", "{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "swresample", "..\..\external\ffmpeg\projects\vs14\swresample.vcxproj", "{F7F1769C-8238-48E8-BFFD-487D6821FF1C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3} = {6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avfilter", "..\..\..\external\ffmpeg\projects\vs14\avfilter.vcxproj", "{685D4438-4C48-4E8C-8ACE-A7D37E32DFC2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avutil", "..\..\external\ffmpeg\projects\vs14\avutil.vcxproj", "{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "avfilter", "..\..\external\ffmpeg\projects\vs14\avfilter.vcxproj", "{685D4438-4C48-4E8C-8ACE-A7D37E32DFC2}"
 	ProjectSection(ProjectDependencies) = postProject
 		{484A2649-EDC4-4F79-9CC3-EE323182CA97} = {484A2649-EDC4-4F79-9CC3-EE323182CA97}
+		{92CDD15A-E89F-4724-AB56-54C097F1D6A1} = {92CDD15A-E89F-4724-AB56-54C097F1D6A1}
+		{127DF18C-5A31-4315-BA4F-544B807A2533} = {127DF18C-5A31-4315-BA4F-544B807A2533}
+		{83D12E8E-E99F-4A26-A98B-2EB0296519DE} = {83D12E8E-E99F-4A26-A98B-2EB0296519DE}
+		{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3} = {6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}
+		{F7F1769C-8238-48E8-BFFD-487D6821FF1C} = {F7F1769C-8238-48E8-BFFD-487D6821FF1C}
+		{2EB72C9F-BBF8-4740-ADDF-E6291EA6F54F} = {2EB72C9F-BBF8-4740-ADDF-E6291EA6F54F}
+		{BC6052AA-8E29-4580-AE34-C0BF2012DF05} = {BC6052AA-8E29-4580-AE34-C0BF2012DF05}
+		{9F051EBC-8D94-44B1-B9F5-1F00645DC589} = {9F051EBC-8D94-44B1-B9F5-1F00645DC589}
+		{3BB72ED5-18C2-4406-9854-A4B1387DE59A} = {3BB72ED5-18C2-4406-9854-A4B1387DE59A}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "postproc", "..\..\..\external\ffmpeg\projects\vs14\postproc.vcxproj", "{3BB72ED5-18C2-4406-9854-A4B1387DE59A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "postproc", "..\..\external\ffmpeg\projects\vs14\postproc.vcxproj", "{3BB72ED5-18C2-4406-9854-A4B1387DE59A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6C7BA199-980B-4178-B0A8-1FBE3AAE64E3} = {6C7BA199-980B-4178-B0A8-1FBE3AAE64E3}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "..\..\..\external\zlib\projects\vs14\zlib.vcxproj", "{1E931C82-5B09-4B29-A6F6-CD4BD8A992A8}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "..\..\external\zlib\projects\vs14\zlib.vcxproj", "{1E931C82-5B09-4B29-A6F6-CD4BD8A992A8}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsm", "..\..\..\external\gsm\projects\vs14\gsm.vcxproj", "{39626CF0-8867-4737-9559-9D5B005080E3}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "gsm", "..\..\external\gsm\projects\vs14\gsm.vcxproj", "{39626CF0-8867-4737-9559-9D5B005080E3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vpx", "..\..\..\external\vpx\projects\vs14\vpx.vcxproj", "{8C6ECD26-DC99-4126-93B2-5A7B94AB3FEC}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "vpx", "..\..\external\vpx\projects\vs14\vpx.vcxproj", "{8C6ECD26-DC99-4126-93B2-5A7B94AB3FEC}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp3lame", "..\..\..\external\lame\projects\vc14\mp3lame.vcxproj", "{22B4FF05-1B94-4DE7-9592-8E3B7184BDA0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mp3lame", "..\..\external\lame\projects\vc14\mp3lame.vcxproj", "{22B4FF05-1B94-4DE7-9592-8E3B7184BDA0}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lzma", "..\..\..\external\lzma\projects\vs14\lzma.vcxproj", "{FC88A9EA-A150-4375-9BA2-DCB14D4FE093}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "lzma", "..\..\external\lzma\projects\vs14\lzma.vcxproj", "{FC88A9EA-A150-4375-9BA2-DCB14D4FE093}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openjpeg", "..\..\..\external\openjpeg\projects\vs14\openjpeg.vcxproj", "{B0587834-8B11-4AD4-93AA-FB554F50FAF1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openjpeg", "..\..\external\openjpeg\projects\vs14\openjpeg.vcxproj", "{B0587834-8B11-4AD4-93AA-FB554F50FAF1}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fribidi", "..\..\..\external\fribidi\projects\vs14\fribidi.vcxproj", "{83D12E8E-E99F-4A26-A98B-2EB0296519DE}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fribidi", "..\..\external\fribidi\projects\vs14\fribidi.vcxproj", "{83D12E8E-E99F-4A26-A98B-2EB0296519DE}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fontconfig", "..\..\..\external\fontconfig\projects\vs14\fontconfig.vcxproj", "{92CDD15A-E89F-4724-AB56-54C097F1D6A1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fontconfig", "..\..\external\fontconfig\projects\vs14\fontconfig.vcxproj", "{92CDD15A-E89F-4724-AB56-54C097F1D6A1}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D6A86A4A-6FD3-42CE-9B75-9F7320DBF4D2} = {D6A86A4A-6FD3-42CE-9B75-9F7320DBF4D2}
+		{127DF18C-5A31-4315-BA4F-544B807A2533} = {127DF18C-5A31-4315-BA4F-544B807A2533}
+		{84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47} = {84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "..\..\..\external\freetype2\projects\vs14\freetype.vcxproj", "{127DF18C-5A31-4315-BA4F-544B807A2533}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "freetype", "..\..\external\freetype2\projects\vs14\freetype.vcxproj", "{127DF18C-5A31-4315-BA4F-544B807A2533}"
+	ProjectSection(ProjectDependencies) = postProject
+		{414CF106-FD2B-4835-A914-D7CFFC668A36} = {414CF106-FD2B-4835-A914-D7CFFC668A36}
+		{1E931C82-5B09-4B29-A6F6-CD4BD8A992A8} = {1E931C82-5B09-4B29-A6F6-CD4BD8A992A8}
+		{C59F02A5-9E8E-4AB6-8CC2-A054E6E7007E} = {C59F02A5-9E8E-4AB6-8CC2-A054E6E7007E}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bzip2", "..\..\..\external\bzip2\projects\vs14\bzip2.vcxproj", "{414CF106-FD2B-4835-A914-D7CFFC668A36}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "bzip2", "..\..\external\bzip2\projects\vs14\bzip2.vcxproj", "{414CF106-FD2B-4835-A914-D7CFFC668A36}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png", "..\..\..\external\png\projects\vs14\png.vcxproj", "{C59F02A5-9E8E-4AB6-8CC2-A054E6E7007E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "png", "..\..\external\png\projects\vs14\png.vcxproj", "{C59F02A5-9E8E-4AB6-8CC2-A054E6E7007E}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E931C82-5B09-4B29-A6F6-CD4BD8A992A8} = {1E931C82-5B09-4B29-A6F6-CD4BD8A992A8}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iconv", "..\..\..\external\iconv\projects\vs14\iconv.vcxproj", "{84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "iconv", "..\..\external\iconv\projects\vs14\iconv.vcxproj", "{84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml2", "..\..\..\external\xml2\projects\vs14\xml2.vcxproj", "{D6A86A4A-6FD3-42CE-9B75-9F7320DBF4D2}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "xml2", "..\..\external\xml2\projects\vs14\xml2.vcxproj", "{D6A86A4A-6FD3-42CE-9B75-9F7320DBF4D2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{1E931C82-5B09-4B29-A6F6-CD4BD8A992A8} = {1E931C82-5B09-4B29-A6F6-CD4BD8A992A8}
+		{84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47} = {84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47}
+		{FC88A9EA-A150-4375-9BA2-DCB14D4FE093} = {FC88A9EA-A150-4375-9BA2-DCB14D4FE093}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ass", "..\..\..\external\ass\projects\vs14\ass.vcxproj", "{484A2649-EDC4-4F79-9CC3-EE323182CA97}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ass", "..\..\external\ass\projects\vs14\ass.vcxproj", "{484A2649-EDC4-4F79-9CC3-EE323182CA97}"
+	ProjectSection(ProjectDependencies) = postProject
+		{92CDD15A-E89F-4724-AB56-54C097F1D6A1} = {92CDD15A-E89F-4724-AB56-54C097F1D6A1}
+		{127DF18C-5A31-4315-BA4F-544B807A2533} = {127DF18C-5A31-4315-BA4F-544B807A2533}
+		{83D12E8E-E99F-4A26-A98B-2EB0296519DE} = {83D12E8E-E99F-4A26-A98B-2EB0296519DE}
+		{84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47} = {84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47}
+		{036746B7-5E92-4650-8CC2-C7257EDA174A} = {036746B7-5E92-4650-8CC2-C7257EDA174A}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "harfbuzz", "..\..\..\external\harfbuzz\projects\vs14\harfbuzz.vcxproj", "{036746B7-5E92-4650-8CC2-C7257EDA174A}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "harfbuzz", "..\..\external\harfbuzz\projects\vs14\harfbuzz.vcxproj", "{036746B7-5E92-4650-8CC2-C7257EDA174A}"
+	ProjectSection(ProjectDependencies) = postProject
+		{127DF18C-5A31-4315-BA4F-544B807A2533} = {127DF18C-5A31-4315-BA4F-544B807A2533}
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "externals", "externals", "{510C0B09-02F9-4382-9160-0E8BA3312486}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cdio", "..\..\external\cdio\projects\vs14\cdio.vcxproj", "{172E2941-8544-4053-B7CB-B29C170F167B}"
+	ProjectSection(ProjectDependencies) = postProject
+		{84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47} = {84D8CC8E-1CDB-448C-9FFB-48EB32A5AD47}
+	EndProjectSection
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ffmpeg", "ffmpeg", "{71D0EC03-1248-4375-9655-F06C2D200ABC}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cdio", "..\..\..\external\cdio\projects\vs14\cdio.vcxproj", "{172E2941-8544-4053-B7CB-B29C170F167B}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cdio-paranoia", "..\..\..\external\cdio-paranoia\projects\vs14\cdio-paranoia.vcxproj", "{A8CEAD56-20F1-4AD9-901E-C1D58DDF5D4E}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cdio-paranoia", "..\..\external\cdio-paranoia\projects\vs14\cdio-paranoia.vcxproj", "{A8CEAD56-20F1-4AD9-901E-C1D58DDF5D4E}"
 	ProjectSection(ProjectDependencies) = postProject
 		{172E2941-8544-4053-B7CB-B29C170F167B} = {172E2941-8544-4053-B7CB-B29C170F167B}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg", "..\..\..\external\jpeg\projects\vs14\jpeg.vcxproj", "{4F877E8E-BC1C-442D-BB59-E5C1C33B2C6F}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "jpeg", "..\..\external\jpeg\projects\vs14\jpeg.vcxproj", "{4F877E8E-BC1C-442D-BB59-E5C1C33B2C6F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "externals", "externals", "{510C0B09-02F9-4382-9160-0E8BA3312486}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ffmpeg", "ffmpeg", "{71D0EC03-1248-4375-9655-F06C2D200ABC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
