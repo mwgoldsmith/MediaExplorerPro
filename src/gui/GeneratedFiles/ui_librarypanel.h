@@ -41,7 +41,7 @@ public:
         listView->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOn);
         listView->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
         listView->setDragEnabled(true);
-        listView->setSelectionMode(QAbstractItemView::MultiSelection);
+        listView->setSelectionMode(QAbstractItemView::ExtendedSelection);
         listView->setMovement(QListView::Snap);
         listView->setResizeMode(QListView::Adjust);
         listView->setLayoutMode(QListView::Batched);

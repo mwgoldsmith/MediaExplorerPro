@@ -1,0 +1,545 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Form Files">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;moc;h;def;odl;idl;res;</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{68a33a56-e127-4067-a63c-fdbf46a50acf}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{4ca3692f-6154-4e1a-b5dd-af914c7c073f}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\Gui">
+      <UniqueIdentifier>{4663591a-f7d4-4eee-8602-b2601eaf3598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Media">
+      <UniqueIdentifier>{c6a76604-246f-4986-a933-37b4fdd5393b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Tools">
+      <UniqueIdentifier>{fcb514b6-53d6-46d1-9ecf-37252b65e273}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui">
+      <UniqueIdentifier>{5bd480cc-c3a1-49fc-8061-fbed5925fa50}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Media">
+      <UniqueIdentifier>{65de5be6-1934-430c-af5f-701d055fb78b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Tools">
+      <UniqueIdentifier>{65810750-bc32-46d2-a917-b21e49b0b0a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui\docks">
+      <UniqueIdentifier>{3b2baf08-9b79-44fc-a386-adeb1baf452b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui\panels">
+      <UniqueIdentifier>{368acb4a-dc57-48b3-8941-2cbc43d6457f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui\ui">
+      <UniqueIdentifier>{78fcea7f-c17e-4398-b35e-fc7dbddaf09a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui\widgets">
+      <UniqueIdentifier>{337bf514-b665-4bdf-a7d6-519df05645ac}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Gui\workflows">
+      <UniqueIdentifier>{6f9ea417-b93b-4232-ab12-9b8f33f0e225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\docks">
+      <UniqueIdentifier>{78c034d6-1c85-433c-bcfb-410df059cb74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\panels">
+      <UniqueIdentifier>{6985c6b5-b6de-48e4-8330-efd9746bd207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\ui">
+      <UniqueIdentifier>{554fbf8a-990c-434b-9dcf-e65a3d0e9b55}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\widgets">
+      <UniqueIdentifier>{fc396911-d340-4388-bd32-7fe3a173bc2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Gui\workflows">
+      <UniqueIdentifier>{67e74e31-6140-449d-bd75-7946e547d4ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files\DebugDLL">
+      <UniqueIdentifier>{713910d7-cac9-4f92-ab3d-d14ca329cce2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files\ReleaseDLL">
+      <UniqueIdentifier>{f214e897-87ed-47a2-b10c-8893eb92c167}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Source Files\Settings">
+      <UniqueIdentifier>{b9386a9d-a6b1-4813-9331-5148b4c24e64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Settings">
+      <UniqueIdentifier>{f94f3834-b0e8-4b94-8406-aee1acb79a2a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\gui\core.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_browserpanel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_browserpanel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_browserworkflow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_browserworkflow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_clippropertiesdock.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_clippropertiesdock.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_clipviewerdock.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_clipviewerdock.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_core.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_core.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_dockwidgetmanager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_dockwidgetmanager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_downloadspanel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_downloadspanel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_downloadsworkflow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_downloadsworkflow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_editorpanel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_editorpanel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_editorworkflow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_editorworkflow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_libraryfoldersdock.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_libraryfoldersdock.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_librarypanel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_librarypanel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_libraryworkflow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_libraryworkflow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_mainwindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_mainwindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_media.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_media.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_mediafolder.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_mediafolder.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_mediaproperty.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_mediaproperty.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_statusconsoledock.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_statusconsoledock.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_workflowtoolbar.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_workflowtoolbar.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\dockwidgetmanager.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\mainwindow.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\workflows\browserworkflow.cpp">
+      <Filter>Source Files\Gui\workflows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\workflows\downloadsworkflow.cpp">
+      <Filter>Source Files\Gui\workflows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\workflows\editorworkflow.cpp">
+      <Filter>Source Files\Gui\workflows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\workflows\libraryworkflow.cpp">
+      <Filter>Source Files\Gui\workflows</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\widgets\workflowtoolbar.cpp">
+      <Filter>Source Files\Gui\widgets</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\panels\librarypanel.cpp">
+      <Filter>Source Files\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\panels\editorpanel.cpp">
+      <Filter>Source Files\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\panels\downloadspanel.cpp">
+      <Filter>Source Files\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\panels\browserpanel.cpp">
+      <Filter>Source Files\Gui\panels</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\docks\clippropertiesdock.cpp">
+      <Filter>Source Files\Gui\docks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\docks\clipviewerdock.cpp">
+      <Filter>Source Files\Gui\docks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\docks\libraryfoldersdock.cpp">
+      <Filter>Source Files\Gui\docks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\docks\statusconsoledock.cpp">
+      <Filter>Source Files\Gui\docks</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Media\mediaproperty.cpp">
+      <Filter>Source Files\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Media\mediafolder.cpp">
+      <Filter>Source Files\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Media\media.cpp">
+      <Filter>Source Files\Media</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_libraryworkflow.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_mainwindow.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_media.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_mediafolder.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_mediaproperty.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_statusconsoledock.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_workflowtoolbar.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_browserpanel.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_browserworkflow.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_clippropertiesdock.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_clipviewerdock.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_core.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_dockwidgetmanager.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_downloadspanel.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_downloadsworkflow.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_editorpanel.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_editorworkflow.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_libraryfoldersdock.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_librarypanel.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_mediaitemdelegate.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_mediaitemdelegate.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\ReleaseDLL\moc_mediaitemdelegate.cpp">
+      <Filter>Generated Files\ReleaseDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_mediaitemdelegate.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\mediaitemdelegate.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\medialistmodel.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_medialistmodel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_medialistmodel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\ReleaseDLL\moc_medialistmodel.cpp">
+      <Filter>Generated Files\ReleaseDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_medialistmodel.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Settings\settings.cpp">
+      <Filter>Source Files\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Settings\settingvalue.cpp">
+      <Filter>Source Files\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_settingvalue.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Debug\moc_settings.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\Release\moc_settings.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\ReleaseDLL\moc_settings.cpp">
+      <Filter>Generated Files\ReleaseDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_settings.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\Gui\mediaitemproxymodel.cpp">
+      <Filter>Source Files\Gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_settingvalue.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\gui\GeneratedFiles\DebugDLL\moc_mediaitemproxymodel.cpp">
+      <Filter>Generated Files\DebugDLL</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\src\gui\core.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Media\media.h">
+      <Filter>Header Files\Media</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Media\mediafolder.h">
+      <Filter>Header Files\Media</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Media\mediaproperty.h">
+      <Filter>Header Files\Media</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\browserpanel.h">
+      <Filter>Header Files\Gui\panels</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\downloadspanel.h">
+      <Filter>Header Files\Gui\panels</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\editorpanel.h">
+      <Filter>Header Files\Gui\panels</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\librarypanel.h">
+      <Filter>Header Files\Gui\panels</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\workflows\browserworkflow.h">
+      <Filter>Header Files\Gui\workflows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\workflows\downloadsworkflow.h">
+      <Filter>Header Files\Gui\workflows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\workflows\libraryworkflow.h">
+      <Filter>Header Files\Gui\workflows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\workflows\editorworkflow.h">
+      <Filter>Header Files\Gui\workflows</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\clippropertiesdock.h">
+      <Filter>Header Files\Gui\docks</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\clipviewerdock.h">
+      <Filter>Header Files\Gui\docks</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\libraryfoldersdock.h">
+      <Filter>Header Files\Gui\docks</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\statusconsoledock.h">
+      <Filter>Header Files\Gui\docks</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\widgets\workflowtoolbar.h">
+      <Filter>Header Files\Gui\widgets</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\mainwindow.h">
+      <Filter>Header Files\Gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\dockwidgetmanager.h">
+      <Filter>Header Files\Gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\mediaitemdelegate.h">
+      <Filter>Header Files\Gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\medialistmodel.h">
+      <Filter>Header Files\Gui</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Settings\settingvalue.h">
+      <Filter>Header Files\Settings</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Settings\settings.h">
+      <Filter>Header Files\Settings</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\mediaitemproxymodel.h">
+      <Filter>Generated Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\ui\browserpanel.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\ui\clippropertiesdock.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\ui\clipviewerdock.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\ui\downloadspanel.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\ui\editorpanel.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\ui\libraryfoldersdock.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\panels\ui\librarypanel.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\ui\mainwindow.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\src\gui\Gui\docks\ui\statusconsoledock.ui">
+      <Filter>Form Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_browserpanel.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_clippropertiesdock.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_clipviewerdock.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_downloadspanel.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_editorpanel.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_libraryfoldersdock.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_librarypanel.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_mainwindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\GeneratedFiles\ui_statusconsoledock.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\Tools\qsingleton.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\Tools\singleton.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\gui\mxpgui.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
