@@ -16,7 +16,12 @@ const std::string VideoTrackTable::Name = "VideoTrack";
 const std::string VideoTrackTable::PrimaryKeyColumn = "id_track";
 int64_t mxp::VideoTrack::* const VideoTrackTable::PrimaryKey = &mxp::VideoTrack::m_id;
 
-mxp::VideoTrack::VideoTrack(MediaExplorerPtr, sqlite::Row& row) {
+mxp::VideoTrack::VideoTrack(MediaExplorerPtr, sqlite::Row& row)
+  : m_id{}
+  , m_width{}
+  , m_height{}
+  , m_fps{}
+  , m_mediaId{} {
   row >> m_id
       >> m_codec
       >> m_width
