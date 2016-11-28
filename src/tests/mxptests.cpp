@@ -3,7 +3,7 @@
  *****************************************************************************/
 
 #include <stdio.h>
-#include "mxp.h"
+#include "mxptests.h"
 
 std::mutex m;
 std::condition_variable cv;
