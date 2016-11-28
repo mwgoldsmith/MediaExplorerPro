@@ -43,8 +43,8 @@ public:
 private:
   MediaExplorerPtr m_ml;
   int64_t          m_id;
-  mstring      m_name;
-  mstring      m_value;
+  mstring          m_name;
+  mstring          m_value;
   time_t           m_creationDate;
 
   friend struct policy::MetadataTable;
