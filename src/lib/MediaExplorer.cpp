@@ -215,7 +215,39 @@ bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
   return true;
 }
 
-void mxp::MediaExplorer::RegisterEntityHooks() {}
+void mxp::MediaExplorer::RegisterEntityHooks() {
+  if (m_modificationNotifier == nullptr)
+    return;
+
+  m_db->registerUpdateHook(policy::MediaTable::Name,
+    [this](SqliteConnection::HookReason reason, int64_t rowId) {
+    if (reason != SqliteConnection::HookReason::Delete)
+      return;
+    Media::RemoveFromCache(rowId);
+    m_modificationNotifier->NotifyMediaRemoval(rowId);
+  });
+  m_db->registerUpdateHook(policy::ArtistTable::Name,
+    [this](SqliteConnection::HookReason reason, int64_t rowId) {
+    if (reason != SqliteConnection::HookReason::Delete)
+      return;
+    Artist::RemoveFromCache(rowId);
+    m_modificationNotifier->NotifyArtistRemoval(rowId);
+  });
+  m_db->registerUpdateHook(policy::AlbumTable::Name,
+    [this](SqliteConnection::HookReason reason, int64_t rowId) {
+    if (reason != SqliteConnection::HookReason::Delete)
+      return;
+    Album::RemoveFromCache(rowId);
+    m_modificationNotifier->NotifyAlbumRemoval(rowId);
+  });
+  m_db->registerUpdateHook(policy::AlbumTrackTable::Name,
+    [this](SqliteConnection::HookReason reason, int64_t rowId) {
+    if (reason != SqliteConnection::HookReason::Delete)
+      return;
+    AlbumTrack::RemoveFromCache(rowId);
+    m_modificationNotifier->NotifyAlbumTrackRemoval(rowId);
+  });
+}
 
 void mxp::MediaExplorer::StartDiscoverer() {
   m_discoverer.reset(new DiscovererWorker(this));
