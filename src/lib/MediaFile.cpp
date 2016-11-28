@@ -39,7 +39,7 @@ mxp::MediaFile::MediaFile(MediaExplorerPtr ml, sqlite::Row& row)
       >> m_isRemovable;
 }
 
-mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable)
+mxp::MediaFile::MediaFile(MediaExplorerPtr ml, int64_t mediaId, MediaFileType type, const fs::IFile& file, int64_t folderId, bool isRemovable)
   : m_ml(ml)
   , m_id(0)
   , m_mediaId(mediaId)
@@ -73,7 +73,7 @@ const std::string& mxp::MediaFile::GetMrl() const {
   return m_fullPath;
 }
 
-mxp::IMediaFile::Type mxp::MediaFile::GetType() const {
+mxp::MediaFileType mxp::MediaFile::GetType() const {
   return m_type;
 }
 
@@ -131,8 +131,7 @@ bool mxp::MediaFile::CreateTable(DBConnection connection) noexcept {
     " BEGIN"
     " UPDATE " + MediaFileTable::Name + " SET is_present = new.is_present WHERE folder_id = new.id_folder;"
     " END";
-  static const auto indexReq = "CREATE INDEX IF NOT EXISTS file_media_id_index ON " +
-    MediaFileTable::Name + "(media_id)";
+  static const auto indexReq = "CREATE INDEX IF NOT EXISTS file_media_id_index ON " + MediaFileTable::Name + "(media_id)";
 
   bool success;
   try {
@@ -147,7 +146,7 @@ bool mxp::MediaFile::CreateTable(DBConnection connection) noexcept {
   return success;
 }
 
-std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) noexcept {
+std::shared_ptr<mxp::MediaFile> mxp::MediaFile::Create(MediaExplorerPtr ml, int64_t mediaId, MediaFileType type, const fs::IFile& fileFs, int64_t folderId, bool isRemovable) noexcept {
   std::shared_ptr<MediaFile> self;
   static const auto req = "INSERT INTO " + MediaFileTable::Name + "(media_id, mrl, type, folder_id, last_modification_date, is_removable) VALUES(?, ?, ?, ?, ?, ?)";
 

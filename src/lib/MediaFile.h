@@ -25,13 +25,13 @@ class MediaFile : public IMediaFile, public DatabaseHelpers<MediaFile, policy::M
 public:
   MediaFile(MediaExplorerPtr ml, sqlite::Row& row);
 
-  MediaFile(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable);
+  MediaFile(MediaExplorerPtr ml, int64_t mediaId, MediaFileType type, const fs::IFile& file, int64_t folderId, bool isRemovable);
 
   virtual int64_t Id() const override;
 
   virtual const std::string& GetMrl() const override;
 
-  virtual Type GetType() const override;
+  virtual MediaFileType GetType() const override;
 
   virtual time_t LastModificationDate() const override;
 
@@ -45,7 +45,7 @@ public:
 
   static bool CreateTable(DBConnection dbConnection) noexcept;
 
-  static std::shared_ptr<MediaFile> Create(MediaExplorerPtr ml, int64_t mediaId, Type type, const fs::IFile& file, int64_t folderId, bool isRemovable) noexcept;
+  static std::shared_ptr<MediaFile> Create(MediaExplorerPtr ml, int64_t mediaId, MediaFileType type, const fs::IFile& file, int64_t folderId, bool isRemovable) noexcept;
 
   /**
    * @brief fromPath  Attempts to fetch a file using its full path
@@ -69,7 +69,7 @@ private:
   int64_t          m_id;
   int64_t          m_mediaId;
   std::string      m_mrl;
-  Type             m_type;
+  MediaFileType    m_type;
   time_t           m_lastModificationDate;
   unsigned int     m_numServicesParsed;
   int64_t          m_folderId;

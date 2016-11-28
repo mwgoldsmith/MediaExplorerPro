@@ -486,7 +486,7 @@ std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile
   }
 
   // For now, assume all media are made of a single file
-  auto file = media->AddFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFile::Type::Entire);
+  auto file = media->AddFile(fileFs, parentFolder, parentFolderFs, mxp::MediaFileType::Entire);
   if (file == nullptr) {
     LOG_ERROR("Failed to add file ", fileFs.GetFullPath(), " to media #", media->Id());
     mxp::Media::destroy(this, media->Id());

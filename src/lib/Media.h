@@ -99,7 +99,7 @@ public:
 
   bool AddAudioTrack(const mstring& codec, unsigned int bitrate, unsigned int sampleRate, unsigned int numChannels, const mstring& language, const mstring& desc);
 
-  std::shared_ptr<MediaFile> AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, mxp::IMediaFile::Type type);
+  std::shared_ptr<MediaFile> AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, MediaFileType type);
 
   void RemoveFile(MediaFile& file);
 
@@ -133,7 +133,9 @@ public:
 
   static std::vector<MediaPtr> Search(MediaExplorerPtr ml, const mstring& title);
 
-  static std::vector<MediaPtr> ListAll(MediaExplorerPtr ml, Type type , SortingCriteria sort, bool desc);
+  static std::vector<MediaPtr> ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
+
+  static std::vector<MediaPtr> ListAll(MediaExplorerPtr ml, Type type, SortingCriteria sort, bool desc);
 
   static std::vector<MediaPtr> FetchHistory(MediaExplorerPtr ml);
 

@@ -260,7 +260,7 @@ bool mxp::Media::Save() {
   return true;
 }
 
-std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, mxp::IMediaFile::Type type) {
+std::shared_ptr<mxp::MediaFile> mxp::Media::AddFile(const fs::IFile& fileFs, MediaFolder& parentFolder, fs::IDirectory& parentFolderFs, mxp::MediaFileType type) {
   auto file = MediaFile::Create(m_ml, m_id, type, fileFs, parentFolder.Id(), parentFolderFs.device()->IsRemovable());
   if (file == nullptr)
     return nullptr;
@@ -482,13 +482,48 @@ std::vector<mxp::MediaPtr> mxp::Media::Search(MediaExplorerPtr ml, const mstring
     " " + MediaTable::PrimaryKeyColumn + " IN (SELECT rowid FROM " + MediaTable::Name + "Fts"
     " WHERE " + MediaTable::Name + "Fts MATCH ?)"
     "AND is_present = 1";
-  return Media::FetchAll<IMedia>(ml, req, title + "*");
+  return FetchAll<IMedia>(ml, req, title + "*");
+}
+
+std::vector<mxp::MediaPtr> mxp::Media::ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc) {
+  mstring req;
+
+  if(sort == SortingCriteria::LastModificationDate) {
+    req = "SELECT m.* FROM " + MediaTable::Name + " m INNER JOIN "
+      + policy::MediaFileTable::Name + " f ON m." + MediaTable::PrimaryKeyColumn + " = f.media_id"
+      " WHERE (f.type = ? OR f.type = ?)"
+      " ORDER BY f.last_modification_date";
+    if(desc == true)
+      req += " DESC";
+
+    return FetchAll<IMedia>(ml, req, MediaFileType::Entire, MediaFileType::Main);
+  }
+
+  req = "SELECT * FROM " + MediaTable::Name + " WHERE is_present = 1 ORDER BY ";
+  switch(sort) {
+  case SortingCriteria::Duration:
+    req += "duration";
+    break;
+  case SortingCriteria::InsertionDate:
+    req += "insertion_date";
+    break;
+  case SortingCriteria::ReleaseDate:
+    req += "release_date";
+    break;
+  default:
+    req += "title";
+    break;
+  }
+  if(desc == true)
+    req += " DESC";
+
+  return FetchAll<IMedia>(ml, req);
 }
 
 std::vector<mxp::MediaPtr> mxp::Media::ListAll(mxp::MediaExplorerPtr ml, mxp::IMedia::Type type, mxp::SortingCriteria sort, bool desc) {
   mstring req;
 
-  if(sort == mxp::SortingCriteria::LastModificationDate) {
+  if(sort == SortingCriteria::LastModificationDate) {
     req = "SELECT m.* FROM " + MediaTable::Name + " m INNER JOIN "
       + policy::MediaFileTable::Name + " f ON m." + MediaTable::PrimaryKeyColumn + " = f.media_id"
       " WHERE m.type = ?"
@@ -497,18 +532,18 @@ std::vector<mxp::MediaPtr> mxp::Media::ListAll(mxp::MediaExplorerPtr ml, mxp::IM
     if(desc == true)
       req += " DESC";
 
-    return FetchAll<mxp::IMedia>(ml, req, type, mxp::MediaFile::Type::Entire, mxp::MediaFile::Type::Main);
+    return FetchAll<IMedia>(ml, req, type, MediaFileType::Entire, MediaFileType::Main);
   }
 
   req = "SELECT * FROM " + MediaTable::Name + " WHERE type = ? AND is_present = 1 ORDER BY ";
   switch(sort) {
-  case mxp::SortingCriteria::Duration:
+  case SortingCriteria::Duration:
     req += "duration";
     break;
-  case mxp::SortingCriteria::InsertionDate:
+  case SortingCriteria::InsertionDate:
     req += "insertion_date";
     break;
-  case mxp::SortingCriteria::ReleaseDate:
+  case SortingCriteria::ReleaseDate:
     req += "release_date";
     break;
   default:
