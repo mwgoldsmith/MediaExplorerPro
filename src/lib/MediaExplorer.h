@@ -14,30 +14,10 @@
 
 namespace mxp {
 
-class Album;
-class Artist;
-class DiscovererWorker;
-class Genre;
-class Media;
-class MediaDevice;
-class MediaFolder;
-class ModificationNotifier;
-class Movie;
-class Parser;
-class ParserService;
-class Show;
-class SqliteConnection;
-
-namespace factory {
-class IFileSystem;
-}
-
-namespace fs {
-class IFile;
-class IDirectory;
-}
-
 class MediaExplorer : public IMediaExplorer, public IDeviceListerCb {
+public:
+  static const uint32_t DbModelVersion;
+
 public:
   MediaExplorer();
   ~MediaExplorer();
@@ -147,9 +127,6 @@ public:
 private:
   virtual void OnDevicePlugged(const std::string& uuid, const std::string& mountpoint) override;
   virtual void OnDeviceUnplugged(const std::string& uuid) override;
-
-public:
-  static const uint32_t DbModelVersion;
 
 private:
   void Destruct();

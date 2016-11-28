@@ -35,7 +35,6 @@
 #include "discoverer/FsDiscoverer.h"
 #include "factory/DeviceListerFactory.h"
 #include "factory/FileSystemFactory.h"
-#include "factory/ParserMediaFactory.h"
 #include "filesystem/IDevice.h"
 #include "logging/Logger.h"
 #include "mediaexplorer/ILogger.h"
@@ -46,6 +45,7 @@
 #include "parser/Parser.h"
 #include "utils/Filename.h"
 #include "utils/ModificationsNotifier.h"
+#include "LibraryFolder.h"
 
 std::string mxp::MediaExplorer::s_version = PACKAGE_STRING;
 
@@ -97,12 +97,16 @@ bool mxp::MediaExplorer::Initialize(const std::string& dbPath, IMediaExplorerCb*
       return false;
     }
   }
-  
-  StartAvController();
-  StartDiscoverer();
-  StartParser();
 
   LOG_DEBUG("Initializing end");
+
+  return true;
+}
+
+bool mxp::MediaExplorer::Startup() {
+  av::MediaController::Initialize(this);
+  StartDiscoverer();
+  StartParser();
 
   return true;
 }
@@ -211,14 +215,7 @@ bool mxp::MediaExplorer::UpdateDatabaseModel(unsigned int prevVersion) {
   return true;
 }
 
-void mxp::MediaExplorer::StartAvController() {
-  // Database must be initialized already
-  av::MediaController::Initialize(this);
-
-  if(m_pmFactory == nullptr) {
-    m_pmFactory.reset(new factory::ParserMediaFactory(this));
-  }
-}
+void mxp::MediaExplorer::RegisterEntityHooks() {}
 
 void mxp::MediaExplorer::StartDiscoverer() {
   m_discoverer.reset(new DiscovererWorker(this));
@@ -275,7 +272,7 @@ mxp::ArtistPtr mxp::MediaExplorer::GetArtist(int64_t id) const {
   return Artist::Fetch(this, id);
 }
 
-mxp::ArtistPtr mxp::MediaExplorer::GetArtist(const std::string& name) {
+mxp::ArtistPtr mxp::MediaExplorer::GetArtist(const std::string& name) const {
   static const auto req = "SELECT * FROM " + policy::ArtistTable::Name + " WHERE name = ? AND is_present = 1";
   return Artist::Fetch(this, req, name);
 }
@@ -364,6 +361,24 @@ bool mxp::MediaExplorer::DeleteMediaFolder(const mxp::MediaFolder& folder) {
 }
 
 //********
+// Library Folders
+mxp::LibraryFolderPtr mxp::MediaExplorer::CreateLibraryFolder(const std::string& name, int64_t parentId, int16_t position) {
+  return LibraryFolder::Create(this, name, parentId, position, false);
+}
+
+bool mxp::MediaExplorer::DeleteLibraryFolder(int64_t id) {
+  return LibraryFolder::destroy(this, id);
+}
+
+std::vector<mxp::LibraryFolderPtr> mxp::MediaExplorer::LibraryFolderList(mxp::SortingCriteria sort, bool desc) {
+  return LibraryFolder::ListAll(this, sort, desc);
+}
+
+mxp::LibraryFolderPtr mxp::MediaExplorer::GetLibraryFolder(int64_t id) const {
+  return LibraryFolder::Fetch(this, id);
+}
+
+//********
 // Playlists
 mxp::PlaylistPtr mxp::MediaExplorer::CreatePlaylist(const std::string& name) { 
   return Playlist::Create(this, name);
@@ -377,7 +392,7 @@ std::vector<mxp::PlaylistPtr> mxp::MediaExplorer::PlaylistList(mxp::SortingCrite
   return Playlist::ListAll(this, sort, desc);
 }
 
-mxp::PlaylistPtr mxp::MediaExplorer::GetPlaylist(int64_t id) const { 
+mxp::PlaylistPtr mxp::MediaExplorer::GetPlaylist(int64_t id) const {
   return Playlist::Fetch(this, id);
 }
 
@@ -391,13 +406,13 @@ mxp::MediaSearchAggregate mxp::MediaExplorer::SearchMedia(const std::string& tit
   MediaSearchAggregate res;
   for (auto& m : tmp) {
     switch (m->GetSubType()) {
-    case mxp::IMedia::SubType::AlbumTrack:
+    case MediaSubType::AlbumTrack:
       res.tracks.emplace_back(std::move(m));
       break;
-    case mxp::IMedia::SubType::Movie:
+    case MediaSubType::Movie:
       res.movies.emplace_back(std::move(m));
       break;
-    case mxp::IMedia::SubType::ShowEpisode:
+    case MediaSubType::ShowEpisode:
       res.episodes.emplace_back(std::move(m));
       break;
     default:
@@ -458,28 +473,28 @@ std::shared_ptr<mxp::Media> mxp::MediaExplorer::CreateMedia(const mxp::fs::IFile
   //LOG_TRACE("Creating media for ", fileFs.FullPath());
   //// TODO: Get container type
 
-  //auto type = mxp::IMedia::Type::UnknownType;
+  //auto type = MediaType::Unknown;
   //auto ext = fileFs.Extension();
   //auto predicate = [ext](const std::string& v) {
   //  return strcasecmp(v.c_str(), ext.c_str()) == 0;
   //};
 
   //if (std::find_if(begin(supportedVideoExtensions), end(supportedVideoExtensions), predicate) != end(supportedVideoExtensions)) {
-  //  type = mxp::IMedia::Type::VideoType;
+  //  type = MediaType::Video;
   ////} else if (std::find_if(begin(supportedAudioExtensions), end(supportedAudioExtensions), predicate) != end(supportedAudioExtensions)) {
-  ////  type = mxp::IMedia::Type::AudioType;
+  ////  type = MediaType::Audio;
   //}
 
   //if (ext.compare("mp3") == 0) {
-  //  type = mxp::IMedia::Type::AudioType;
+  //  type = MediaType::Audio;
   //}
-  //if (type == mxp::IMedia::Type::UnknownType) {
+  //if (type == MediaType::Unknown) {
   //  LOG_TRACE("Unknown type for file ", fileFs.Name());
   //  return nullptr;
   //}
 
   LOG_INFO("Adding ", fileFs.GetFullPath());
-  auto media = mxp::Media::Create(this, mxp::IMedia::Type::UnknownType, fileFs);
+  auto media = mxp::Media::Create(this, MediaType::Unknown, fileFs);
   if (media == nullptr) {
     LOG_ERROR("Failed to add media ", fileFs.GetFullPath(), " to the media library");
     return nullptr;
@@ -506,7 +521,7 @@ bool mxp::MediaExplorer::DeleteMedia(int64_t mediaId) const {
 }
 
 std::vector<mxp::MediaPtr> mxp::MediaExplorer::MediaList(mxp::SortingCriteria sort, bool desc) {
-  return Media::ListAll(this, mxp::IMedia::Type::VideoType, sort, desc);
+  return Media::ListAll(this, MediaType::Video, sort, desc);
 }
 
 mxp::MediaPtr mxp::MediaExplorer::GetMedia(int64_t mediaId) const {
@@ -624,15 +639,15 @@ bool mxp::MediaExplorer::AddToHistory(const std::string& mrl) {
   return History::insert(GetConnection(), mrl);
 }
 
-std::shared_ptr<mxp::MediaDevice> mxp::MediaExplorer::FindMediaDevice(const std::string& uuid) {
+std::shared_ptr<mxp::MediaDevice> mxp::MediaExplorer::FindMediaDevice(const std::string& uuid) const {
   return MediaDevice::FindByUuid(this, uuid);
 }
 
-mxp::MetadataPtr mxp::MediaExplorer::Metadata(int64_t metadataId) const {
+mxp::MetadataPtr mxp::MediaExplorer::GetMetadata(int64_t metadataId) const {
   return Metadata::Fetch(this, metadataId);
 }
 
-mxp::CodecPtr mxp::MediaExplorer::Codec(int64_t codecId) const {
+mxp::CodecPtr mxp::MediaExplorer::GetCodec(int64_t codecId) const {
   return Codec::Fetch(this, codecId);
 }
 
@@ -640,7 +655,7 @@ std::vector<mxp::CodecPtr> mxp::MediaExplorer::CodecList(mxp::SortingCriteria so
   return Codec::ListAll(this, sort, desc);
 }
 
-mxp::ContainerPtr mxp::MediaExplorer::Container(int64_t containerId) const {
+mxp::ContainerPtr mxp::MediaExplorer::GetContainer(int64_t containerId) const {
   return Container::Fetch(this, containerId);
 }
 
@@ -682,10 +697,6 @@ void mxp::MediaExplorer::ResumeBackgroundOperations() {
 
 std::shared_ptr<mxp::ModificationNotifier> mxp::MediaExplorer::GetNotifier() const {
   return m_modificationNotifier;
-}
-
-std::shared_ptr<mxp::factory::ParserMediaFactory> mxp::MediaExplorer::GetParserMediaFactory() const {
-  return m_pmFactory;
 }
 
 void mxp::MediaExplorer::OnDevicePlugged(const std::string&, const std::string&) {
