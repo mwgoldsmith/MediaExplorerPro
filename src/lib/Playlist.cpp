@@ -17,7 +17,9 @@ const mstring PlaylistTable::PrimaryKeyColumn = "id_playlist";
 int64_t mxp::Playlist::* const PlaylistTable::PrimaryKey = &mxp::Playlist::m_id;
 
 mxp::Playlist::Playlist(MediaExplorerPtr ml, sqlite::Row& row)
-  : m_ml(ml) {
+  : m_ml(ml)
+  , m_id{}
+  , m_creationDate{} {
   row >> m_id
       >> m_name
       >> m_creationDate;
@@ -41,7 +43,7 @@ bool mxp::Playlist::SetName(const mstring& name) {
   if (name == m_name)
     return true;
 
-  static const auto req = "UPDATE " + PlaylistTable::Name + " SET name = ? WHERE id_playlist = ?";
+  static const auto req = "UPDATE " + PlaylistTable::Name + " SET name=? WHERE " + PlaylistTable::PrimaryKeyColumn + "=?";
   if (sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, name, m_id) == false)
     return false;
 
@@ -81,12 +83,12 @@ bool mxp::Playlist::Add(int64_t mediaId, unsigned int position) {
 bool mxp::Playlist::Move(int64_t mediaId, unsigned int position) {
   if (position == 0)
     return false;
-  static const mstring req = "UPDATE PlaylistMediaRelation SET position = ? WHERE playlist_id = ? AND media_id = ?";
+  static const mstring req = "UPDATE PlaylistMediaRelation SET position=? WHERE playlist_id=? AND media_id=?";
   return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, position, m_id, mediaId);
 }
 
 bool mxp::Playlist::Remove(int64_t mediaId) {
-  static const mstring req = "DELETE FROM PlaylistMediaRelation WHERE playlist_id = ? AND media_id = ?";
+  static const mstring req = "DELETE FROM PlaylistMediaRelation WHERE playlist_id=? AND media_id=?";
   return sqlite::Tools::ExecuteDelete(m_ml->GetConnection(), req, m_id, mediaId);
 }
 
@@ -185,7 +187,7 @@ std::shared_ptr<mxp::Playlist> mxp::Playlist::Create(MediaExplorerPtr ml, const 
 }
 
 std::vector<mxp::PlaylistPtr> mxp::Playlist::Search(MediaExplorerPtr ml, const mstring& name) {
-  static const auto req = "SELECT * FROM " + PlaylistTable::Name + " WHERE id_playlist IN "
+  static const auto req = "SELECT * FROM " + PlaylistTable::Name + " WHERE " + PlaylistTable::PrimaryKeyColumn + " IN "
       "(SELECT rowid FROM " + PlaylistTable::Name + "Fts WHERE name MATCH ?)";
   return FetchAll<IPlaylist>(ml, req, name + "*");
 }
