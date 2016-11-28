@@ -426,6 +426,9 @@
     <ClInclude Include="..\..\..\src\lib\LibraryFolder.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\logging\LogAvCodec.h">
+      <Filter>Source Files\logging</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\lib\Label.cpp">
@@ -601,6 +604,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\lib\av\MediaPlayer.cpp">
       <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\logging\LogAvCodec.cpp">
+      <Filter>Source Files\logging</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

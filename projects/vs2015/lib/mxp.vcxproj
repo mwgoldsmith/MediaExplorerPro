@@ -474,6 +474,7 @@
     <ClInclude Include="..\..\..\src\lib\image\JpegImageContainer.h" />
     <ClInclude Include="..\..\..\src\lib\LibraryFolder.h" />
     <ClInclude Include="..\..\..\src\lib\logging\FileLogger.h" />
+    <ClInclude Include="..\..\..\src\lib\logging\LogAvCodec.h" />
     <ClInclude Include="..\..\..\src\lib\MediaDevice.h" />
     <ClInclude Include="..\..\..\src\lib\discoverer\DiscovererWorker.h" />
     <ClInclude Include="..\..\..\src\lib\discoverer\FsDiscoverer.h" />
@@ -593,6 +594,7 @@
     <ClCompile Include="..\..\..\src\lib\image\Image.cpp" />
     <ClCompile Include="..\..\..\src\lib\image\JpegImageContainer.cpp" />
     <ClCompile Include="..\..\..\src\lib\LibraryFolder.cpp" />
+    <ClCompile Include="..\..\..\src\lib\logging\LogAvCodec.cpp" />
     <ClCompile Include="..\..\..\src\lib\MediaDevice.cpp" />
     <ClCompile Include="..\..\..\src\lib\discoverer\DiscovererWorker.cpp" />
     <ClCompile Include="..\..\..\src\lib\discoverer\FsDiscoverer.cpp" />
