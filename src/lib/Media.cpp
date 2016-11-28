@@ -308,7 +308,7 @@ mxp::ContainerPtr mxp::Media::GetContainer() const {
 }
 
 void mxp::Media::SetType(MediaType type) {
-  if (m_type != type)
+  if (m_type == type)
     return;
   m_type = type;
   m_changed = true;
