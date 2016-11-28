@@ -17,9 +17,10 @@ const std::string LabelTable::PrimaryKeyColumn = "id_label";
 int64_t mxp::Label::* const LabelTable::PrimaryKey = &mxp::Label::m_id;
 
 mxp::Label::Label(MediaExplorerPtr ml, sqlite::Row& row)
-  : m_ml(ml) {
+  : m_ml(ml)
+  , m_id{} {
   row >> m_id
-    >> m_name;
+      >> m_name;
 }
 
 mxp::Label::Label(MediaExplorerPtr ml, const std::string& name)
