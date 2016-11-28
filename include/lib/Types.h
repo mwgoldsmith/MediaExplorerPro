@@ -5,6 +5,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <memory>
+
 namespace mxp {
 
 class Album;
@@ -16,6 +18,7 @@ class Media;
 class MediaContext;
 class MediaExplorer;
 class MediaFile;
+class MediaFolder;
 class Movie;
 class Show;
 class ShowEpisode;
