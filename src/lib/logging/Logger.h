@@ -90,6 +90,9 @@ private:
     case LogLevel::Trace:
       l->Trace(CurrentTime() + "[ TRACE   ] " + CurrentThreadId() + msg);
       break;
+    default: 
+      MXP_UNREACHABLE();
+      break;
     }
   }
 

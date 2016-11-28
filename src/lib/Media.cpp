@@ -206,8 +206,7 @@ bool mxp::Media::AddVideoTrack(const mstring& codec, unsigned int width, unsigne
 }
 
 std::vector<mxp::VideoTrackPtr> mxp::Media::VideoTracks() {
-  static const auto req = "SELECT * FROM " + policy::VideoTrackTable::Name +
-      " WHERE media_id = ?";
+  static const auto req = "SELECT * FROM " + policy::VideoTrackTable::Name + " WHERE media_id = ?";
   return VideoTrack::FetchAll<IVideoTrack>(m_ml, req, m_id);
 }
 
@@ -216,8 +215,7 @@ bool mxp::Media::AddAudioTrack(const mstring& codec, unsigned int bitrate, unsig
 }
 
 std::vector<mxp::AudioTrackPtr> mxp::Media::AudioTracks() {
-  static const auto req = "SELECT * FROM " + policy::AudioTrackTable::Name +
-      " WHERE media_id = ?";
+  static const auto req = "SELECT * FROM " + policy::AudioTrackTable::Name + " WHERE media_id = ?";
   return AudioTrack::FetchAll<IAudioTrack>(m_ml, req, m_id);
 }
 
@@ -351,8 +349,7 @@ bool mxp::Media::AddLabel(LabelPtr label) {
   auto req = "INSERT INTO LabelFileRelation VALUES(?, ?)";
   if (sqlite::Tools::ExecuteInsert(m_ml->GetConnection(), req, label->Id(), m_id) == 0)
     return false;
-  const auto reqFts = "UPDATE " + MediaTable::Name + "Fts "
-    "SET labels = labels || ' ' || ? WHERE rowid = ?";
+  const auto reqFts = "UPDATE " + MediaTable::Name + "Fts SET labels = labels || ' ' || ? WHERE rowid = ?";
   return sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), reqFts, label->Name(), m_id);
 }
 

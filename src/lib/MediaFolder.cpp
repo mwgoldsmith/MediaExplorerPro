@@ -22,7 +22,13 @@ const std::string MediaFolderTable::PrimaryKeyColumn = "id_folder";
 int64_t mxp::MediaFolder::* const MediaFolderTable::PrimaryKey = &mxp::MediaFolder::m_id;
 
 mxp::MediaFolder::MediaFolder(MediaExplorerPtr ml, sqlite::Row& row)
-  : m_ml(ml) {
+  : m_ml(ml)
+  , m_id{}
+  , m_parent{}
+  , m_isBlacklisted{}
+  , m_deviceId{}
+  , m_isPresent{}
+  , m_isRemovable{} {
   row >> m_id
       >> m_path
       >> m_parent
@@ -209,12 +215,10 @@ bool mxp::MediaFolder::isPresent() const {
 
 std::vector<std::shared_ptr<mxp::MediaFolder>> mxp::MediaFolder::FetchAll(MediaExplorerPtr ml, int64_t parentFolderId) {
   if (parentFolderId == 0) {
-    static const auto req = "SELECT * FROM " + MediaFolderTable::Name
-        + " WHERE parent_id IS NULL AND is_blacklisted = 0 AND is_present = 1";
+    static const auto req = "SELECT * FROM " + MediaFolderTable::Name + " WHERE parent_id IS NULL AND is_blacklisted = 0 AND is_present = 1";
     return DatabaseHelpers::FetchAll<MediaFolder>(ml, req);
   } else {
-    static const auto req = "SELECT * FROM " + MediaFolderTable::Name
-        + " WHERE parent_id = ? AND is_blacklisted = 0 AND is_present = 1";
+    static const auto req = "SELECT * FROM " + MediaFolderTable::Name + " WHERE parent_id = ? AND is_blacklisted = 0 AND is_present = 1";
     return DatabaseHelpers::FetchAll<MediaFolder>(ml, req, parentFolderId);
   }
 }
