@@ -11,8 +11,6 @@ namespace utils {
 class CrashHandler {
   static int s_fatalSignals[];
 
-  void(*ohandler)(int);
-
   CrashHandler() = delete;
 
 public:

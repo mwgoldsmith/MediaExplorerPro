@@ -54,6 +54,8 @@ static void abortHandler(int sig) {
 }
 
 void mxp::utils::CrashHandler::Install() {
+  void(*ohandler)(int);
+
   for (auto i = 0; s_fatalSignals[i]; ++i) {
     ohandler = signal(s_fatalSignals[i], abortHandler);
     if (ohandler != SIG_DFL) {
@@ -63,6 +65,8 @@ void mxp::utils::CrashHandler::Install() {
 }
 
 void mxp::utils::CrashHandler::Uninstall() {
+  void(*ohandler)(int);
+
   for (auto i = 0; s_fatalSignals[i]; ++i) {
     ohandler = signal(s_fatalSignals[i], SIG_DFL);
     if (ohandler != abortHandler) {
