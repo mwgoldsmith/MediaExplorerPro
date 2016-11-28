@@ -11,7 +11,6 @@ extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
-#include <libavutil/imgutils.h>
 #include <libavutil/log.h>
 }
 
@@ -25,9 +24,9 @@ extern "C" {
 #include "av/FrameBuffer.h"
 #include "av/StreamType.h"
 #include "compat/Mutex.h"
-#include "image/JpegImageContainer.h"
 #include "image/Image.h"
 #include "logging/Logger.h"
+
 
 extern "C" {
 
@@ -53,7 +52,7 @@ static void AvLogCallback(void* avcl, int level, const char* format, va_list vl)
 
   char buffer[512];
   vsnprintf(buffer, sizeof(buffer) / sizeof(char), format, vl);
-  auto msg =std::string( buffer);
+  auto msg = std::string(buffer);
 
   if(level  == AV_LOG_ERROR) {
     LOG_ERROR(msg);
@@ -80,13 +79,13 @@ std::unique_ptr< mxp::av::MediaController::ContainerVector> mxp::av::MediaContro
 std::unique_ptr< mxp::av::MediaController::CodecVector> mxp::av::MediaController::s_codecs = {};
 
 mxp::av::MediaController::ContainerType mxp::av::MediaController::s_containerTypes[] = {
-  { "avi", MediaType::Video },
-  { "cdxl", MediaType::Video },
-  { "dv", MediaType::Video },
-  { "flv", MediaType::Video },
-  { "iv8", MediaType::Video },
-  { "live_flv", MediaType::Video },
-  { "mlv", MediaType::Video },
+  { "avi",                     MediaType::Video },
+  { "cdxl",                    MediaType::Video },
+  { "dv",                      MediaType::Video },
+  { "flv",                     MediaType::Video },
+  { "iv8",                     MediaType::Video },
+  { "live_flv",                MediaType::Video },
+  { "mlv",                     MediaType::Video },
   { "matroska,webm",           MediaType::Video },
   { "nsv",                     MediaType::Video },
   { "nuv",                     MediaType::Video },
@@ -107,31 +106,31 @@ mxp::av::MediaController::ContainerType mxp::av::MediaController::s_containerTyp
   { "pjs",                     MediaType::Subtitles },
   { "sup",                     MediaType::Subtitles },
   { "realtext",                MediaType::Subtitles },
-  { "sami", MediaType::Subtitles },
-  { "stl", MediaType::Subtitles },
-  { "ass", MediaType::Subtitles },
-  { "srt", MediaType::Subtitles },
-  { "subviewer", MediaType::Subtitles },
-  { "subviewer1", MediaType::Subtitles },
-  { "vobsub", MediaType::Subtitles },
-  { "vplayer", MediaType::Subtitles },
-  { "webvtt", MediaType::Subtitles },
-  { "caf", MediaType::Audio },
-  { "ast", MediaType::Audio },
-  { "aiff", MediaType::Audio },
-  { "avr", MediaType::Audio },
-  { "boa", MediaType::Audio },
-  { "daud", MediaType::Audio },
-  { "epaf", MediaType::Audio },
-  { "loas", MediaType::Audio },
-  { "aea", MediaType::Audio },
-  { "ape", MediaType::Audio },
-  { "mp3", MediaType::Audio },
-  { "aac", MediaType::Audio },
-  { "oma", MediaType::Audio },
-  { "tta", MediaType::Audio },
-  { "wav", MediaType::Audio },
-  { "wsaud", MediaType::Audio }
+  { "sami",                    MediaType::Subtitles },
+  { "stl",                     MediaType::Subtitles },
+  { "ass",                     MediaType::Subtitles },
+  { "srt",                     MediaType::Subtitles },
+  { "subviewer",               MediaType::Subtitles },
+  { "subviewer1",              MediaType::Subtitles },
+  { "vobsub",                  MediaType::Subtitles },
+  { "vplayer",                 MediaType::Subtitles },
+  { "webvtt",                  MediaType::Subtitles },
+  { "caf",                     MediaType::Audio },
+  { "ast",                     MediaType::Audio },
+  { "aiff",                    MediaType::Audio },
+  { "avr",                     MediaType::Audio },
+  { "boa",                     MediaType::Audio },
+  { "daud",                    MediaType::Audio },
+  { "epaf",                    MediaType::Audio },
+  { "loas",                    MediaType::Audio },
+  { "aea",                     MediaType::Audio },
+  { "ape",                     MediaType::Audio },
+  { "mp3",                     MediaType::Audio },
+  { "aac",                     MediaType::Audio },
+  { "oma",                     MediaType::Audio },
+  { "tta",                     MediaType::Audio },
+  { "wav",                     MediaType::Audio },
+  { "wsaud",                   MediaType::Audio }
 };
 
 mxp::MediaType mxp::av::GetMediaType(int libAvType) {

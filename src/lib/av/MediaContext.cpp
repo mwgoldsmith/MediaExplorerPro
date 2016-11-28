@@ -7,25 +7,16 @@
 # include "config.h"
 #endif
 
-#include "av/MediaContext.h"
-#include "av/StreamType.h"
-#include "logging/Logger.h"
-
 extern "C" {
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavutil/avutil.h>
 }
 
-static void print_error(const char *msg, int err) {
-  char errbuf[128];
-  const char *errbuf_ptr = errbuf;
-
-  if(av_strerror(err, errbuf, sizeof(errbuf)) < 0)
-    errbuf_ptr = strerror(AVUNERROR(err));
-
-  LOG_ERROR(msg, errbuf_ptr);
-}
+#include "av/MediaContext.h"
+#include "av/StreamType.h"
+#include "logging/Logger.h"
+#include "logging/LogAvCodec.h"
 
 mxp::MediaContext::MediaContext(const mstring& filename)
   : m_filename{filename}
@@ -45,9 +36,9 @@ bool mxp::MediaContext::Open() {
   int err;
 
   if((err = avformat_open_input(&m_formatCtx, m_filename.c_str(), nullptr, nullptr)) < 0) {
-    print_error("Failed to open input media: ", err);
+    logging::printAvError("Failed to open input media: ", err);
   } else if((err = avformat_find_stream_info(m_formatCtx, nullptr)) < 0) {
-    print_error("Failed to find stream info: ", err);
+    logging::printAvError("Failed to find stream info: ", err);
   } else {
     auto duration = m_formatCtx->duration + 5000;
     m_duration = static_cast<double>(duration) / AV_TIME_BASE;    
@@ -135,7 +126,7 @@ bool mxp::MediaContext::OpenStream(StreamType type, int index) {
   m_stream = m_formatCtx->streams[m_index];
   m_codec = avcodec_find_decoder(m_stream->codec->codec_id);
   if(m_codec == nullptr) {
-    LOG_ERROR("Unsupported codec: ", avcodec_get_name(m_stream->codec->codec_id));
+    LOG_ERROR("Unsupported codec: ", m_stream->codec);
   } else {
     m_codecCtx = avcodec_alloc_context3(m_codec);
 
@@ -146,10 +137,10 @@ bool mxp::MediaContext::OpenStream(StreamType type, int index) {
     } else {
       int err;
       if((err = avcodec_copy_context(m_codecCtx, m_stream->codec)) < 0) {
-        print_error("Failed to copy codec context: ", err);
+        logging::printAvError("Failed to copy codec context: ", err);
         m_codec = nullptr;
       } else if(avcodec_open2(m_codecCtx, m_codec, nullptr) < 0) {
-        LOG_ERROR("Failed to open codec");
+        LOG_ERROR("Failed to open codec: ", m_codec);
         m_codec = nullptr;
       }
 
