@@ -28,14 +28,14 @@ static void print_error(const char *msg, int err) {
 }
 
 mxp::MediaContext::MediaContext(const mstring& filename)
-  : m_filename{ filename }
-  , m_formatCtx{ nullptr }
-  , m_stream{ nullptr }
-  , m_codec{ nullptr }
-  , m_codecCtx{ nullptr }
-  , m_pts { 0 }
-  , m_index{ -1 } {
-}
+  : m_filename{filename}
+  , m_formatCtx{nullptr}
+  , m_stream{nullptr}
+  , m_codec{nullptr}
+  , m_codecCtx{nullptr}
+  , m_pts {0}
+  , m_duration(0)
+  , m_index{-1} {}
 
 mxp::MediaContext::~MediaContext() {
   Close();
@@ -48,6 +48,9 @@ bool mxp::MediaContext::Open() {
     print_error("Failed to open input media: ", err);
   } else if((err = avformat_find_stream_info(m_formatCtx, nullptr)) < 0) {
     print_error("Failed to find stream info: ", err);
+  } else {
+    auto duration = m_formatCtx->duration + 5000;
+    m_duration = static_cast<double>(duration) / AV_TIME_BASE;    
   }
 
   return err >= 0;
@@ -80,6 +83,8 @@ void mxp::MediaContext::Close() {
     avformat_close_input(&m_formatCtx);
     m_formatCtx = nullptr;
   }
+
+  m_duration = 0;
 }
 
 static bool IsStreamType(StreamType type, AVMediaType n) {

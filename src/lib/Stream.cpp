@@ -57,7 +57,7 @@ uint32_t mxp::Stream::GetIndex() const {
 mxp::CodecPtr mxp::Stream::GetCodec() const {
   auto lock = m_codec.Lock();
   if(m_codec.IsCached() == false) {
-    m_codec = m_ml->Codec(m_codecId);
+    m_codec = m_ml->GetCodec(m_codecId);
   }
 
   return m_codec.Get();

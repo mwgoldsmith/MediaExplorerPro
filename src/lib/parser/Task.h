@@ -10,8 +10,7 @@
 #endif
 
 #include "mediaexplorer/Common.h"
-#include <mediaexplorer/MediaType.h>
-#include <mediaexplorer/IMedia.h>
+#include "mediaexplorer/MediaType.h"
 
 namespace mxp {
 
@@ -139,7 +138,7 @@ struct Task {
   Task(std::shared_ptr<Media> media, std::shared_ptr<MediaFile> mediaFile)
     : Media(media)
     , MediaFile(mediaFile)
-    , Type(IMedia::Type::UnknownType)
+    , Type(MediaType::Unknown)
     , Duration(0)
     , Episode(0)
     , TrackNumber(0)
@@ -155,7 +154,7 @@ struct Task {
   std::vector<AudioTrackInfo> AudioTracks;
   std::shared_ptr<Media>      Media;
   std::shared_ptr<MediaFile>  MediaFile;
-  mxp::IMedia::Type           Type;
+  MediaType                   Type;
   mstring                     ContainerName;
   mstring                     Title;
   mstring                     Genre;

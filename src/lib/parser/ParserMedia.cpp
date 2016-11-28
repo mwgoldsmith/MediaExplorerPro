@@ -59,6 +59,7 @@ mxp::parser::ParserMedia::ParserMedia(MediaExplorerPtr ml, parser::Task& task)
     } else {
       task.ContainerName = to_mstring(fmtCtx->iformat->name);
       task.Duration = fmtCtx->duration;
+      task.Type = MediaType::Unknown;
 
       AVDictionaryEntry *tag = nullptr;
       while((tag = av_dict_get(fmtCtx->metadata, "", tag, AV_DICT_IGNORE_SUFFIX))) {
@@ -108,9 +109,13 @@ mxp::parser::ParserMedia::ParserMedia(MediaExplorerPtr ml, parser::Task& task)
             auto fps = static_cast<float>(context->framerate.num) / static_cast<float>(context->framerate.den);
             std::string fcc(reinterpret_cast<const char*>(&context->codec_tag), 4);
             task.VideoTracks.emplace_back(i, fcc, fps, context->width, context->height);
+            task.Type = MediaType::Video;
           } else if(type == MediaType::Audio) {
             std::string fcc(reinterpret_cast<const char*>(&context->codec_tag), 4);
             task.AudioTracks.emplace_back(i, fcc, static_cast<unsigned int>(context->bit_rate), static_cast<int>(context->sample_rate), static_cast<int>(context->channels));
+            if (task.Type != MediaType::Video) {
+              task.Type = MediaType::Audio;
+            }
           }
 
           avcodec_close(context);

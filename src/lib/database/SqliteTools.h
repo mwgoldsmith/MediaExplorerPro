@@ -9,11 +9,11 @@
 
 #include "compat/Mutex.h"
 #include "logging/Logger.h"
+#include "MediaExplorer.h"
+#include "Row.h"
 #include "SqliteConnection.h"
 #include "SqliteErrors.h"
-#include "SqliteTraits.h"
 #include "SqliteTransaction.h"
-#include "Row.h"
 #include "Statement.h"
 
 namespace mxp {
@@ -25,8 +25,10 @@ public:
    * Will fetch all records of type IMPL and return them as a shared_ptr to INTF
    * This WILL add all fetched records to the cache
    *
-   * @param results   A reference to the result vector. All existing elements will
-   *          be discarded.
+   * @param ml   Pointer to the MediaExplorer instance.
+   * @param req  The parameterized SQL query to execute. Parameters are denoted by '?' characters. 
+   * @param args Optional variable-length number of arguments. Replaces '?' query placeholders in
+   *             order of appearance.
    */
   template <typename IMPL, typename INTF, typename... Args>
   static std::vector<std::shared_ptr<INTF> > FetchAll(MediaExplorerPtr ml, const std::string& req, Args&&... args) {
@@ -34,6 +36,8 @@ public:
     SqliteConnection::ReadContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireReadContext();
+    MXP_UNUSED(ctx);
+
     auto chrono = std::chrono::steady_clock::now();
 
     std::vector<std::shared_ptr<INTF>> results;
@@ -44,8 +48,9 @@ public:
       auto row = IMPL::Load(ml, sqliteRow);
       results.push_back(row);
     }
+    
     auto duration = std::chrono::steady_clock::now() - chrono;
-    LOG_DEBUG("Executed ", req, " in ", std::chrono::duration_cast<std::chrono::microseconds>(duration).count(), "µs");
+    LOG_DEBUG("Executed ", req, " in ", std::chrono::duration_cast<std::chrono::microseconds>(duration).count(), "µs [", results.size(), " records]");
     return results;
   }
 
@@ -55,6 +60,7 @@ public:
     SqliteConnection::ReadContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireReadContext();
+    MXP_UNUSED(ctx);
     auto chrono = std::chrono::steady_clock::now();
 
     auto stmt = Statement(dbConnection->GetConnection(), req);
@@ -73,6 +79,7 @@ public:
     SqliteConnection::WriteContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireWriteContext();
+    MXP_UNUSED(ctx);
     return ExecuteRequestLocked(dbConnection, req, std::forward<Args>(args)...);
   }
 
@@ -81,6 +88,7 @@ public:
     SqliteConnection::WriteContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireWriteContext();
+    MXP_UNUSED(ctx);
     if (ExecuteRequestLocked(dbConnection, req, std::forward<Args>(args)...) == false)
       return false;
     return sqlite3_changes(dbConnection->GetConnection()) > 0;
@@ -101,6 +109,7 @@ public:
     SqliteConnection::WriteContext ctx;
     if (Transaction::TransactionInProgress() == false)
       ctx = dbConnection->AcquireWriteContext();
+    MXP_UNUSED(ctx);
     if (ExecuteRequestLocked(dbConnection, req, std::forward<Args>(args)...) == false)
       return 0;
     return sqlite3_last_insert_rowid(dbConnection->GetConnection());

@@ -7,7 +7,7 @@
 
 namespace mxp {
 
-enum class MediaType {
+enum class MediaType : int8_t {
   Unknown = -1,
 
   None = 0,
@@ -19,6 +19,16 @@ enum class MediaType {
   Subtitles,
 
   Video
+};
+
+enum class MediaSubType : int8_t {
+  Unknown,
+
+  ShowEpisode,
+
+  Movie,
+
+  AlbumTrack
 };
 
 } /* namespace mxp */

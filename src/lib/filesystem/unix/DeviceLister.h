@@ -20,13 +20,16 @@
  * Inc., 51 Franklin Street, Fifth Floor, Boston MA 02110-1301, USA.
  *****************************************************************************/
 
-#pragma once
+#ifndef FS_UNIX_DEVICELISTER_H
+#define FS_UNIX_DEVICELISTER_H
 
-#if !defined(_WIN32)
+#if HAVE_CONFIG_H
+# include "config.h"
+#endif
+
+#if defined(HAVE_LINUX)
 
 #include "mediaexplorer/IDeviceLister.h"
-
-#include <unordered_map>
 
 namespace mxp {
 namespace fs {
@@ -47,7 +50,9 @@ public:
   virtual std::vector<std::tuple<std::string, std::string, bool>> Devices() const override;
 };
 
-}
-}
+} /* namespace fs */
+} /* namespace mxp */
 
-#endif
+#endif /* HAVE_LINUX */
+
+#endif /* FS_UNIX_DEVICELISTER_H */

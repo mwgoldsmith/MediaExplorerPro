@@ -21,7 +21,7 @@ mxp::fs::Directory::Directory(const std::string& path , factory::IFileSystem& fs
 void mxp::fs::Directory::read() const {
   WIN32_FIND_DATA f;
   auto pattern = m_path + '*';
-  auto wpattern = charset::ToWide(pattern.c_str());
+  auto wpattern = utils::ToWide(pattern.c_str());
   auto h = FindFirstFile(wpattern.get(), &f);
 
   if(h == INVALID_HANDLE_VALUE) {
@@ -29,7 +29,7 @@ void mxp::fs::Directory::read() const {
   }
 
   do {
-    auto file = charset::FromWide(f.cFileName);
+    auto file = utils::FromWide(f.cFileName);
     if(file[0] == '.') {
       continue;
     }

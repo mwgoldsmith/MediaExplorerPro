@@ -7,7 +7,7 @@
 # include "config.h"
 #endif
 
-#ifndef _WIN32
+#ifdef HAVE_LINUX
 
 #include "Directory.h"
 #include "Media.h"
@@ -16,8 +16,6 @@
 #include "logging/Logger.h"
 #include "utils/Filename.h"
 
-#include <cstring>
-#include <cstdlib>
 #include <dirent.h>
 #include <limits.h>
 #include <sys/stat.h>
@@ -88,4 +86,4 @@ void Directory::read() const {
 
 }
 
-#endif
+#endif /* HAVE_LINUX */

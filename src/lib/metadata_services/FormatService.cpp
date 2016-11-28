@@ -69,17 +69,8 @@ mxp::parser::Task::Status mxp::FormatService::Run(parser::Task & task) {
   auto metadata = media->GetMetadata();
   UpdateMetadata(media, metadata, task.Metadata);
 
-  // FIXME: Find a way to determine the type of media
-  auto type = IMedia::Type::UnknownType;
-
   auto streams = Stream::FindByMedia(m_ml, media->Id());
   for(const auto& tag : task.Streams) {
-    if (tag.Type == MediaType::Video) {
-      type = IMedia::Type::VideoType;
-    } else if (type != IMedia::Type::VideoType && tag.Type == MediaType::Audio) {
-      type = IMedia::Type::AudioType;
-    }
-
     auto codec = av::MediaController::FindCodec(tag.CodecName, tag.Type);
     StreamPtr stream = nullptr;
 
@@ -98,7 +89,7 @@ mxp::parser::Task::Status mxp::FormatService::Run(parser::Task & task) {
     UpdateMetadata(stream, metadata, tag.Metadata);
   }
 
-  task.Type = type;
+  media->SetType(task.Type);
   media->Save();
 
   auto duration = std::chrono::steady_clock::now() - chrono;

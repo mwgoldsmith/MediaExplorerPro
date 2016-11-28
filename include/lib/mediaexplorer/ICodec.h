@@ -9,8 +9,6 @@
 
 namespace mxp {
 
-enum class MediaType;
-
 class ICodec {
 public:
   virtual ~ICodec() = default;

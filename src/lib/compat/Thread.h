@@ -2,17 +2,15 @@
  * Media Explorer
  *****************************************************************************/
 
-#pragma once
+#ifndef COMPAT_THREAD_H
+#define COMPAT_THREAD_H
 
 #include "stdafx.h"
-
 #if HAVE_CONFIG_H
 # include "config.h"
 #endif
 
 #if CXX11_THREADS
-
-#include <thread>
 
 namespace mxp {
 namespace compat {
@@ -21,10 +19,10 @@ namespace this_thread = std::this_thread;
 }
 }
 
-#else
+#else /* CXX11_THREADS */
 
 #include <system_error>
-#ifndef _WIN32
+#ifndef HAVE_WIN32
 #  include <unistd.h>
 #  include <pthread.h>
 #endif
@@ -36,14 +34,14 @@ namespace compat {
 // and have this_thread::get_id declared before thread_id itself, in order to friend it.
 namespace details { class thread_id; }
 namespace this_thread { details::thread_id get_id(); }
+
 class Thread;
 
 namespace details {
 
 class thread_id {
 public:
-
-#ifdef _WIN32
+#ifdef HAVE_WIN32
   using native_thread_id_type = DWORD;
 #else
   using native_thread_id_type = pthread_t;
@@ -52,8 +50,8 @@ public:
   constexpr thread_id() noexcept : m_id{} {}
   thread_id(const thread_id&) = default;
   thread_id& operator=(const thread_id&) = default;
-  thread_id(thread_id&& r) : m_id(r.m_id) { r.m_id = 0; }
-  thread_id& operator=(thread_id&& r) { m_id = r.m_id; r.m_id = 0; return *this; }
+  thread_id(thread_id&& r) noexcept : m_id(r.m_id) { r.m_id = 0; }
+  thread_id& operator=(thread_id&& r) noexcept { m_id = r.m_id; r.m_id = 0; return *this; }
 
   bool operator==(const thread_id& r) const noexcept { return m_id == r.m_id; }
   bool operator!=(const thread_id& r) const noexcept { return m_id != r.m_id; }
@@ -71,7 +69,8 @@ private:
   friend Thread;
   friend std::hash<thread_id>;
 };
-}
+
+} /* namespace details */
 
 // Compatibility thread class, for platforms that don't implement C++11 (or do it incorrectly)
 // This handles the very basic usage we need for the MediaExplorer
@@ -82,15 +81,15 @@ class Thread {
     T* inst;
   };
 
-#ifdef _WIN32
+#ifdef HAVE_WIN32
   template <typename T>
-  static 
+  static
 #ifdef _MSC_VER
     DWORD __stdcall
 #else
-    __attribute__((__stdcall__)) DWORD 
+    __attribute__((__stdcall__)) DWORD
 #endif
-    threadRoutine(void* opaque) {
+  threadRoutine(void* opaque) {
     auto invoker = std::unique_ptr<Invoker<T>>(reinterpret_cast<Invoker<T>*>(opaque));
     (invoker->inst->*(invoker->func))();
     return 0;
@@ -112,7 +111,7 @@ public:
     auto i = std::unique_ptr<Invoker<T>>(new Invoker<T>{
       entryPoint, inst
     });
-#ifdef _WIN32
+#ifdef HAVE_WIN32
     if ((m_handle = CreateThread(nullptr, 0, &threadRoutine<T>, i.get(), 0, &m_id.m_id)) == nullptr)
 #else
     if (pthread_create(&m_id.m_id, nullptr, &threadRoutine<T>, i.get()) != 0)
@@ -122,7 +121,7 @@ public:
   }
 
   static unsigned hardware_concurrency() noexcept {
-#ifdef _WIN32
+#ifdef HAVE_WIN32
 #if WINAPI_FAMILY == WINAPI_FAMILY_DESKTOP
     return GetCurrentProcessorNumber();
 #else
@@ -138,7 +137,7 @@ public:
       throw std::system_error{ std::make_error_code(std::errc::invalid_argument) };
     if (this_thread::get_id() == m_id)
       throw std::system_error{ std::make_error_code(std::errc::resource_deadlock_would_occur) };
-#ifdef _WIN32
+#ifdef HAVE_WIN32
     WaitForSingleObjectEx(m_handle, INFINITE, TRUE);
     CloseHandle(m_handle);
 #else
@@ -171,36 +170,39 @@ public:
   }
 
 private:
-#ifdef _WIN32
+#ifdef HAVE_WIN32
   HANDLE m_handle;
 #endif
   id m_id;
 };
 
 namespace this_thread {
-  inline Thread::id get_id() {
-#ifdef _WIN32
-    return { GetCurrentThreadId() };
-#else
-    return { pthread_self() };
-#endif
-  }
 
-  template <typename Rep, typename Period>
-  inline void sleep_for(const std::chrono::duration<Rep, Period>& duration) {
-    auto d = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
-#ifdef _WIN32
-    Sleep(d.count());
+inline Thread::id get_id() {
+#ifdef HAVE_WIN32
+  return { ::GetCurrentThreadId() };
 #else
-    usleep(d.count() * 1000);
+  return { pthread_self() };
 #endif
-  }
 }
 
+template <typename Rep, typename Period>
+inline void sleep_for(const std::chrono::duration<Rep, Period>& duration) {
+  auto d = std::chrono::duration_cast<std::chrono::milliseconds>(duration);
+#ifdef HAVE_WIN32
+  Sleep(d.count());
+#else
+  usleep(d.count() * 1000);
+#endif
 }
-}
+
+} /* namespace this_thread */
+
+} /* namespace compat */
+} /* namespace mxp */
 
 namespace std {
+
 template <>
 struct hash<mxp::compat::Thread::id> {
   size_t operator()(const mxp::compat::Thread::id& id) const noexcept {
@@ -208,6 +210,9 @@ struct hash<mxp::compat::Thread::id> {
     return static_cast<size_t>(id.m_id);
   }
 };
-}
 
-#endif
+} /* namespace std */
+
+#endif /* CXX11_THREADS */
+
+#endif /* COMPAT_THREAD_H */

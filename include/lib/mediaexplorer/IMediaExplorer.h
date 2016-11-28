@@ -18,12 +18,20 @@ namespace mxp {
 
 static constexpr auto UnknownArtistID = 1u;
 static constexpr auto VariousArtistID = 2u;
+static constexpr auto AllLibraryFolderID = 1u;
+static constexpr auto VideosLibraryFolderID = 2u;
+static constexpr auto AudioLibraryFolderID = 3u;
+static constexpr auto MoviesLibraryFolderID = 4u;
+static constexpr auto ShowsLibraryFolderID = 5u;
+static constexpr auto AlbumsLibraryFolderID = 6u;
 
 class IMediaExplorer {
 public:
   virtual ~IMediaExplorer() = default;
 
   virtual bool Initialize(const std::string& dbPath, IMediaExplorerCb* cb) = 0;
+
+  virtual bool Startup() = 0;
 
   virtual bool Shutdown() = 0;
 
@@ -47,12 +55,12 @@ public:
   virtual bool SetSettingBool(SettingsKey key, const bool value) = 0;
 
   // Codecs
-  virtual CodecPtr Codec(int64_t codecId) const = 0;
+  virtual CodecPtr GetCodec(int64_t codecId) const = 0;
 
   virtual std::vector<CodecPtr> CodecList(mxp::SortingCriteria sort, bool desc) const = 0;
 
   // Containers
-  virtual ContainerPtr Container(int64_t containerId) const = 0;
+  virtual ContainerPtr GetContainer(int64_t containerId) const = 0;
 
   virtual std::vector<ContainerPtr> ContainerList(mxp::SortingCriteria sort, bool desc) const = 0;
 
@@ -98,6 +106,22 @@ public:
 
   virtual PlaylistPtr GetPlaylist(int64_t id) const = 0;
 
+  // Media
+  virtual bool DeleteMedia(int64_t mediaId) const = 0;
+
+  virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) = 0;
+
+  virtual MediaPtr GetMedia(int64_t mediaId) const = 0;
+
+  // Library Folders
+  virtual LibraryFolderPtr CreateLibraryFolder(const std::string& name, int64_t parentId, int16_t position) = 0;
+
+  virtual bool DeleteLibraryFolder(int64_t libraryFolderId) = 0;
+
+  virtual std::vector<LibraryFolderPtr> LibraryFolderList(mxp::SortingCriteria sort, bool desc) = 0;
+
+  virtual LibraryFolderPtr GetLibraryFolder(int64_t libraryFolderId) const = 0;
+
   // Searching
   virtual MediaSearchAggregate SearchMedia(const std::string& title) const = 0;
 
@@ -111,19 +135,12 @@ public:
 
   virtual SearchAggregate Search(const std::string& pattern) const = 0;
 
-  // Media
-  virtual bool DeleteMedia(int64_t mediaId) const = 0;
-
-  virtual std::vector<MediaPtr> MediaList(SortingCriteria sort, bool desc) = 0;
-
-  virtual MediaPtr GetMedia(int64_t mediaId) const = 0;
-
 
   virtual void Reload() = 0;
 
   virtual void Reload(const std::string& entryPoint) = 0;
   
-  virtual MetadataPtr Metadata(int64_t metadataId) const = 0;
+  virtual MetadataPtr GetMetadata(int64_t metadataId) const = 0;
 
   /**
    * @brief Discover launches a discovery on the provided entry point.

@@ -11,12 +11,12 @@
 #include "filesystem/IDirectory.h"
 #include "filesystem/IFile.h"
 #include "logging/Logger.h"
-# include "filesystem/common/File.h"
+#include "filesystem/common/File.h"
 
 #if defined(__linux__) || defined(__APPLE__)
 # include "filesystem/unix/Directory.h"
 # include "filesystem/unix/Device.h"
-#elif defined(_WIN32)
+#elif defined(HAVE_WIN32)
 # include "filesystem/win32/Directory.h"
 # include "filesystem/win32/Device.h"
 #else

@@ -25,7 +25,7 @@
 # include "config.h"
 #endif
 
-#ifndef _WIN32
+#ifndef HAVE_WIN32
 
 #include "Device.h"
 
@@ -33,4 +33,4 @@ mxp::fs::Device::Device( const std::string& uuid, const std::string& mountpoint,
     : mxp::fs::CommonDevice( uuid, mountpoint, isRemovable ) {
 }
 
-#endif /* _WIN32 */
+#endif /* HAVE_WIN32 */

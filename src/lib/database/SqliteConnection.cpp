@@ -73,6 +73,7 @@ void SqliteConnection::updateHook(void* data, int reason, const char*,const char
   auto it = self->m_hooks.find(table);
   if (it == end(self->m_hooks))
     return;
+
   switch (reason) {
   case SQLITE_INSERT:
     it->second(HookReason::Insert, rowId);
@@ -82,6 +83,8 @@ void SqliteConnection::updateHook(void* data, int reason, const char*,const char
     break;
   case SQLITE_DELETE:
     it->second(HookReason::Delete, rowId);
+    break;
+  default:
     break;
   }
 }

@@ -5,7 +5,7 @@
 #ifndef FS_DEVICE_H
 #define FS_DEVICE_H
 
-#if !defined(_WIN32)
+#if !defined(HAVE_WIN32)
 
 #include "filesystem/common/CommonDevice.h"
 
@@ -20,6 +20,6 @@ public:
 } /* namespace fs */
 } /* namespace mxp */
 
-#endif /* _WIN32 */
+#endif /* HAVE_WIN32 */
 
 #endif /* FS_DEVICE_H */

@@ -56,6 +56,10 @@ public:
     return m_pts;
   }
 
+  int64_t GetDuration() const {
+    return m_duration;
+  }
+
 private:
   void Close();
 
@@ -65,6 +69,7 @@ private:
   AVCodec*         m_codec;
   AVCodecContext*  m_codecCtx;
   int64_t          m_pts;
+  int64_t          m_duration;
   int              m_index;
 };
 }

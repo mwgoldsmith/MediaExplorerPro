@@ -8,16 +8,16 @@
 #endif
 
 #include <sys/stat.h>
-#include <stdexcept>
 #include "File.h"
 
 mxp::fs::File::File(const std::string &filePath)
-  : CommonFile(filePath) {
+  : CommonFile(filePath)
+  , m_lastModificationDate{} {
 }
 
 time_t mxp::fs::File::GetLastModificationDate() const {
   if (m_lastModificationDate == 0) {
-#ifdef _WIN32
+#ifdef HAVE_WIN32
     struct _stat s;
     auto res = _stat(m_fullPath.c_str(), &s);
 #else

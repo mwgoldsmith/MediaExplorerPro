@@ -7,7 +7,6 @@
 # include "config.h"
 #endif
 
-#include <sstream>
 #include "DeviceLister.h"
 #include "logging/Logger.h"
 #include "utils/Charsets.h"
@@ -16,7 +15,7 @@ namespace {
 template <typename FUNC>
 class UniqueHandle {
 public:
-  UniqueHandle(HANDLE h, FUNC* f ) noexcept : m_handle(h), m_func(f) {}
+  UniqueHandle(HANDLE h, FUNC* f) noexcept : m_handle(h), m_func(f) {}
   ~UniqueHandle() { m_func(m_handle); }
   UniqueHandle(const UniqueHandle&) = delete;
   UniqueHandle& operator=(const UniqueHandle&) = delete;
@@ -25,13 +24,13 @@ public:
 
 private:
   HANDLE m_handle;
-  FUNC* m_func;
+  FUNC*  m_func;
 };
 }
 
 std::vector<std::tuple<std::string, std::string, bool>> mxp::fs::DeviceLister::Devices() const {
   TCHAR volumeName[MAX_PATH];
-  auto handle = FindFirstVolume(volumeName, sizeof(volumeName));
+  auto handle = ::FindFirstVolume(volumeName, sizeof(volumeName));
   if (handle == INVALID_HANDLE_VALUE) {
     std::stringstream ss;
     ss << "Failed to list devices (error code" << GetLastError() << ')';
@@ -40,7 +39,7 @@ std::vector<std::tuple<std::string, std::string, bool>> mxp::fs::DeviceLister::D
 
   UniqueHandle<decltype(FindVolumeClose)> uh(handle, &FindVolumeClose);
   std::vector<std::tuple<std::string, std::string, bool>> res;
-  for (BOOL success =  TRUE; ; success = FindNextVolume(handle, volumeName, sizeof(volumeName))) {
+  for (auto success =  TRUE; ; success = ::FindNextVolume(handle, volumeName, sizeof(volumeName))) {
     if (success == FALSE) {
       auto err = GetLastError();
       if (err == ERROR_NO_MORE_FILES)
@@ -58,17 +57,17 @@ std::vector<std::tuple<std::string, std::string, bool>> mxp::fs::DeviceLister::D
     TCHAR buffer[MAX_PATH + 1];
     DWORD buffLength = sizeof(buffer);
 
-    if (GetVolumePathNamesForVolumeName(volumeName, buffer, buffLength, &buffLength) == 0)
+    if (::GetVolumePathNamesForVolumeName(volumeName, buffer, buffLength, &buffLength) == 0)
       continue;
-    std::string mountpoint = charset::FromWide(buffer).get();
+    std::string mountpoint = utils::FromWide(buffer).get();
 
     // Filter out anything which isn't a removable or fixed drive. We don't care about network
     // drive here.
-    auto type = GetDriveType(buffer);
+    auto type = ::GetDriveType(buffer);
     if (type != DRIVE_REMOVABLE && type != DRIVE_FIXED)
       continue;
 
-    std::string uuid =  charset::FromWide(volumeName).get();
+    std::string uuid =  utils::FromWide(volumeName).get();
 
     LOG_INFO("Discovered device ", uuid, "; mounted on ", mountpoint, "; removable: ", type == DRIVE_REMOVABLE ? "yes" : "no");
     res.emplace_back(std::make_tuple(uuid, mountpoint, type == DRIVE_REMOVABLE));

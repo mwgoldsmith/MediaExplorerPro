@@ -9,14 +9,14 @@
 
 #include "DeviceListerFactory.h"
 
-#if defined(__linux__) && !defined(__ANDROID__)
-#include "filesystem/unix/DeviceLister.h"
-#elif defined(_WIN32)
-#include "filesystem/win32/DeviceLister.h"
+#if defined(HAVE_LINUX) && !defined(HAVE_ANDROID)
+#  include "filesystem/unix/DeviceLister.h"
+#elif defined(HAVE_WIN32)
+#  include "filesystem/win32/DeviceLister.h"
 #endif
 
 mxp::DeviceListerPtr mxp::factory::createDeviceLister() {
-#if (defined(__linux__) && !defined(__ANDROID__)) || defined(_WIN32)
+#if (defined(HAVE_LINUX) && !defined(HAVE_ANDROID)) || defined(HAVE_WIN32)
   return std::make_shared<fs::DeviceLister>();
 #else
   return nullptr;

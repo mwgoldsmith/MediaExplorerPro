@@ -6,31 +6,23 @@
 #define MXP_IMEDIA_H
 
 #include "mediaexplorer/Common.h"
+#include "MediaType.h"
+#include "mediaexplorer/Guid.h"
 
 namespace mxp {
 
 class IMedia {
 public:
-  enum class Type : uint8_t {
-    VideoType,
-    AudioType,
-    UnknownType
-  };
-
-  enum class SubType : uint8_t {
-    Unknown,
-    ShowEpisode,
-    Movie,
-    AlbumTrack,
-  };
 
   virtual ~IMedia() = default;
 
   virtual int64_t Id() const = 0;
 
-  virtual Type GetType() = 0;
+  virtual const utils::Guid& GetGuid() const = 0;
 
-  virtual SubType GetSubType() const = 0;
+  virtual MediaType GetType() = 0;
+
+  virtual MediaSubType GetSubType() const = 0;
 
   virtual void SetDuration(int64_t duration) = 0;
 

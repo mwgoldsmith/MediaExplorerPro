@@ -56,16 +56,17 @@ mxp::parser::Task::Status mxp::MetadataService::Run(mxp::parser::Task& task) {
   t->Commit();
 
   if (isAudio == true) {
+    media->SetType(MediaType::Audio);
     if(ParseAudioFile(task) == false) {
       return parser::Task::Status::Fatal;
     }
   } else {
+    media->SetType(MediaType::Video);
     if(ParseVideoFile(task) == false) {
       return parser::Task::Status::Fatal;
     }
   }
 
-  media->SetType(task.Type);
   media->SetDuration(task.Duration);
   if(media->Save() == false) {
     return parser::Task::Status::Error;
@@ -78,7 +79,6 @@ mxp::parser::Task::Status mxp::MetadataService::Run(mxp::parser::Task& task) {
 
 bool mxp::MetadataService::ParseVideoFile(mxp::parser::Task& task) const {
   auto media = task.Media.get();
-  media->SetType(IMedia::Type::VideoType);
   if(task.Title.length() == 0) {
     return true;
   }
@@ -106,7 +106,6 @@ bool mxp::MetadataService::ParseVideoFile(mxp::parser::Task& task) const {
 /* Audio files */
 
 bool mxp::MetadataService::ParseAudioFile(mxp::parser::Task& task) const {
-  task.Media->SetType(IMedia::Type::AudioType);
   if(task.artworkMrl.empty() == false) {
     task.Media->SetThumbnail(task.artworkMrl);
   }

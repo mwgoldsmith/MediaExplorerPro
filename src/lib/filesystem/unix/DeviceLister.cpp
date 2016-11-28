@@ -25,7 +25,7 @@
 # include "config.h"
 #endif
 
-#if !defined(_WIN32)
+#if !defined(HAVE_WIN32)
 
 #include "DeviceLister.h"
 #include "logging/Logger.h"

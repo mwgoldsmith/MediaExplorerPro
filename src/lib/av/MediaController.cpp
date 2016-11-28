@@ -6,9 +6,6 @@
 #if HAVE_CONFIG_H
 #  include "config.h"
 #endif
-#include <image/JpegImageContainer.h>
-#include <image/Image.h>
-#include "StreamType.h"
 
 extern "C" {
 #include <libavcodec/avcodec.h>
@@ -26,7 +23,10 @@ extern "C" {
 #include "av/MediaController.h"
 #include "av/MediaContext.h"
 #include "av/FrameBuffer.h"
+#include "av/StreamType.h"
 #include "compat/Mutex.h"
+#include "image/JpegImageContainer.h"
+#include "image/Image.h"
 #include "logging/Logger.h"
 
 extern "C" {
@@ -87,26 +87,26 @@ mxp::av::MediaController::ContainerType mxp::av::MediaController::s_containerTyp
   { "iv8", MediaType::Video },
   { "live_flv", MediaType::Video },
   { "mlv", MediaType::Video },
-  { "matroska,webm", MediaType::Video },
-  { "nsv", MediaType::Video },
-  { "nuv", MediaType::Video },
+  { "matroska,webm",           MediaType::Video },
+  { "nsv",                     MediaType::Video },
+  { "nuv",                     MediaType::Video },
   { "mov,mp4,m4a,3gp,3g2,mj2", MediaType::Video },
-  { "cavsvideo", MediaType::Video },
-  { "h264", MediaType::Video },
-  { "hevc", MediaType::Video },
-  { "mjpeg", MediaType::Video },
-  { "mpegvideo", MediaType::Video },
-  { "m4v", MediaType::Video },
-  { "rawvideo", MediaType::Video },
-  { "aqtitle", MediaType::Subtitles },
-  { "jacosub", MediaType::Subtitles },
-  { "lrc", MediaType::Subtitles },
-  { "microdvd", MediaType::Subtitles },
-  { "mpl2", MediaType::Subtitles },
-  { "mpsub", MediaType::Subtitles },
-  { "pjs", MediaType::Subtitles },
-  { "sup", MediaType::Subtitles },
-  { "realtext", MediaType::Subtitles },
+  { "cavsvideo",               MediaType::Video },
+  { "h264",                    MediaType::Video },
+  { "hevc",                    MediaType::Video },
+  { "mjpeg",                   MediaType::Video },
+  { "mpegvideo",               MediaType::Video },
+  { "m4v",                     MediaType::Video },
+  { "rawvideo",                MediaType::Video },
+  { "aqtitle",                 MediaType::Subtitles },
+  { "jacosub",                 MediaType::Subtitles },
+  { "lrc",                     MediaType::Subtitles },
+  { "microdvd",                MediaType::Subtitles },
+  { "mpl2",                    MediaType::Subtitles },
+  { "mpsub",                   MediaType::Subtitles },
+  { "pjs",                     MediaType::Subtitles },
+  { "sup",                     MediaType::Subtitles },
+  { "realtext",                MediaType::Subtitles },
   { "sami", MediaType::Subtitles },
   { "stl", MediaType::Subtitles },
   { "ass", MediaType::Subtitles },
@@ -204,16 +204,16 @@ bool mxp::av::MediaController::Initialize(MediaExplorerPtr ml) {
     s_containers->push_back(container);
   };
 
-
   // Get existing containers
   auto avContainers = GetAvContainers();
   auto containers = ml->ContainerList(SortingCriteria::Default, false);
   s_containers = std::unique_ptr<ContainerVector>(std::make_unique<ContainerVector>(containers));
 
   // Get changes to supported containers
+  auto t = ml->GetConnection()->NewTransaction();
   GetSupportDiff(containers, avContainers, "Container", cbMarkContainer);
   GetSupportDiff(avContainers, containers, "container", cbNewContainer);
-
+  t->Commit();
 
   std::function<void(const CodecPtr &)> cbMarkCodec = [](const CodecPtr& c) { c->SetSupported(false); };
   std::function<void(const AvCodec &)> cbNewCodec = [ml](const AvCodec& c) {
@@ -227,8 +227,10 @@ bool mxp::av::MediaController::Initialize(MediaExplorerPtr ml) {
   s_codecs = std::unique_ptr<CodecVector>(std::make_unique<CodecVector>(codecs));
 
   // Get changes to supported codecs
+  auto t2 = ml->GetConnection()->NewTransaction();
   GetSupportDiff(codecs, avCodecs, "Codec", cbMarkCodec);
   GetSupportDiff(avCodecs, codecs, "codec", cbNewCodec);
+  t2->Commit();
 
   return true;
 }
@@ -382,6 +384,7 @@ mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
 
   AVPacket packet;
   ImagePtr image = nullptr;
+  auto pStream = context->GetStream();
 
   while(av_read_frame(context->GetFormatContext(), &packet) >= 0) {
     int finished = 0;
@@ -389,10 +392,10 @@ mxp::ImagePtr mxp::av::MediaController::ReadFrame(MediaContextPtr context) {
       avcodec_decode_video2(pCodecCtx, pFrame, &finished, &packet);
 
       if(finished) {
-        if(packet.pts == 0) {
-          context->SetTimestamp(packet.dts);
-        } else {
-          context->SetTimestamp(packet.pts);
+        if(packet.pts != AV_NOPTS_VALUE) {
+          context->SetTimestamp(packet.pts * av_q2d(pStream->time_base));
+        } else if(packet.dts != AV_NOPTS_VALUE) {
+          context->SetTimestamp(packet.dts* av_q2d(pStream->time_base));
         }
 
         auto frame = pConvertedFrame->GetFrame();

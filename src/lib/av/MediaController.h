@@ -73,7 +73,7 @@ private:
     for(auto const& j : v1) {
       // Check if did not exist before
       auto exist = false;
-      for(auto k : v2) {
+      for(auto const& k : v2) {
         auto n = k->GetName();
         exist = n.compare(j.GetName()) == 0;
         if(exist) break;
@@ -94,7 +94,7 @@ private:
     for(auto const& j : v1) {
       // Check if did not exist before
       auto exist = false;
-      for(auto k : v2) {
+      for(auto const& k : v2) {
         auto n = k.GetName();
         exist = n.compare(j->GetName()) == 0;
         if(exist) break;

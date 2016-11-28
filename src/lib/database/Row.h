@@ -6,6 +6,8 @@
 #define ROW_H
 
 #include "stdafx.h"
+#include "SqliteErrors.h"
+#include "SqliteTraits.h"
 
 namespace mxp {
 namespace sqlite {
