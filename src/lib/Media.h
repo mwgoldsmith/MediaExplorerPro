@@ -37,13 +37,13 @@ public:
   // There might be a way with a user-defined allocator, but we'll see that later...
   Media(MediaExplorerPtr ml , sqlite::Row& row);
 
-  Media(MediaExplorerPtr ml, const mstring &title, Type type);
+  Media(MediaExplorerPtr ml, const mstring &title, MediaType type);
 
   virtual int64_t Id() const override;
 
-  virtual Type GetType() override;
+  virtual MediaType GetType() override;
 
-  virtual SubType GetSubType() const override;
+  virtual MediaSubType GetSubType() const override;
 
   virtual const mstring& GetTitle() const override;
 
@@ -103,7 +103,7 @@ public:
 
   void RemoveFile(MediaFile& file);
 
-  void SetType(Type type);
+  void SetType(MediaType type);
 
   void SetTitle(const mstring& title);
 
@@ -125,7 +125,7 @@ public:
 
   virtual bool RemoveMetadata(int64_t metadataId) override;
 
-  static std::shared_ptr<Media> Create(MediaExplorerPtr ml, Type type, const fs::IFile& file) noexcept;
+  static std::shared_ptr<Media> Create(MediaExplorerPtr ml, MediaType type, const fs::IFile& file) noexcept;
 
   static bool CreateTable(DBConnection connection) noexcept;
 
@@ -135,7 +135,7 @@ public:
 
   static std::vector<MediaPtr> ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc);
 
-  static std::vector<MediaPtr> ListAll(MediaExplorerPtr ml, Type type, SortingCriteria sort, bool desc);
+  static std::vector<MediaPtr> ListAll(MediaExplorerPtr ml, MediaType type, SortingCriteria sort, bool desc);
 
   static std::vector<MediaPtr> FetchHistory(MediaExplorerPtr ml);
 
@@ -144,12 +144,16 @@ public:
 private:
   static bool Create(DBConnection connection, const mstring& sql, const mstring& type, const mstring& name) noexcept;
 
+public:
+  const utils::Guid& GetGuid() const override;
+private:
   MediaExplorerPtr m_ml;
 
   // DB fields:
   int64_t      m_id;
-  Type         m_type;
-  SubType      m_subType;
+  MediaType    m_type;
+  MediaSubType m_subType;
+  utils::Guid  m_guid;
   int64_t      m_containerId;
   int64_t      m_duration;
   unsigned int m_playCount;
@@ -158,11 +162,11 @@ private:
   int          m_rating;
   time_t       m_insertionDate;
   time_t       m_releaseDate;
-  mstring  m_thumbnail;
-  mstring  m_title;
+  mstring      m_thumbnail;
+  mstring      m_title;
   // We store the filename as a shortcut when sorting. The filename (*not* the title
   // might be used as a fallback
-  mstring  m_filename;
+  mstring      m_filename;
   bool         m_isFavorite;
   bool         m_isPresent;
   bool         m_changed;

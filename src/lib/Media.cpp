@@ -52,11 +52,11 @@ mxp::Media::Media(MediaExplorerPtr ml, sqlite::Row& row)
       >> m_isPresent;
 }
 
-mxp::Media::Media(MediaExplorerPtr ml, const mstring& title, Type type)
+mxp::Media::Media(MediaExplorerPtr ml, const mstring& title, MediaType type)
   : m_ml(ml)
   , m_id(0)
   , m_type(type)
-  , m_subType(SubType::Unknown)
+  , m_subType(MediaSubType::Unknown)
   , m_containerId(0)
   , m_duration(-1)
   , m_playCount(0)
@@ -85,7 +85,7 @@ void mxp::Media::SetDuration(int64_t duration) {
 }
 
 mxp::AlbumTrackPtr mxp::Media::AlbumTrack() const {
-  if (m_subType != SubType::AlbumTrack)
+  if (m_subType != MediaSubType::AlbumTrack)
     return nullptr;
   auto lock = m_albumTrack.Lock();
 
@@ -97,12 +97,12 @@ mxp::AlbumTrackPtr mxp::Media::AlbumTrack() const {
 void mxp::Media::SetAlbumTrack(AlbumTrackPtr albumTrack) {
   auto lock = m_albumTrack.Lock();
   m_albumTrack = albumTrack;
-  m_subType = SubType::AlbumTrack;
+  m_subType = MediaSubType::AlbumTrack;
   m_changed = true;
 }
 
 mxp::ShowEpisodePtr mxp::Media::ShowEpisode() const {
-  if (m_subType != SubType::ShowEpisode)
+  if (m_subType != MediaSubType::ShowEpisode)
     return nullptr;
 
   auto lock = m_showEpisode.Lock();
@@ -114,12 +114,12 @@ mxp::ShowEpisodePtr mxp::Media::ShowEpisode() const {
 void mxp::Media::SetShowEpisode(ShowEpisodePtr episode) {
   auto lock = m_showEpisode.Lock();
   m_showEpisode = episode;
-  m_subType = SubType::ShowEpisode;
+  m_subType = MediaSubType::ShowEpisode;
   m_changed = true;
 }
 
 mxp::MoviePtr mxp::Media::Movie() const {
-  if (m_subType != SubType::Movie)
+  if (m_subType != MediaSubType::Movie)
     return nullptr;
 
   auto lock = m_movie.Lock();
@@ -132,7 +132,7 @@ mxp::MoviePtr mxp::Media::Movie() const {
 void mxp::Media::SetMovie(MoviePtr movie) {
   auto lock = m_movie.Lock();
   m_movie = movie;
-  m_subType = SubType::Movie;
+  m_subType = MediaSubType::Movie;
   m_changed = true;
 }
 
@@ -284,11 +284,11 @@ int64_t mxp::Media::Id() const {
   return m_id;
 }
 
-mxp::IMedia::Type mxp::Media::GetType() {
+mxp::MediaType mxp::Media::GetType() {
   return m_type;
 }
 
-mxp::IMedia::SubType mxp::Media::GetSubType() const {
+mxp::MediaSubType mxp::Media::GetSubType() const {
   return m_subType;
 }
 
@@ -307,7 +307,7 @@ mxp::ContainerPtr mxp::Media::GetContainer() const {
   return m_container.Get();
 }
 
-void mxp::Media::SetType(Type type) {
+void mxp::Media::SetType(MediaType type) {
   if (m_type != type)
     return;
   m_type = type;
@@ -380,7 +380,7 @@ std::vector<mxp::LabelPtr> mxp::Media::GetLabels() {
 
 //********
 // Static methods
-std::shared_ptr<mxp::Media> mxp::Media::Create(MediaExplorerPtr ml, Type type, const fs::IFile& file) noexcept {
+std::shared_ptr<mxp::Media> mxp::Media::Create(MediaExplorerPtr ml, MediaType type, const fs::IFile& file) noexcept {
   static const auto req = "INSERT INTO " + MediaTable::Name + "(type, insertion_date, title, filename) VALUES(?, ?, ?, ?)";
   std::shared_ptr<Media> self;
 
@@ -520,7 +520,7 @@ std::vector<mxp::MediaPtr> mxp::Media::ListAll(MediaExplorerPtr ml, SortingCrite
   return FetchAll<IMedia>(ml, req);
 }
 
-std::vector<mxp::MediaPtr> mxp::Media::ListAll(mxp::MediaExplorerPtr ml, mxp::IMedia::Type type, mxp::SortingCriteria sort, bool desc) {
+std::vector<mxp::MediaPtr> mxp::Media::ListAll(mxp::MediaExplorerPtr ml, MediaType type, mxp::SortingCriteria sort, bool desc) {
   mstring req;
 
   if(sort == SortingCriteria::LastModificationDate) {
@@ -585,4 +585,8 @@ bool mxp::Media::Create(DBConnection connection, const mstring& sql, const mstri
   }
 
   return result;
+}
+
+const mxp::utils::Guid& mxp::Media::GetGuid() const {
+  return m_guid;
 }

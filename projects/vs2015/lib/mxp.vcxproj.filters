@@ -294,9 +294,6 @@
     <ClInclude Include="..\..\..\src\lib\parser\ParserMedia.h">
       <Filter>Source Files\parser</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\lib\factory\ParserMediaFactory.h">
-      <Filter>Source Files\factory</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\lib\metadata_services\FormatService.h">
       <Filter>Source Files\metadata_services</Filter>
     </ClInclude>
@@ -417,6 +414,18 @@
     <ClInclude Include="..\..\..\include\lib\mediaexplorer\SettingsKey.h">
       <Filter>Header Files\mediaexplorer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\utils\Guid.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\utils\CrashHandler.h">
+      <Filter>Source Files\utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\av\MediaPlayer.h">
+      <Filter>Source Files\av</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\lib\LibraryFolder.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\lib\Label.cpp">
@@ -521,9 +530,6 @@
     <ClCompile Include="..\..\..\src\lib\Genre.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\lib\factory\ParserMediaFactory.cpp">
-      <Filter>Source Files\factory</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\lib\parser\ParserMedia.cpp">
       <Filter>Source Files\parser</Filter>
     </ClCompile>
@@ -582,6 +588,18 @@
       <Filter>Source Files\image</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\lib\av\FrameBuffer.cpp">
+      <Filter>Source Files\av</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\utils\Guid.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\utils\CrashHandler.cpp">
+      <Filter>Source Files\utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\LibraryFolder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\lib\av\MediaPlayer.cpp">
       <Filter>Source Files\av</Filter>
     </ClCompile>
   </ItemGroup>

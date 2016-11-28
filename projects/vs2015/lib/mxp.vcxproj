@@ -218,7 +218,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>swscaled.lib;avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;jpegd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscaled.lib;avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;jpegd.lib;sdld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -274,7 +274,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>swscaled.lib;avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;jpegd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscaled.lib;avcodecd.lib;avformatd.lib;avutild.lib;sqlite3d.lib;jpegd.lib;sdld.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -336,7 +336,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>swscale.lib;avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscale.lib;avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;jpeg.lib;sdl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <TargetMachine>MachineX86</TargetMachine>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -396,7 +396,7 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>swscale.lib;avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;jpeg.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>swscale.lib;avcodec.lib;avformat.lib;avutil.lib;sqlite3.lib;jpeg.lib;sdl.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(OutDir)..\..\lib\$(PlatformTarget)\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <ImportLibrary>$(OutDir)..\..\lib\$(PlatformTarget)\$(TargetName).lib</ImportLibrary>
       <ProgramDatabaseFile>$(OutDir)..\..\bin\$(PlatformTarget)\$(TargetName).pdb</ProgramDatabaseFile>
@@ -452,6 +452,7 @@
     <ClInclude Include="..\..\..\src\lib\av\Histogram.h" />
     <ClInclude Include="..\..\..\src\lib\av\MediaController.h" />
     <ClInclude Include="..\..\..\src\lib\av\MediaContext.h" />
+    <ClInclude Include="..\..\..\src\lib\av\MediaPlayer.h" />
     <ClInclude Include="..\..\..\src\lib\av\StreamType.h" />
     <ClInclude Include="..\..\..\src\lib\Codec.h" />
     <ClInclude Include="..\..\..\src\lib\compat\ConditionVariable.h" />
@@ -466,12 +467,12 @@
     <ClInclude Include="..\..\..\src\lib\database\SqliteTraits.h" />
     <ClInclude Include="..\..\..\src\lib\database\SqliteTransaction.h" />
     <ClInclude Include="..\..\..\src\lib\database\Statement.h" />
-    <ClInclude Include="..\..\..\src\lib\factory\ParserMediaFactory.h" />
     <ClInclude Include="..\..\..\src\lib\Genre.h" />
     <ClInclude Include="..\..\..\src\lib\History.h" />
     <ClInclude Include="..\..\..\src\lib\image\IImageContainer.h" />
     <ClInclude Include="..\..\..\src\lib\image\Image.h" />
     <ClInclude Include="..\..\..\src\lib\image\JpegImageContainer.h" />
+    <ClInclude Include="..\..\..\src\lib\LibraryFolder.h" />
     <ClInclude Include="..\..\..\src\lib\logging\FileLogger.h" />
     <ClInclude Include="..\..\..\src\lib\MediaDevice.h" />
     <ClInclude Include="..\..\..\src\lib\discoverer\DiscovererWorker.h" />
@@ -562,7 +563,9 @@
     <ClInclude Include="..\..\..\src\lib\Stream.h" />
     <ClInclude Include="..\..\..\src\lib\utils\Cache.h" />
     <ClInclude Include="..\..\..\src\lib\utils\Charsets.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\CrashHandler.h" />
     <ClInclude Include="..\..\..\src\lib\utils\Filename.h" />
+    <ClInclude Include="..\..\..\src\lib\utils\Guid.h" />
     <ClInclude Include="..\..\..\src\lib\utils\ModificationsNotifier.h" />
     <ClInclude Include="..\..\..\src\lib\utils\ReadLocker.h" />
     <ClInclude Include="..\..\..\src\lib\utils\SWMRLock.h" />
@@ -579,16 +582,17 @@
     <ClCompile Include="..\..\..\src\lib\av\FrameBuffer.cpp" />
     <ClCompile Include="..\..\..\src\lib\av\MediaController.cpp" />
     <ClCompile Include="..\..\..\src\lib\av\MediaContext.cpp" />
+    <ClCompile Include="..\..\..\src\lib\av\MediaPlayer.cpp" />
     <ClCompile Include="..\..\..\src\lib\Codec.cpp" />
     <ClCompile Include="..\..\..\src\lib\Container.cpp" />
     <ClCompile Include="..\..\..\src\lib\database\SqliteConnection.cpp" />
     <ClCompile Include="..\..\..\src\lib\database\SqliteTools.cpp" />
     <ClCompile Include="..\..\..\src\lib\database\SqliteTransaction.cpp" />
-    <ClCompile Include="..\..\..\src\lib\factory\ParserMediaFactory.cpp" />
     <ClCompile Include="..\..\..\src\lib\Genre.cpp" />
     <ClCompile Include="..\..\..\src\lib\History.cpp" />
     <ClCompile Include="..\..\..\src\lib\image\Image.cpp" />
     <ClCompile Include="..\..\..\src\lib\image\JpegImageContainer.cpp" />
+    <ClCompile Include="..\..\..\src\lib\LibraryFolder.cpp" />
     <ClCompile Include="..\..\..\src\lib\MediaDevice.cpp" />
     <ClCompile Include="..\..\..\src\lib\discoverer\DiscovererWorker.cpp" />
     <ClCompile Include="..\..\..\src\lib\discoverer\FsDiscoverer.cpp" />
@@ -683,7 +687,9 @@
     <ClCompile Include="..\..\..\src\lib\Show.cpp" />
     <ClCompile Include="..\..\..\src\lib\ShowEpisode.cpp" />
     <ClCompile Include="..\..\..\src\lib\Stream.cpp" />
+    <ClCompile Include="..\..\..\src\lib\utils\CrashHandler.cpp" />
     <ClCompile Include="..\..\..\src\lib\utils\Filename.cpp" />
+    <ClCompile Include="..\..\..\src\lib\utils\Guid.cpp" />
     <ClCompile Include="..\..\..\src\lib\utils\ModificationsNotifier.cpp" />
     <ClCompile Include="..\..\..\src\lib\VideoTrack.cpp" />
     <ClCompile Include="stdafx.cpp">
