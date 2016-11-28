@@ -14,21 +14,28 @@
 #include "database/SqliteTools.h"
 #include "mediaexplorer/IGenre.h"
 
+using mxp::policy::AlbumTable;
 const std::string mxp::policy::AlbumTable::Name = "Album";
 const std::string mxp::policy::AlbumTable::PrimaryKeyColumn = "id_album";
 int64_t mxp::Album::* const mxp::policy::AlbumTable::PrimaryKey = &mxp::Album::m_id;
 
 mxp::Album::Album(MediaExplorerPtr ml, sqlite::Row& row)
-  : m_ml(ml) {
+  : m_ml(ml)
+  , m_id{}
+  , m_artistId{}
+  , m_releaseYear{}
+  , m_nbTracks{}
+  , m_duration{}
+  , m_isPresent{} {
   row >> m_id
-    >> m_title
-    >> m_artistId
-    >> m_releaseYear
-    >> m_shortSummary
-    >> m_artworkMrl
-    >> m_nbTracks
-    >> m_duration
-    >> m_isPresent;
+      >> m_title
+      >> m_artistId
+      >> m_releaseYear
+      >> m_shortSummary
+      >> m_artworkMrl
+      >> m_nbTracks
+      >> m_duration
+      >> m_isPresent;
 }
 
 mxp::Album::Album(MediaExplorerPtr ml, const std::string& title)
@@ -69,6 +76,7 @@ unsigned int mxp::Album::ReleaseYear() const {
 bool mxp::Album::SetReleaseYear(unsigned int date, bool force) {
   if(date == m_releaseYear)
     return true;
+
   if(force == false) {
     if(m_releaseYear != ~0u && date != m_releaseYear) {
       // If we already have set the date back to 0, don't do it again.
@@ -77,8 +85,8 @@ bool mxp::Album::SetReleaseYear(unsigned int date, bool force) {
       date = 0;
     }
   }
-  static const auto req = "UPDATE " + policy::AlbumTable::Name
-    + " SET release_year = ? WHERE " + policy::AlbumTable::PrimaryKeyColumn + " = ?";
+
+  static const auto req = "UPDATE " + AlbumTable::Name + " SET release_year=? WHERE " + AlbumTable::PrimaryKeyColumn + "=?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, date, m_id) == false)
     return false;
   m_releaseYear = date;
@@ -90,8 +98,7 @@ const std::string& mxp::Album::ShortSummary() const {
 }
 
 bool mxp::Album::SetShortSummary(const std::string& summary) {
-  static const auto req = "UPDATE " + policy::AlbumTable::Name
-    + " SET short_summary = ? WHERE " + policy::AlbumTable::PrimaryKeyColumn + " = ?";
+  static const auto req = "UPDATE " + AlbumTable::Name + " SET short_summary=? WHERE " + AlbumTable::PrimaryKeyColumn + "=?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, summary, m_id) == false)
     return false;
   m_shortSummary = summary;
@@ -103,8 +110,7 @@ const std::string& mxp::Album::GetArtworkMrl() const {
 }
 
 bool mxp::Album::SetArtworkMrl(const std::string& artworkMrl) {
-  static const auto req = "UPDATE " + policy::AlbumTable::Name
-    + " SET artwork_mrl = ? WHERE " + policy::AlbumTable::PrimaryKeyColumn + " = ?";
+  static const auto req = "UPDATE " + AlbumTable::Name + " SET artwork_mrl=? WHERE " + AlbumTable::PrimaryKeyColumn + "=?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, artworkMrl, m_id) == false)
     return false;
   m_artworkMrl = artworkMrl;
@@ -233,8 +239,7 @@ bool mxp::Album::SetAlbumArtist(std::shared_ptr<Artist> artist) {
     return true;
   if(artist->Id() == 0)
     return false;
-  static const std::string req = "UPDATE " + policy::AlbumTable::Name + " SET "
-    "artist_id = ? WHERE " + policy::AlbumTable::PrimaryKeyColumn + " = ?";
+  static const auto req = "UPDATE " + AlbumTable::Name + " SET artist_id=? WHERE " + AlbumTable::PrimaryKeyColumn + "=?";
   if(sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), req, artist->Id(), m_id) == false)
     return false;
   if(m_artistId != 0) {
@@ -245,7 +250,7 @@ bool mxp::Album::SetAlbumArtist(std::shared_ptr<Artist> artist) {
   m_artistId = artist->Id();
   m_albumArtist = artist;
   artist->updateNbAlbum(1);
-  static const std::string ftsReq = "UPDATE " + policy::AlbumTable::Name + "Fts SET "
+  static const auto ftsReq = "UPDATE " + AlbumTable::Name + "Fts SET "
     " artist = ? WHERE rowid = ?";
   sqlite::Tools::ExecuteUpdate(m_ml->GetConnection(), ftsReq, artist->GetName(), m_id);
   return true;
@@ -270,14 +275,13 @@ bool mxp::Album::AddArtist(std::shared_ptr<Artist> artist) {
 }
 
 bool mxp::Album::RemoveArtist(Artist* artist) {
-  static const std::string req = "DELETE FROM AlbumArtistRelation WHERE album_id = ? "
-    "AND id_artist = ?";
+  static const std::string req = "DELETE FROM AlbumArtistRelation WHERE album_id=? AND id_artist=?";
   return sqlite::Tools::ExecuteDelete(m_ml->GetConnection(), req, m_id, artist->Id());
 }
 
 bool mxp::Album::CreateTable(DBConnection connection) {
   static const auto req = "CREATE TABLE IF NOT EXISTS " + policy::AlbumTable::Name + "(" +
-     policy::AlbumTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+     AlbumTable::PrimaryKeyColumn + " INTEGER PRIMARY KEY AUTOINCREMENT,"
     "title TEXT COLLATE NOCASE,"
     "artist_id UNSIGNED INTEGER,"
     "release_year UNSIGNED INTEGER,"
@@ -292,11 +296,11 @@ bool mxp::Album::CreateTable(DBConnection connection) {
     "album_id INTEGER,"
     "artist_id INTEGER,"
     "PRIMARY KEY (album_id, artist_id),"
-    "FOREIGN KEY(album_id) REFERENCES " + policy::AlbumTable::Name + "(" + policy::AlbumTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
+    "FOREIGN KEY(album_id) REFERENCES " + AlbumTable::Name + "(" + AlbumTable::PrimaryKeyColumn + ") ON DELETE CASCADE,"
     "FOREIGN KEY(artist_id) REFERENCES " + policy::ArtistTable::Name + "(" + policy::ArtistTable::PrimaryKeyColumn + ") ON DELETE CASCADE"
     ")";
   static const auto vtableReq = "CREATE VIRTUAL TABLE IF NOT EXISTS "
-    + policy::AlbumTable::Name + "Fts USING FTS3("
+    + AlbumTable::Name + "Fts USING FTS3("
     "title,"
     "artist"
     ")";
@@ -309,38 +313,38 @@ bool mxp::Album::CreateTriggers(DBConnection connection) {
   static const auto triggerReq = "CREATE TRIGGER IF NOT EXISTS is_album_present AFTER UPDATE OF "
     "is_present ON " + policy::AlbumTrackTable::Name +
     " BEGIN "
-    " UPDATE " + policy::AlbumTable::Name + " SET is_present="
+    " UPDATE " + AlbumTable::Name + " SET is_present="
     "(SELECT COUNT(id_track) FROM " + policy::AlbumTrackTable::Name + " WHERE album_id=new.album_id AND is_present=1) "
-    "WHERE " + policy::AlbumTable::PrimaryKeyColumn + "=new.album_id;"
+    "WHERE " + AlbumTable::PrimaryKeyColumn + "=new.album_id;"
     " END";
   static const auto deleteTriggerReq = "CREATE TRIGGER IF NOT EXISTS delete_album_track AFTER DELETE ON "
     + policy::AlbumTrackTable::Name +
     " BEGIN "
-    " UPDATE " + policy::AlbumTable::Name + " SET nb_tracks = nb_tracks - 1 WHERE " + policy::AlbumTable::PrimaryKeyColumn + " = old.album_id;"
-    " DELETE FROM " + policy::AlbumTable::Name +
-    " WHERE " + policy::AlbumTable::PrimaryKeyColumn + "=old.album_id AND nb_tracks = 0;"
+    " UPDATE " + AlbumTable::Name + " SET nb_tracks = nb_tracks - 1 WHERE " + AlbumTable::PrimaryKeyColumn + " = old.album_id;"
+    " DELETE FROM " + AlbumTable::Name +
+    " WHERE " + AlbumTable::PrimaryKeyColumn + "=old.album_id AND nb_tracks = 0;"
     " END";
   static const auto updateAddTrackTriggerReq = "CREATE TRIGGER IF NOT EXISTS add_album_track"
     " AFTER INSERT ON " + policy::AlbumTrackTable::Name +
     " BEGIN"
-    " UPDATE " + policy::AlbumTable::Name +
+    " UPDATE " + AlbumTable::Name +
     " SET duration = duration + (SELECT duration FROM " + policy::MediaTable::Name + " WHERE id_media=new.media_id),"
     " nb_tracks = nb_tracks + 1"
-    " WHERE " + policy::AlbumTable::PrimaryKeyColumn + " = new.album_id;"
+    " WHERE " + AlbumTable::PrimaryKeyColumn + " = new.album_id;"
     " END";
   static const auto vtriggerInsert = "CREATE TRIGGER IF NOT EXISTS insert_album_fts AFTER INSERT ON "
     + policy::AlbumTable::Name +
     // Skip unknown albums
     " WHEN new.title IS NOT NULL"
     " BEGIN"
-    " INSERT INTO " + policy::AlbumTable::Name + "Fts(rowid, title) VALUES(new." + policy::AlbumTable::PrimaryKeyColumn + ", new.title);"
+    " INSERT INTO " + AlbumTable::Name + "Fts(rowid, title) VALUES(new." + policy::AlbumTable::PrimaryKeyColumn + ", new.title);"
     " END";
   static const auto vtriggerDelete = "CREATE TRIGGER IF NOT EXISTS delete_album_fts BEFORE DELETE ON " + 
-    policy::AlbumTable::Name +
+    AlbumTable::Name +
     // Unknown album probably won't be deleted, but better safe than sorry
     " WHEN old.title IS NOT NULL"
     " BEGIN"
-    " DELETE FROM " + policy::AlbumTable::Name + "Fts WHERE rowid = old." + policy::AlbumTable::PrimaryKeyColumn + ";"
+    " DELETE FROM " + AlbumTable::Name + "Fts WHERE rowid = old." + policy::AlbumTable::PrimaryKeyColumn + ";"
     " END";
   return sqlite::Tools::ExecuteRequest(connection, triggerReq) &&
     sqlite::Tools::ExecuteRequest(connection, deleteTriggerReq) &&
@@ -351,8 +355,7 @@ bool mxp::Album::CreateTriggers(DBConnection connection) {
 
 std::shared_ptr<mxp::Album> mxp::Album::Create(MediaExplorerPtr ml, const std::string& title) {
   auto album = std::make_shared<Album>(ml, title);
-  static const auto req = "INSERT INTO " + policy::AlbumTable::Name +
-    "(" + policy::AlbumTable::PrimaryKeyColumn + ", title) VALUES(NULL, ?)";
+  static const auto req = "INSERT INTO " + AlbumTable::Name + "(" + AlbumTable::PrimaryKeyColumn + ", title) VALUES(NULL, ?)";
   if(insert(ml, album, req, title) == false)
     return nullptr;
   return album;
@@ -360,24 +363,22 @@ std::shared_ptr<mxp::Album> mxp::Album::Create(MediaExplorerPtr ml, const std::s
 
 std::shared_ptr<mxp::Album> mxp::Album::CreateUnknownAlbum(MediaExplorerPtr ml, const Artist* artist) {
   auto album = std::make_shared<Album>(ml, artist);
-  static const auto req = "INSERT INTO " + policy::AlbumTable::Name +
-    "(" + policy::AlbumTable::PrimaryKeyColumn + ", artist_id) VALUES(NULL, ?)";
+  static const auto req = "INSERT INTO " + AlbumTable::Name + "(" + AlbumTable::PrimaryKeyColumn + ", artist_id) VALUES(NULL, ?)";
   if(insert(ml, album, req, artist->Id()) == false)
     return nullptr;
   return album;
 }
 
 std::vector<mxp::AlbumPtr> mxp::Album::Search(MediaExplorerPtr ml, const std::string& pattern) {
-  static const auto req = "SELECT * FROM " + policy::AlbumTable::Name + " WHERE " + policy::AlbumTable::PrimaryKeyColumn + " IN "
-    "(SELECT rowid FROM " + policy::AlbumTable::Name + "Fts WHERE " +
-    policy::AlbumTable::Name + "Fts MATCH ?)"
+  static const auto req = "SELECT * FROM " + AlbumTable::Name + " WHERE " + AlbumTable::PrimaryKeyColumn + " IN "
+    "(SELECT rowid FROM " + AlbumTable::Name + "Fts WHERE " +
+    AlbumTable::Name + "Fts MATCH ?)"
     "AND is_present = 1";
   return FetchAll<IAlbum>(ml, req, pattern + "*");
 }
 
 std::vector<mxp::AlbumPtr> mxp::Album::FromArtist(MediaExplorerPtr ml, int64_t artistId, SortingCriteria sort, bool desc) {
-  auto req = "SELECT * FROM " + policy::AlbumTable::Name + " alb "
-    "WHERE artist_id = ? AND is_present=1 ORDER BY ";
+  auto req = "SELECT * FROM " + AlbumTable::Name + " alb WHERE artist_id = ? AND is_present=1 ORDER BY ";
   switch(sort) {
   case SortingCriteria::Alpha:
     req += "title";
@@ -399,14 +400,13 @@ std::vector<mxp::AlbumPtr> mxp::Album::FromArtist(MediaExplorerPtr ml, int64_t a
 }
 
 std::vector<mxp::AlbumPtr> mxp::Album::FindByGenre(MediaExplorerPtr ml, int64_t genreId, SortingCriteria sort, bool desc) {
- static const auto req = "SELECT a.* FROM " + policy::AlbumTable::Name + " a "
-    "INNER JOIN " + policy::AlbumTrackTable::Name + " att ON att.album_id = a." + policy::AlbumTable::PrimaryKeyColumn + " "
+ static const auto req = "SELECT a.* FROM " + AlbumTable::Name + " a "
+    "INNER JOIN " + policy::AlbumTrackTable::Name + " att ON att.album_id = a." + AlbumTable::PrimaryKeyColumn + " "
     "WHERE att.genre_id = ? GROUP BY att.album_id";
   return FetchAll<IAlbum>(ml, req + OrderBy(sort, desc), genreId);
 }
 
 std::vector<mxp::AlbumPtr> mxp::Album::ListAll(MediaExplorerPtr ml, SortingCriteria sort, bool desc) {
-  static const auto req = "SELECT * FROM " + policy::AlbumTable::Name +
-    " WHERE is_present=1";
+  static const auto req = "SELECT * FROM " + AlbumTable::Name + " WHERE is_present=1";
   return FetchAll<IAlbum>(ml, req + OrderBy(sort, desc));
 }
