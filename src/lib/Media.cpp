@@ -33,7 +33,21 @@ int64_t mxp::Media::* const MediaTable::PrimaryKey = &mxp::Media::m_id;
 
 mxp::Media::Media(MediaExplorerPtr ml, sqlite::Row& row)
   : m_ml(ml)
-  , m_changed(false) {
+  , m_id{}
+  , m_type{}
+  , m_subType{}
+  , m_containerId{}
+  , m_duration{}
+  , m_playCount{}
+  , m_lastPlayedDate{}
+  , m_progress{}
+  , m_rating{}
+  , m_insertionDate{}
+  , m_releaseDate{}
+  , m_isFavorite{}
+  , m_isPresent{}
+  , m_changed{} {
+  std::string guid;
   row >> m_id
       >> m_type
       >> m_subType
@@ -48,8 +62,10 @@ mxp::Media::Media(MediaExplorerPtr ml, sqlite::Row& row)
       >> m_thumbnail
       >> m_title
       >> m_filename
+      >> guid
       >> m_isFavorite
       >> m_isPresent;
+  m_guid = guid;
 }
 
 mxp::Media::Media(MediaExplorerPtr ml, const mstring& title, MediaType type)
@@ -68,6 +84,7 @@ mxp::Media::Media(MediaExplorerPtr ml, const mstring& title, MediaType type)
   , m_title(title)
   // When creating a Media, meta aren't parsed, and therefor, is the filename
   , m_filename(title)
+  , m_guid(utils::Guid::Create())
   , m_isFavorite(false)
   , m_isPresent(true)
   , m_changed(false) {
@@ -410,6 +427,7 @@ bool mxp::Media::CreateTable(DBConnection connection) noexcept {
     "thumbnail TEXT,"
     "title TEXT,"
     "filename TEXT,"
+    "guid TEXT,"
     "is_favorite BOOLEAN NOT NULL DEFAULT 0,"
     "is_present BOOLEAN NOT NULL DEFAULT 1,"
     "FOREIGN KEY (container_id) REFERENCES " + policy::ContainerTable::Name + "(" + policy::ContainerTable::PrimaryKeyColumn + ")"

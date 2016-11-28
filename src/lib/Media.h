@@ -45,6 +45,8 @@ public:
 
   virtual MediaSubType GetSubType() const override;
 
+  virtual const utils::Guid& GetGuid() const override;
+
   virtual const mstring& GetTitle() const override;
 
   virtual AlbumTrackPtr AlbumTrack() const override;
@@ -144,12 +146,9 @@ public:
 private:
   static bool Create(DBConnection connection, const mstring& sql, const mstring& type, const mstring& name) noexcept;
 
-public:
-  const utils::Guid& GetGuid() const override;
 private:
   MediaExplorerPtr m_ml;
 
-  // DB fields:
   int64_t      m_id;
   MediaType    m_type;
   MediaSubType m_subType;
