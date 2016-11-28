@@ -8,10 +8,13 @@
 #endif
 
 #include "av/MediaPlayer.h"
+#include "compat/Mutex.h"
 
 #include <SDL.h>
 #include <SDL_thread.h>
 #include "logging/Logger.h"
+
+mxp::compat::Mutex mxp::av::MediaPlayer::s_lock;
 
 mxp::av::MediaPlayer::~MediaPlayer() {}
 

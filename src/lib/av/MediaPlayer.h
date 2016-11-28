@@ -15,7 +15,6 @@ public:
   bool Stop();
   bool IsFullscreen();
 
-private:
   explicit MediaPlayer(HWND hWnd);
 
 public:
