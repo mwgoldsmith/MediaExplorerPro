@@ -3,6 +3,10 @@
 #include "core.h"
 
 #include <QApplication>
+#ifdef QT_STATIC
+#include <QtPlugin>
+Q_IMPORT_PLUGIN(QWindowsIntegrationPlugin)
+#endif
 
 int main(int argc, char *argv[]) {
   QApplication app(argc, argv);
@@ -17,5 +21,6 @@ int main(int argc, char *argv[]) {
 
   auto res = app.exec();
   Core::getInstance()->getSettings()->save();
+
   return res;
 }
